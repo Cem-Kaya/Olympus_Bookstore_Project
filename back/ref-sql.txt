@@ -1,0 +1,109 @@
+
+CREATE TABLE User(
+
+uid CHAR(20),
+Username CHAR(30),
+Picture_profile_url CHAR(100),
+Info CHAR(100),
+Join_date DATE,
+Email CHAR(50),
+Password CHAR(50)
+
+PRIMARY KEY(uid)
+)
+
+CREATE TABLE Thread (
+
+tid CHAR(20),
+name CHAR(50),
+date DATE  
+ 
+PRIMARY KEY(tid)
+)
+
+CREATE TABLE Comment (
+
+cid CHAR(50) NOT NULL,
+text  CHAR(500),
+ 
+PRIMARY KEY(cid)
+)
+
+CREATE TABLE Post(
+
+pid CHAR(20) NOT NULL,
+Likes INTEGER,
+Dislikes INTEGER,
+Text CHAR(200),
+
+PRIMARY KEY(pid) 	
+)
+
+CREATE TABLE Picture_Post(
+
+pid CHAR (20)
+Picture_URL CHAR(100),
+ 
+PRIMARY KEY (pid),
+FOREIGN KEY (pid) REFERENCES Post ,
+ON DELETE CASCADE ,
+ON UPDATE SET DEFAULT
+
+)
+
+CREATE TABLE Video_Post(
+
+pid CHAR (20)
+Video_URL CHAR(100),
+ 
+PRIMARY KEY (pid),
+FOREIGN KEY (pid) REFERENCES Post ,
+ON DELETE CASCADE ,
+ON UPDATE SET DEFAULT
+)
+
+CREATE TABLE Makes ( 
+
+tid CHAR (20) NOT NULL,
+pid CHAR (20) NOT NULL,
+uid CHAR(20),
+
+PRIMARY KEY (pid), //Because it has participation constraint and weak entity,
+UNIQUE(tid, uid)
+FOREIGN KEY (tid) REFERENCES Thread 
+ON DELETE CASCADE,
+ON UPDATE SET DEFAULT,
+FOREIGN KEY (uid) REFERENCES User 
+ON DELETE NO ACTION
+ON UPDATE SET DEFAULT
+
+)
+
+CREATE TABLE Comments (
+
+cid CHAR (50) NOT NULL,
+uid CHAR (20) NOT NULL,
+pid CHAR (25) NOT NULL,
+
+PRIMARY KEY (cid),
+FOREIGN KEY (pid) REFERENCES Post,
+FOREIGN KEY (uid) REFERENCES User ,
+ON DELETE NO ACTION,
+ON UPDATE SET DEFAULT
+
+)
+
+CREATE TABLE Creates(
+uid CHAR(20) NOT NULL, //Because one to one
+tid CHAR(20) NOT NULL,
+
+PRIMARY KEY (tid),
+FOREIGN KEY (uid) REFERENCES User
+)
+
+CREATE TABLE REPLYUNDER
+(
+ date DATE,
+  
+)
+
