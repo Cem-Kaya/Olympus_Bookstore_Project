@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 import json
 
-=======
-import imp
->>>>>>> a246a07bf7b7b4809133df1239ce11e552c262ba
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
@@ -35,7 +31,6 @@ def signupsubmit():
   email=request.form['email']
   homeadress=request.form['homeadress']
 
-<<<<<<< HEAD
 
 
   
@@ -48,54 +43,6 @@ def signupsubmit():
 
   return render_template('success.html', data= name)
 
-=======
-
-
-  
-
-  custumer__= Customers(name,pass_hash,email,homeadress)
-  db.session.add(custumer__)
-  db.session.commit()
-
-  #fetch a certain student2
-  custumer__=db.session.query(Customers)
-  
-  print(custumer__)
-
-  return render_template('success.html', data= name)
-
-
-@app.route('/Products_reg')
-def Products_reg():
-  return render_template('Products_reg.html')
-            
-@app.route('/Products_reg/submit', methods=['POST'])
-def Prsubmit():
-  
-  name=request.form['name']
-  model=request.form['model']
-  description=request.form['description']
-  edition_number=request.form['edition_number']
-  quantity =request.form['quantity']
-  price =request.form['price']
-  warranty=request.form['warranty']
-  distributor_Information =request.form['distributor_Information']
-  sale=request.form['sale']
-
-
-  
-
-  products__ = Products(name,model,description,edition_number, quantity, price, warranty, distributor_Information, sale)
-  db.session.add(products__)
-  db.session.commit()
-
-  #fetch a certain student2
-  products__=db.session.query(Products)
-  
-  print(products__)
-
-  return render_template('success.html', data= name)  
->>>>>>> a246a07bf7b7b4809133df1239ce11e552c262ba
 
 @app.route('/Products_reg')
 def Products_reg():
