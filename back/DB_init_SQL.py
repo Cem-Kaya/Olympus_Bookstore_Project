@@ -31,6 +31,14 @@ under = db.Table('under',
   #db.Column('Pid', db.Integer, db.ForeignKey('Products.Pid'))
 )
 
+wishes = db.Table('wishes',
+  db.Column('email', db.String(100), db.ForeignKey('Customers.email')),
+  db.Column('Pid', db.Integer, db.ForeignKey('Products.Pid')),
+  db.Column('date', db.DateTime(timezone=True), server_default=func.now())
+  #db.Column('email', db.String(100), db.ForeignKey('Customers.email')),
+  #db.Column('name', db.String(100), db.ForeignKey('Customers.name')),
+  #db.Column('Pid', db.Integer, db.ForeignKey('Products.Pid'))
+)
 
 
 
@@ -41,7 +49,7 @@ class Customers(db.Model):
   pass_hash=db.Column(db.String(512))
   email=db.Column(db.String(100), primary_key=True)
   homeadress=db.Column(db.String(100))
-  #wishes = db.relationship('Products', secondary = wishes, backref = 'Pid')
+  wishes = db.relationship('Products', secondary = wishes, backref = 'Pid')
   #bought_products = db.relationship('Products', secondary = customer_product, backref = 'owned')
 
   def __init__(self,name,pass_hash,email,homeadress):

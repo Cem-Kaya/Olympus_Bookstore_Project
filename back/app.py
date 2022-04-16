@@ -109,6 +109,14 @@ def loginsubmit():
     else: 
       return "True"
 
+
+@app.route('/deneme')
+def deneme():  
+  statement = wishes.insert().values(email="fdsfsdfsd", Pid=1)
+  db.session.execute(statement)
+  db.session.commit()
+  return "i beg you"      
+
 if __name__ == '__main__':  #python interpreter assigns "__main__" to the file you run
   db.create_all()
   app.run(debug=True)
