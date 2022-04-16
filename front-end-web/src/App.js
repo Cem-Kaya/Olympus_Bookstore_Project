@@ -1,15 +1,22 @@
-import Header from './components/Header';
 import './App.css';
-import Footer from './components/Footer';
-import Body from './components/Body';
+import React from 'react'
+
+import Login from './pages/Login';
+import Main from './pages/Main';
+import MyCart from './pages/MyCart';
+import WishList from './pages/WishList';
+import { Routes,Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <Header></Header>
-      <Body></Body>
-      <Footer></Footer>
-    </div>
+      <Routes>
+        <Route path='/' element={<Main />} />
+        <Route path='/Login' element={<Login/>}/>
+        <Route path='/MyCart' element={<MyCart/>}/>
+        <Route path='/WishList' element={<WishList/>}/>
+      </Routes>
+    
+    
   );
 }
 

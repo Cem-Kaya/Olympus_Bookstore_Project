@@ -24,18 +24,20 @@ import {
   const Container = styled.div`
     flex: 1;
     margin: 5px;
-    min-width: 200px;
-    height: 320px;
+    min-width: 180px;
+    max-width: 240px;
+    height: 360px;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #282c34;
     position: relative;
+    border: 1px solid pink;
     &:hover ${Info}{
       opacity: 1;
     }
   `;
-  {/*rgba(0, 0, 0, 0.2); */}
+
   const TextBoxContainer = styled.div`
     color: white;
     width: 100%;
@@ -43,7 +45,7 @@ import {
     position: absolute;
     flex-direction: column;
     padding-top: 2px;
-    background-color: #282c34; 
+    background-color: rgba(0, 0, 0, 0.2); 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,8 +76,9 @@ const TextBoxPrize = styled.div`
     left: 0;
     z-index: 2;
     background-color: rgba(0, 0, 0, 0.2);
+    text-align:center;
   `;
-  
+  {/*     */}
   const Image = styled.img`
     padding-top:10px;
     height: 50%;

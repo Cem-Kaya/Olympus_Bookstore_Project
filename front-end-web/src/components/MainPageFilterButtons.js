@@ -6,7 +6,8 @@ const ButtonContainer = styled.div`
     width: 100%;
     margin-left: 0px;
     margin-bottom: 20px;
-    margin-top: 0px;
+    margin-top: 40px;
+    margin-right: 60px;
 `;
 
 const MainPageFilterButtons = () => {

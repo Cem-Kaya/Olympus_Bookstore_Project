@@ -3,6 +3,8 @@ import styled from "styled-components"
 import Categories from './Categories'
 import Products from './Products'
 import MainPageFilterButtons from './MainPageFilterButtons'
+import Slider from './Slider'
+
 
 const BodyContainer = styled.div`
     width: 100%;
@@ -14,6 +16,7 @@ const BodyContainer = styled.div`
     flex-direction: row;
     background-color: pink;
     align-items: stretch;
+    position:absolute;
 `;
 
 const LeftContainer = styled.div`
@@ -25,9 +28,9 @@ const LeftContainer = styled.div`
 `;
 
 const RightContainer = styled.div`
-    width: 67%;
+    width: 66%;
     padding-left: 60px;
-    padding-right: 60px;
+    padding-right: 0px;
     display:flex;
     flex-direction: column;
 `;
@@ -39,6 +42,7 @@ const Body = () => {
         <Categories/>
       </LeftContainer>
       <RightContainer>
+         <Slider></Slider>
         <MainPageFilterButtons/>
         <Products/>
       </RightContainer>

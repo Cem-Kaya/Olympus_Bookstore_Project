@@ -6,8 +6,9 @@ import {
 } from "@material-ui/icons";
 
 import '../App.css';
-import logo from '../logo512.png';
+import logo from '../assets/OlympusLogo.png';
 import styled from "styled-components";
+import {useNavigate} from "react-router-dom";
 
 const HeaderDark = styled.div`
   padding: 10px;
@@ -38,11 +39,12 @@ const RightContainer = styled.div`
   `;
 
 const Header = () => {
+  const history= useNavigate();
   return (
     <HeaderDark>
         <Container>
           <button className='button_h'>
-            <img className='image' src={logo} alt="logo" />
+            <img className='image' src={logo} alt="logo" onClick={() => {history('/')}}/>
             Olympus Bookstore
           </button>
             <div className='inputWithButton'>
@@ -52,15 +54,15 @@ const Header = () => {
                 </button>
             </div>
             <RightContainer>
-              <button className='buttonStyle'>
+              <button className='buttonStyle' onClick={() =>{history('/Login')}}>
                 Log In/Sign Up
                 <AccountCircle/>
               </button>
-              <button className='buttonStyle'>
-                Favourites
+              <button className='buttonStyle' onClick={() =>{history('/WishList')}}>
+                Wish List
                 <FavoriteBorderOutlined/>
               </button>
-              <button className='buttonStyle'>
+              <button className='buttonStyle' onClick={() =>{history('/MyCart')}}>
                 My Cart
                 <ShoppingCartOutlined/>
               </button>
