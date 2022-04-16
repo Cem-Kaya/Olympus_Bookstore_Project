@@ -53,7 +53,10 @@ def Prsubmit():
   description=request.form['description']
   edition_number=request.form['edition_number']
   quantity =request.form['quantity']
+  amount_sold = request.form['amount_sold']
   price =request.form['price']
+  raiting=request.form['raiting']
+  author = request.form['author']
   warranty=request.form['warranty']
   distributor_Information =request.form['distributor_Information']
   sale=request.form['sale']
@@ -61,8 +64,9 @@ def Prsubmit():
   picture_url1=request.form['picture_url1']
   picture_url2=request.form['picture_url2']
 
-  products__ = Products(name,model,description,edition_number, quantity, price, warranty,
-   distributor_Information, sale, picture_url0 ,picture_url1,picture_url2)
+  products__ = Products(name,model,description,edition_number
+              ,quantity, amount_sold, price, raiting, warranty, distributor_Information, author, sale,
+              picture_url0,picture_url1,picture_url2)
 
   db.session.add(products__)
   db.session.commit() 
@@ -113,7 +117,7 @@ def loginsubmit():
 
 @app.route('/deneme')
 def deneme():  
-  statement = wishes.insert().values(email="fdsfsdfsd", Pid=1)
+  statement = wishes.insert().values(email="123123", Pid=1)
   db.session.execute(statement)
   db.session.commit()
   return "i beg you"      

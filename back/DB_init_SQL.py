@@ -50,7 +50,7 @@ class Customers(db.Model):
   pass_hash=db.Column(db.String(512))
   email=db.Column(db.String(100), primary_key=True)
   homeadress=db.Column(db.String(100))
-  wishes = db.relationship('Products', secondary = wishes, backref = 'Pid')
+  wishes = db.relationship('Products', secondary = wishes)
   #bought_products = db.relationship('Products', secondary = customer_product, backref = 'owned')
 
   def __init__(self,name,pass_hash,email,homeadress):
