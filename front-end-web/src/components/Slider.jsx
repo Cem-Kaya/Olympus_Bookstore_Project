@@ -15,18 +15,18 @@ const Container = styled.div`
 
 const Arrow = styled.div`
   width: 50px;
-  height: 50px;
-  background-color: #fff7f7;
-  border-radius: 50%;
+  height: inherit;
+  background-color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  left: ${(props) => props.direction === "left" && "10px"};
-  right: ${(props) => props.direction === "right" && "10px"};
+  left: ${(props) => props.direction === "left" && "0px"};
+  right: ${(props) => props.direction === "right" && "0px"};
   margin: auto;
   cursor: pointer;
   z-index: 2;
+  opacity: 0.5;
 `;
 
 const Wrapper = styled.div`

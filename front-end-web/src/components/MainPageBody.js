@@ -1,11 +1,11 @@
-import React from 'react'
 import styled from "styled-components"
 import Categories from './Categories'
 import Products from './Products'
 import MainPageFilterButtons from './MainPageFilterButtons'
 import Slider from './Slider'
+import React from 'react'
 
-
+{/*background-color: #282c34*/}
 const BodyContainer = styled.div`
     width: 100%;
     padding-top: 60px;
@@ -16,35 +16,34 @@ const BodyContainer = styled.div`
     flex-direction: row;
     background-color: pink;
     align-items: stretch;
-    position:absolute;
 `;
 
 const LeftContainer = styled.div`
     width: 33%;
-    padding-left: 40px;
+    padding-left: 80px;
     padding-right: 10px;
     float: right;
     justify-content: space-between;
 `;
 
 const RightContainer = styled.div`
-    width: 66%;
-    padding-left: 60px;
+    width: 67%;
+    padding-left: 40px;
     padding-right: 0px;
     display:flex;
     flex-direction: column;
 `;
 
-const Body = () => {
+const Body = ({onAddToCart}) => {
   return (
     <BodyContainer>
       <LeftContainer>
         <Categories/>
       </LeftContainer>
       <RightContainer>
-         <Slider></Slider>
+        <Slider></Slider>
         <MainPageFilterButtons/>
-        <Products/>
+        <Products onAddToCart={onAddToCart}/>
       </RightContainer>
     </BodyContainer>
   )

@@ -3,7 +3,6 @@ import styled from "styled-components"
 import '../App.css'
 
 const ButtonContainer = styled.div`
-    width: 100%;
     margin-left: 0px;
     margin-bottom: 20px;
     margin-top: 40px;

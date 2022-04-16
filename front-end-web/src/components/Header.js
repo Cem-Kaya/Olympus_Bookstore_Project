@@ -9,6 +9,7 @@ import '../App.css';
 import logo from '../assets/OlympusLogo.png';
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
+import React from "react";
 
 const HeaderDark = styled.div`
   padding: 10px;
@@ -17,6 +18,7 @@ const HeaderDark = styled.div`
   height: 80px;
   background-color: #282c34;
   color: aliceblue;
+  border-bottom: 2px solid pink;
   `;
 
 const Container = styled.div`
@@ -31,20 +33,20 @@ const Container = styled.div`
 
 const RightContainer = styled.div`
   display: flex;
-  height: 100px;
+  height: inherit;
   padding-left: 50px;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
   `;
 
-const Header = () => {
+const Header = ({cartItems}) => {
   const history= useNavigate();
   return (
     <HeaderDark>
         <Container>
-          <button className='button_h'>
-            <img className='image' src={logo} alt="logo" onClick={() => {history('/')}}/>
+          <button className='button_h' onClick={() => {history('/')}}>
+            <img className='image' src={logo} alt="logo"/>
             Olympus Bookstore
           </button>
             <div className='inputWithButton'>
@@ -62,7 +64,9 @@ const Header = () => {
                 Wish List
                 <FavoriteBorderOutlined/>
               </button>
-              <button className='buttonStyle' onClick={() =>{history('/MyCart')}}>
+              <button className='buttonStyle' 	
+                onClick={() => {history('/MyCart',
+                                {state: cartItems})}}>
                 My Cart
                 <ShoppingCartOutlined/>
               </button>

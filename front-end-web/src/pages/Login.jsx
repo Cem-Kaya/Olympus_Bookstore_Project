@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Header from "../components/Header";
 import Signin from '../components/Signin'
 import Signup from '../components/Signup'
+import Footer from "../components/Footer";
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -80,7 +81,7 @@ return(
    <div>
      <Header></Header>
      <ToogleGroup/>
-
+      <Footer></Footer>
    </div>
   
       

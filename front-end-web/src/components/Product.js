@@ -4,6 +4,7 @@ import {
     AddShoppingCart,
   } from "@material-ui/icons";
   import styled from "styled-components";
+  import React from "react";
   
   const Info = styled.div`
     opacity: 0;
@@ -78,7 +79,7 @@ const TextBoxPrize = styled.div`
     background-color: rgba(0, 0, 0, 0.2);
     text-align:center;
   `;
-  {/*     */}
+
   const Image = styled.img`
     padding-top:10px;
     height: 50%;
@@ -101,7 +102,7 @@ const TextBoxPrize = styled.div`
   `;
 
 
-  const Product = ({ item }) => {
+  const Product = ({ item, onAddToCart }) => {
     return (
       <Container>
         <InnerContainer>
@@ -110,7 +111,7 @@ const TextBoxPrize = styled.div`
                 <TextBoxTitle>{item.title}</TextBoxTitle>
                 <TextBoxAuthor style={{marginTop: "8px"}}>{"Author: " + item.author}</TextBoxAuthor>
                 <TextBoxPublisher style={{marginBottom: "8px"}}>{"Publisher: " + item.publisher}</TextBoxPublisher>
-                <TextBoxPrize>{item.price}</TextBoxPrize>
+                <TextBoxPrize>{item.price + " TL"}</TextBoxPrize>
             </TextBoxContainer>
         </InnerContainer>
         <Info>
@@ -118,7 +119,7 @@ const TextBoxPrize = styled.div`
             <SearchOutlined />
           </Icon>
           <Icon>
-            <AddShoppingCart />
+            <AddShoppingCart onClick={() => onAddToCart(item)}/>
           </Icon>
           <Icon>
             <FavoriteBorderOutlined />

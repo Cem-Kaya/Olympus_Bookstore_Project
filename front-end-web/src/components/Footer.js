@@ -6,6 +6,7 @@ const FooterBlock = styled.div`
   height: 250px;
   background-color: #282c34;
   float:bottom;
+  border-top: 1px solid pink;
 `;
 
 const Footer = () => {
