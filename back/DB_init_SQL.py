@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
 
 
 # ONE SHELL MAKE DB BEFORE INITign IT  ! 
@@ -29,6 +31,9 @@ under = db.Table('under',
   #db.Column('Pid', db.Integer, db.ForeignKey('Products.Pid'))
 )
 
+
+
+
 class Customers(db.Model):
   __tablename__='Customers'
   #Cid=db.Column(db.Integer,primary_key=True)
@@ -36,6 +41,7 @@ class Customers(db.Model):
   pass_hash=db.Column(db.String(512))
   email=db.Column(db.String(100), primary_key=True)
   homeadress=db.Column(db.String(100))
+  #wishes = db.relationship('Products', secondary = wishes, backref = 'Pid')
   #bought_products = db.relationship('Products', secondary = customer_product, backref = 'owned')
 
   def __init__(self,name,pass_hash,email,homeadress):
@@ -52,33 +58,41 @@ class Products(db.Model):
   description=db.Column(db.String(1000))
   edition_number=db.Column(db.Integer  )
   quantity =db.Column(db.Integer)
+  amount_sold=db.Column(db.Integer)
   price =db.Column(db.Integer )
+  raiting = db.Column(db.Integer) 
   warranty=db.Column(db.String(1000))
   distributor_Information =db.Column(db.String(1000))
+  author=db.Column(db.String(1000))
   sale=db.Column(db.REAL )
   picture_url0=db.Column(db.String(1000))
   picture_url1=db.Column(db.String(1000))
   picture_url2=db.Column(db.String(1000))
+  date =  db.Column(db.String(1000))
 
 
 
 
   def __init__(self,name,model,description,edition_number
-              ,quantity,price,warranty,distributor_Information,sale,
+              ,quantity, amount_sold, price, raiting, warranty, distributor_Information, author, sale,
               picture_url0,picture_url1,picture_url2):
     self.name=name
     self.model=model
     self.description=description
     self.edition_number=edition_number
     self.quantity=quantity
+    self.amount_sold=amount_sold
     self.price=price
+    self.raiting=raiting
     self.warranty=warranty
     self.distributor_Information=distributor_Information
+    self.author=author
     self.sale=sale
     self.picture_url0=picture_url0
     self.picture_url1=picture_url1
     self.picture_url2=picture_url2
     self.sale=sale
+    self.date = str(datetime.now()) 
 
     
 

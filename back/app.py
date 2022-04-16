@@ -1,3 +1,4 @@
+import email
 import json
 
 from flask import Flask, render_template, request
@@ -31,10 +32,6 @@ def signupsubmit():
   email=request.form['email']
   homeadress=request.form['homeadress']
 
-
-
-  
-
   custumer__= Customers(name,pass_hash,email,homeadress)
   db.session.add(custumer__)
   db.session.commit()
@@ -49,8 +46,7 @@ def Products_reg():
   return render_template('Products_reg.html')
             
 @app.route('/Products_reg/submit', methods=['POST'])
-def Prsubmit():
-  
+def Prsubmit():  
   name=request.form['name']
   model=request.form['model']
   description=request.form['description']
@@ -64,16 +60,11 @@ def Prsubmit():
   picture_url1=request.form['picture_url1']
   picture_url2=request.form['picture_url2']
 
-
-  
-
   products__ = Products(name,model,description,edition_number, quantity, price, warranty,
    distributor_Information, sale, picture_url0 ,picture_url1,picture_url2)
 
   db.session.add(products__)
-  db.session.commit()
-
- 
+  db.session.commit() 
 
   return render_template('success.html', data= name)  
 
@@ -82,15 +73,41 @@ def Prsubmit():
 def get_all_books():
   allproducts=Products.query.filter_by().all()
   jsonprd = []
+
   for pr in allproducts:
     tmp={
-      "price":  pr.price ,
-      "name":  pr.name ,
+      "id": pr.Pid,
+      "img": pr.picture_url0,
+      "title": pr.name ,
+      "author": pr.author,
+      "raiting": pr.raiting,      
+      "publisher": pr.distributor_Information,
+      "price":  pr.price ,    
+      "amount_sold": pr.amount_sold ,
+      "release_date": str(pr.date),
+      "discount": str((1-pr.sale)*100)+"%",
     }
     jsonprd.append(tmp)  
   return json.dumps(jsonprd)
     
-  
+
+@app.route('/login')
+def login():
+  return render_template('login.html')  
+
+
+@app.route('/login/submit', methods=['POST'])
+def loginsubmit():
+  in_email=request.form['email']
+  in_pass_hash=request.form['pass_hash']
+  ret=Customers.query.filter_by(email=in_email).all()
+  if len(ret)!=1:
+    return "False"
+  else :
+    if ret[0].pass_hash != in_pass_hash:
+      return "False"
+    else: 
+      return "True"
 
 if __name__ == '__main__':  #python interpreter assigns "__main__" to the file you run
   db.create_all()
