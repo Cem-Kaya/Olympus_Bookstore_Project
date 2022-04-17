@@ -18,6 +18,8 @@ import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
     {
       id: 1,
       name: 'Book1',
+      author: 'Author1',
+      publisher: 'Publisher1',
       price: '20.99',
       like: true,
       img: require('../src/assests/book1.jpg'),
@@ -27,6 +29,8 @@ import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
     {
       id: 2,
       name: 'Book2',
+      author: 'Author2',
+      publisher: 'Publisher2',
       price: '17.99',
       like: false,
       img: require('../src/assests/book2.jpg'),
@@ -36,6 +40,8 @@ import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
     {
       id: 3,
       name: 'Book3',
+      author: 'Author3',
+      publisher: 'Publisher3',
       price: '22.99',
       like: false,
       img: require('../src/assests/book3.png'),
@@ -45,6 +51,8 @@ import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
     {
       id: 4,
       name: 'Book4',
+      author: 'Author4',
+      publisher: 'Publisher4',
       price: '9.99',
       like: false,
       img: require('../src/assests/book4.jpg'),
@@ -54,6 +62,8 @@ import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
     {
       id: 5,
       name: 'Book5',
+      author: 'Author5',
+      publisher: 'Publisher5',
       price: '15.99',
       like: true,
       img: require('../src/assests/book5.jpg'),

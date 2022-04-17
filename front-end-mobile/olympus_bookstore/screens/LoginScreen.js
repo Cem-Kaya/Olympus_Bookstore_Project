@@ -5,6 +5,7 @@ import {
     StatusBar,
     StyleSheet,
     Text,
+    Image,
     useColorScheme,
     TouchableOpacity,
     View,
@@ -19,6 +20,12 @@ import {
 
     return (
       <View style={{margin: 16}}>
+        <View style={styles.container}>
+          <Image style={{width: 200, height: 200}} source={require('../src/assests/OlympusLogo.png')}/>
+          <Text style={styles.logoText}>Olympus Bookstore</Text>	
+        </View>
+        
+
         <TextInput
           label="Email"
           style={{ marginTop: 12 }}
@@ -41,7 +48,7 @@ import {
 
         <View style={styles.signupTextCont}>
 					<Text style={styles.signupText}>Do not have an account yet?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate("mainTabScreen", {screen: 'RegisterStackScreen'}) /* BUG: Navigation part does not work properly*/ }><Text style={styles.signupButton}> Register</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("mainTabScreen", {screen: 'RegisterStackScreen'}) /*BUG: Navigation part does not work properly*/ }><Text style={styles.signupButton}> Register</Text></TouchableOpacity>
           
         </View>
       </View>
@@ -64,6 +71,17 @@ import {
       fontSize:16,
       fontWeight:'500'
     },
+    container : {
+      flexGrow: 1,
+      justifyContent:'flex-end',
+      alignItems: 'center'
+    },
+    logoText : {
+      marginVertical: 15,
+      fontSize:26,
+      fontWeight: 'bold',
+      color:'#282c35'
+    }
   });
 
 
