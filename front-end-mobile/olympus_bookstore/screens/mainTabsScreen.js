@@ -83,7 +83,7 @@ const MainTabScreen = () => (
         }}
       />
       <Tabs.Screen
-        name="Explore"
+        name="Account"
         component={LoginStackScreen} /* BUG: Navigation part does not work properly*/
         //component={RegisterStackScreen}
         options={{

@@ -10,6 +10,8 @@ import {
     View,
   } from 'react-native';
   import { TextInput, Button, Subheading } from "react-native-paper";
+  import LoginScreen from './LoginScreen';
+
 
   const RegisterScreen = ({navigation}) => {
     const [name, setName] = useState("");
@@ -45,7 +47,7 @@ import {
 
         <View style={styles.signupTextCont}>
 					<Text style={styles.signupText}>Have you an account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('LoginScreen') /* BUG: Navigation part does not work properly*/}><Text style={styles.signupButton}> Login</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('HomeScreen', {screen: 'HomeScreen'}) /* BUG: Navigation part does not work properly*/}><Text style={styles.signupButton}> Login</Text></TouchableOpacity>
         </View>
       </View>
       );

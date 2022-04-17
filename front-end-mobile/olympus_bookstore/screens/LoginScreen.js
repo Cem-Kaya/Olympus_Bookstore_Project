@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Component, useState } from "react";
 import {
     SafeAreaView,
     ScrollView,
@@ -10,6 +10,8 @@ import {
     View,
   } from 'react-native';
   import { TextInput, Button, Subheading } from "react-native-paper";
+  import RegisterScreen from './RegisterScreen';
+
 
   const LoginScreen = ({navigation}) => {
     const [email, setEmail] = useState("");
@@ -39,7 +41,7 @@ import {
 
         <View style={styles.signupTextCont}>
 					<Text style={styles.signupText}>Do not have an account yet?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen') /* BUG: Navigation part does not work properly*/ }><Text style={styles.signupButton}> Register</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("mainTabScreen", {screen: 'RegisterStackScreen'}) /* BUG: Navigation part does not work properly*/ }><Text style={styles.signupButton}> Register</Text></TouchableOpacity>
           
         </View>
       </View>
