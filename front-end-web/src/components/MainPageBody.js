@@ -5,7 +5,7 @@ import MainPageFilterButtons from './MainPageFilterButtons'
 import Slider from './Slider'
 import React from 'react'
 
-{/*background-color: #282c34*/}
+{/*background-color: pink*/}
 const BodyContainer = styled.div`
     width: 100%;
     padding-top: 60px;
@@ -14,7 +14,7 @@ const BodyContainer = styled.div`
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-    background-color: pink;
+    background-color: #282c34;
     align-items: stretch;
 `;
 
