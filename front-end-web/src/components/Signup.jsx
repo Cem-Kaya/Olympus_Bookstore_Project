@@ -18,7 +18,7 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   padding: 20px;
-  height:60%;
+  height:65%;
   width: 60vh;
   display: flex;
   margin-top:5vh;

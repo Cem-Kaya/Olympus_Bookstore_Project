@@ -5,18 +5,20 @@ import { sliderItems } from "../data";
 import React from 'react';
 
 const Container = styled.div`
-  width: 70%;
+  width: 84%;
   height: 55vh;
   display: flex;
   position: relative;
   overflow: hidden;
-  background-color:yellow;
+  background-color:pink;
+  border-radius: 10px;  
 `;
 
 const Arrow = styled.div`
-  width: 50px;
+  width: 8%;
   height: inherit;
-  background-color: white;
+  background-color: #282c34;
+  color:black;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,7 +28,7 @@ const Arrow = styled.div`
   margin: auto;
   cursor: pointer;
   z-index: 2;
-  opacity: 0.5;
+  opacity: 0.3;
 `;
 
 const Wrapper = styled.div`
@@ -41,7 +43,7 @@ const Slide = styled.div`
   height: 50vh;
   display: flex;
   align-items: center;
-  
+
 `;
 
 const ImgContainer = styled.div`
@@ -98,7 +100,7 @@ const Slider = () => {
     return (
       <Container>
         <Arrow direction="left" onClick={() => handleClick("left")}>
-           <ArrowLeftOutlined/>
+           <ArrowLeftOutlined style={{opacity:1}}/>
         </Arrow>
         <Wrapper slideIndex={slideIndex}>
           {sliderItems.map((item) => (

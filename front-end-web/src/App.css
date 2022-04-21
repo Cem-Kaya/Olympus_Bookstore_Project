@@ -15,11 +15,11 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 100vh;
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -46,7 +46,7 @@
 .inputWithButton {
   position: relative;
   height: 40px;
-  width : 450px;
+  width : 550px;
   align-items: center;
 }
 
@@ -54,22 +54,23 @@
     padding-left: 20px;
     width: 87%;
     height: 34px;
-    padding-right: 50px;
+    padding-right: 0px;
     align-items: center;
+    vertical-align: baseline;
     text-align: left;
 }
 
 .inputWithButton button {
   position: absolute;
-  right: 0px;
-  top : 6px;
+  right: 40px;
+  top : 4px;
   border: none;
   background-color: inherit;
   cursor:"pointer";
 }
 
 .buttonStyle {
-  background-color: inherit; /* Green */
+  background-color: inherit;
   border: none;
   color: white;
   padding: 16px 32px;
@@ -99,7 +100,7 @@
   cursor: pointer;
 }
 
-.btn-group-vertical .button {
+.button-group-vertical .button {
   text-align: start;
   background-color: #282c34; /* Green */
   border: 1px solid pink;
@@ -113,7 +114,7 @@
   
 }
 
-.btn-group-horizontal .button {
+.button-group-horizontal .button {
   background-color: #282c34;
   border: 1px solid pink;
   color: white;
@@ -126,10 +127,43 @@
   width: 25%;
 }
 
-.btn-group-horizontal .button:not(:last-child) {
+.button-group-horizontal .button:not(:last-child) {
   border-right: none; /* Prevent double borders */
 }
 
-.btn-group-horizontal .button:hover {
-  background-color: blue;
+.button-group-horizontal .button:focus  {
+  background-color: #484848;
+}
+
+.button-aligned-as-flex{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 400px;
+  z-index: 3;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
+  background-color: #282c34;
+  opacity: 1;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+li {
+  padding: 8px 12px;
+}
+
+li:hover {
+  background-color: rgba(0, 0, 0, 0.14);
+  cursor: pointer;
 }

@@ -14,8 +14,8 @@ const Main = () => {
   }, []);
   
   useEffect(() => {
-    window.localStorage.setItem('cart_items', JSON.stringify(cartItems));
     if(cartItems === null)  {setCartItems([])}
+    window.localStorage.setItem('cart_items', JSON.stringify(cartItems));
   }, [cartItems]);
   
   const AddToCart = (item) => {
@@ -31,19 +31,45 @@ const Main = () => {
         setCartItems([...cartItems, item])
       }
     }
-    else
+    {/*else
     {
       setCartItems(
         cartItems.map(
           (elem) => elem.id === item.id ? { ...elem, count: elem.count + 1} : elem
         )
       )
+    }*/}
+  }
+
+  const HeaderAddToCart = (item) => {
+    setCartItems(
+      cartItems.map(
+        (elem) => elem.id === item.id ? { ...elem, count: elem.count + 1} : elem
+      )
+    )
+  }
+
+  const HeaderRemoveFromCart = (item) => {
+    let listOfItem = cartItems.filter((elem) => elem.id === item.id)
+    let count = listOfItem[0].count
+
+    if(count !== 1){
+      setCartItems(
+        cartItems.map(
+          (elem) => elem.id === item.id ? { ...elem, count: elem.count - 1} : elem
+        )
+      )
+    }
+    else
+    {
+      let filteredState = cartItems.filter((elem) => elem.id !== item.id)
+      filteredState.length === 0 ? setCartItems([]) : setCartItems([...filteredState])
     }
   }
 
   return (
     <div>
-        <Header cartItems={cartItems} onAddToCart={AddToCart}></Header>
+        <Header itemsInCart={cartItems} onAddToCart={HeaderAddToCart} onRemoveFromCart={HeaderRemoveFromCart}></Header>
         <Body onAddToCart={AddToCart}></Body>
         <Footer></Footer>
     </div>

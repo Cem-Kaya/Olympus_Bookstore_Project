@@ -13,7 +13,7 @@ const TextStyle = styled.div`
 
 const Categories = () => {
   return (
-        <div className="btn-group-vertical">
+        <div className="button-group-vertical">
             <button className='button'>
                 <TextStyle>Classics
                     <DoubleArrow/>

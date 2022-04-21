@@ -1,89 +1,31 @@
 //Products.js and MyCart.js needs update
 
 import React from 'react'
-import CartItems from '../components/CartItems'
+import CartItem from '../components/CartItem'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { useState, useEffect } from 'react';
 import { useLocation  } from "react-router-dom";
-import styled from "styled-components";
-
-const Container = styled.div`
-  padding: 80px 50px;
-  flex: 1;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  position: relative;
-`;
-
-const SummaryContainer = styled.div`
-  width: 20%;
-  height: 500px;
-  display: flex;
-  padding-left: 5px;
-  padding-right: 5px;
-  flex-direction: column;
-  align-items: left;
-  justify-content: space-around;
-  background-color: white;
-  position: relative;
-  margin-right: 100px;
-  border: 1px solid pink;
-  text-align: left;
-`;
-
-const TextHeader = styled.div`
-  text-align: center;
-  font-size: 30px;
-`;
-
-const ProductBoxContainer = styled.div`
-  width: 80%;
-  height: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  position: relative;
-  border: 1px solid pink;
-  margin-right: 50px;
-`;
-
-const ButtonStyle = styled.div`
-  background-color: #282c34;
-  border: none;
-  color: white;
-  padding: 16px 32px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 20px;
-  margin: 2px 2px;
-  cursor: pointer;
-  align-items: center;
-`;
+import { Delete } from "@material-ui/icons";
+import { useNavigate } from "react-router-dom";
 
 const MyCart = ({params}) => {
 
+  const history= useNavigate();
   const [items, setItems] = useState([]);
   
-  let location = useLocation();
-  console.log(location)
-  let itemList = location.state;
-  console.log(itemList)
+  //let location = useLocation();
+  //console.log(location)
+  //let itemList = location.state;
+  //console.log(itemList)
 
   useEffect(() => {
-    setItems(itemList);
-  }, [itemList]);
+    setItems(JSON.parse(window.localStorage.getItem('cart_items')));
+  }, [/*itemList*/]);
 
   useEffect(() => {
-    window.localStorage.setItem('cart_items', JSON.stringify(items));
     if(items === null)  {setItems([])}
+    window.localStorage.setItem('cart_items', JSON.stringify(items));
   }, [items]);
 
   const costOfItems = () => {
@@ -97,8 +39,7 @@ const MyCart = ({params}) => {
   const RemoveAllFromCart = (item) => {
 
     let filteredState = items.filter((elem) => elem.id !== item.id)
-    filteredState.length === 0 ? setItems([]) : setItems([...filteredState])
-    
+    filteredState.length === 0 ? setItems([]) : setItems([...filteredState]) 
   }
 
   const RemoveFromCart = (item) => {
@@ -143,7 +84,9 @@ const MyCart = ({params}) => {
   }
 
   return (
-    <div>
+
+    <div className="App"> 
+    {/*<div>
       <Header cartItems={items}/>
       <Container>
         <ProductBoxContainer>
@@ -167,6 +110,124 @@ const MyCart = ({params}) => {
       <Footer />
     </div>
   )
+}*/}
+      <Header itemsInCart={items}/>
+        <section className="section-pagetop bg">
+        <div className="container">
+            <h2 className="title-page">Shopping cart</h2>
+        </div> 
+        </section>
+        
+        <section className="section-content padding-y">
+        <div className="container">
+        
+        <div className="row">
+            <main className="col-md-9">
+        <div className="card">
+        
+        {items.length === 0 ? <h2>There are no products in your cart, start adding some!</h2>:
+          <table className="table table-borderless table-shopping-cart">
+          <thead className="text-muted">
+          <tr className="small text-uppercase">
+          <th scope="col">Product</th>
+          <th scope="col"></th>
+          <th scope="col" width="120">Quantity</th>
+          <th scope="col"></th>
+          <th scope="col" width="120">Price</th>
+          <th scope="col" className="text-right" width="200"> </th>
+          </tr>
+          </thead>
+          <tbody>
+            {items.map((item, index) => (
+            <CartItem 
+              key={index}
+              item={item}
+              onAddToCart={AddToCart}
+              onRemoveFromCart={RemoveFromCart}
+              onRemoveAll={RemoveAllFromCart}
+            />))}
+          </tbody>
+          
+          </table>
+        }
+        
+        <div className="card-body border-top">
+            
+            <button className="btn btn-danger float-md-right" style={{verticalAlign:"baseline"}} onClick={() => {setItems([])}}> Empty Cart <Delete/> </button>
+            <button className="btn btn-light float-md-left" onClick={() => {history('/')}}> <i className="fa fa-chevron-left"></i> Continue shopping </button>
+        </div>  
+        </div> 
+        
+        <div className="alert alert-success mt-3">
+            <p className="icontext"><i className="icon text-success fa fa-truck"></i> Free Delivery within 1-2 weeks</p>
+        </div>
+        
+            </main>
+            <aside className="col-md-3">
+                <div className="card mb-3">
+                    <div className="card-body">
+                    <form>
+                        <div className="form-group">
+                            <label>Have coupon?</label>
+                            <div className="input-group">
+                                <input type="text" className="form-control" name="" placeholder="Coupon code" />
+                                <span className="input-group-append"> 
+                                    <button className="btn btn-primary">Apply</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                    </div> 
+                </div>  
+                <div className="card">
+                    <div className="card-body">
+                            <dl className="dlist-align">
+                            <dt>Total price:</dt>
+                            <dd className="text-right">{costOfItems().toFixed(2) + " TL"}</dd>
+                            </dl>
+                            <dl className="dlist-align">
+                            <dt>Discount:</dt>
+                            <dd className="text-right">0 TL</dd>
+                            </dl>
+                            <dl className="dlist-align">
+                            <dt>Total:</dt>
+                            <dd className="text-right  h5"><strong>{costOfItems().toFixed(2)  + " TL"}</strong></dd>
+                            </dl>
+                            <hr />
+                            <dd>
+                            <p className="text-center mb-3">
+                                <img alt="payments" src="assets/images/misc/payments.png" height="26" />
+                            </p>
+                            </dd>
+                            <hr />
+                            <button className="btn btn-primary float-md-right"> Proceed to Checkout <i className="fa fa-chevron-right"></i> </button>
+                    </div> 
+                </div>  
+            </aside> 
+        </div>
+        
+        </div> 
+        </section>
+       
+        <section className="section-name bg padding-y">
+        <div className="container">
+          <h6>Payment and refund policy</h6>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+        </section>
+        
+    </div>
+  );
 }
-
 export default MyCart;

@@ -4,23 +4,25 @@ import Products from './Products'
 import MainPageFilterButtons from './MainPageFilterButtons'
 import Slider from './Slider'
 import React from 'react'
+import Product from "./Product"
 
-{/*background-color: pink*/}
+{/*background-color: #282c34*/}
 const BodyContainer = styled.div`
     width: 100%;
     padding-top: 60px;
     padding-bottom: 150px;
-    padding-right: 0px;
+    padding-right: 50px;
+    padding-left: 50px;
     display: flex;
     justify-content: space-between;
     flex-direction: row;
     background-color: #282c34;
-    align-items: stretch;
+    align-items: stretch; 
 `;
 
 const LeftContainer = styled.div`
-    width: 33%;
-    padding-left: 80px;
+    width: 30%;
+    padding-left: 20px;
     padding-right: 10px;
     float: right;
     justify-content: space-between;
@@ -28,10 +30,16 @@ const LeftContainer = styled.div`
 
 const RightContainer = styled.div`
     width: 67%;
-    padding-left: 40px;
-    padding-right: 0px;
+    padding-left: 20px;
+    padding-right: 10px;
     display:flex;
     flex-direction: column;
+`;
+
+const VisualPart = styled.div`
+  align-items:center;
+  justify-content: end;
+  margin-left:8%;
 `;
 
 const Body = ({onAddToCart}) => {
@@ -41,7 +49,9 @@ const Body = ({onAddToCart}) => {
         <Categories/>
       </LeftContainer>
       <RightContainer>
-        <Slider></Slider>
+        <VisualPart>
+          <Slider></Slider>
+        </VisualPart>
         <MainPageFilterButtons/>
         <Products onAddToCart={onAddToCart}/>
       </RightContainer>

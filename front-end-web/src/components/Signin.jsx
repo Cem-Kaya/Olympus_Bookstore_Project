@@ -18,7 +18,7 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   padding: 80px;
-  width: 40vh;
+  width: 60vh;
   display: flex;
   margin-top:10vh;
   margin-left:70vh;
@@ -26,7 +26,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
  
-  
 `;
 
 const Title = styled.h1`
@@ -67,16 +66,12 @@ const Link = styled.a`
 
 const Signin = () => {
   return (
-    
-
-
       <Wrapper>
         <Title>SIGN IN</Title>
         <Form>
           <Input placeholder="email" />
           <Input placeholder="password" />
           <Button>LOGIN</Button>
-         
         </Form>
       </Wrapper>
   );

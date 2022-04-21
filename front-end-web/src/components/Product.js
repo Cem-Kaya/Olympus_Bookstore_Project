@@ -26,7 +26,7 @@ import {
     flex: 1;
     margin: 5px;
     min-width: 180px;
-    max-width: 240px;
+    max-width: 220px;
     height: 360px;
     display: flex;
     align-items: center;
@@ -42,7 +42,7 @@ import {
   const TextBoxContainer = styled.div`
     color: white;
     width: 100%;
-    height: 45%;
+    height: 50%;
     position: absolute;
     flex-direction: column;
     padding-top: 2px;
@@ -72,6 +72,7 @@ const TextBoxPrize = styled.div`
   const InnerContainer = styled.div`
     width: 100%;
     height: 100%;
+    max-width: 100%;
     position: absolute;
     justify-content: space-between;
     left: 0;
@@ -83,6 +84,7 @@ const TextBoxPrize = styled.div`
   const Image = styled.img`
     padding-top:10px;
     height: 50%;
+    max-width: inherit;
   `;
   
   const Icon = styled.div`
@@ -111,7 +113,7 @@ const TextBoxPrize = styled.div`
                 <TextBoxTitle>{item.title}</TextBoxTitle>
                 <TextBoxAuthor style={{marginTop: "8px"}}>{"Author: " + item.author}</TextBoxAuthor>
                 <TextBoxPublisher style={{marginBottom: "8px"}}>{"Publisher: " + item.publisher}</TextBoxPublisher>
-                <TextBoxPrize>{item.price + " TL"}</TextBoxPrize>
+                <TextBoxPrize>{item.price.toFixed(2) + " TL"}</TextBoxPrize>
             </TextBoxContainer>
         </InnerContainer>
         <Info>
@@ -119,7 +121,7 @@ const TextBoxPrize = styled.div`
             <SearchOutlined />
           </Icon>
           <Icon>
-            <AddShoppingCart onClick={() => onAddToCart(item)}/>
+            <AddShoppingCart onClick={() => {onAddToCart(item)}}/>
           </Icon>
           <Icon>
             <FavoriteBorderOutlined />

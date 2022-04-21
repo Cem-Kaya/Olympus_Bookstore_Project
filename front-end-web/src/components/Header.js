@@ -3,13 +3,15 @@ import {
   Search,
   ShoppingCartOutlined,
   FavoriteBorderOutlined,
+  ShoppingCart,
 } from "@material-ui/icons";
 
-import '../App.css';
 import logo from '../assets/OlympusLogo.png';
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
 import React from "react";
+import '../App.css';
+import { useState, useEffect } from 'react';
 
 const HeaderDark = styled.div`
   padding: 10px;
@@ -19,6 +21,7 @@ const HeaderDark = styled.div`
   background-color: #282c34;
   color: aliceblue;
   border-bottom: 2px solid pink;
+  
   `;
 
 const Container = styled.div`
@@ -40,8 +43,39 @@ const RightContainer = styled.div`
   align-items: center;
   `;
 
-const Header = ({cartItems}) => {
+const Dropdown = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+const DropDownItem = styled.div`
+  display: flex;
+  flex-direction:row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const DropDownItemCount = styled.div`
+  display:flex;
+  justify-content: space-between;
+`;
+
+
+const Header = ({itemsInCart, onAddToCart, onRemoveFromCart}) => {
   const history= useNavigate();
+  
+  const [cartItems, setCartItems] = useState([]);
+  const [dropDownOpen, setdropDownOpen] = useState(false);
+
+  useEffect(() => {
+    if(itemsInCart !== undefined) {setCartItems(itemsInCart)}
+    else{setCartItems(JSON.parse(window.localStorage.getItem('cart_items')));}
+  }, [itemsInCart]);
+
+  const handleDropdownOpen = () => {
+    setdropDownOpen(!dropDownOpen);
+  };
+
   return (
     <HeaderDark>
         <Container>
@@ -64,12 +98,36 @@ const Header = ({cartItems}) => {
                 Wish List
                 <FavoriteBorderOutlined/>
               </button>
-              <button className='buttonStyle' 	
-                onClick={() => {history('/MyCart',
-                                {state: cartItems})}}>
-                My Cart
-                <ShoppingCartOutlined/>
-              </button>
+              <Dropdown>
+                <button className='buttonStyle'
+                  onClick={() => {handleDropdownOpen()}}>
+                    My Cart  
+                  <div className="widget-header">    
+                    {cartItems.length === 0 ? <ShoppingCartOutlined/> : 
+                    <><ShoppingCart/>
+                    <span className="badge badge-pill badge-danger notify">{cartItems.length}</span></>}
+                  </div>
+                </button>
+                {dropDownOpen && (<div className="dropdown">
+                    <ul>
+                    {cartItems.map((item) => (
+                        <li key={item.id}>
+                          <DropDownItem>  
+                            <p>{item.title}</p>
+                            <DropDownItemCount>
+                              <button onClick={() =>{onRemoveFromCart(item)}}>-</button>
+                              <p>{" " + item.count + " "}</p>
+                              <button onClick={() =>{onAddToCart(item)}}>+</button>
+                            </DropDownItemCount>  
+                          </DropDownItem>
+                        </li>
+                      ))}
+                        <button className="btn btn-primary" onClick={() => {history('/MyCart')}}>
+                          Go to My Cart  
+                        </button>
+                    </ul>
+                  </div>)}
+              </Dropdown>
             </RightContainer>
         </Container>
     </HeaderDark>

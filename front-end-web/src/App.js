@@ -22,3 +22,6 @@ function App() {
 }
 
 export default App;
+
+//singleton fetchproduct class???
+//singleton fetchbasket class??

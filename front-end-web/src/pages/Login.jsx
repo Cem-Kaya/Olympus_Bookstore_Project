@@ -5,7 +5,7 @@ import Signin from '../components/Signin'
 import Signup from '../components/Signup'
 import Footer from "../components/Footer";
 const Container = styled.div`
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background: linear-gradient(
       rgba(255, 255, 255, 0.5),
@@ -45,53 +45,37 @@ const Login = () => {
 
 const types= ['LOGIN', 'SIGNUP'];
 const [type,setType]= useState();
+  
 function ToogleGroup(){
 
-const isempty =type==='';
-if (isempty) {
-    setType(types[0])
-  
-}
-const istype= type==='LOGIN';
-return(
-  <Container>
-  <Form>
-    {types.map(type =>(
-      <Button  onClick={()=> setType(type)}>
-        {type}
-      </Button>
-    ))}
-  </Form>
-  {istype ? (
-    <Signup></Signup>):
-    (<Signin></Signin>)
+  const isempty = type==='';
+  if (isempty) {
+      setType(types[0])
+    
   }
-  
-  
-  
-
-
-  </Container>
-
-
-);
-
-}
+  const istype= type==='LOGIN';
+    return(
+      <Container>
+      <Form>
+        {types.map((type, index) =>(
+          <Button  key={index} onClick={()=> setType(type)}>
+            {type}
+          </Button>
+        ))}
+      </Form>
+      {istype ? (
+        <Signup></Signup>):
+        (<Signin></Signin>)
+      }
+      </Container>
+    );
+  }
   return (
    <div>
      <Header></Header>
      <ToogleGroup/>
       <Footer></Footer>
    </div>
-  
-      
-
-      
-
-     
- 
-  
-         
   );
 };
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from "styled-components"
-import '../App.css'
+import '../App.css';
 
 const ButtonContainer = styled.div`
     margin-left: 0px;
@@ -12,7 +12,7 @@ const ButtonContainer = styled.div`
 const MainPageFilterButtons = () => {
   return (
     <ButtonContainer>
-        <div className="btn-group-horizontal">
+        <div className="button-group-horizontal">
             <button className="button">Top Seller</button>
             <button className="button">Top Rated</button>
             <button className="button">New Books</button>

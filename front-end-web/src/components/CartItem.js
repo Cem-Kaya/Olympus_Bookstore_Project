@@ -1,36 +1,40 @@
 import React from 'react';
-import styled from "styled-components";
-
-const Container = styled.div`
-  flex: 1;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-evenly;
-  background-color: grey;
-  position: relative;
-  color: white;
-`;
-
-const Image = styled.img`
-  padding-top:10px;
-  height: 100px;
-`;
 
 const CartItem = ({item, onAddToCart, onRemoveFromCart, onRemoveAll}) => {
   return (
-    <Container>
-      <Image src={item.img} />
-      <h3>{item.title + " " + item.author}</h3>
-      <button onClick={() => {onRemoveFromCart(item)}}>Remove 1</button>
-      <h3>{item.count}</h3>
-      <button onClick={() => {onAddToCart(item)}}>Add 1</button>
-      <h3>{item.price + " TL"}</h3>
-      <button onClick={() => {onRemoveAll(item)}}>Remove All</button>
-    </Container>
+    <tr>              
+      <td>
+          <figure className="itemside">
+              <div className="aside"><img src={item.img} alt="item-img" className="img-sm"/></div>
+              <figcaption className="info">
+                  <a href="#" className="title text-dark">{item.title}</a>
+                  <p className="text-muted small">Author: {item.author}, 
+                  <br /> Publisher: {item.publisher}</p>
+              </figcaption>
+          </figure>
+      </td>
+      <td>
+        <button href="" className="btn btn-light" onClick={() => {onRemoveFromCart(item)}}>-</button>
+      </td>
+      <td>
+        <h3>{item.count}</h3>
+      </td>
+      <td>
+        <button href="" className="btn btn-light" onClick={() => {onAddToCart(item)}}>+</button> 
+      </td>
+      <td> 
+          <div className="price-wrap"> 
+              <var className="price">{(item.price * item.count).toFixed(2) + " TL"} </var> 
+              <small className="text-muted"> {(item.price).toFixed(2) + " TL each"} </small> 
+          </div> 
+      </td>
+      <td className="text-right"> 
+        <button data-original-title="Save to Wishlist" title="" className="btn btn-light mr-2" data-toggle="tooltip"> <i className="fa fa-heart"></i></button>      
+        <button className="btn btn-light" onClick={() => {onRemoveAll(item)}}> Remove All</button>
+      </td>
+  </tr>
   )
 }
 
 export default CartItem
+
