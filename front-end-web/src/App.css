@@ -43,6 +43,7 @@
   width: 80px;
 }
 
+
 .inputWithButton {
   position: relative;
   height: 40px;
@@ -66,7 +67,7 @@
   top : 4px;
   border: none;
   background-color: inherit;
-  cursor:"pointer";
+  cursor: pointer;
 }
 
 .buttonStyle {
@@ -147,7 +148,7 @@
   top: 100%;
   right: 0;
   width: 400px;
-  z-index: 3;
+  z-index: 4;
   border: 1px solid rgba(0, 0, 0, 0.04);
   box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
   background-color: #282c34;

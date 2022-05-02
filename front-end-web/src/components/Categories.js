@@ -5,6 +5,7 @@ import {
 import React from 'react';
 import styled from "styled-components";
 import '../App.css';
+import { useNavigate } from "react-router-dom";
 
 const TextStyle = styled.div`
     display: flex;
@@ -12,63 +13,24 @@ const TextStyle = styled.div`
 `;
 
 const Categories = () => {
-  return (
+
+    let navigate = useNavigate();
+
+    const categories = ["Classics", "History", "Fiction", "Science", "Foreign Language", "Comics",
+    "Philosophy", "Self-Development", "Children", "Religious", "Textbook"]
+
+    return (
         <div className="button-group-vertical">
-            <button className='button'>
-                <TextStyle>Classics
-                    <DoubleArrow/>
-                </TextStyle>
-            </button>
-            <button className='button'>
-                <TextStyle>
-                    History<DoubleArrow/>
-                </TextStyle>
-            </button>
-            <button className='button'>
-                <TextStyle>
-                    Fiction<DoubleArrow/>
-                </TextStyle>
-            </button>
-            <button className='button'>
-                <TextStyle>
-                    Science<DoubleArrow/>
-                </TextStyle>
-            </button>
-            <button className='button'>
-                <TextStyle>
-                    Foreign Language<DoubleArrow/>
-                </TextStyle>
-            </button>
-            <button className='button'>
-                <TextStyle>
-                    Philosophy<DoubleArrow/>
-                </TextStyle>
-            </button>
-            <button className='button'>
-                <TextStyle>
-                    Comics<DoubleArrow/>
-                </TextStyle>
-            </button>
-            <button className='button'>
-                <TextStyle>
-                    Self-Development<DoubleArrow/>
-                </TextStyle>
-            </button>
-            <button className='button'>
-                <TextStyle>
-                    Children<DoubleArrow/>
-                </TextStyle>
-            </button>
-            <button className='button'>
-                <TextStyle>
-                    Religious<DoubleArrow/>
-                </TextStyle>
-            </button>
-            <button className='button'>
-                <TextStyle>
-                    Textbook<DoubleArrow/>
-                </TextStyle>
-            </button>
+            {categories.map((element, index) => (
+                <button className='button' key={index}
+                    onClick={() => {
+                        navigate(`/Search/category=${element}/&author=*/&publisher=*/&language=*/&pr_lower=*/&pr_upper=*/&raiting=*`)
+                    }}>
+                    <TextStyle>{element}
+                        <DoubleArrow/>
+                    </TextStyle>
+                </button>
+            ))}
         </div>
   )
 }

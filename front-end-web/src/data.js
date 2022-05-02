@@ -57,7 +57,7 @@ export const sliderItems = [
       id:2,
       img:"https://images-na.ssl-images-amazon.com/images/I/6177mRK8WuL.jpg",
       title: "Lead by Example",
-      author: "John Baldoni",
+      author: "Jojo Moyes",
       raiting: "5",
       publisher: "Cambridge",
       price: 45.00,

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { popularProducts } from "../data";
 import Product from "./Product";
 import React from "react";
 
@@ -10,10 +9,11 @@ const Container = styled.div`
     margin-right: 60px;
 `;
 
-const Products = ({onAddToCart}) => {
+const Products = ({onAddToCart, products, sortBy}) => {
+
   return (
     <Container>
-      {popularProducts.map((item) => (
+      {products.map((item) => (
         <Product item={item} onAddToCart={onAddToCart} key={item.id} />
       ))}
     </Container>
@@ -22,6 +22,7 @@ const Products = ({onAddToCart}) => {
 
 export default Products;
 
+  
 {/*import styled from "styled-components";
 import { popularProducts } from "../data";
 import Product from "./Product";
@@ -32,8 +33,6 @@ const Container = styled.div`
     flex-wrap: wrap;
     justify-content: start;
 `;
-  
-
 
 const Products = ({ onAddToCart }) => {
 

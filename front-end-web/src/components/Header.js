@@ -1,6 +1,5 @@
 import {
   AccountCircle,
-  Search,
   ShoppingCartOutlined,
   FavoriteBorderOutlined,
   ShoppingCart,
@@ -32,6 +31,7 @@ const Container = styled.div`
   padding: 25px, 0px;
   max-height: 100%;
   height:100px;
+  position:relative;
   `;
 
 const RightContainer = styled.div`
@@ -76,6 +76,8 @@ const Header = ({itemsInCart, onAddToCart, onRemoveFromCart}) => {
     setdropDownOpen(!dropDownOpen);
   };
 
+  const [selection, setSelection] = useState("");
+
   return (
     <HeaderDark>
         <Container>
@@ -83,11 +85,16 @@ const Header = ({itemsInCart, onAddToCart, onRemoveFromCart}) => {
             <img className='image' src={logo} alt="logo"/>
             Olympus Bookstore
           </button>
-            <div className='inputWithButton'>
-                <input type="text" placeholder='Search...'/>
-                <button>
-                  <Search style={{cursor:"pointer"}}/>
-                </button>
+          <div className="input-group mb-0" style={{width:"540px"}}>
+              <div className="input-group-prepend">
+                <button className="btn btn-outline-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{selection === "" ? "Search for" : selection} </button>
+                <div className="dropdown-menu">
+                  <button className="dropdown-item" onClick={() => {setSelection("Title")}}>Title</button>
+                  <button className="dropdown-item" onClick={() => {setSelection("Author")}}>Author</button>
+                  <button className="dropdown-item" onClick={() => {setSelection("Publisher")}}>Publisher</button>
+                </div>
+              </div>
+              <input type="text" className="form-control" placeholder="Search..." aria-label="Text input with dropdown button"/>
             </div>
             <RightContainer>
               <button className='buttonStyle' onClick={() =>{history('/Login')}}>

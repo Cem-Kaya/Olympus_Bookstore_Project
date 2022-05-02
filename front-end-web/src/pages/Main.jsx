@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Body from '../components/MainPageBody';
-
+import { popularProducts } from "../data"
 import { useState, useEffect } from 'react';
 
 const Main = () => {
@@ -31,14 +31,6 @@ const Main = () => {
         setCartItems([...cartItems, item])
       }
     }
-    {/*else
-    {
-      setCartItems(
-        cartItems.map(
-          (elem) => elem.id === item.id ? { ...elem, count: elem.count + 1} : elem
-        )
-      )
-    }*/}
   }
 
   const HeaderAddToCart = (item) => {
@@ -70,7 +62,7 @@ const Main = () => {
   return (
     <div>
         <Header itemsInCart={cartItems} onAddToCart={HeaderAddToCart} onRemoveFromCart={HeaderRemoveFromCart}></Header>
-        <Body onAddToCart={AddToCart}></Body>
+        <Body products={popularProducts} onAddToCart={AddToCart}></Body>
         <Footer></Footer>
     </div>
   )
