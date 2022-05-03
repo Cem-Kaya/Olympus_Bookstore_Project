@@ -1,7 +1,6 @@
+import 'package:bookstore/utils/jsonParse/previewBooks.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
 import 'package:bookstore/utils/colors.dart';
 import 'package:bookstore/utils/dimensions.dart';
 import 'package:bookstore/utils/styles.dart';
@@ -18,9 +17,11 @@ class ProductPreview extends StatefulWidget {
     this.editable = false,
   }) : super(key: key);
 
-  final Product product;
+  final PreviewBooks product;
   final Function? refreshFunc;
   final bool editable;
+
+
 
   @override
   State<ProductPreview> createState() => _ProductPreviewState();
@@ -30,6 +31,7 @@ class _ProductPreviewState extends State<ProductPreview> {
   void childRefreshFunc() {
     setState(() {});
   }
+  var temp;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,7 @@ class _ProductPreviewState extends State<ProductPreview> {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => ProductPage(
 
-              productID: widget.product.pid,
+              productID: widget.product.id as int,
               refreshFunc: childRefreshFunc,
             )));
 
@@ -67,19 +69,19 @@ class _ProductPreviewState extends State<ProductPreview> {
                       child: Column(
                         children: [
                           Image.network(
-                            widget.product.url,
+                            widget.product.img ?? "",
                             height: 150,
                             width: 75,
                           ),
                           Text(
-                            widget.product.productName,
+                            widget.product.title ?? "",
                             style: kSmallTitle,
                             textAlign: TextAlign.center,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
                           Text(
-                            widget.product.seller,
+                            widget.product.publisher ?? "",
                             style: kSmallText,
                             textAlign: TextAlign.center,
                             maxLines: 2,
@@ -89,7 +91,7 @@ class _ProductPreviewState extends State<ProductPreview> {
                             height: 20,
                           ),
                           RatingBarIndicator(
-                            rating: widget.product.rating as double,
+                            rating: widget.product.raiting.toDouble(), //it will be debugged
                             itemBuilder: (context, index) =>
                             const Icon(
                               Icons.star,
@@ -105,7 +107,7 @@ class _ProductPreviewState extends State<ProductPreview> {
                           ),
                           Column(
                             children: [
-                              Visibility(
+                              /*Visibility(
                                 visible: widget.product.oldPrice >
                                     widget.product.price,
                                 child: Row(
@@ -125,6 +127,7 @@ class _ProductPreviewState extends State<ProductPreview> {
                                   ],
                                 ),
                               ),
+                              */
                               Text("\$ ${widget.product.price}"),
                             ],
                           ),
@@ -144,7 +147,7 @@ class _ProductPreviewState extends State<ProductPreview> {
                           Icons.favorite,
                           color: AppColors.notification)),
                 ),
-                Visibility(
+                /*Visibility(
                   visible: widget.product.oldPrice >
                       widget.product.price,
                   child: Positioned(
@@ -170,7 +173,7 @@ class _ProductPreviewState extends State<ProductPreview> {
                       ),
                     ),
                   ),
-                )
+                )*/
               ]
           ),
         ],
@@ -202,29 +205,37 @@ class _ProductPreviewState extends State<ProductPreview> {
 }
 
 class Product {
-  String pid;
-  String url;
-  String productName;
-  String seller;
+  num id;
+  String img;
+  String title;
+  String author;
   num rating;
+  String publisher;
   num price;
-  num oldPrice;
+  num? amountSold;
+  String? releaseDate;
+  String? discount;
+
   num stocks;
   String category;
-  String tag;
   String desc;
 
+  num oldPrice;
   Product({
-    required this.pid,
-    required this.url,
-    required this.productName,
+    required this.id,
+    required this.img,
+    required this.title,
+    required this.author,
     required this.rating,
+    this.publisher = "Anonymous",
     required this.price,
-    required this.stocks,
-    required this.oldPrice,
+    required this.amountSold,
+    required this.releaseDate,
+    required this.discount,
+
+    this.stocks = 0, //this will be changed
     this.desc = "No Description",
-    this.category = "Games",
-    this.tag = "All",
-    this.seller = "Anonymous",
+    this.category = "History",
+    this.oldPrice = 0,
   });
 }

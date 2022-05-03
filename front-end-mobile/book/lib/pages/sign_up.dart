@@ -60,11 +60,11 @@ class _SignUpState extends State<SignUp> {
                           keyboardType: TextInputType.name,
                           validator: (value) {
                             if (value == null) {
-                              return "name can not be empty";
+                              return "Name can not be empty";
                             } else {
                               String trimmedValue = value.trim();
                               if (trimmedValue.isEmpty) {
-                                return "name can not be empty";
+                                return "Name can not be empty";
                               }
                             }
                             return null;
@@ -144,14 +144,14 @@ class _SignUpState extends State<SignUp> {
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value == null) {
-                              return "password can not be empty";
+                              return "Email can not be empty";
                             } else {
                               String trimmedValue = value.trim();
                               if (trimmedValue.isEmpty) {
-                                return "password can not be empty";
+                                return "Email can not be empty";
                               }
                               if (!EmailValidator.validate(trimmedValue)) {
-                                return "email is not valid";
+                                return "Email is not valid";
                               }
                             }
                             return null;
@@ -190,11 +190,11 @@ class _SignUpState extends State<SignUp> {
                         autocorrect: false,
                         validator: (value) {
                           if (value == null) {
-                            return "password can not be empty";
+                            return "Password can not be empty";
                           } else {
                             String trimmedValue = value.trim();
                             if (trimmedValue.isEmpty) {
-                              return "password can not be empty";
+                              return "Password can not be empty";
                             }
                             if (trimmedValue.toLowerCase() == trimmedValue) {
                               return "there must be upper case letter in the password ";
