@@ -1,7 +1,6 @@
 import json
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
-from numpy import product
 
 from DB_init_SQL import * 
 

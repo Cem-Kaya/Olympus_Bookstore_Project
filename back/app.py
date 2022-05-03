@@ -1,4 +1,3 @@
-import email
 import json
 
 from flask import Flask, render_template, request
@@ -11,8 +10,15 @@ from DB_init_SQL import *
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:123123@localhost/STORE'
+app.config['SQLALCHEMY_MAX_OVERFLOW']= -1 
+app.config['SQLALCHEMY_POOL_TIMEOUT']= 120 
+
 
 db=SQLAlchemy(app)
+
+
+
+
 
 
 @app.route('/')

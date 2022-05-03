@@ -41,6 +41,20 @@ wishes = db.Table('wishes',
   #db.Column('Pid', db.Integer, db.ForeignKey('Products.Pid'))
 )
 
+shopping_cart = db.Table('shopping_cart',
+  db.Column('email', db.String(100), db.ForeignKey('Customers.email')),
+  db.Column('Pid', db.Integer, db.ForeignKey('Products.Pid')),
+  db.Column('date', db.DateTime(timezone=True), server_default=func.now()),
+  db.Column('quantity', db.Integer)
+
+)
+
+
+change_price = db.Table('change_price',
+  db.Column('Sid', db.Integer, db.ForeignKey('Sales_Manager.Sid')),
+  db.Column('Pid', db.Integer, db.ForeignKey('Products.Pid'))
+
+)
 
 
 class Customers(db.Model):
@@ -51,6 +65,7 @@ class Customers(db.Model):
   email=db.Column(db.String(100), primary_key=True)
   homeadress=db.Column(db.String(100))
   wishes = db.relationship('Products', secondary = wishes)
+  shopping_cart_= db.relationship('Products', secondary = shopping_cart)
   #bought_products = db.relationship('Products', secondary = customer_product, backref = 'owned')
 
   def __init__(self,name,pass_hash,email,homeadress):
@@ -126,10 +141,11 @@ class Product_Manager(db.Model):
     self.pass_hash=pass_hash
 
 class Sales_Manager(db.Model):
-  __tablename__='Sales Manager'
+  __tablename__='Sales_Manager'
   Sid=db.Column(db.Integer,primary_key=True)
   name=db.Column(db.String(100))
   pass_hash=db.Column(db.String(512))
+  change_price_= db.relationship('Products', secondary = change_price)
 
   def __init__(self,name, pass_hash):
     self.name=name
