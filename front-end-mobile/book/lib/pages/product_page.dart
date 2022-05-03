@@ -81,7 +81,6 @@ class _ProductPageState extends State<ProductPage> {
   }
   PreviewBooks? _product;
   Future<void> getProduct() async{
-    print("a");
     PreviewBooks wanted = items[items.indexWhere((element) => element.id == widget.productID)];
 
     _product = wanted;
@@ -169,8 +168,8 @@ class _ProductPageState extends State<ProductPage> {
                               child: Row(children: [
                                 Row(
                                   children: <Widget>[
-                                   /* RatingBarIndicator(
-                                      rating: _product.raiting.toDouble(),
+                                    RatingBarIndicator(
+                                      rating: _product?.raiting as double,
                                       itemBuilder: (context, index) =>
                                           const Icon(
                                         Icons.star,
@@ -180,7 +179,7 @@ class _ProductPageState extends State<ProductPage> {
                                       itemSize: 25.0,
                                       unratedColor: Colors.amber.withAlpha(50),
                                       direction: Axis.horizontal,
-                                    ),*/
+                                    ),
                                     Text(
                                       "  ${_product?.raiting}",
                                       style: const TextStyle(
@@ -200,7 +199,7 @@ class _ProductPageState extends State<ProductPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      /*_product?.desc ??*/ "no description",
+                                      /*_product?.desc ??*/ "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec volutpat sem. Maecenas feugiat aliquam leo id luctus. Phasellus eu nunc sed ligula dignissim suscipit. Aenean dignissim lobortis nulla sit amet venenatis. In hac habitasse platea dictumst. Aliquam erat volutpat. Suspendisse pulvinar arcu eu enim malesuada, eu consequat elit luctus. In at est sit amet tortor sollicitudin tempor. Proin quis arcu pharetra, venenatis turpis nec, maximus lacus. Morbi diam neque, vulputate non magna vitae, dapibus facilisis lacus. Aliquam eleifend scelerisque lacus convallis tincidunt.",
                                     ),
                                     SizedBox(
                                       height: 30,
