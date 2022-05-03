@@ -41,11 +41,29 @@ def signupsubmit():
 
   custumer__= Customers(name,pass_hash,email,homeadress)
   db.session.add(custumer__)
-  db.session.commit()
-
-  
+  db.session.commit()  
 
   return render_template('success.html', data= name)
+
+
+
+
+@app.route('/Product_manager_reg')
+def Product_manager_reg():
+  return render_template('Product_manager_reg.html')  
+
+@app.route('/Product_manager_reg/submit', methods=['POST'])
+def Product_manager_regsubmit():  
+  name= request.form['name']
+  pass_hash=request.form['pass_hash']
+
+  PM__= Product_Manager(name,pass_hash )
+  db.session.add(PM__)
+  db.session.commit()
+
+  return render_template('success.html', data= name)
+
+
 
 
 @app.route('/Products_reg')
@@ -80,6 +98,51 @@ def Prsubmit():
   return render_template('success.html', data= name)  
 
 
+@app.route('/comment_reg')
+def comment_reg():
+  return render_template('comment_reg.html')  
+            
+@app.route('/comment_reg/submit', methods=['POST'])
+def comment_regsubmit():  
+  text=request.form['text']
+  stars=request.form['stars']
+  comment__ = Comment(text,stars)
+  db.session.add(comment__)
+  db.session.commit() 
+  return render_template('success.html', data= text )  
+
+@app.route('/Sales_manager_reg')
+def Sales_manager_reg():
+  return render_template('Sales_manager_reg.html')  
+            
+@app.route('/Sales_manager_reg/submit', methods=['POST'])
+def Sales_manager_regsubmit():
+  
+  name= request.form['name']
+  pass_hash=request.form['pass_hash']
+
+  Sales_manager = Sales_Manager(name,pass_hash)
+  db.session.add(Sales_manager)
+  db.session.commit()  
+
+  return render_template('success.html', data= name)
+
+
+
+@app.route('/Product_Catogary_reg')
+def Prc():
+  return render_template('Product_Catogary_reg.html')  
+            
+@app.route('/Product_Catogary_reg/submit', methods=['POST'])
+def Prcsubmit():  
+  name=request.form['name']
+  PC__ = Product_Category(name)
+  db.session.add(PC__)
+  db.session.commit() 
+  return render_template('success.html', data= name)  
+
+
+
 @app.route('/all_books')
 def get_all_books():
   allproducts=Products.query.filter_by().all()
@@ -112,18 +175,23 @@ def loginsubmit():
   in_email=request.form['email']
   in_pass_hash=request.form['pass_hash']
   ret=Customers.query.filter_by(email=in_email).all()
+  reterned= {}
   if len(ret)!=1:
-    return "False"
+    reterned["status"] = False
+    reterned["uid"] = False
   else :
     if ret[0].pass_hash != in_pass_hash:
-      return "False"
+      reterned["status"] = False
+      reterned["uid"] = False
     else: 
-      return "True"
+      reterned["status"] = True
+      reterned["uid"] = ret[0].email
 
+  return json.dumps(reterned)
 
 @app.route('/deneme')
 def deneme():  
-  statement = wishes.insert().values(email="123123", Pid=1)
+  statement = wishes.insert().values(email="a@a.com", Pid=1)
   db.session.execute(statement)
   db.session.commit()
   return "i beg you"      

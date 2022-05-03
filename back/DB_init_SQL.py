@@ -53,8 +53,88 @@ shopping_cart = db.Table('shopping_cart',
 change_price = db.Table('change_price',
   db.Column('Sid', db.Integer, db.ForeignKey('Sales_Manager.Sid')),
   db.Column('Pid', db.Integer, db.ForeignKey('Products.Pid'))
-
 )
+
+manages = db.Table('manages',
+  db.Column('Pmid', db.Integer, db.ForeignKey('Product_Manager.Pmid')),
+  db.Column('Pid', db.Integer, db.ForeignKey('Products.Pid'))
+)
+
+approval = db.Table('approval',
+  db.Column('Pmid', db.Integer, db.ForeignKey('Product_Manager.Pmid')),
+  db.Column('cid', db.Integer, db.ForeignKey('Comment.cid')),
+  db.Column('approved', db.Boolean)
+)
+
+manages_category = db.Table('manages_category',
+  db.Column('Pmid', db.Integer, db.ForeignKey('Product_Manager.Pmid')),
+  db.Column('Pcid', db.Integer, db.ForeignKey('Product_Category.Pcid'))
+)
+
+#refunds = db.Table('wishes',
+ # db.Column('email', db.String(100), db.ForeignKey('Customers.email')),
+  #db.Column('Pid', db.Integer, db.ForeignKey('Products.Pid')),
+  #db.Column('Sid', db.Integer, db.ForeignKey('Sales_Manager.Sid')),
+  #db.Column('date', db.DateTime(timezone=True), server_default=func.now()),
+  #db.Column('refund',  db.String(100))
+  #db.Column('email', db.String(100), db.ForeignKey('Customers.email')),
+  #db.Column('name', db.String(100), db.ForeignKey('Customers.name')),
+  #db.Column('Pid', db.Integer, db.ForeignKey('Products.Pid'))
+#)
+
+
+class Refunds(db.Model): 
+  __tablename__ = "Refunds"
+  id = db.Column(db.Integer, primary_key=True)
+  customer_email = db.Column(db.String(100), db.ForeignKey('Customers.email'), nullable = False)
+  purchased_purcid = db.Column(db.Integer, db.ForeignKey('Purchased.purcid'), nullable=False)
+  sales_manager_id = db.Column(db.Integer, db.ForeignKey('Sales_Manager.Sid'), nullable = False)
+  date = db.Column(db.DateTime(timezone=True), server_default=func.now())
+  refund_state = db.Column('refund',  db.String(100))
+
+  __table_args__ = (db.UniqueConstraint(customer_email, purchased_purcid, sales_manager_id),)
+  Customers = db.relationship("Customers", back_populates="Refunds")
+  Purchased = db.relationship("Purchased")
+  Sales_Manager = db.relationship("Sales_Manager", back_populates="Refunds")
+  #db.Column('email', db.String(100), db.ForeignKey('Customers.email')),
+  #db.Column('name', db.String(100), db.ForeignKey('Customers.name')),
+  #db.Column('Pid', db.Integer, db.ForeignKey('Products.Pid'))
+
+class Comments(db.Model): 
+  __tablename__ = "Comments"
+  comid = db.Column(db.Integer, primary_key=True, autoincrement = True)
+  customer_email = db.Column(db.String(100), db.ForeignKey('Customers.email'), nullable = False)
+  product_pid = db.Column(db.Integer, db.ForeignKey('Products.Pid'), nullable=False)
+  comment_id = db.Column(db.Integer, db.ForeignKey('Comment.cid'), nullable = False)
+  date = db.Column(db.DateTime(timezone=True), server_default=func.now())
+
+  __table_args__ = (db.UniqueConstraint(customer_email, product_pid, comment_id),)
+  Customers = db.relationship("Customers", back_populates="Comments")
+  Products = db.relationship("Products")
+  Comment = db.relationship("Comment", back_populates="Comments")
+  #db.Column('email', db.String(100), db.ForeignKey('Customers.email')),
+  #db.Column('name', db.String(100), db.ForeignKey('Customers.name')),
+  #db.Column('Pid', db.Integer, db.ForeignKey('Products.Pid'))
+
+
+
+class Buy_Dlist(db.Model):
+  __tablename__ = "Buy_Dlist"
+  did = db.Column(db.Integer, primary_key=True, autoincrement=True)
+  quantity = db.Column(db.Integer)
+  customer_email = db.Column(db.String(100), db.ForeignKey('Customers.email'), nullable = False)
+  product_pid = db.Column(db.Integer, db.ForeignKey('Products.Pid'), nullable=False)
+  purchased_purcid = db.Column(db.Integer, db.ForeignKey('Purchased.purcid'), nullable=False)
+  date = db.Column(db.DateTime(timezone=True), server_default=func.now())
+
+  __table_args__ = (db.UniqueConstraint(customer_email, product_pid, purchased_purcid),)
+  Customers = db.relationship("Customers", back_populates="Buy_Dlist")
+  Products = db.relationship("Products")
+  Purchased = db.relationship("Purchased", back_populates="Buy_Dlist")
+  #db.Column('email', db.String(100), db.ForeignKey('Customers.email')),
+  #db.Column('name', db.String(100), db.ForeignKey('Customers.name')),
+  #db.Column('Pid', db.Integer, db.ForeignKey('Products.Pid'))
+
 
 
 class Customers(db.Model):
@@ -64,8 +144,11 @@ class Customers(db.Model):
   pass_hash=db.Column(db.String(512))
   email=db.Column(db.String(100), primary_key=True)
   homeadress=db.Column(db.String(100))
-  wishes = db.relationship('Products', secondary = wishes)
-  shopping_cart_= db.relationship('Products', secondary = shopping_cart)
+  wishes = db.relationship('Products', secondary = wishes, backref = 'wish')
+  shopping_cart_= db.relationship('Products', secondary = shopping_cart, backref = 'carts')
+  Refunds =  db.relationship("Refunds", back_populates="Customers")
+  Comments = db.relationship("Comments", back_populates="Customers")
+  Buy_Dlist = db.relationship("Buy_Dlist", back_populates="Customers")
   #bought_products = db.relationship('Products', secondary = customer_product, backref = 'owned')
 
   def __init__(self,name,pass_hash,email,homeadress):
@@ -135,6 +218,9 @@ class Product_Manager(db.Model):
   Pmid=db.Column(db.Integer,primary_key=True)
   name=db.Column(db.String(100))
   pass_hash=db.Column(db.String(512))
+  manages_= db.relationship('Products', secondary = manages, backref = 'manage')
+  approval_ = db.relationship('Comment', secondary = approval, backref = 'approve')
+  manages_category_= db.relationship('Product_Category', secondary = manages_category, backref = 'manages')
 
   def __init__(self,name, pass_hash):
     self.name=name
@@ -145,7 +231,9 @@ class Sales_Manager(db.Model):
   Sid=db.Column(db.Integer,primary_key=True)
   name=db.Column(db.String(100))
   pass_hash=db.Column(db.String(512))
-  change_price_= db.relationship('Products', secondary = change_price)
+  change_price_= db.relationship('Products', secondary = change_price, backref = 'chan_price')
+  Refunds =  db.relationship("Refunds", back_populates="Sales_Manager")
+ 
 
   def __init__(self,name, pass_hash):
     self.name=name
@@ -158,6 +246,8 @@ class Purchased(db.Model):
   sale=db.Column(db.REAL)
   quantity=db.Column(db.Integer)
   shipment=db.Column(db.String(100))
+  Buy_Dlist = db.relationship("Buy_Dlist", back_populates="Purchased")
+
 
   def __init__(self,price, sale, quantity, shipment):
     self.price = price
@@ -169,10 +259,13 @@ class Comment(db.Model):
   __tablename__='Comment'
   cid=db.Column(db.Integer,primary_key=True)
   text=db.Column(db.String(250))
+  stars=db.Column(db.Integer)
+  Comments = db.relationship("Comments", back_populates="Comment")
   
 
-  def __init__(self,text):
+  def __init__(self,text,stars):
     self.text=text
+    self.stars=stars
     
 
 
