@@ -8,6 +8,8 @@ import 'package:bookstore/utils/styles.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../pages/product_page.dart';
+
 class ProductPreview extends StatefulWidget {
   const ProductPreview({
     Key? key,
@@ -41,6 +43,12 @@ class _ProductPreviewState extends State<ProductPreview> {
           padding: MaterialStateProperty.resolveWith(
                   (states) => EdgeInsets.zero)),
       onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ProductPage(
+
+              productID: widget.product.pid,
+              refreshFunc: childRefreshFunc,
+            )));
 
       },
       child: Stack(

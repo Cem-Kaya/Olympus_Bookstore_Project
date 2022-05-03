@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:bookstore/utils/colors.dart';
 import 'package:bookstore/utils/dimensions.dart';
 import 'package:bookstore/utils/styles.dart';
@@ -7,7 +5,7 @@ import 'package:bookstore/views/action_bar.dart';
 import 'package:bookstore/views/product_preview.dart';
 import 'package:bookstore/views/slider.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+
 import '../views/nav_draw.dart';
 
 
@@ -20,24 +18,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  void getUser() async {
-    final url = Uri.parse("http://10.0.2.2:8000/all_books");
-
-    final response = await http.get(
-      Uri.https(url.authority, url.path),
-      headers: <String, String>{
-        "Accept": "application/json",
-        "Content-Type": "charset=UTF-8",
-      },
-
-
-    );
-    var responseList = jsonDecode(response.body) as List;
-    print(responseList);
-
-  }
-
-
   //Categories
   static final _categories = [
     "Reccomerndations",
@@ -47,9 +27,6 @@ class _HomePageState extends State<HomePage> {
 
   ];
   static int _currentCategory = 0;
-
-
-
 
   //DropDown
 
@@ -115,7 +92,7 @@ class _HomePageState extends State<HomePage> {
         pid: "2",
         url:
         "https://d3o2e4jr3mxnm3.cloudfront.net/Mens-Jake-Guitar-Vintage-Crusher-Tee_68382_1_lg.png",
-        productName: "Book name",
+        productName: "Book name2",
         rating: 3.7,
         price: 24.99,
         oldPrice: 20.00,
@@ -128,7 +105,7 @@ class _HomePageState extends State<HomePage> {
         pid: "1",
         url:
         "https://d3o2e4jr3mxnm3.cloudfront.net/Mens-Jake-Guitar-Vintage-Crusher-Tee_68382_1_lg.png",
-        productName: "Book name",
+        productName: "Book namessss",
         rating: 3.7,
         price: 24.99,
         oldPrice: 20.00,
@@ -150,23 +127,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Row(children: [
               Expanded(child: TextFormField()),
-              IconButton(onPressed: () async {
-                print("a");
-                var data = {};
-                print("a");
-                final URL = Uri.parse("http://10.0.2.2:5000/all_books");//10.0.2.2  10.50.12.21
-                print("aaaaaaaaa");
-
-                var response = await http.post(URL,  body:data);
-                print("aaaaaaaaa");
-                if (response.statusCode == 200) {
-                  print(response.body);
-                } else {
-                  print('A network error occurred');
-                }
-
-
-              }, icon: Icon(Icons.search))
+              IconButton(onPressed: () {}, icon: Icon(Icons.search))
             ]),
             SizedBox(
               height: 60,
@@ -175,7 +136,6 @@ class _HomePageState extends State<HomePage> {
                 children: List.generate(_categories.length, (int index) {
                   return OutlinedButton(
                     onPressed: () {
-
 
                     },
                     child: Container(
