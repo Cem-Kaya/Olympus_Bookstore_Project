@@ -1,0 +1,31 @@
+<!doctype html>
+
+<head>
+    <title>Under</title>
+    <meta charset=utf-8>
+    <style>
+        table, th, td {
+           border: 1px solid black;
+        }
+     </style>
+</head>
+<body>
+{{data |safe }}
+
+<form action="/Comments/submit" method="POST">
+    
+    <label for="Pid">Pid </label><br>
+    <input type="number" min = "0" id="Pid" name="Pid" value="-1"><br><br>
+
+    <label for="email"> email </label><br>
+    <input type="text" id="email" name="email" ><br><br>
+    
+    <label for="cid"> cid </label><br>
+    <input type="number" min = "0" id="cid" name="cid" value="-1"><br><br>
+
+
+    <br><br>
+        <button><a>Send</a></button><br>
+</form>
+
+</body>

@@ -4,7 +4,7 @@ flsk-postgresql-connection-basics: https://youtu.be/XZ_gAWdGzZk
 relations-in-sqlalchamy: https://youtu.be/4gRMV-wZTQs
 https://flask-sqlalchemy.palletsprojects.com/en/2.x/queries/
 3 way relation : https://stackoverflow.com/questions/52920701/many-to-many-with-three-tables-relating-with-each-other-sqlalchemy 
-
+update row : https://stackoverflow.com/questions/6699360/flask-sqlalchemy-update-a-rows-information
 
 
 

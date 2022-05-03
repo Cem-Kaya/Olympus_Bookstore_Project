@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)http://localhost:5000/all_books -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  sorry, too many clients already
+
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+ // Werkzeug Debugger</title>
+    <link rel="stylesheet" href="./1_files/style.css">
+    <link rel="shortcut icon" href="./1_files/console.png">
+    <script src="./1_files/debugger.js.indir"></script>
+    <script>
+      var CONSOLE_MODE = false,
+          EVALEX = true,
+          EVALEX_TRUSTED = false,
+          SECRET = "QzxirPEthUTbkp6Tg0yt";
+    </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin="true"><link rel="preconnect" href="https://fonts.gstatic.com/"><link rel="stylesheet" href="./1_files/css2"></head>
+  <body style="background-color: #fff" class="vsc-initialized">
+    <div class="debugger">
+<h1>OperationalError</h1>
+<div class="detail">
+  <p class="errormsg">sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  sorry, too many clients already
+
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+</p>
+</div>
+<h2 class="traceback" style="cursor: pointer;">Traceback <em>(most recent call last)</em></h2>
+<div class="traceback">
+  <h3></h3>
+  <ul><li><div class="frame" id="frame-2073385887200">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\engine\base.py"</cite>,
+      line <em class="line">3280</em>,
+      in <code class="function">_wrap_pool_connect</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>return insp.has_table(table_name, schema=schema)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>def _wrap_pool_connect(self, fn, connection):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>dialect = self.dialect<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>return fn()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>except dialect.dbapi.Error as e:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>if connection is None:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>Connection._handle_dbapi_exception_noconnection(<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                    </span>e, dialect, self<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385887312">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\base.py"</cite>,
+      line <em class="line">310</em>,
+      in <code class="function">connect</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>The connection is instrumented such that when its<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>``close()`` method is called, the connection will be returned to<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>the pool.<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>"""<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>return _ConnectionFairy._checkout(self)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>def _return_conn(self, record):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>"""Given a _ConnectionRecord, return it to the :class:`_pool.Pool`.<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>This method is called when an instrumented DBAPI connection<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385887424">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\base.py"</cite>,
+      line <em class="line">868</em>,
+      in <code class="function">_checkout</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>self.dbapi_connection = value<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>@classmethod<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>def _checkout(cls, pool, threadconns=None, fairy=None):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>if not fairy:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>fairy = _ConnectionRecord.checkout(pool)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>fairy._pool = pool<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>fairy._counter = 0<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>if threadconns is not None:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385887536">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\base.py"</cite>,
+      line <em class="line">476</em>,
+      in <code class="function">checkout</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>"""<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>return {}<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>@classmethod<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>def checkout(cls, pool):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>rec = pool._do_get()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>dbapi_connection = rec.get_connection()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>except Exception as err:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>with util.safe_reraise():<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>rec._checkin_failed(err, _fairy_was_created=False)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385887648">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py"</cite>,
+      line <em class="line">145</em>,
+      in <code class="function">_do_get</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>if self._inc_overflow():<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>return self._create_connection()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>except:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">                </span>with util.safe_reraise():<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                    </span>self._dec_overflow()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>else:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>return self._do_get()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>def _inc_overflow(self):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385887760">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py"</cite>,
+      line <em class="line">70</em>,
+      in <code class="function">__exit__</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span># see #2703 for notes<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>if type_ is None:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>exc_type, exc_value, exc_tb = self._exc_info<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>self._exc_info = None  # remove potential circular references<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>if not self.warn_only:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">                </span>compat.raise_(<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                    </span>exc_value,<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                    </span>with_traceback=exc_tb,<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>else:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>if not compat.py3k and self._exc_info and self._exc_info[1]:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385887872">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\util\compat.py"</cite>,
+      line <em class="line">207</em>,
+      in <code class="function">raise_</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span># intermediary exception does not change, but we can't figure<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span># that out.<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>exception.__cause__ = replace_context<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>raise exception<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>finally:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># credit to<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># https://cosmicpercolator.com/2016/01/13/exception-leaks-in-python-2-and-3/<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># as the __traceback__ object creates a cycle<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>del exception, replace_context, from_, with_traceback<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385887984">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py"</cite>,
+      line <em class="line">143</em>,
+      in <code class="function">_do_get</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">                    </span>code="3o7r",<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>if self._inc_overflow():<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">                </span>return self._create_connection()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>except:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>with util.safe_reraise():<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                    </span>self._dec_overflow()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>else:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>return self._do_get()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385888096">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\base.py"</cite>,
+      line <em class="line">256</em>,
+      in <code class="function">_create_connection</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>def _create_connection(self):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>"""Called by subclasses to create a new ConnectionRecord."""<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>return _ConnectionRecord(self)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>def _invalidate(self, connection, exception=None, _checkin=True):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>"""Mark all connections established within the generation<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>of the given connection as invalidated.<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385888208">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\base.py"</cite>,
+      line <em class="line">371</em>,
+      in <code class="function">__init__</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">    </span>"""<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>def __init__(self, pool, connect=True):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>self.__pool = pool<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>if connect:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>self.__connect()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>self.finalize_callback = deque()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>fresh = False<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>fairy_ref = None<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385888320">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\base.py"</cite>,
+      line <em class="line">665</em>,
+      in <code class="function">__connect</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>self.starttime = time.time()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>self.dbapi_connection = connection = pool._invoke_creator(self)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>pool.logger.debug("Created new connection %r", connection)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>self.fresh = True<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>except Exception as e:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>with util.safe_reraise():<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>pool.logger.debug("Error on connect(): %s", e)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>else:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># in SQLAlchemy 1.4 the first_connect event is not used by<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># the engine, so this will usually not be set<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>if pool.dispatch.first_connect:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385888432">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py"</cite>,
+      line <em class="line">70</em>,
+      in <code class="function">__exit__</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span># see #2703 for notes<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>if type_ is None:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>exc_type, exc_value, exc_tb = self._exc_info<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>self._exc_info = None  # remove potential circular references<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>if not self.warn_only:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">                </span>compat.raise_(<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                    </span>exc_value,<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                    </span>with_traceback=exc_tb,<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>else:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>if not compat.py3k and self._exc_info and self._exc_info[1]:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385888544">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\util\compat.py"</cite>,
+      line <em class="line">207</em>,
+      in <code class="function">raise_</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span># intermediary exception does not change, but we can't figure<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span># that out.<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>exception.__cause__ = replace_context<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>raise exception<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>finally:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># credit to<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># https://cosmicpercolator.com/2016/01/13/exception-leaks-in-python-2-and-3/<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># as the __traceback__ object creates a cycle<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>del exception, replace_context, from_, with_traceback<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385888656">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\base.py"</cite>,
+      line <em class="line">661</em>,
+      in <code class="function">__connect</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span># ensure any existing connection is removed, so that if<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span># creator fails, this attribute stays None<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>self.dbapi_connection = None<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>self.starttime = time.time()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>self.dbapi_connection = connection = pool._invoke_creator(self)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>pool.logger.debug("Created new connection %r", connection)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>self.fresh = True<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>except Exception as e:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>with util.safe_reraise():<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>pool.logger.debug("Error on connect(): %s", e)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385888768">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\engine\create.py"</cite>,
+      line <em class="line">590</em>,
+      in <code class="function">connect</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>if dialect._has_events:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>for fn in dialect.dispatch.do_connect:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                    </span>connection = fn(dialect, connection_record, cargs, cparams)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                    </span>if connection is not None:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                        </span>return connection<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>return dialect.connect(*cargs, **cparams)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>creator = pop_kwarg("creator", connect)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>poolclass = pop_kwarg("poolclass", None)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>if poolclass is None:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385888880">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\engine\default.py"</cite>,
+      line <em class="line">597</em>,
+      in <code class="function">connect</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">                </span>% (ident, self.max_identifier_length)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>def connect(self, *cargs, **cparams):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span># inherits the docstring from interfaces.Dialect.connect<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>return self.dbapi.connect(*cargs, **cparams)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>def create_connect_args(self, url):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span># inherits the docstring from interfaces.Dialect.create_connect_args<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>opts = url.translate_connect_args()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>opts.update(url.query)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385888992">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\psycopg2\__init__.py"</cite>,
+      line <em class="line">122</em>,
+      in <code class="function">connect</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>kwasync['async'] = kwargs.pop('async')<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>if 'async_' in kwargs:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>kwasync['async_'] = kwargs.pop('async_')<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>dsn = _ext.make_dsn(dsn, **kwargs)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">    </span>conn = _connect(dsn, connection_factory=connection_factory, **kwasync)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>if cursor_factory is not None:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>conn.cursor_factory = cursor_factory<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>return conn<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="exc-divider">The above exception was the direct cause of the following exception:</div>
+</li><li><div class="frame" id="frame-2073385883280">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">2095</em>,
+      in <code class="function">__call__</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">    </span>def __call__(self, environ: dict, start_response: t.Callable) -&gt; t.Any:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>"""The WSGI server calls the Flask application object as the<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>WSGI application. This calls :meth:`wsgi_app`, which can be<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>wrapped to apply middleware.<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>"""<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>return self.wsgi_app(environ, start_response)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385883392">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">2080</em>,
+      in <code class="function">wsgi_app</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>ctx.push()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>response = self.full_dispatch_request()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>except Exception as e:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>error = e<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">                </span>response = self.handle_exception(e)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>except:  # noqa: B001<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>error = sys.exc_info()[1]<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>raise<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>return response(environ, start_response)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>finally:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385883504">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">2077</em>,
+      in <code class="function">wsgi_app</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>ctx = self.request_context(environ)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>error: t.Optional[BaseException] = None<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>ctx.push()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">                </span>response = self.full_dispatch_request()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>except Exception as e:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>error = e<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>response = self.handle_exception(e)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>except:  # noqa: B001<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>error = sys.exc_info()[1]<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385883616">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">1525</em>,
+      in <code class="function">full_dispatch_request</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>request_started.send(self)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>rv = self.preprocess_request()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>if rv is None:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>rv = self.dispatch_request()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>except Exception as e:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>rv = self.handle_user_exception(e)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>return self.finalize_request(rv)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>def finalize_request(<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>self,<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>rv: t.Union[ResponseReturnValue, HTTPException],<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385883728">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">1523</em>,
+      in <code class="function">full_dispatch_request</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>self.try_trigger_before_first_request_functions()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>request_started.send(self)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>rv = self.preprocess_request()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>if rv is None:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">                </span>rv = self.dispatch_request()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>except Exception as e:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>rv = self.handle_user_exception(e)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>return self.finalize_request(rv)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>def finalize_request(<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385883840">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">1509</em>,
+      in <code class="function">dispatch_request</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>getattr(rule, "provide_automatic_options", False)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>and req.method == "OPTIONS"<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>return self.make_default_options_response()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span># otherwise dispatch to the handler for that endpoint<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>def full_dispatch_request(self) -&gt; Response:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>"""Dispatches the request and on top of that performs request<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>pre and postprocessing as well as HTTP exception catching and<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>error handling.<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385883952">
+  <h4>File <cite class="filename">"D:\TEAM04-CP22-Bb\team04-cp22-bb\back\app.py"</cite>,
+      line <em class="line">85</em>,
+      in <code class="function">get_all_books</code></h4>
+  <div class="source "><pre class="line before"><span class="ws">  </span>return render_template('success.html', data= name)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span>@app.route('/all_books')<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span>def get_all_books():<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">  </span>allproducts=Products.query.filter_by().all()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">  </span>jsonprd = []<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">  </span>for pr in allproducts:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>tmp={<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">      </span>"id": pr.Pid,<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385884064">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\orm\query.py"</cite>,
+      line <em class="line">2768</em>,
+      in <code class="function">all</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>.. seealso::<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>:ref:`faq_query_deduplicating`<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>"""<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>return self._iter().all()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>@_generative<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>@_assertions(_no_clauseelement_condition)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>def from_statement(self, statement):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>"""Execute the given SELECT statement and return results.<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385884176">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\orm\query.py"</cite>,
+      line <em class="line">2903</em>,
+      in <code class="function">_iter</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">    </span>def _iter(self):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span># new style execution.<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>params = self._params<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>statement = self._statement_20()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>result = self.session.execute(<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>statement,<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>params,<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>execution_options={"_sa_orm_load_options": self.load_options},<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385884288">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\orm\session.py"</cite>,
+      line <em class="line">1695</em>,
+      in <code class="function">execute</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>conn = self._connection_for_bind(bind, close_with_result=True)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>execution_options = execution_options.union(<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>dict(future_result=False)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>else:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>conn = self._connection_for_bind(bind)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>result = conn._execute_20(statement, params or {}, execution_options)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>if compile_state_cls:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>result = compile_state_cls.orm_setup_cursor_result(<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>self,<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385884400">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\orm\session.py"</cite>,
+      line <em class="line">1536</em>,
+      in <code class="function">_connection_for_bind</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>def _connection_for_bind(self, engine, execution_options=None, **kw):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>TransactionalContext._trans_ctx_check(self)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>if self._transaction is not None or self._autobegin():<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>return self._transaction._connection_for_bind(<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>engine, execution_options<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>assert self._transaction is None<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>assert self.autocommit<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385884512">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\orm\session.py"</cite>,
+      line <em class="line">747</em>,
+      in <code class="function">_connection_for_bind</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">                    </span>raise sa_exc.InvalidRequestError(<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                        </span>"Session already has a Connection associated for the "<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                        </span>"given Connection's Engine"<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                    </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>else:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">                </span>conn = bind.connect()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>local_connect = True<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>if execution_options:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>conn = conn.execution_options(**execution_options)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385884624">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\engine\base.py"</cite>,
+      line <em class="line">3234</em>,
+      in <code class="function">connect</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>connection pool, where it may be used again in a subsequent call to<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>:meth:`_engine.Engine.connect`.<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>"""<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>return self._connection_cls(self, close_with_result=close_with_result)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>@util.deprecated(<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>"1.4",<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>"The :meth:`_engine.Engine.table_names` "<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>"method is deprecated and will be "<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385884736">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\engine\base.py"</cite>,
+      line <em class="line">96</em>,
+      in <code class="function">__init__</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>self._has_events = _branch_from._has_events<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>else:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>self._dbapi_connection = (<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>connection<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>if connection is not None<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">                </span>else engine.raw_connection()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>self._transaction = self._nested_transaction = None<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>self.__savepoint_seq = 0<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>self.__in_begin = False<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385884848">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\engine\base.py"</cite>,
+      line <em class="line">3313</em>,
+      in <code class="function">raw_connection</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>.. seealso::<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>:ref:`dbapi_connections`<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>"""<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>return self._wrap_pool_connect(self.pool.connect, _connection)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span>class OptionEngineMixin(object):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>_sa_propagate_class_events = False<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385884960">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\engine\base.py"</cite>,
+      line <em class="line">3283</em>,
+      in <code class="function">_wrap_pool_connect</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>dialect = self.dialect<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>return fn()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>except dialect.dbapi.Error as e:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>if connection is None:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">                </span>Connection._handle_dbapi_exception_noconnection(<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                    </span>e, dialect, self<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>else:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>util.raise_(<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                    </span>sys.exc_info()[1], with_traceback=sys.exc_info()[2]<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385885072">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\engine\base.py"</cite>,
+      line <em class="line">2117</em>,
+      in <code class="function">_handle_dbapi_exception_noconnection</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">                </span>) = ctx.is_disconnect<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>if newraise:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>util.raise_(newraise, with_traceback=exc_info[2], from_=e)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>elif should_wrap:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>util.raise_(<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>sqlalchemy_exception, with_traceback=exc_info[2], from_=e<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>else:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>util.raise_(exc_info[1], with_traceback=exc_info[2])<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385885184">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\util\compat.py"</cite>,
+      line <em class="line">207</em>,
+      in <code class="function">raise_</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span># intermediary exception does not change, but we can't figure<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span># that out.<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>exception.__cause__ = replace_context<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>raise exception<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>finally:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># credit to<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># https://cosmicpercolator.com/2016/01/13/exception-leaks-in-python-2-and-3/<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># as the __traceback__ object creates a cycle<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>del exception, replace_context, from_, with_traceback<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385885296">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\engine\base.py"</cite>,
+      line <em class="line">3280</em>,
+      in <code class="function">_wrap_pool_connect</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>return insp.has_table(table_name, schema=schema)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>def _wrap_pool_connect(self, fn, connection):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>dialect = self.dialect<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>return fn()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>except dialect.dbapi.Error as e:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>if connection is None:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>Connection._handle_dbapi_exception_noconnection(<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                    </span>e, dialect, self<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385885408">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\base.py"</cite>,
+      line <em class="line">310</em>,
+      in <code class="function">connect</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>The connection is instrumented such that when its<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>``close()`` method is called, the connection will be returned to<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>the pool.<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>"""<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>return _ConnectionFairy._checkout(self)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>def _return_conn(self, record):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>"""Given a _ConnectionRecord, return it to the :class:`_pool.Pool`.<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>This method is called when an instrumented DBAPI connection<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385885520">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\base.py"</cite>,
+      line <em class="line">868</em>,
+      in <code class="function">_checkout</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>self.dbapi_connection = value<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>@classmethod<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>def _checkout(cls, pool, threadconns=None, fairy=None):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>if not fairy:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>fairy = _ConnectionRecord.checkout(pool)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>fairy._pool = pool<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>fairy._counter = 0<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>if threadconns is not None:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385885632">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\base.py"</cite>,
+      line <em class="line">476</em>,
+      in <code class="function">checkout</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>"""<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>return {}<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>@classmethod<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>def checkout(cls, pool):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>rec = pool._do_get()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>dbapi_connection = rec.get_connection()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>except Exception as err:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>with util.safe_reraise():<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>rec._checkin_failed(err, _fairy_was_created=False)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385885744">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py"</cite>,
+      line <em class="line">145</em>,
+      in <code class="function">_do_get</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>if self._inc_overflow():<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>return self._create_connection()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>except:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">                </span>with util.safe_reraise():<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                    </span>self._dec_overflow()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>else:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>return self._do_get()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>def _inc_overflow(self):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385885856">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py"</cite>,
+      line <em class="line">70</em>,
+      in <code class="function">__exit__</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span># see #2703 for notes<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>if type_ is None:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>exc_type, exc_value, exc_tb = self._exc_info<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>self._exc_info = None  # remove potential circular references<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>if not self.warn_only:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">                </span>compat.raise_(<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                    </span>exc_value,<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                    </span>with_traceback=exc_tb,<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>else:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>if not compat.py3k and self._exc_info and self._exc_info[1]:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385885968">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\util\compat.py"</cite>,
+      line <em class="line">207</em>,
+      in <code class="function">raise_</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span># intermediary exception does not change, but we can't figure<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span># that out.<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>exception.__cause__ = replace_context<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>raise exception<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>finally:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># credit to<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># https://cosmicpercolator.com/2016/01/13/exception-leaks-in-python-2-and-3/<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># as the __traceback__ object creates a cycle<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>del exception, replace_context, from_, with_traceback<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385886080">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py"</cite>,
+      line <em class="line">143</em>,
+      in <code class="function">_do_get</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">                    </span>code="3o7r",<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>if self._inc_overflow():<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">                </span>return self._create_connection()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>except:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>with util.safe_reraise():<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                    </span>self._dec_overflow()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>else:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>return self._do_get()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385886192">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\base.py"</cite>,
+      line <em class="line">256</em>,
+      in <code class="function">_create_connection</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>def _create_connection(self):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>"""Called by subclasses to create a new ConnectionRecord."""<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>return _ConnectionRecord(self)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>def _invalidate(self, connection, exception=None, _checkin=True):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>"""Mark all connections established within the generation<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>of the given connection as invalidated.<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385886304">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\base.py"</cite>,
+      line <em class="line">371</em>,
+      in <code class="function">__init__</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">    </span>"""<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>def __init__(self, pool, connect=True):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>self.__pool = pool<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>if connect:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>self.__connect()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>self.finalize_callback = deque()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>fresh = False<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>fairy_ref = None<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385886416">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\base.py"</cite>,
+      line <em class="line">665</em>,
+      in <code class="function">__connect</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>self.starttime = time.time()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>self.dbapi_connection = connection = pool._invoke_creator(self)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>pool.logger.debug("Created new connection %r", connection)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>self.fresh = True<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>except Exception as e:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>with util.safe_reraise():<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>pool.logger.debug("Error on connect(): %s", e)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>else:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># in SQLAlchemy 1.4 the first_connect event is not used by<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># the engine, so this will usually not be set<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>if pool.dispatch.first_connect:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385886528">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py"</cite>,
+      line <em class="line">70</em>,
+      in <code class="function">__exit__</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span># see #2703 for notes<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>if type_ is None:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>exc_type, exc_value, exc_tb = self._exc_info<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>self._exc_info = None  # remove potential circular references<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>if not self.warn_only:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">                </span>compat.raise_(<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                    </span>exc_value,<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                    </span>with_traceback=exc_tb,<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>else:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>if not compat.py3k and self._exc_info and self._exc_info[1]:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385886640">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\util\compat.py"</cite>,
+      line <em class="line">207</em>,
+      in <code class="function">raise_</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span># intermediary exception does not change, but we can't figure<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span># that out.<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>exception.__cause__ = replace_context<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>raise exception<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>finally:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># credit to<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># https://cosmicpercolator.com/2016/01/13/exception-leaks-in-python-2-and-3/<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span># as the __traceback__ object creates a cycle<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>del exception, replace_context, from_, with_traceback<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385886752">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\pool\base.py"</cite>,
+      line <em class="line">661</em>,
+      in <code class="function">__connect</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span># ensure any existing connection is removed, so that if<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span># creator fails, this attribute stays None<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>self.dbapi_connection = None<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>try:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>self.starttime = time.time()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>self.dbapi_connection = connection = pool._invoke_creator(self)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>pool.logger.debug("Created new connection %r", connection)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>self.fresh = True<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>except Exception as e:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>with util.safe_reraise():<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>pool.logger.debug("Error on connect(): %s", e)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385886864">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\engine\create.py"</cite>,
+      line <em class="line">590</em>,
+      in <code class="function">connect</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>if dialect._has_events:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>for fn in dialect.dispatch.do_connect:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                    </span>connection = fn(dialect, connection_record, cargs, cparams)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                    </span>if connection is not None:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                        </span>return connection<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>return dialect.connect(*cargs, **cparams)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>creator = pop_kwarg("creator", connect)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>poolclass = pop_kwarg("poolclass", None)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>if poolclass is None:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385886976">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\sqlalchemy\engine\default.py"</cite>,
+      line <em class="line">597</em>,
+      in <code class="function">connect</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">                </span>% (ident, self.max_identifier_length)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>def connect(self, *cargs, **cparams):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span># inherits the docstring from interfaces.Dialect.connect<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>return self.dbapi.connect(*cargs, **cparams)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>def create_connect_args(self, url):<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span># inherits the docstring from interfaces.Dialect.create_connect_args<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>opts = url.translate_connect_args()<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>opts.update(url.query)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2073385887088">
+  <h4>File <cite class="filename">"C:\Python310\lib\site-packages\psycopg2\__init__.py"</cite>,
+      line <em class="line">122</em>,
+      in <code class="function">connect</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>kwasync['async'] = kwargs.pop('async')<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>if 'async_' in kwargs:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>kwasync['async_'] = kwargs.pop('async_')<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>dsn = _ext.make_dsn(dsn, **kwargs)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">    </span>conn = _connect(dsn, connection_factory=connection_factory, **kwasync)<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>if cursor_factory is not None:<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>conn.cursor_factory = cursor_factory<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>return conn<img src="./1_files/console.png" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+</li></ul>
+  <blockquote>sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  sorry, too many clients already
+
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+</blockquote>
+</div>
+
+<div class="plain hidden">
+    <p>
+      This is the Copy/Paste friendly version of the traceback.
+    </p>
+    <pre>Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3280, in _wrap_pool_connect
+    return fn()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 310, in connect
+    return _ConnectionFairy._checkout(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 868, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 476, in checkout
+    rec = pool._do_get()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 145, in _do_get
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 70, in __exit__
+    compat.raise_(
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 143, in _do_get
+    return self._create_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 256, in _create_connection
+    return _ConnectionRecord(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 371, in __init__
+    self.__connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 665, in __connect
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 70, in __exit__
+    compat.raise_(
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 661, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\create.py", line 590, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\default.py", line 597, in connect
+    return self.dbapi.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 5432 failed: FATAL:  sorry, too many clients already
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\flask\app.py", line 2095, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "C:\Python310\lib\site-packages\flask\app.py", line 2080, in wsgi_app
+    response = self.handle_exception(e)
+  File "C:\Python310\lib\site-packages\flask\app.py", line 2077, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python310\lib\site-packages\flask\app.py", line 1525, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python310\lib\site-packages\flask\app.py", line 1523, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python310\lib\site-packages\flask\app.py", line 1509, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "D:\TEAM04-CP22-Bb\team04-cp22-bb\back\app.py", line 85, in get_all_books
+    allproducts=Products.query.filter_by().all()
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\query.py", line 2768, in all
+    return self._iter().all()
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\query.py", line 2903, in _iter
+    result = self.session.execute(
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 1695, in execute
+    conn = self._connection_for_bind(bind)
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 1536, in _connection_for_bind
+    return self._transaction._connection_for_bind(
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 747, in _connection_for_bind
+    conn = bind.connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3234, in connect
+    return self._connection_cls(self, close_with_result=close_with_result)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 96, in __init__
+    else engine.raw_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3313, in raw_connection
+    return self._wrap_pool_connect(self.pool.connect, _connection)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3283, in _wrap_pool_connect
+    Connection._handle_dbapi_exception_noconnection(
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 2117, in _handle_dbapi_exception_noconnection
+    util.raise_(
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3280, in _wrap_pool_connect
+    return fn()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 310, in connect
+    return _ConnectionFairy._checkout(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 868, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 476, in checkout
+    rec = pool._do_get()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 145, in _do_get
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 70, in __exit__
+    compat.raise_(
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 143, in _do_get
+    return self._create_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 256, in _create_connection
+    return _ConnectionRecord(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 371, in __init__
+    self.__connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 665, in __connect
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 70, in __exit__
+    compat.raise_(
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 661, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\create.py", line 590, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\default.py", line 597, in connect
+    return self.dbapi.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  sorry, too many clients already
+
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+</pre>
+</div>
+<div class="explanation">
+  The debugger caught an exception in your WSGI application.  You can now
+  look at the traceback which led to the error.  <span class=""><p>To switch between the interactive traceback and the plaintext one, you can click on the "Traceback" headline. From the text traceback you can also create a paste of it. For code execution mouse-over the frame you want to debug and click on the console icon on the right side.</p><p>You can execute arbitrary Python code in the stack frames and there are some extra helpers available for introspection:</p><ul><li><code>dump()</code> shows all variables in the frame</li><li><code>dump(obj)</code> dumps all that's known about the object</li></ul></span>
+</div>
+      <div class="footer">
+        Brought to you by <strong class="arthur">DON'T PANIC</strong>, your
+        friendly Werkzeug powered traceback interpreter.
+      </div>
+    </div>
+
+    <div class="pin-prompt">
+      <div class="inner">
+        <h3>Console Locked</h3>
+        <p>
+          The console is locked and needs to be unlocked by entering the PIN.
+          You can find the PIN printed out on the standard output of your
+          shell that runs the server.
+        </p><form>
+          <p>PIN:
+            <input type="text" name="pin" size="14">
+            <input type="submit" name="btn" value="Confirm Pin">
+        </p></form>
+      </div>
+    </div>
+  
+
+
+<!--
+
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3280, in _wrap_pool_connect
+    return fn()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 310, in connect
+    return _ConnectionFairy._checkout(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 868, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 476, in checkout
+    rec = pool._do_get()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 145, in _do_get
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 70, in __exit__
+    compat.raise_(
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 143, in _do_get
+    return self._create_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 256, in _create_connection
+    return _ConnectionRecord(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 371, in __init__
+    self.__connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 665, in __connect
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 70, in __exit__
+    compat.raise_(
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 661, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\create.py", line 590, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\default.py", line 597, in connect
+    return self.dbapi.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 5432 failed: FATAL:  sorry, too many clients already
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Python310\lib\site-packages\flask\app.py", line 2095, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "C:\Python310\lib\site-packages\flask\app.py", line 2080, in wsgi_app
+    response = self.handle_exception(e)
+  File "C:\Python310\lib\site-packages\flask\app.py", line 2077, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python310\lib\site-packages\flask\app.py", line 1525, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python310\lib\site-packages\flask\app.py", line 1523, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python310\lib\site-packages\flask\app.py", line 1509, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "D:\TEAM04-CP22-Bb\team04-cp22-bb\back\app.py", line 85, in get_all_books
+    allproducts=Products.query.filter_by().all()
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\query.py", line 2768, in all
+    return self._iter().all()
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\query.py", line 2903, in _iter
+    result = self.session.execute(
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 1695, in execute
+    conn = self._connection_for_bind(bind)
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 1536, in _connection_for_bind
+    return self._transaction._connection_for_bind(
+  File "C:\Python310\lib\site-packages\sqlalchemy\orm\session.py", line 747, in _connection_for_bind
+    conn = bind.connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3234, in connect
+    return self._connection_cls(self, close_with_result=close_with_result)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 96, in __init__
+    else engine.raw_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3313, in raw_connection
+    return self._wrap_pool_connect(self.pool.connect, _connection)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3283, in _wrap_pool_connect
+    Connection._handle_dbapi_exception_noconnection(
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 2117, in _handle_dbapi_exception_noconnection
+    util.raise_(
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 3280, in _wrap_pool_connect
+    return fn()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 310, in connect
+    return _ConnectionFairy._checkout(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 868, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 476, in checkout
+    rec = pool._do_get()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 145, in _do_get
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 70, in __exit__
+    compat.raise_(
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\impl.py", line 143, in _do_get
+    return self._create_connection()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 256, in _create_connection
+    return _ConnectionRecord(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 371, in __init__
+    self.__connect()
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 665, in __connect
+    with util.safe_reraise():
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\langhelpers.py", line 70, in __exit__
+    compat.raise_(
+  File "C:\Python310\lib\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "C:\Python310\lib\site-packages\sqlalchemy\pool\base.py", line 661, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\create.py", line 590, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\sqlalchemy\engine\default.py", line 597, in connect
+    return self.dbapi.connect(*cargs, **cparams)
+  File "C:\Python310\lib\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  sorry, too many clients already
+
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+
+
+-->
+</body></html>

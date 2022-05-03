@@ -1,0 +1,30 @@
+<!doctype html>
+
+<head>
+    <title>Under</title>
+    <meta charset=utf-8>
+    <style>
+        table, th, td {
+           border: 1px solid black;
+        }
+     </style>
+</head>
+<body>
+{{data |safe }}
+
+<form action="/Approval/submit" method="POST">
+    
+    <label for="cid">cid </label><br>
+    <input type="number" min = "0" id="cid" name="cid" value="-1"><br><br>
+
+    <label for="Pmid"> Pmid </label><br>
+    <input type="number" min = "0" id="Pmid" name="Pmid" value="-1"><br><br>
+    
+    <label for="approved"> approved (bool) [1,0] </label><br>
+    <input type="number" max="1" min = "0" id="approved" name="approved" value="-1"><br><br>
+    
+    <br><br>
+        <button><a>Send</a></button><br>
+</form>
+
+</body>
