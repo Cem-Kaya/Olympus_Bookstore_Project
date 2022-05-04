@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import '../services/basket_data.dart';
 import '../utils/api.dart';
 import '../utils/colors.dart';
 import '../utils/dimensions.dart';
@@ -91,6 +93,7 @@ class _ProductPageState extends State<ProductPage> {
   num stocks = 1;
 
   Widget build(BuildContext context) {
+    Function addBasket=Provider.of<Basket>(context).add_basket;
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -199,7 +202,8 @@ class _ProductPageState extends State<ProductPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      /*_product?.desc ??*/ "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec volutpat sem. Maecenas feugiat aliquam leo id luctus. Phasellus eu nunc sed ligula dignissim suscipit. Aenean dignissim lobortis nulla sit amet venenatis. In hac habitasse platea dictumst. Aliquam erat volutpat. Suspendisse pulvinar arcu eu enim malesuada, eu consequat elit luctus. In at est sit amet tortor sollicitudin tempor. Proin quis arcu pharetra, venenatis turpis nec, maximus lacus. Morbi diam neque, vulputate non magna vitae, dapibus facilisis lacus. Aliquam eleifend scelerisque lacus convallis tincidunt.",
+
+                                      _product?.title ?? ""// "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec volutpat sem. Maecenas feugiat aliquam leo id luctus. Phasellus eu nunc sed ligula dignissim suscipit. Aenean dignissim lobortis nulla sit amet venenatis. In hac habitasse platea dictumst. Aliquam erat volutpat. Suspendisse pulvinar arcu eu enim malesuada, eu consequat elit luctus. In at est sit amet tortor sollicitudin tempor. Proin quis arcu pharetra, venenatis turpis nec, maximus lacus. Morbi diam neque, vulputate non magna vitae, dapibus facilisis lacus. Aliquam eleifend scelerisque lacus convallis tincidunt.",
                                     ),
                                     SizedBox(
                                       height: 30,
@@ -300,26 +304,30 @@ class _ProductPageState extends State<ProductPage> {
                         SizedBox(
                           width: size.width / 2 - 30,
                           child: OutlinedButton(
-                            onPressed: () {/*
+                            onPressed: () {
                               print(stocks);
-                              if (stocks > (_product?.stocks ?? 0)) {
+                              if (stocks > (_product?.inStock ?? 0)) {
                                 showDialog(
                                     context: context,
                                     builder: (_) => AlertDialog(
                                           title:
                                               const Text("Not enough STOCKS"),
                                           content: Text(
-                                              "You can at most buy ${_product?.stocks} of this product"),
+                                              "You can at most buy ${_product?.inStock} of this product"),
                                           actions: [
                                             TextButton(
                                                 onPressed: () {
                                                   Navigator.pop(context);
                                                 },
                                                 child: const Text("OK"))
+
                                           ],
                                         ));
                               }
-                            */},
+                              else{
+                                addBasket(_product?.id,stocks,_product?.title,_product?.price,_product?.img);
+                              }
+                            },
                             child: Text("Buy"),
                             style: ButtonStyle(
                               backgroundColor:

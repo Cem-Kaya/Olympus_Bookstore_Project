@@ -91,7 +91,7 @@ class _ProductPreviewState extends State<ProductPreview> {
                             height: 20,
                           ),
                           RatingBarIndicator(
-                            rating: widget.product.raiting.toDouble(), //it will be debugged
+                            rating: widget.product.raiting as double, //it will be debugged
                             itemBuilder: (context, index) =>
                             const Icon(
                               Icons.star,
