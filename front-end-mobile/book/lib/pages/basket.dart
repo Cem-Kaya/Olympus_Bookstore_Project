@@ -22,46 +22,35 @@ class BasketPage extends StatefulWidget {
 
 class _BasketPageState extends State<BasketPage> {
   @override
-
-
-
   Widget build(BuildContext context) {
-    Function a = Provider
-        .of<Basket>(context)
-        .get;
-    var temp_basket=a();
-    Function sum = Provider
-        .of<Basket>(context)
-        .getSum;
-   num s=sum();
+    Function a = Provider.of<Basket>(context).get;
+    var temp_basket = a();
+    Function sum = Provider.of<Basket>(context).getSum;
+    num s = sum();
     print(temp_basket);
-    int counter =temp_basket.length;
-
-
-
+    int counter = temp_basket.length;
 
     return Scaffold(
-        appBar: ActionBar(),
-    body: Column(
-      children: [
-        SingleChildScrollView(
-          child: Column(
-            children: List.generate(
-              //productPreviewList.length,
+      appBar: ActionBar(),
+      body: Column(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: List.generate(
+                //productPreviewList.length,
                 counter,
-                    (index) => Column(children: [
+                (index) => Column(children: [
                   one_basket_item(
                     view_bask: temp_basket[index],
                   ),
                   SizedBox(width: 8)
-                ]),),
+                ]),
               ),
-
-        ),
-        Text("$s")
-      ],
-    ),
-
+            ),
+          ),
+          Text("$s")
+        ],
+      ),
     );
   }
 }

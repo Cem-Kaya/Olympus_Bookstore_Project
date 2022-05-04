@@ -45,7 +45,7 @@ class PreviewBooks {
   String? publisher;
   num? price;
   num? amountSold;
-  DateTime? releaseDate;
+  String? releaseDate;
   String? model;
   num? editionNumber;
   String? description;
@@ -65,7 +65,7 @@ class PreviewBooks {
     publisher: json["publisher"],
     price: json["price"],
     amountSold: json["amount_sold"],
-    releaseDate: DateTime.parse(json["release_date"]),//change it to view
+    releaseDate: json["release_date"],//change it to view
     model: json["model"],
     editionNumber: json["edition_number"],
     description: json["description"],

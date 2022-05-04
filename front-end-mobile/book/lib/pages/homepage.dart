@@ -44,12 +44,12 @@ class _HomePageState extends State<HomePage> {
       final response = await http.get(url);
       if (response.statusCode >= 200 && response.statusCode < 400) {
         final result = previewBooksFromJson(response.body);
-        print(result[0].id);
+        //print(result[0].id);
         setState(() {
           counter = result.length;
           items = result;
         });
-        print(counter);
+        //print(counter);
         return result;
       }
       else {
@@ -60,40 +60,6 @@ class _HomePageState extends State<HomePage> {
       print(e.toString());
     }
   }
-
-  //ProductPreview
-  /*static final productPreviewList = <Product>[
-    Product(
-      id: 5,
-      img:
-          "https://d3o2e4jr3mxnm3.cloudfront.net/Mens-Jake-Guitar-Vintage-Crusher-Tee_68382_1_lg.png",
-      title: "Book name",
-      rating: 3.7,
-      price: 24.99,
-      stocks: 30,
-      publisher: "Seller1",
-      desc: "No Description",
-      author: "author1",
-      category: "Games",
-      amountSold: 0,
-      releaseDate: "20",
-    ),
-    Product(
-      id: 5,
-      img:
-      "https://d3o2e4jr3mxnm3.cloudfront.net/Mens-Jake-Guitar-Vintage-Crusher-Tee_68382_1_lg.png",
-      title: "Book name",
-      rating: 3.7,
-      price: 24.99,
-      stocks: 30,
-      author: "author1",
-      publisher: "Seller1",
-      desc: "No Description",
-      category: "Games",
-      amountSold: 0,
-      releaseDate: "20",
-    ),
-  ];*/
 
   @override
   Widget build(BuildContext context) {

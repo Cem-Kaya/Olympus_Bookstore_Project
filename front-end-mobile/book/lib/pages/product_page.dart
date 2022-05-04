@@ -1,4 +1,5 @@
 import 'package:bookstore/views/action_bar.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -11,25 +12,6 @@ import '../utils/dimensions.dart';
 import '../utils/jsonParse/previewBooks.dart';
 import '../utils/styles.dart';
 import '../views/product_preview.dart';
-
-/*final products = <Product>[
-  Product(
-    id: 5,
-    img:
-    "https://d3o2e4jr3mxnm3.cloudfront.net/Mens-Jake-Guitar-Vintage-Crusher-Tee_68382_1_lg.png",
-    title: "Book name",
-    rating: 3.7,
-    price: 24.99,
-    stocks: 30,
-    author: "author1",
-    publisher: "Seller1",
-    desc: "No Description",
-    category: "Games",
-    amountSold: 0,
-    releaseDate: "20",
-  ),
-
-];*/
 
 class ProductPage extends StatefulWidget {
   const ProductPage(
@@ -56,7 +38,7 @@ class _ProductPageState extends State<ProductPage> {
         // Update your UI with the desired changes.
       });
       getProduct();
-    } ();
+    }();
 
     // obtain shared preferences
   }
@@ -69,37 +51,34 @@ class _ProductPageState extends State<ProductPage> {
       final response = await http.get(url);
       if (response.statusCode >= 200 && response.statusCode < 400) {
         final result = previewBooksFromJson(response.body);
-        items =  await result;
-        print(items[0].id);
+        items = await result;
+        //print(items[0].id);
         return result;
-      }
-      else {
+      } else {
         print(response.statusCode);
       }
-
     } catch (e) {
       print(e.toString());
     }
   }
+
   PreviewBooks? _product;
-  Future<void> getProduct() async{
-    PreviewBooks wanted = items[items.indexWhere((element) => element.id == widget.productID)];
+
+  Future<void> getProduct() async {
+    PreviewBooks wanted =
+        items[items.indexWhere((element) => element.id == widget.productID)];
 
     _product = wanted;
-    print(_product?.title);
+    //print(_product?.title);
   }
-
 
   num stocks = 1;
 
   Widget build(BuildContext context) {
-    Function addBasket=Provider.of<Basket>(context).add_basket;
+    Function addBasket = Provider.of<Basket>(context).add_basket;
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      /*body: TextButton(onPressed:() {
-        print(items[items.indexWhere((element) => element.id == widget.productID)].title);
-      }, child: Text("bi sey")),*/
       body: Stack(
         children: [
           Container(
@@ -201,14 +180,20 @@ class _ProductPageState extends State<ProductPage> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-
-                                      _product?.title ?? ""// "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec volutpat sem. Maecenas feugiat aliquam leo id luctus. Phasellus eu nunc sed ligula dignissim suscipit. Aenean dignissim lobortis nulla sit amet venenatis. In hac habitasse platea dictumst. Aliquam erat volutpat. Suspendisse pulvinar arcu eu enim malesuada, eu consequat elit luctus. In at est sit amet tortor sollicitudin tempor. Proin quis arcu pharetra, venenatis turpis nec, maximus lacus. Morbi diam neque, vulputate non magna vitae, dapibus facilisis lacus. Aliquam eleifend scelerisque lacus convallis tincidunt.",
-                                    ),
+                                    build_desc("Description",
+                                        _product?.description ?? ""),
+                                    //Text(_product?.description ?? ""),
                                     SizedBox(
                                       height: 30,
                                     ),
-                                    Text(
+                                    build_detail(
+                                        "Details",
+                                        _product?.author ?? "",
+                                        _product?.publisher ?? "",
+                                        _product?.model ?? "",
+                                        _product?.editionNumber ?? 0,
+                                        _product?.releaseDate ?? ""),
+                                    /*Text(
                                       "writer: ",
                                       style: TextStyle(
                                           fontWeight: FontWeight.w300),
@@ -222,6 +207,9 @@ class _ProductPageState extends State<ProductPage> {
                                       "name:  ",
                                       style: TextStyle(
                                           fontWeight: FontWeight.w200),
+                                    ),*/
+                                    SizedBox(
+                                      height: 30,
                                     ),
                                     Row(
                                       mainAxisAlignment:
@@ -264,7 +252,7 @@ class _ProductPageState extends State<ProductPage> {
                       ),
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         IconButton(
@@ -302,10 +290,10 @@ class _ProductPageState extends State<ProductPage> {
                             },
                             icon: Icon(Icons.add)),
                         SizedBox(
-                          width: size.width / 2 - 30,
+                          width: size.width / 2 - 50,
                           child: OutlinedButton(
                             onPressed: () {
-                              print(stocks);
+                              //print(stocks);
                               if (stocks > (_product?.inStock ?? 0)) {
                                 showDialog(
                                     context: context,
@@ -320,12 +308,11 @@ class _ProductPageState extends State<ProductPage> {
                                                   Navigator.pop(context);
                                                 },
                                                 child: const Text("OK"))
-
                                           ],
                                         ));
-                              }
-                              else{
-                                addBasket(_product?.id,stocks,_product?.title,_product?.price,_product?.img);
+                              } else {
+                                addBasket(_product?.id, stocks, _product?.title,
+                                    _product?.price, _product?.img);
                               }
                             },
                             child: Text("Buy"),
@@ -351,6 +338,109 @@ class _ProductPageState extends State<ProductPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget build_desc(String title, String desc) {
+    return Card(
+      color: Colors.grey[200],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ExpandablePanel(
+          header: Text(
+            title,
+            style: kButtonLightTextStyle,
+          ),
+          collapsed: Text(
+            desc,
+            style: TextStyle(
+              fontWeight: FontWeight.w300,
+            ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 5,
+            softWrap: true,
+          ),
+          expanded: Text(
+            desc,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget build_detail(String title, String writer, String publisher,
+      String model, num edition, String releaseDate) {
+    return Card(
+      color: Colors.grey[200],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ExpandablePanel(
+          header: Text(
+            title,
+            style: kButtonLightTextStyle,
+          ),
+          collapsed: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                "Author: $writer",
+                style: TextStyle(
+                  fontWeight: FontWeight.w300,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                softWrap: true,
+              ),
+              Text(
+                "Publisher: $publisher",
+                style: TextStyle(
+                  fontWeight: FontWeight.w300,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                softWrap: true,
+              ),
+            ],
+          ),
+          expanded: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                "Author: $writer",
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                softWrap: true,
+              ),
+              Text(
+                "Publisher: $publisher",
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                softWrap: true,
+              ),
+              Text(
+                "Model: $model",
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                softWrap: true,
+              ),
+              Text(
+                "Edition: $edition",
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                softWrap: true,
+              ),
+              Text(
+                "Release Date: $releaseDate",
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                softWrap: true,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

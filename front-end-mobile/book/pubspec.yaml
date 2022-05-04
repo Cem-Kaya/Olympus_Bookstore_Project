@@ -44,6 +44,7 @@ dependencies:
   json_annotation: ^4.5.0
   json_serializable: ^6.2.0
   provider: ^6.0.2
+  expandable: ^5.0.1
 
 
 
