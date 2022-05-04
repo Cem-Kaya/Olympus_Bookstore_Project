@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy.sql import func
-from sqlalchemy.ext.declarative import declarative_base
+#from sqlalchemy.ext.declarative import declarative_base
 
 
 # ONE SHELL MAKE DB BEFORE INITign IT  ! 
@@ -161,7 +161,7 @@ class Products(db.Model):
   __tablename__='Products'
   Pid=db.Column(db.Integer,primary_key=True, autoincrement=True )
   name=db.Column(db.String(100))
-  model=db.Column(db.String(50))
+  model=db.Column(db.String(50)) 
   description=db.Column(db.String(1000))
   edition_number=db.Column(db.Integer)
   quantity =db.Column(db.Integer)

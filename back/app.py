@@ -143,6 +143,30 @@ def Prcsubmit():
   db.session.commit() 
   return render_template('success.html', data= name)  
 
+@app.route('/purchased')
+def Purchasedd():
+  allPurchased=Purchased.query.filter_by().all()
+  todata=" <h3> Purchased </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>purcid </th> <th> price </th> <th>sale</th> <th>quantity</th><th>shipment</th> </tr> '
+  for i in allPurchased:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td></tr>".format(i.purcid,i.price,i.sale,i.quantity,i.shipment) 
+  todata +="</table>"
+
+  return render_template('purchased.html',data=todata)  
+            
+@app.route('/purchased/submit', methods=['POST'])
+def Purchasedsubmit():  
+  price=request.form['price']
+  sale=request.form['sale']
+  quantity=request.form['quantity']
+  shipment=request.form['shipment']
+  PC__ = Purchased(price=price, sale=sale, quantity=quantity,shipment=shipment)
+  db.session.add(PC__)
+  db.session.commit() 
+  return render_template('success.html', data= "")    
+
+
+
 
 
 @app.route('/all_books')
@@ -154,6 +178,8 @@ def get_all_books():
     tmp={
       "id": pr.Pid,
       "img": pr.picture_url0,
+      "img1": pr.picture_url1,
+      "img2": pr.picture_url2,
       "title": pr.name ,
       "author": pr.author,
       "raiting": pr.raiting,      
@@ -161,7 +187,13 @@ def get_all_books():
       "price":  pr.price ,    
       "amount_sold": pr.amount_sold ,
       "release_date": str(pr.date),
+      "model": pr.model,
+      "edition_number": pr.edition_number,
+      "description": pr.description,
+      "in_stock": pr.quantity,
+      "warranty": pr.warranty,
       "discount": str((1-pr.sale)*100)+"%",
+      "date": pr.date
     }
     jsonprd.append(tmp)  
   return json.dumps(jsonprd)
@@ -206,9 +238,10 @@ def Under():
   for i in allproducts:
     todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale) 
   todata +="</table>"
+  
+  
   todata+="<h3> Product Category </h3> "
   allproductscats=Product_Category.query.filter_by().all()
-
   todata+= "<table> <tr> <th>pcid </th> <th>name </th> </tr> "
   for i in allproductscats:
     todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Pcid,i.name) 
@@ -231,6 +264,109 @@ def Undersubmit():
   db.session.execute(statement)
   db.session.commit()
   return render_template('success.html', data= "")    
+
+
+@app.route('/Manages_category')
+def Managescategory():
+  allproductcateg = Product_Category.query.filter_by().all()
+  todata=" <h3> Product_Category </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>Pcid </th> <th> name </th>  </tr> '
+  for i in allproductcateg:
+    todata += "<tr><td> {} </td> <td> {} </td> </tr>".format(i.Pcid,i.name) 
+  todata +="</table>"
+  
+  todata+="<h3> Product Manager </h3> "
+  allproductmanags=Product_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Pcid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allproductmanags:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Pmid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  todata+= "<h3> Manages_category  </h3>"
+  todata+= "<table> <tr> <th> Pcid </th> <th> Pmid </th> </tr> "
+  allUnders = db.session.query(manages_category).all()  # db.session.query(followers).filter(...).all()
+  for i in allUnders:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Pcid,i.Pmid) 
+  todata +="</table>   "
+  return render_template('Manages_category.html',data =todata )  #bunu degistirdim
+
+
+@app.route('/Manages_category/submit', methods=['POST'])
+def Manages_categorysubmit():
+  Pcid=request.form['Pcid']
+  Pmid=request.form['Pmid']
+  statement = manages_category.insert().values(Pmid=Pmid, Pcid=Pcid)
+  db.session.execute(statement)
+  db.session.commit()
+  return render_template('success.html', data= "")      
+
+@app.route('/Manages')
+def Managesprod():
+  allproducts = Products.query.filter_by().all()
+  todata=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>Pid </th> <th> name </th> <th> price </th> <th> date </th> </tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.date) 
+  todata +="</table>"
+  
+  todata+="<h3> Product Manager </h3> "
+  allproductmanags=Product_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Pcid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allproductmanags:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Pmid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  todata+= "<h3> Manages  </h3>"
+  todata+= "<table> <tr> <th> Pid </th> <th> Pmid </th> </tr> "
+  allUnders = db.session.query(manages).all()  # db.session.query(followers).filter(...).all()
+  for i in allUnders:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Pid,i.Pmid) 
+  todata +="</table>   "
+  return render_template('Manages.html',data =todata )  #bunu degistirdim
+
+
+@app.route('/Manages/submit', methods=['POST'])
+def Managessubmit():
+  Pid=request.form['Pid']
+  Pmid=request.form['Pmid']
+  statement = manages.insert().values(Pmid=Pmid, Pid=Pid)
+  db.session.execute(statement)
+  db.session.commit()
+  return render_template('success.html', data= "")     
+
+@app.route('/Change_price')
+def changesprice():
+  allproducts = Products.query.filter_by().all()
+  todata=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>Pid </th> <th> name </th> <th> price </th> <th> date </th> </tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.date) 
+  todata +="</table>"
+  
+  todata+="<h3> Sales Manager </h3> "
+  allsalesmanag=Sales_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Sid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allsalesmanag:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Sid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  todata+= "<h3> change_price  </h3>"
+  todata+= "<table> <tr> <th> Sid </th> <th> Pid </th> </tr> "
+  allUnders = db.session.query(change_price).all()  # db.session.query(followers).filter(...).all()
+  for i in allUnders:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Sid, i.Pid) 
+  todata +="</table>   "
+  return render_template('Change_price.html',data =todata )  #bunu degistirdim
+
+
+@app.route('/Change_price/submit', methods=['POST'])
+def changespricesubmit():
+  Pid=request.form['Pid']
+  Sid=request.form['Sid']
+  statement = change_price.insert().values(Sid=Sid, Pid=Pid)
+  db.session.execute(statement)
+  db.session.commit()
+  return render_template('success.html', data= "")        
 
 @app.route('/Wishes')
 def Wishes():
@@ -399,6 +535,97 @@ def Commentsssubmit():
   db.session.commit()
   return render_template('success.html', data= "")    
 
+
+@app.route('/buy_dlist')
+def buydlist():
+  allproducts=Products.query.filter_by().all()
+  todata=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> </tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale) 
+  todata +="</table>"
+  
+  todata+="<h3>Customers </h3> "
+  allCustomers=Customers.query.filter_by().all()
+  todata+= "<table> <tr> <th>email </th> <th>name </th> </tr> "
+  for i in allCustomers:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.email,i.name) 
+  todata +="</table>   "
+
+  todata+= "<h3> Purchased </h3>"
+  todata+= "<table> <tr> <th> purcid </th> <th> price </th><th> sale </th><th> quantity </th><th> shipment </th></tr> "
+  allPurchased = db.session.query(Purchased).all()  # db.session.query(followers).filter(...).all()
+  for i in allPurchased:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.purcid, i.price ,i.sale, i.quantity, i.shipment ) 
+  todata +="</table>   "
+
+  todata+= "<h3> buy_dlist </h3>"
+  todata+= "<table> <tr> <th> did </th> <th> customer_email </th><th> product_pid </th><th> purchased_purcid </th><th> quantity </th><th> date </th></tr> "
+  allbuydlist = db.session.query(Buy_Dlist).all()  # db.session.query(followers).filter(...).all()
+  for i in allbuydlist:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></td><td>{}</td><td>{}</td></tr>".format(i.did, i.customer_email, i.product_pid, i.purchased_purcid, i.quantity, i.date) 
+  todata +="</table>   "
+  return render_template('buy_dlist.html',data =todata )  
+
+
+@app.route('/buy_dlist/submit', methods=['POST'])
+def buydlistsubmit():
+  customer_email= request.form['uid']
+  product_pid= int(request.form['Pid']) 
+  purchased_purcid= int(request.form['purcid'])
+  quantity= int(request.form['quantity'])
+
+  #statement = shopping_cart.insert().values(customer_email=email, product_id=Pid, comment_id=cid)
+  assoc = Buy_Dlist(customer_email=customer_email, product_pid=product_pid, purchased_purcid=purchased_purcid, quantity=quantity)
+  db.session.add(assoc)
+  db.session.commit()
+  return render_template('success.html', data= "")    
+
+@app.route('/refunds')
+def refunds():
+  todata= "<h3> Sales Manager </h3> "
+  allsalesmanag=Sales_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Sid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allsalesmanag:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Sid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  
+  todata+="<h3>Customers </h3> "
+  allCustomers=Customers.query.filter_by().all()
+  todata+= "<table> <tr> <th>email </th> <th>name </th> </tr> "
+  for i in allCustomers:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.email,i.name) 
+  todata +="</table>   "
+
+  todata+= "<h3> Purchased </h3>"
+  todata+= "<table> <tr> <th> purcid </th> <th> price </th><th> sale </th><th> quantity </th><th> shipment </th></tr> "
+  allPurchased = db.session.query(Purchased).all()  # db.session.query(followers).filter(...).all()
+  for i in allPurchased:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.purcid, i.price ,i.sale, i.quantity, i.shipment ) 
+  todata +="</table>   "
+
+  todata+= "<h3> Refunds </h3>"
+  todata+= "<table> <tr> <th> id </th> <th> customer_email </th><th> purchased_purcid </th><th> sales_manager_id </th><th> refund_state </th><th> date </th></tr> "
+  allrefunds = db.session.query(Refunds).all()  # db.session.query(followers).filter(...).all()
+  for i in allrefunds:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></td><td>{}</td><td>{}</td></tr>".format(i.id, i.customer_email, i.purchased_purcid, i.sales_manager_id, i.refund_state, i.date) 
+  todata +="</table>   "
+  return render_template('refunds.html',data =todata )  
+
+
+@app.route('/refunds/submit', methods=['POST'])
+def refundssubmit():
+  customer_email= request.form['uid']
+  sales_manager_id= int(request.form['sid'])
+  purchased_purcid= int(request.form['purcid'])
+  refund_state= request.form['refund']
+
+  #statement = shopping_cart.insert().values(customer_email=email, product_id=Pid, comment_id=cid)
+  assoc = Refunds(customer_email=customer_email, sales_manager_id=sales_manager_id, purchased_purcid=purchased_purcid, refund_state=refund_state)
+  db.session.add(assoc)
+  db.session.commit()
+  return render_template('success.html', data= "")    
 
 
 if __name__ == '__main__':  #python interpreter assigns "__main__" to the file you run

@@ -1,0 +1,34 @@
+<!doctype html>
+
+<head>
+    <title>Under</title>
+    <meta charset=utf-8>
+    <style>
+        table, th, td {
+           border: 1px solid black;
+        }
+     </style>
+</head>
+<body>
+{{data |safe }}
+
+<form action="/refunds/submit" method="POST">
+    
+    <label for="uid"> uid(email!) </label><br>
+    <input type="text" min = "0" id="uid" name="uid" value="-1"><br><br>
+
+    <label for="purcid">purcid </label><br>
+    <input type="number" min = "0" id="purcid" name="purcid" value="-1"><br><br>
+    
+    <label for="sid"> sid </label><br>
+    <input type="number" min = "0" id="sid" name="sid" value="-1"><br><br>
+    
+    <label for="refund"> refund(status) </label><br>
+    <input type="text" min = "0" id="refund" name="refund" value="-1"><br><br>
+    
+    
+    <br><br>
+        <button><a>Send</a></button><br>
+</form>
+
+</body>

@@ -1,0 +1,32 @@
+<!doctype html>
+
+<head>
+    <title>purchased</title>
+    <meta charset=utf-8>
+    <style>
+        table, th, td {
+           border: 1px solid black;
+        }
+     </style>
+</head>
+<body>
+{{data |safe }}
+
+<form action="/purchased/submit" method="POST">
+    <label for="price">price </label><br>
+    <input type="text" id="price" name="price" value="null"><br><br>
+
+    <label for="sale">sale </label><br>
+    <input type="text" id="sale" name="sale" value = null><br><br>
+
+    <label for="shipment">shipment </label><br>
+    <input type="text" id="shipment" name="shipment" value = null><br><br>
+ 
+    <label for="quantity">quantity </label><br>
+    <input type="number"  min="0" id="quantity" name="quantity" value = "-1"><br><br>
+
+    <br><br>
+        <button><a>Send</a></button><br>
+</form>
+
+</body>
