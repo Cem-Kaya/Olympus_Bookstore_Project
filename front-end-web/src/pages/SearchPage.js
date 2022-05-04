@@ -63,9 +63,19 @@ const RightContainer = styled.div`
 
 
 const SearchPage = () => {
-    let { category, author, publisher, language, pr_lower, pr_upper, raiting } = useParams();
-
+    let params = useParams();
     const [cartItems, setCartItems] = useState([]);
+    const [sortBy, setSortBy] = useState("Popular");
+
+    //console.log(params)
+    //console.log(sortBy)
+
+    useEffect(() => {
+      const filterCategories = ["author", "publisher", "raiting"]
+      filterCategories.forEach(element => {
+        params[element] === "*" ? params[element] = [] : params[element] = params[element].split(",")
+      });
+    }, [params]);
   
     useEffect(() => {
       setCartItems(JSON.parse(window.localStorage.getItem('cart_items')));
@@ -77,45 +87,44 @@ const SearchPage = () => {
     }, [cartItems]);
 
     const AddToCart = (item) => {
-    
-        let getItemAsList = cartItems.filter((elem) => elem.id === item.id)
-        if(getItemAsList.length === 0)
-        {
-          item = {...item, count: 1}
-          if(cartItems.length === 0){
-            setCartItems([item])
-          }
-          else{
-            setCartItems([...cartItems, item])
-          }
+      let getItemAsList = cartItems.filter((elem) => elem.id === item.id)
+      if(getItemAsList.length === 0)
+      {
+        item = {...item, count: 1}
+        if(cartItems.length === 0){
+          setCartItems([item])
+        }
+        else{
+          setCartItems([...cartItems, item])
         }
       }
+    }
     
-      const HeaderAddToCart = (item) => {
-        setCartItems(
-          cartItems.map(
-            (elem) => elem.id === item.id ? { ...elem, count: elem.count + 1} : elem
-          )
+  const HeaderAddToCart = (item) => {
+    setCartItems(
+      cartItems.map(
+        (elem) => elem.id === item.id ? { ...elem, count: elem.count + 1} : elem
+      )
+    )
+  }
+  
+  const HeaderRemoveFromCart = (item) => {
+    let listOfItem = cartItems.filter((elem) => elem.id === item.id)
+    let count = listOfItem[0].count
+
+    if(count !== 1){
+      setCartItems(
+        cartItems.map(
+          (elem) => elem.id === item.id ? { ...elem, count: elem.count - 1} : elem
         )
-      }
-    
-      const HeaderRemoveFromCart = (item) => {
-        let listOfItem = cartItems.filter((elem) => elem.id === item.id)
-        let count = listOfItem[0].count
-    
-        if(count !== 1){
-          setCartItems(
-            cartItems.map(
-              (elem) => elem.id === item.id ? { ...elem, count: elem.count - 1} : elem
-            )
-          )
-        }
-        else
-        {
-          let filteredState = cartItems.filter((elem) => elem.id !== item.id)
-          filteredState.length === 0 ? setCartItems([]) : setCartItems([...filteredState])
-        }
-      }
+      )
+    }
+    else
+    {
+      let filteredState = cartItems.filter((elem) => elem.id !== item.id)
+      filteredState.length === 0 ? setCartItems([]) : setCartItems([...filteredState])
+    }
+  }
 
     return (
       <div>
@@ -131,17 +140,17 @@ const SearchPage = () => {
                     Sort by
                 </button>
                 <div className="dropdown-menu dropdown-menu-center" aria-labelledby="dropdownMenuButton">
-                    <a className="dropdown-item" href="#">Popular</a>
-                    <a className="dropdown-item" href="#">Price high to low</a>
-                    <a className="dropdown-item" href="#">Price low to high</a>
-                    <a className="dropdown-item" href="#">Newest</a>
+                    <button className="dropdown-item" onClick={() => {setSortBy("Popular")}}>Popular</button>
+                    <button className="dropdown-item" onClick={() => {setSortBy("Price high to low")}}>Price high to low</button>
+                    <button className="dropdown-item" onClick={() => {setSortBy("Price low to high")}}>Price low to high</button>
+                    <button className="dropdown-item" onClick={() => {setSortBy("Newest")}}>Newest</button>
                 </div>
             </div>
             </TopButtons>
         </UpperContainer>
         <BodyContainer>  
             <LeftContainer>
-                <Filters products={popularProducts} isCategorySet={category !== undefined}/>
+                <Filters products={popularProducts} params={params}/>
             </LeftContainer>
             <RightContainer>
                 <Products products={popularProducts} onAddToCart={AddToCart}></Products>

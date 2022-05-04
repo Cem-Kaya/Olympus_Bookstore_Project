@@ -18,7 +18,8 @@ function App() {
         <Route path='/MyCart' element={<MyCart/>}/>
         <Route path='/WishList' element={<WishList/>}/>
         <Route path="/Search/category=:category" element={<SearchPage/>}/>
-        <Route path="/Search/category=:category/&author=:author/&publisher=:publisher/&language=:language/&pr_lower=:pr_lower/&pr_upper=:pr_upper/&raiting=:raiting" element={<SearchPage/>}/>
+        <Route path="/Search/title=:title/&author=:author/&publisher=:publisher/&pr_lower=:pr_lower/&pr_upper=:pr_upper/&raiting=:raiting" element={<SearchPage/>}/>
+        <Route path="/Search/category=:category/&author=:author/&publisher=:publisher/&pr_lower=:pr_lower/&pr_upper=:pr_upper/&raiting=:raiting" element={<SearchPage/>}/>
         <Route path='*' element={<ErrorPage/>}/>
       </Routes>
     </div>

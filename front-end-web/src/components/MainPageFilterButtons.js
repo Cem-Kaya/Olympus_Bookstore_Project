@@ -13,7 +13,7 @@ const MainPageFilterButtons = () => {
   return (
     <ButtonContainer>
         <div className="button-group-horizontal">
-            <button className="button">Top Seller</button>
+            <button className="button">Best Seller</button>
             <button className="button">Top Rated</button>
             <button className="button">New Books</button>
             <button className="button">Top Deals</button>

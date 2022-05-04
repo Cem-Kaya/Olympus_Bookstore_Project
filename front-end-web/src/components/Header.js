@@ -61,22 +61,67 @@ const DropDownItemCount = styled.div`
 `;
 
 
-const Header = ({itemsInCart, onAddToCart, onRemoveFromCart}) => {
+const Header = ({itemsInCart, onAddToCart, onRemoveFromCart, addToCartAllowed}) => {
   const history= useNavigate();
-  
+
   const [cartItems, setCartItems] = useState([]);
   const [dropDownOpen, setdropDownOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [selection, setSelection] = useState("");
 
   useEffect(() => {
     if(itemsInCart !== undefined) {setCartItems(itemsInCart)}
     else{setCartItems(JSON.parse(window.localStorage.getItem('cart_items')));}
   }, [itemsInCart]);
 
+  useEffect(() => {
+    if(itemsInCart === undefined){
+      if(cartItems === null)  {setCartItems([])}
+      window.localStorage.setItem('cart_items', JSON.stringify(cartItems))
+    }
+  }, [cartItems, itemsInCart]);
+
   const handleDropdownOpen = () => {
     setdropDownOpen(!dropDownOpen);
   };
 
-  const [selection, setSelection] = useState("");
+  const searchButtonClicked = () => {
+    let selected = selection;
+    if(selected.trim() === '')  {selected = "Title"}
+    selected = selected.toLowerCase()
+    if(selected === "title"){
+      history(`/Search/${selected}=${title}/&author=*/&publisher=*/&pr_lower=*/&pr_upper=*/&raiting=*`)
+    }
+    else{
+      history(`/Search/category=*/&${selected}=${title}/&publisher=*/&pr_lower=*/&pr_upper=*/&raiting=*`)
+    }
+  }
+
+  const HeaderAddToCart = (item) => {
+    setCartItems(
+      cartItems.map(
+        (elem) => elem.id === item.id ? { ...elem, count: elem.count + 1} : elem
+      )
+    )
+  }
+
+  const HeaderRemoveFromCart = (item) => {
+    let listOfItem = cartItems.filter((elem) => elem.id === item.id)
+    let count = listOfItem[0].count
+
+    if(count !== 1){
+      setCartItems(
+        cartItems.map(
+          (elem) => elem.id === item.id ? { ...elem, count: elem.count - 1} : elem
+        )
+      )
+    }
+    else
+    {
+      let filteredState = cartItems.filter((elem) => elem.id !== item.id)
+      filteredState.length === 0 ? setCartItems([]) : setCartItems([...filteredState])
+    }
+  }
 
   return (
     <HeaderDark>
@@ -91,10 +136,10 @@ const Header = ({itemsInCart, onAddToCart, onRemoveFromCart}) => {
                 <div className="dropdown-menu">
                   <button className="dropdown-item" onClick={() => {setSelection("Title")}}>Title</button>
                   <button className="dropdown-item" onClick={() => {setSelection("Author")}}>Author</button>
-                  <button className="dropdown-item" onClick={() => {setSelection("Publisher")}}>Publisher</button>
+                  {/*<button className="dropdown-item" onClick={() => {setSelection("Publisher")}}>Publisher</button>*/}
                 </div>
               </div>
-              <input type="text" className="form-control" placeholder="Search..." aria-label="Text input with dropdown button"/>
+              <input type="text" className="form-control" placeholder="Search..." aria-label="Text input with dropdown button" onChange={event => setTitle(event.target.value)} onKeyDown={e => e.key === 'Enter' && searchButtonClicked()}/>
             </div>
             <RightContainer>
               <button className='buttonStyle' onClick={() =>{history('/Login')}}>
@@ -115,16 +160,16 @@ const Header = ({itemsInCart, onAddToCart, onRemoveFromCart}) => {
                     <span className="badge badge-pill badge-danger notify">{cartItems.length}</span></>}
                   </div>
                 </button>
-                {dropDownOpen && (<div className="dropdown">
+                {dropDownOpen && addToCartAllowed !== false && (<div className="dropdown">
                     <ul>
                     {cartItems.map((item) => (
                         <li key={item.id}>
                           <DropDownItem>  
                             <p>{item.title}</p>
                             <DropDownItemCount>
-                              <button onClick={() =>{onRemoveFromCart(item)}}>-</button>
+                              <button className="btn-primary" onClick={() =>{itemsInCart === undefined ? HeaderRemoveFromCart(item) : onRemoveFromCart(item)}}>-</button>
                               <p>{" " + item.count + " "}</p>
-                              <button onClick={() =>{onAddToCart(item)}}>+</button>
+                              <button className="btn-primary" onClick={() =>{itemsInCart === undefined ? HeaderAddToCart(item) : onAddToCart(item)}}>+</button>
                             </DropDownItemCount>  
                           </DropDownItem>
                         </li>

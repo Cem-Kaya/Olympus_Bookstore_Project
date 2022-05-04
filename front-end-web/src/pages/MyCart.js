@@ -1,11 +1,7 @@
-//Products.js and MyCart.js needs update
-
 import React from 'react'
 import CartItem from '../components/CartItem'
 import Header from '../components/Header'
-import Footer from '../components/Footer'
-import { useState, useEffect } from 'react';
-import { useLocation  } from "react-router-dom";
+import { useState, useEffect } from 'react'
 import { Delete } from "@material-ui/icons";
 import { useNavigate } from "react-router-dom";
 
@@ -85,33 +81,8 @@ const MyCart = ({params}) => {
 
   return (
 
-    <div className="App"> 
-    {/*<div>
-      <Header cartItems={items}/>
-      <Container>
-        <ProductBoxContainer>
-          {items.length === 0 ? <h1>There are no products, start adding some!</h1>
-           : <CartItems 
-              items={items} 
-              onRemoveAll={RemoveAllFromCart}
-              onRemoveFromCart={RemoveFromCart}
-              onAddToCart={AddToCart}/>}
-        </ProductBoxContainer>
-        <SummaryContainer>
-          <TextHeader>Order Summary</TextHeader>
-          <p>{`${items.length} Products`}</p>
-          <p>{`Cost: ${costOfItems()} TL`}</p>
-          <p>{`Shipment Cost: 10 TL`}</p>
-          <p>{`Total Cost: ${costOfItems() + 10} TL`}</p>
-          <p>{`Amount to Pay: ${costOfItems() + 10} TL`}</p>
-          <ButtonStyle>Complete Transaction</ButtonStyle>
-        </SummaryContainer>
-      </Container>
-      <Footer />
-    </div>
-  )
-}*/}
-      <Header itemsInCart={items}/>
+    <div className="App">
+      <Header itemsInCart={items} addToCartAllowed={false} />
         <section className="section-pagetop bg">
         <div className="container">
             <h2 className="title-page">Shopping cart</h2>

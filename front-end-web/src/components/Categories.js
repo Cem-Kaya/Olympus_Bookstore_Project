@@ -24,7 +24,7 @@ const Categories = () => {
             {categories.map((element, index) => (
                 <button className='button' key={index}
                     onClick={() => {
-                        navigate(`/Search/category=${element}/&author=*/&publisher=*/&language=*/&pr_lower=*/&pr_upper=*/&raiting=*`)
+                        navigate(`/Search/category=${element}/&author=*/&publisher=*/&pr_lower=*/&pr_upper=*/&raiting=*`)
                     }}>
                     <TextStyle>{element}
                         <DoubleArrow/>
