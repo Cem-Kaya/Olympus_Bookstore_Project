@@ -1,0 +1,39 @@
+<!doctype html>
+
+<head>
+    <title>Under</title>
+    <meta charset=utf-8>
+    <style>
+        table, th, td {
+           border: 1px solid black;
+        }
+     </style>
+</head>
+<body>
+{{data |safe }}
+
+<form action="/delivery_process/submit" method="POST">
+    
+    <br><br>
+    <label for="Process">Choose stage:</label>
+    <select name="Process" id="Process">
+    <option value="Processing">Processing</option>
+    <option value="In-transit">In-transit</option>
+    <option value="Delivered">Delivered</option>
+    </select><br><br>
+
+    <label for="Pmid"> Pmid </label><br>
+    <input type="number" min = "0" id="Pmid" name="Pmid" value="-1" ><br><br>
+
+    <label for="Pid"> Pid </label><br>
+    <input type="number" min = "0" id="Pid" name="Pid" value="-1" ><br><br>
+
+    <label for="purcid"> purcid </label><br>
+    <input type="number" min = "0" id="purcid" name="purcid" value="-1" ><br><br>
+
+
+    <br><br>
+        <button><a>Send</a></button><br>
+</form>
+
+</body>

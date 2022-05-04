@@ -1,5 +1,4 @@
-
-
+#from crypt import methods
 import json
 from unittest import skip
 import requests as req
@@ -637,9 +636,10 @@ def buydlistsubmit():
   product_pid= int(request.form['Pid']) 
   purchased_purcid= int(request.form['purcid'])
   quantity= int(request.form['quantity'])
+  did= int(request.form['did'])
 
   #statement = shopping_cart.insert().values(customer_email=email, product_id=Pid, comment_id=cid)
-  assoc = Buy_Dlist(customer_email=customer_email, product_pid=product_pid, purchased_purcid=purchased_purcid, quantity=quantity)
+  assoc = Buy_Dlist(did = did, customer_email=customer_email, product_pid=product_pid, purchased_purcid=purchased_purcid, quantity=quantity)
   db.session.add(assoc)
   db.session.commit()
   return render_template('success.html', data= "")    
@@ -865,12 +865,19 @@ def topurchase():
   for i in allPurchased:
     todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td></tr>".format(i.purcid,i.price,i.sale,i.quantity,i.shipment) 
   todata +="</table>"
+
+  todata+= "<h3> Shopping_Cart </h3>"
+  todata+= "<table> <tr> <th> email </th> <th> Pid </th><th> Date </th><th> Quantity </th></tr> "
+  allShoppingCarts = db.session.query(shopping_cart).all()  # db.session.query(followers).filter(...).all()
+  for i in allShoppingCarts:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.email,i.Pid, i.date, i.quantity) 
+  todata +="</table>   "
   
   todata+= "<h3> buy_dlist </h3>"
-  todata+= "<table> <tr> <th> did </th> <th> email </th><th> pid </th><th> Quantity </th><th> Date </th></tr> "
+  todata+= "<table> <tr> <th> did </th> <th> email </th><th> pid </th><th> Quantity </th><th> Purcid </th><th> Date </th></tr> "
   allShoppingCarts = db.session.query(Buy_Dlist).all()  # db.session.query(followers).filter(...).all()
   for i in allShoppingCarts:
-    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.did, i.customer_email,i.product_pid,i.quantity, i.date ) 
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.did, i.customer_email,i.product_pid,i.quantity,i.purchased_purcid, i.date ) 
   todata +="</table> "
 
   
@@ -885,29 +892,164 @@ def gettingnextdid():
     return "1"
   for i in allbuy_dlists:
     didvalues.append(i.did)
-  maxDid=max(didvalues)
+  maxDid=max(didvalues)+1 #actually max+1
   return str(maxDid)
   
 
+@app.route('/to_purchase/submit', methods=['POST'] )
+def to_purchase_sub():
+  
+  quantity=int ( request.form['quantity'] )
+  price=int ( request.form['price'] )
+  sale=float( request.form['sale'] )
+  shipment = "Processing"
+  PC__ = Purchased(price=price, sale=sale, quantity=quantity,shipment=shipment)
+  db.session.add(PC__)
+  db.session.commit() 
+
+  allpurchased = db.session.query(Purchased).all()
+  pucidvalues = []
+  for i in allpurchased:
+    pucidvalues.append(int(i.purcid))
+  maxPurcid=max(pucidvalues)
+
+  email=request.form['email']
+  Pid=int(request.form['Pid'])
+  purcid=maxPurcid #how do we get this?
+  did=int(request.form['did'])
+  assoc = Buy_Dlist(did = did, customer_email=email, product_pid=Pid, purchased_purcid=purcid, quantity=quantity)
+  db.session.add(assoc)
+  db.session.commit()
+  return render_template('success.html',data ="" ) 
+
+@app.route('/delivery_process')
+def deliveryprocess():
+  todata="<h3> Product Manager </h3> "
+  allproductmanags=Product_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Pcid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allproductmanags:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Pmid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  allproducts=Products.query.filter_by().all()
+  todata+=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> </tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale) 
+  todata +="</table>"
+
+  todata+= "<h3> buy_dlist </h3>"
+  todata+= "<table> <tr> <th> did </th> <th> email </th><th> pid </th><th> Quantity </th><th> Purcid </th><th> Date </th></tr> "
+  allShoppingCarts = db.session.query(Buy_Dlist).all()  # db.session.query(followers).filter(...).all()
+  for i in allShoppingCarts:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.did, i.customer_email,i.product_pid,i.quantity,i.purchased_purcid, i.date ) 
+  todata +="</table> "
+
+  allPurchased=Purchased.query.filter_by().all()
+  todata+=" <h3> Purchased </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>purcid </th> <th> price </th> <th>sale</th> <th>quantity</th><th>shipment</th> </tr> '
+  for i in allPurchased:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td></tr>".format(i.purcid,i.price,i.sale,i.quantity,i.shipment) 
+  todata +="</table>"
+
+  todata+= "<h3> Manages  </h3>"
+  todata+= "<table> <tr> <th> Pid </th> <th> Pmid </th> </tr> "
+  allUnders = db.session.query(manages).all()  # db.session.query(followers).filter(...).all()
+  for i in allUnders:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Pid,i.Pmid) 
+  todata +="</table>   "
+
+
+  return render_template('delivery_process.html',data =todata )  #bunu degistirdim  
+
+@app.route('/delivery_process/submit', methods=['POST'] )
+def deliveryprocesssubmit():
+  
+  Process=str ( request.form['Process'] )
+  Pmid=int ( request.form['Pmid'] )
+  Pid=int( request.form['Pid'] )
+  purcid = int( request.form['purcid'] )
+ 
+  allManages = db.session.query(manages).all()
+  valid = False #aslinda not valid anlaminda
+
+  for i in allManages:
+    if(i.Pid==Pid and i.Pmid == Pmid):
+      valid = True
+
+  if (not valid):
+    return "False" #eger managelamiyosa false returnluyo yani yanlis product manager yanlis producta bakiyo
+
+  allDlist = db.session.query(Buy_Dlist).all()
+
+  valid = False
+  for i in allDlist:
+    if(i.purchased_purcid==purcid):
+      valid = True
+
+  if (not valid):
+    return "False" #eger buy_dlist te degilse false returnluyo yani zaten deliverlanmis deliverlananlar buy_dlistte
+
+   # i was just testing you, can you compile i'll check
+  db.session.query(Purchased)\
+    .filter(Purchased.purcid == purcid)\
+    .update({Purchased.shipment: Process})
+
+  db.session.commit()
+
+  #allPurchased = db.session.query(Purchased).all()
+  #for i in allPurchased:
+  #  if(i.shipment=="Delivered"):
+  #    for j in allDlist:
+  #      if(j.purchased_purcid == i.purcid):
+  #        db.session.query(Buy_Dlist)\
+  #          .filter(Buy_Dlist.purchased_purcid == i.purcid)\
+  #          .delete()
+  #        db.session.commit()  
+
+
+  return render_template('success.html',data ="" ) 
+   
 
 def ask_bank(creddit_card_number,cvc,exp_date):
   return True
 def execute_transaction(creddit_card_number,cvc,exp_date, total_price):
   return True
 
-@app.route('/bank',methods=['POST'] )
+@app.route('/get_users_purchases/submit' , methods=["POST"])
+def get_users_purchases():
+  Pid=str ( request.form['Pid'] )  
+  purcid = int( request.form['purcid'] )
+  allManages = db.session.query(Buy_Dlist).all()
+  Purchasesss = db.session.query(Purchased).all()
+  ll=[]
+  for i in allManages:
+    if i.Pid ==Pid:
+      for j in Purchasesss:
+        if j.purcid == i.purcid:
+          ll.append(j)
+  retjs={}
+  for i in ll: # DO left JOIN !!!!!!!!!!!!!!!!!!!!!!
+    pass#retjs[]
+  return ""
+
+
+@app.route('/bank')
 def bank():
+  return render_template("bank.html")
+
+
+@app.route('/bank/submit',methods=['POST'] )
+def bank_sub():
   creddit_card_number =  int(request.form['creddit_card_number'] )
   cvc = int ( request.form['cvc'] )
-  exp_date =  request.form['exp_date'] 
+  exp_date =  int(request.form['date'] )
   total_price =  int(request.form['total_price']  )
   if ask_bank(creddit_card_number,cvc,exp_date):
     execute_transaction(creddit_card_number,cvc,exp_date, total_price)
     return "true"
   else: 
     return "false"
-
-
 
 
 

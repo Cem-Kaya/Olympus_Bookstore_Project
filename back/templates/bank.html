@@ -1,0 +1,34 @@
+<!doctype html>
+
+<head>
+    <title>Under</title>
+    <meta charset=utf-8>
+    <style>
+        table, th, td {
+           border: 1px solid black;
+        }
+     </style>
+</head>
+<body>
+{{data |safe }}
+
+<form action="/bank/submit" method="POST">
+    
+    <label for="creddit_card_number">creddit_card_number </label><br>
+    <input type="number" min = "0" id="creddit_card_number" name="creddit_card_number" value="-1"><br><br>
+
+    <label for="cvc"> cvc </label><br>
+    <input type="number" min = "0" id="cvc" name="cvc" value="-1"><br><br>
+    
+    <label for="exp_date"> exp_date </label><br>
+    <input type="number"  min = "0" id="date" name="date" value="-1"><br><br>
+    
+    <label for="total_price"> total_price </label><br>
+    <input type="number" min = "0" id="total_price" name="total_price" value="-1"><br><br>
+    
+
+    <br><br>
+        <button><a>Send</a></button><br>
+</form>
+
+</body>
