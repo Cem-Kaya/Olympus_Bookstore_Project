@@ -1,0 +1,30 @@
+<!doctype html>
+
+<head>
+    <title>Under</title>
+    <meta charset=utf-8>
+    <style>
+        table, th, td {
+           border: 1px solid black;
+        }
+     </style>
+</head>
+<body>
+{{data |safe }}
+
+<form action="/all_books_category_ranged/submit" method="POST">
+    
+    <label for="min"> min </label><br>
+    <input type="number" min = "0" id="min" name="min" value="-1"><br><br>
+
+    <label for="max"> max </label><br>
+    <input type="number" min = "0" id="max" name="max" value="-1" ><br><br>
+
+    <label for="Pcid"> Pcid </label><br>
+    <input type="number" min = "0" id="Pcid" name="Pcid" value="-1" ><br><br>
+
+    <br><br>
+        <button><a>Send</a></button><br>
+</form>
+
+</body>

@@ -120,7 +120,8 @@ class Comments(db.Model):
 
 class Buy_Dlist(db.Model):
   __tablename__ = "Buy_Dlist"
-  did = db.Column(db.Integer, primary_key=True, autoincrement=True)
+  delivery_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+  did = db.Column(db.Integer)
   quantity = db.Column(db.Integer)
   customer_email = db.Column(db.String(100), db.ForeignKey('Customers.email'), nullable = False)
   product_pid = db.Column(db.Integer, db.ForeignKey('Products.Pid'), nullable=False)

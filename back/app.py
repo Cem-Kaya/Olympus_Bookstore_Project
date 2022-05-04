@@ -1,7 +1,12 @@
+
+
 import json
+from unittest import skip
+import requests as req
 
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import null
 from sqlalchemy.orm import sessionmaker
 
 from DB_init_SQL import * 
@@ -39,11 +44,18 @@ def signupsubmit():
   email=request.form['email']
   homeadress=request.form['homeadress']
 
-  custumer__= Customers(name,pass_hash,email,homeadress)
-  db.session.add(custumer__)
-  db.session.commit()  
+  retjs ={}
+  if len(Customers.query.filter_by(email=email).all())!=0:
+    retjs["status"] = False
+    retjs["uid"] = None
+  else:    
+    custumer__= Customers(name,pass_hash,email,homeadress)
+    db.session.add(custumer__)
+    db.session.commit()  
+    retjs["status"] = True
+    retjs["uid"] = email
 
-  return render_template('success.html', data= name)
+  return json.dumps(retjs)
 
 
 
@@ -198,6 +210,57 @@ def get_all_books():
     jsonprd.append(tmp)  
   return json.dumps(jsonprd)
     
+
+@app.route('/all_books_ranged')
+def all_books_rangedd():
+  allproducts=Products.query.filter_by().all()
+  todata=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> </tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale) 
+  todata +="</table>"
+  
+  return render_template('all_books_ranged.html',data =todata )  #bunu degistirdim
+
+
+@app.route('/all_books_ranged/submit', methods=['POST'] )
+def get_all_books_ranged_sub():
+  min = int ( request.form['min'] ) 
+  max = int ( request.form['max'] ) 
+
+  allproducts=Products.query.filter_by().all()
+  jsonprd = []
+
+  for i,pr in enumerate(allproducts):
+    if i< min:
+      continue  
+    if i> max:
+      break
+    tmp={
+      "id": pr.Pid,
+      "img": pr.picture_url0,
+      "img1": pr.picture_url1,
+      "img2": pr.picture_url2,
+      "title": pr.name ,
+      "author": pr.author,
+      "raiting": pr.raiting,      
+      "publisher": pr.distributor_Information,
+      "price":  pr.price ,    
+      "amount_sold": pr.amount_sold ,
+      "release_date": str(pr.date),
+      "model": pr.model,
+      "edition_number": pr.edition_number,
+      "description": pr.description,
+      "in_stock": pr.quantity,
+      "warranty": pr.warranty,
+      "discount": str((1-pr.sale)*100)+"%",
+      "date": pr.date
+    }
+    jsonprd.append(tmp)  
+  return json.dumps(jsonprd)
+    
+
+
 
 @app.route('/login')
 def login():
@@ -408,9 +471,9 @@ def Wishessubmit():
 def Shopping_Cart():
   allproducts=Products.query.filter_by().all()
   todata=" <h3> Products </h3> " # <h1>A heading here</h1>
-  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> </tr> '
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th><th>quantity</th> </tr> '
   for i in allproducts:
-    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale) 
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td><td> {} </td></tr>".format(i.Pid,i.name,i.price,i.sale,i.quantity) 
   todata +="</table>"
   
   todata+="<h3>Customers </h3> "
@@ -628,6 +691,228 @@ def refundssubmit():
   return render_template('success.html', data= "")    
 
 
+@app.route('/check_stock/submit', methods=['POST'])
+def check_stock_sub():
+  Pid = request.form['Pid']
+  in_stock = Products.query.filter_by(Pid=Pid).all()
+  st={}
+  if(len(in_stock)==0 ):
+    st["status"] = False 
+    st["quantity"] = NULL 
+  else: 
+    st["status"] = True 
+    st["quantity"] = str(in_stock[0].quantity)
+  return json.dumps(st)
+
+@app.route('/check_stock')
+def check_stock():
+  url = 'http://127.0.0.1:5000/check_stock/submit'
+  myobj = {'Pid': '3'}
+  return req.post(url, data = myobj).text
+
+
+
+@app.route('/dec_stock/submit', methods=['POST'])
+def dec_stock_sub():
+  Pid = request.form['Pid']
+  quantity = int(request.form['quantity'])
+  in_stock = Products.query.filter_by(Pid=Pid).all()
+  st={}
+  if(len(in_stock)==0 ):
+    st["status"] = False 
+    st["quantity"] = NULL 
+  else:    
+    if(in_stock[0].quantity >=quantity):
+      db.session.query(Products)\
+       .filter(Products.Pid == Pid)\
+       .update({Products.quantity: Products.quantity - quantity})
+      db.session.commit()
+      st["status"] = True 
+      st["quantity"] = str(in_stock[0].quantity - quantity )
+    else:
+      st["status"] = False 
+      st["quantity"] = str(in_stock[0].quantity)    
+  return json.dumps(st)
+
+@app.route('/dec_stock')
+def dec_stock():
+  url = 'http://127.0.0.1:5000/dec_stock/submit'
+  myobj = {'Pid': '1' , "quantity" : "3" }
+  return req.post(url, data = myobj).text
+
+
+
+@app.route('/all_category')
+def all_Category():
+  js={}
+  allproductscats=Product_Category.query.filter_by().all()
+  for pc in allproductscats:
+    js[pc.Pcid]=pc.name
+  return json.dumps(js)
+
+
+@app.route('/all_books_category_ranged')
+def all_books_category_ranged():
+  allproducts=Products.query.filter_by().all() 
+  
+  todata=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> <th>categories</th> </tr> '
+  for i in allproducts:
+    allcategs = db.session.query(under).filter_by(Pid = i.Pid).all()
+    allcategsSTR = []
+    for j in allcategs:
+      allcategsSTR.append(int(j.Pcid))
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td></tr>".format(i.Pid,i.name,i.price,i.sale,allcategsSTR ) 
+  todata +="</table>"
+  
+  return render_template('all_books_category_ranged.html',data =todata )  #bunu degistirdim
+
+
+@app.route('/all_books_category_ranged/submit', methods=['POST'] )
+def all_books_category_ranged_sub():
+  min = int ( request.form['min'] ) 
+  max = int ( request.form['max'] ) 
+  Pcid = int(request.form['Pcid'] )
+  allproducts=Products.query.filter_by().all()
+  jsonprd = []
+  allUnders = db.session.query(under).all() 
+
+  catlist=[]
+  for i in allproducts:
+    for j in allUnders:
+      if j.Pcid== Pcid and j.Pid == i.Pid:
+        catlist.append(i)
+
+
+  for i,pr in enumerate(catlist): 
+
+    if i< min:
+      continue  
+    if i> max:
+      break
+    tmp={
+      "id": pr.Pid,
+      "img": pr.picture_url0,
+      "img1": pr.picture_url1,
+      "img2": pr.picture_url2,
+      "title": pr.name ,
+      "author": pr.author,
+      "raiting": pr.raiting,      
+      "publisher": pr.distributor_Information,
+      "price":  pr.price ,    
+      "amount_sold": pr.amount_sold ,
+      "release_date": str(pr.date),
+      "model": pr.model,
+      "edition_number": pr.edition_number,
+      "description": pr.description,
+      "in_stock": pr.quantity,
+      "warranty": pr.warranty,
+      "discount": str((1-pr.sale)*100)+"%",
+      "date": pr.date
+    }
+    jsonprd.append(tmp)  
+  return json.dumps(jsonprd)
+    
+
+@app.route('/remove_from_cart')
+def remove_from_cart():
+  todata= "<h3> Shopping_Cart </h3>"
+  todata+= "<table> <tr> <th> email </th> <th> Pid </th><th> Date </th><th> Quantity </th></tr> "
+  allShoppingCarts = db.session.query(shopping_cart).all()  # db.session.query(followers).filter(...).all()
+  for i in allShoppingCarts:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.email,i.Pid, i.date, i.quantity) 
+  todata +="</table>   "
+  return render_template('remove_from_cart.html',data =todata ) 
+
+  
+@app.route('/remove_from_cart/submit', methods=['POST'] )
+def remove_from_cart_sub():
+  email =  request.form['email'] 
+  Pid = int ( request.form['Pid'] )
+  quantity = int ( request.form['quantity'] )
+  if quantity > 0 :
+    allUnders = db.session.query(shopping_cart)\
+        .filter(shopping_cart.c.email == email ,shopping_cart.c.Pid == Pid )\
+          .update({shopping_cart.c.quantity:  quantity})
+    db.session.commit()
+  else:
+    allUnders = db.session.query(shopping_cart)\
+        .filter(shopping_cart.c.email == email ,shopping_cart.c.Pid == Pid )\
+          .delete()
+    db.session.commit()
+  return render_template('success.html',data ="" ) 
+
+@app.route('/to_purchase')
+def topurchase():
+
+  todata="<h3>Customers </h3> "
+  allCustomers=Customers.query.filter_by().all()
+  todata+= "<table> <tr> <th>email </th> <th>name </th> </tr> "
+  for i in allCustomers:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.email,i.name) 
+  todata +="</table>   "
+
+  allproducts=Products.query.filter_by().all()
+  todata+=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> </tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale) 
+  todata +="</table>"
+
+  allPurchased=Purchased.query.filter_by().all()
+  todata+=" <h3> Purchased </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>purcid </th> <th> price </th> <th>sale</th> <th>quantity</th><th>shipment</th> </tr> '
+  for i in allPurchased:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td></tr>".format(i.purcid,i.price,i.sale,i.quantity,i.shipment) 
+  todata +="</table>"
+  
+  todata+= "<h3> buy_dlist </h3>"
+  todata+= "<table> <tr> <th> did </th> <th> email </th><th> pid </th><th> Quantity </th><th> Date </th></tr> "
+  allShoppingCarts = db.session.query(Buy_Dlist).all()  # db.session.query(followers).filter(...).all()
+  for i in allShoppingCarts:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.did, i.customer_email,i.product_pid,i.quantity, i.date ) 
+  todata +="</table> "
+
+  
+  return render_template('to_purchase.html',data =todata ) 
+
+
+@app.route('/getnextdid')
+def gettingnextdid():
+  allbuy_dlists = db.session.query(Buy_Dlist).all()
+  didvalues = []
+  if(len(allbuy_dlists) == 0):
+    return "1"
+  for i in allbuy_dlists:
+    didvalues.append(i.did)
+  maxDid=max(didvalues)
+  return str(maxDid)
+  
+
+
+def ask_bank(creddit_card_number,cvc,exp_date):
+  return True
+def execute_transaction(creddit_card_number,cvc,exp_date, total_price):
+  return True
+
+@app.route('/bank',methods=['POST'] )
+def bank():
+  creddit_card_number =  int(request.form['creddit_card_number'] )
+  cvc = int ( request.form['cvc'] )
+  exp_date =  request.form['exp_date'] 
+  total_price =  int(request.form['total_price']  )
+  if ask_bank(creddit_card_number,cvc,exp_date):
+    execute_transaction(creddit_card_number,cvc,exp_date, total_price)
+    return "true"
+  else: 
+    return "false"
+
+
+
+
+
+
+#################################################
 if __name__ == '__main__':  #python interpreter assigns "__main__" to the file you run
   db.create_all()
   app.run(debug=True)

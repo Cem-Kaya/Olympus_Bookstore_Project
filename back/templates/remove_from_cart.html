@@ -1,0 +1,30 @@
+<!doctype html>
+
+<head>
+    <title>Under</title>
+    <meta charset=utf-8>
+    <style>
+        table, th, td {
+           border: 1px solid black;
+        }
+     </style>
+</head>
+<body>
+{{data |safe }}
+
+<form action="/remove_from_cart/submit" method="POST">
+    
+    <label for="email"> email </label><br>
+    <input type="text"  id="email" name="email" value="-1"><br><br>
+
+    <label for="Pid"> Pid </label><br>
+    <input type="number" min = "0" id="Pid" name="Pid" value="-1" ><br><br>
+
+    <label for="quantity"> quantity </label><br>
+    <input type="number" min = "0" id="quantity" name="quantity" value="-1" ><br><br>
+
+    <br><br>
+        <button><a>Send</a></button><br>
+</form>
+
+</body>
