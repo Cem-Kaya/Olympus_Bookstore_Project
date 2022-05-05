@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form action="/login/submit" method="POST">
+<form id="myForm" >
     
     <label for="email">email </label><br>
     <input type="text" id="email" name="email"><br><br>
@@ -18,4 +18,11 @@
         <button><a>Send</a></button><br>
 </form>
 
+  <form class="results" action="/signup/submit" method="POST">
+    <p class="result-json-output"></p>
+    <button><a>Send</a></button><br>
+  </form>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="./templates/form-to-json.js"></script>
+  <script src="./templates/script.js"></script>
 </body>

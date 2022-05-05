@@ -31,6 +31,136 @@ db=SQLAlchemy(app)
 def index():
   return render_template('index.html')
 
+
+@app.route('/super_secret_all_tables_panel')
+def alltables():
+  todata = "<h2> ENTITIES</h2>"
+  todata +="<h3>Customers </h3> "
+  allCustomers=Customers.query.filter_by().all()
+  todata+= "<table> <tr> <th>email </th> <th>name </th> </tr> "
+  for i in allCustomers:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.email,i.name) 
+  todata +="</table>   "
+
+  todata+="<h3> Product Manager </h3> "
+  allproductmanags=Product_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Pcid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allproductmanags:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Pmid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  allproducts=Products.query.filter_by().all()
+  todata+=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> </tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale) 
+  todata +="</table>"
+
+  todata+="<h3> Product Category </h3> "
+  allproductscats=Product_Category.query.filter_by().all()
+  todata+= "<table> <tr> <th>pcid </th> <th>name </th> </tr> "
+  for i in allproductscats:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Pcid,i.name) 
+  todata +="</table>   "
+
+  todata+="<h3> Sales Manager </h3> "
+  allsalesmanag=Sales_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Sid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allsalesmanag:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Sid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  allPurchased=Purchased.query.filter_by().all()
+  todata+=" <h3> Purchased </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>purcid </th> <th> price </th> <th>sale</th> <th>quantity</th><th>shipment</th> </tr> '
+  for i in allPurchased:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td></tr>".format(i.purcid,i.price,i.sale,i.quantity,i.shipment) 
+  todata +="</table>"
+
+  todata+= "<h3> Comment </h3>"
+  todata+= "<table> <tr> <th> cid </th> <th> stars </th><th> text </th></tr> "
+  allComments = db.session.query(Comment).all()  # db.session.query(followers).filter(...).all()
+  for i in allComments:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.cid, i.stars ,i.text) 
+  todata +="</table>   "
+
+  todata+= "<h2> RELATIONSHIPS </h2>"
+
+  todata+= "<h3> Under </h3>"
+  todata+= "<table> <tr> <th> Pcid </th> <th> Pid </th> </tr> "
+  allUnders = db.session.query(under).all()  # db.session.query(followers).filter(...).all()
+  for i in allUnders:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Pcid,i.Pid) 
+  todata +="</table>   "
+
+  todata+= "<h3> change_price  </h3>"
+  todata+= "<table> <tr> <th> Sid </th> <th> Pid </th> </tr> "
+  allUnders = db.session.query(change_price).all()  # db.session.query(followers).filter(...).all()
+  for i in allUnders:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Sid, i.Pid) 
+  todata +="</table>   "
+
+  todata+= "<h3> buy_dlist </h3>"
+  todata+= "<table> <tr> <th> did </th> <th> email </th><th> pid </th><th> Quantity </th><th> Purcid </th><th> Date </th></tr> "
+  allShoppingCarts = db.session.query(Buy_Dlist).all()  # db.session.query(followers).filter(...).all()
+  for i in allShoppingCarts:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.did, i.customer_email,i.product_pid,i.quantity,i.purchased_purcid, i.date ) 
+  todata +="</table> "  
+
+  todata+= "<h3> Manages  </h3>"
+  todata+= "<table> <tr> <th> Pid </th> <th> Pmid </th> </tr> "
+  allUnders = db.session.query(manages).all()  # db.session.query(followers).filter(...).all()
+  for i in allUnders:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Pid,i.Pmid) 
+  todata +="</table>   "
+  
+
+  todata+= "<h3> Approval </h3>"
+  todata+= "<table> <tr> <th> Pmid </th> <th> cid </th><th> approved </th></tr> "
+  allCommentapp = db.session.query(approval).all()  # db.session.query(followers).filter(...).all()
+  for i in allCommentapp:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Pmid,i.cid, i.approved) 
+  todata +="</table>   "
+
+  todata+= "<h3> Refunds </h3>"
+  todata+= "<table> <tr> <th> id </th> <th> customer_email </th><th> purchased_purcid </th><th> sales_manager_id </th><th> refund_state </th><th> date </th></tr> "
+  allrefunds = db.session.query(Refunds).all()  # db.session.query(followers).filter(...).all()
+  for i in allrefunds:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></td><td>{}</td><td>{}</td></tr>".format(i.id, i.customer_email, i.purchased_purcid, i.sales_manager_id, i.refund_state, i.date) 
+  todata +="</table>   " 
+
+  todata+= "<h3> Manages_category  </h3>"
+  todata+= "<table> <tr> <th> Pcid </th> <th> Pmid </th> </tr> "
+  allUnders = db.session.query(manages_category).all()  # db.session.query(followers).filter(...).all()
+  for i in allUnders:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Pcid,i.Pmid) 
+  todata +="</table>   "  
+
+  todata+= "<h3> Wishes </h3>"
+  todata+= "<table> <tr> <th> email </th> <th> Pid </th><th> Date </th></tr> "
+  allUnders = db.session.query(wishes).all()  # db.session.query(followers).filter(...).all()
+  for i in allUnders:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.email,i.Pid, i.date) 
+  todata +="</table>   "
+
+  todata+= "<h3> Shopping_Cart </h3>"
+  todata+= "<table> <tr> <th> email </th> <th> Pid </th><th> Date </th><th> Quantity </th></tr> "
+  allShoppingCarts = db.session.query(shopping_cart).all()  # db.session.query(followers).filter(...).all()
+  for i in allShoppingCarts:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.email,i.Pid, i.date, i.quantity) 
+  todata +="</table>   "  
+
+  todata+= "<h3> Comments </h3>"
+  todata+= "<table> <tr> <th> email </th> <th> Pid </th><th> cid </th><th> date </th></tr> "
+  allCommentsR = db.session.query(Comments).all()  # db.session.query(followers).filter(...).all()
+  for i in allCommentsR:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.customer_email, i.comment_id, i.product_pid, i.date) 
+  todata +="</table>   "  
+
+  return render_template('super_secret_all_tables_panel.html', data=todata)  
+
+
+
 @app.route('/signup')
 def signup():
   return render_template('signup.html')  
@@ -39,11 +169,13 @@ def signup():
 
 @app.route('/signup/submit', methods=['POST'])
 def signupsubmit():
-  
-  name= request.form['name']
-  pass_hash=request.form['pass_hash']
-  email=request.form['email']
-  homeadress=request.form['homeadress']
+  data2 = request.get_json()
+
+  print(request.get_data())
+  name= data2['name']
+  pass_hash=data2['pass_hash']
+  email=data2['email']
+  homeadress=data2['homeadress']
 
   retjs ={}
   if len(Customers.query.filter_by(email=email).all())!=0:
@@ -260,7 +392,13 @@ def get_all_books_ranged_sub():
     jsonprd.append(tmp)  
   return json.dumps(jsonprd)
     
+@app.route('/templates/script.js')
+def scriptjs():    
+  return render_template("script.js")
 
+@app.route('/templates/form-to-json.js')
+def scriptformtojs():    
+  return render_template("form-to-json.js")
 
 
 @app.route('/login')
@@ -268,11 +406,14 @@ def login():
   return render_template('login.html')  
 
 
-@app.route('/login/submit', methods=['POST'])
+@app.route('/login/submit', methods=['POST'] , strict_slashes=False )
 def loginsubmit():
+  data2 = request.get_json()
   print(request.get_data())
-  in_email=request.form['email']
-  in_pass_hash=request.form['pass_hash']
+  #in_email=request.form['email']
+  in_email=data2['email']
+  in_pass_hash=data2['pass_hash']
+  #in_pass_hash=request.form['pass_hash']
   ret=Customers.query.filter_by(email=in_email).all()
   reterned= {}
   if len(ret)!=1:
