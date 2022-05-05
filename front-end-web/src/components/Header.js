@@ -71,12 +71,14 @@ const Header = ({itemsInCart, onAddToCart, onRemoveFromCart, addToCartAllowed}) 
 
   useEffect(() => {
     if(itemsInCart !== undefined) {setCartItems(itemsInCart)}
-    else{setCartItems(JSON.parse(window.localStorage.getItem('cart_items')));}
+    else{
+      setCartItems(JSON.parse(window.localStorage.getItem('cart_items')));
+    }
   }, [itemsInCart]);
 
   useEffect(() => {
+    if(cartItems === null)  {setCartItems([])}
     if(itemsInCart === undefined){
-      if(cartItems === null)  {setCartItems([])}
       window.localStorage.setItem('cart_items', JSON.stringify(cartItems))
     }
   }, [cartItems, itemsInCart]);
