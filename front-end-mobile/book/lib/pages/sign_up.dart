@@ -3,6 +3,7 @@ import 'package:bookstore/utils/dimensions.dart';
 import 'package:bookstore/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import "package:http/http.dart" as http;
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -14,10 +15,20 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
   String name = "";
-  String sur = "";
+  String adress = "";
   String mail = "";
   String pass = "";
+postlog(String name,String email,String pass,String add) async{
+  var response =await http.post(Uri.parse("http://10.0.2.2:5000/signup"),
+  body:{
+    "name":name,
+    "email":email,
+    "pass_hash":pass,
+    "homeadress":add,
 
+  });
+  print(response.body);
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +100,7 @@ class _SignUpState extends State<SignUp> {
                           decoration: InputDecoration(
                             fillColor: AppColors.DarkTextColor,
                             filled: true,
-                            hintText: "Surname",
+                            hintText: "Adress",
                             hintStyle: kButtonLightTextStyle,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -113,7 +124,8 @@ class _SignUpState extends State<SignUp> {
                           },
                           onSaved: (value) {
                             if (value != null) {
-                              sur = value;
+                              adress = value;
+
                             }
                           }),
                     ),
@@ -223,10 +235,15 @@ class _SignUpState extends State<SignUp> {
                     Expanded(
                       flex: 1,
                       child: OutlinedButton(
-                        onPressed: () {
+                        onPressed: () async{
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
+                            print("aaaaa");
+                            print("$name, $mail, $pass, $adress");
+                            postlog(name, mail, pass, adress);
+
                           }
+                          
                         },
                         child: Padding(
                           padding: Dimen.smallPadding,

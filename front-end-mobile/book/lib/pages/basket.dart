@@ -1,3 +1,4 @@
+import 'package:bookstore/pages/mockup_payment.dart';
 import 'package:bookstore/services/basket_data.dart';
 import 'package:bookstore/views/one_basket_item.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,13 @@ class _BasketPageState extends State<BasketPage> {
               ),
             ),
           ),
-          Text("$s")
+          TextButton(onPressed: (){
+            /*Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => mockup(
+
+                  sum: sum,
+                )));*/
+          }, child: Text("$sum is"))
         ],
       ),
     );
