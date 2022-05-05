@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:bookstore/views/action_bar.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
@@ -77,7 +78,13 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     Function addBasket = Provider.of<Basket>(context).add_basket;
     Size size = MediaQuery.of(context).size;
-
+    //sleep(Duration(milliseconds:50)); // it is for debugging
+    if (_product == null) {
+      allBooks();
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return Scaffold(
       body: Stack(
         children: [

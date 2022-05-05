@@ -17,35 +17,33 @@ class search_page extends StatefulWidget {
   _search_pageState createState() => _search_pageState();
 }
 
-
 class _search_pageState extends State<search_page> {
   static final _categories = [
-    "TextBook   ",
+    "Text Book   ",
     "Novel Drama",
     "Poerty     ",
     "Drama      ",
     "Classics   "
   ];
-  List<String>  _ordering=[
+  List<String> _ordering = [
+    "All",
     "Time",
     "Name",
     "Selling Amount",
     "Stars",
-
-
-
   ];
-  String selected="Time";
+  String selected = "All";
 
-  String my_search="";
+  String my_search = "";
+
   void initState() {
     super.initState();
-        () async {
+    () async {
       await allBooks();
       setState(() {
         // Update your UI with the desired changes.
       });
-      my_search=widget.search;
+      my_search = widget.search;
       getProduct();
     }();
 
@@ -71,21 +69,27 @@ class _search_pageState extends State<search_page> {
     }
   }
 
-  var list;
+  List<PreviewBooks>? list;
+  bool ascending = false;
 
   Future<void> getProduct() async {
-      List<PreviewBooks>? search_title =await
-    items?.where((element) => element.title!.toLowerCase().contains(my_search.toLowerCase())).toList();
-      List<PreviewBooks>? search_des =await
-      items?.where((element) => element.description!.toLowerCase().contains(my_search.toLowerCase())).toList();
-      //var exclusion = search_title?.except(search_des!);       // [1, 2]
-      //var intersection = search_title?.intersect(search_des!); // [3, 4]
-      var union = search_title?.union(search_des!);
-      list = union;
-      print(list);
-      for (var i in list){
-        print(i.title);
-      }
+    List<PreviewBooks>? search_title = await items
+        ?.where((element) =>
+            element.title!.toLowerCase().contains(my_search.toLowerCase()))
+        .toList();
+    List<PreviewBooks>? search_des = await items
+        ?.where((element) => element.description!
+            .toLowerCase()
+            .contains(my_search.toLowerCase()))
+        .toList();
+    //var exclusion = search_title?.except(search_des!);       // [1, 2]
+    //var intersection = search_title?.intersect(search_des!); // [3, 4]
+    var union = search_title?.union(search_des!);
+    list = union as List<PreviewBooks>?;
+    print(list);
+    for (var i in list!) {
+      print(i.title);
+    }
     //print(_product?.title);
   }
 
@@ -116,28 +120,39 @@ class _search_pageState extends State<search_page> {
     //print(wanted.title);
   }*/
   @override
-
   Widget build(BuildContext context) {
-    int len=list?.length ?? 0;
+    int len = list?.length ?? 0;
     //print(items[0].title);
     //getProduct();
+    if (items == null) {
+      allBooks();
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return Scaffold(
       appBar: ActionBar(),
       body: SingleChildScrollView(
-
         child: Column(
-          children: [Row(children: [
-            Expanded(child: TextFormField(
-              onChanged: (value) { setState(() { my_search = value; }); },
-            )),
-            IconButton(onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => search_page(
-
-                    search: my_search,
-                  )));
-            }, icon: Icon(Icons.search))
-          ]),
+          children: [
+            Row(children: [
+              SizedBox(width: 5,),
+              Expanded(child: TextFormField(
+                onChanged: (value) {
+                  setState(() {
+                    my_search = value;
+                  });
+                },
+              )),
+              IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => search_page(
+                              search: my_search,
+                            )));
+                  },
+                  icon: Icon(Icons.search))
+            ]),
             SizedBox(
               height: 60,
               child: ListView(
@@ -155,36 +170,65 @@ class _search_pageState extends State<search_page> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [DropdownButton<String>(
-    value: selected,
-    icon: const Icon(Icons.arrow_downward),
-    elevation: 16,
-    style: const TextStyle(color: Colors.deepPurple),
-    underline: Container(
-    height: 2,
-    color: Colors.deepPurpleAccent,
-    ),
-    onChanged: (String? newValue) {
-    setState(() {
-    selected = newValue!;
-    if(selected=="Name"){
-      list =list.sort((a, b) => a["title"].compareTo(b["title"]));
-    }
-    //if(selected =="Name"){
-      //list.sort((a, b) => a.title.compareTo(b.title));;
-      //for(var i in list){
-        //print(list.title);}}
-    });
-    },
-    items: <String>['Time', 'Most Seller', 'Rating', 'Name']
-        .map<DropdownMenuItem<String>>((String value) {
-    return DropdownMenuItem<String>(
-    value: value,
-    child: Text(value),
-    );
-    }).toList(),),
-
-  ],
+              children: [
+                DropdownButton<String>(
+                  value: selected,
+                  icon: const Icon(Icons.arrow_downward),
+                  elevation: 16,
+                  style: const TextStyle(color: Colors.deepPurple),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                  onChanged: (String? newValue) { //ascending does not work, no update on products
+                    setState(() {
+                      list = items as List<PreviewBooks>;
+                      selected = newValue!;
+                      if (selected == "Name") {
+                        if (ascending){
+                          list!.sort((a, b) => a.title!.compareTo(b.title!));
+                        }
+                        else {
+                          list!.sort((b, a) => a.title!.compareTo(b.title!));
+                        }
+                      }
+                      else if (selected == "Release Date") {
+                        list!.sort((a, b) => a.releaseDate!.compareTo(b.releaseDate!));
+                      }
+                      else if (selected == "Rating") {
+                        list!.sort((b, a) => a.raiting!.compareTo(b.raiting!));
+                      }
+                      else if (selected == "Most Sold") {
+                        list!.sort((b, a) => a.amountSold!.compareTo(b.amountSold!));
+                      }
+                      else {
+                        list!.sort((a, b) => a.id!.compareTo(b.id!));
+                      }
+                      //if(selected =="Name"){
+                      //list.sort((a, b) => a.title.compareTo(b.title));;
+                      //for(var i in list){
+                      //print(list.title);}}
+                    });
+                  },
+                  items: <String>['All','Name', 'Release Date', 'Rating', 'Most Sold']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+                IconButton(onPressed: (){
+                  setState(() {
+                    if (ascending){
+                      ascending = false;
+                    }
+                    else {
+                      ascending = true;
+                    }
+                  });
+                }, icon: Icon(Icons.arrow_circle_down)),
+              ],
             ),
             SizedBox(
               child: Padding(
@@ -192,21 +236,23 @@ class _search_pageState extends State<search_page> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                  Expanded(
-                    flex: 1,
-
-                    child: Container(
-                      child: Wrap(
-                          alignment: WrapAlignment.spaceAround,
-                        children:<Widget> [for(var i in list)Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: ProductPreview(product: i),
-
-                        ),]
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        child: Wrap(
+                            alignment: WrapAlignment.spaceAround,
+                            children: <Widget>[
+                              for (var i in items!)
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: ProductPreview(product: i),
+                                ),
+                            ]),
                       ),
-                    ),
-                  )
-                ],),
+                    )
+                  ],
+                ),
               ),
             ),
           ],

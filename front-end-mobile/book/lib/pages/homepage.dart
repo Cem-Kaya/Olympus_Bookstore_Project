@@ -65,6 +65,12 @@ class _HomePageState extends State<HomePage> {
   @override
   String _search="";
   Widget build(BuildContext context) {
+    if (items == null) {
+      allBooks();
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return Scaffold(
       drawer: nav_draw(),
       appBar: ActionBar(),
@@ -111,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                             ProductPreview(
                               product: items[index],
                             ),
-                            SizedBox(width: 8)
+                            SizedBox(width: 8),
                           ])),
                 ),
               ),
