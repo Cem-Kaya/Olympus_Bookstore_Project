@@ -101,17 +101,23 @@ export const Signup = ({ onSignUp }) => {
 		homeAddress = val
 	}
   const checkAndSubmit = () => {
-    if(email === "" || password === "" || firstName === "" || lastName === "" || homeAddress === "")
-    {
+    if(email === "" || password === "" || firstName === "" || lastName === "" || homeAddress === ""){
       console.log("empty string")
     }
-    else{
-      //encrypt password
-      console.log("ssssss")
+    else if(confirmPassword !== password){
+      console.log("passwords do not change")
+    }
+    else if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
+    {
+      const sha2_256 = require('simple-js-sha2-256')
+      password = sha2_256(password)
       let name = firstName.trim() + " " + lastName.trim()
+      console.log(name, email, password, homeAddress)
       onSignUp(name, email, password, homeAddress)
     }
-    //else if --> some controls
+    else{
+      console.log("not an email address")
+    }
   }
   return (
     <Wrapper>

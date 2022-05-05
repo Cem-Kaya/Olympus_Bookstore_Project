@@ -78,10 +78,15 @@ const Signin = ({ onLogin }) => {
     if(email === "" || password === ""){
       console.log("empty string")
     }
-    //else if --> some controls
-    else{
-      //encrypt password
+    else if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
+    {
+      const sha2_256 = require('simple-js-sha2-256')
+      password = sha2_256(password)
+      console.log(email, password)
       onLogin(email, password)
+    }
+    else{
+      console.log("not an email address")
     }
   }
   

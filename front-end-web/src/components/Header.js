@@ -66,11 +66,13 @@ const Header = ({itemsInCart, onAddToCart, onRemoveFromCart, addToCartAllowed}) 
 
   const [cartItems, setCartItems] = useState([]);
   const [dropDownOpen, setdropDownOpen] = useState(false);
+  const [dropDownOpenAccount, setDropDownOpenAccount] = useState(false)
+  const [loginStatus, setLoginStatus] = useState(false)
   const [title, setTitle] = useState("");
   const [selection, setSelection] = useState("");
 
   useEffect(() => {
-    if(itemsInCart !== undefined || itemsInCart !== null) {
+    if(itemsInCart !== undefined && itemsInCart !== null) {
       setCartItems(itemsInCart)
     }
     else if(JSON.parse(window.localStorage.getItem('cart_items')) === null){
@@ -82,6 +84,13 @@ const Header = ({itemsInCart, onAddToCart, onRemoveFromCart, addToCartAllowed}) 
   }, [itemsInCart]);
 
   useEffect(() => {
+    if(JSON.parse(window.localStorage.getItem('logged_in')) !== null && 
+        JSON.parse(window.localStorage.getItem('logged_in')) === true){
+      setLoginStatus(true)
+    }
+  }, []);
+
+  useEffect(() => {
     if(cartItems === null)  {setCartItems([])}
     if(itemsInCart === undefined){
       window.localStorage.setItem('cart_items', JSON.stringify(cartItems))
@@ -90,6 +99,10 @@ const Header = ({itemsInCart, onAddToCart, onRemoveFromCart, addToCartAllowed}) 
 
   const handleDropdownOpen = () => {
     setdropDownOpen(!dropDownOpen);
+  };
+
+  const handleDropdownOpenAccount = () => {
+    setDropDownOpenAccount(!dropDownOpenAccount);
   };
 
   const searchButtonClicked = () => {
@@ -130,6 +143,12 @@ const Header = ({itemsInCart, onAddToCart, onRemoveFromCart, addToCartAllowed}) 
     }
   }
 
+  const logOut = () => {
+    window.localStorage.setItem('logged_in', JSON.stringify(false))
+    window.localStorage.setItem('user_id', JSON.stringify(""))
+    setLoginStatus(false)
+  }
+
   return (
     <HeaderDark>
         <Container>
@@ -149,10 +168,36 @@ const Header = ({itemsInCart, onAddToCart, onRemoveFromCart, addToCartAllowed}) 
               <input type="text" className="form-control" placeholder="Search..." aria-label="Text input with dropdown button" onChange={event => setTitle(event.target.value)} onKeyDown={e => e.key === 'Enter' && searchButtonClicked()}/>
             </div>
             <RightContainer>
-              <button className='buttonStyle' onClick={() =>{history('/Login')}}>
-                Log In/Sign Up
-                <AccountCircle/>
-              </button>
+              {
+                loginStatus ? 
+                <Dropdown>
+                  <button className='buttonStyle' onClick={() =>{handleDropdownOpenAccount()}}>
+                    {JSON.parse(window.localStorage.getItem('user_id'))}
+                    <AccountCircle/>
+                  </button>
+                  {dropDownOpenAccount && (<div className="dropdown">
+                      <ul>
+                        <li>
+                          <DropDownItem>  
+                            <button className='buttonStyle' onClick={() =>{history('/Account')}}>
+                              Go to Account Page
+                            </button>
+                          </DropDownItem>
+                          <DropDownItem>  
+                            <button className='buttonStyle' onClick={() =>{logOut()}}>
+                              Log Out
+                            </button>
+                          </DropDownItem>
+                        </li>
+                      </ul>
+                  </div>)}
+              </Dropdown>
+                :
+                <button className='buttonStyle' onClick={() =>{history('/Login')}}>
+                  Log In/Sign Up
+                  <AccountCircle/>
+                </button>
+              }
               <button className='buttonStyle' onClick={() =>{history('/WishList')}}>
                 Wish List
                 <FavoriteBorderOutlined/>
