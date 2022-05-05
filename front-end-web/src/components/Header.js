@@ -70,7 +70,12 @@ const Header = ({itemsInCart, onAddToCart, onRemoveFromCart, addToCartAllowed}) 
   const [selection, setSelection] = useState("");
 
   useEffect(() => {
-    if(itemsInCart !== undefined) {setCartItems(itemsInCart)}
+    if(itemsInCart !== undefined || itemsInCart !== null) {
+      setCartItems(itemsInCart)
+    }
+    else if(JSON.parse(window.localStorage.getItem('cart_items')) === null){
+      setCartItems([])
+    }
     else{
       setCartItems(JSON.parse(window.localStorage.getItem('cart_items')));
     }

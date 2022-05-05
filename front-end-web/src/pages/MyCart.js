@@ -16,7 +16,12 @@ const MyCart = ({params}) => {
   //console.log(itemList)
 
   useEffect(() => {
-    setItems(JSON.parse(window.localStorage.getItem('cart_items')));
+    if(JSON.parse(window.localStorage.getItem('cart_items')) === null){
+      setItems([])
+    }
+    else{
+      setItems(JSON.parse(window.localStorage.getItem('cart_items')))
+    }
   }, [/*itemList*/]);
 
   useEffect(() => {

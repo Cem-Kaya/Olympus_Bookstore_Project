@@ -10,7 +10,12 @@ const Main = () => {
   const [cartItems, setCartItems] = useState([]);
   
   useEffect(() => {
-    setCartItems(JSON.parse(window.localStorage.getItem('cart_items')));
+    if(JSON.parse(window.localStorage.getItem('cart_items')) === null){
+      setCartItems([])
+    }
+    else{
+      setCartItems(JSON.parse(window.localStorage.getItem('cart_items')))
+    }
   }, []);
   
   useEffect(() => {
