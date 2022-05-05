@@ -6,7 +6,7 @@ import requests as req
 from flask_cors import CORS
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import null
+
 from sqlalchemy.orm import sessionmaker
 
 from DB_init_SQL import * 
@@ -167,10 +167,10 @@ def signup():
 
 
 
-@app.route('/signup/submit', methods=['POST'])
+@app.route('/signup/submit', methods=['POST'],  strict_slashes=False)
 def signupsubmit():
-  data2 = request.get_json()
-
+  
+  data2 = json.loads(request.get_data())
   print(request.get_data())
   name= data2['name']
   pass_hash=data2['pass_hash']
@@ -197,10 +197,12 @@ def signupsubmit():
 def Product_manager_reg():
   return render_template('Product_manager_reg.html')  
 
-@app.route('/Product_manager_reg/submit', methods=['POST'])
-def Product_manager_regsubmit():  
-  name= request.form['name']
-  pass_hash=request.form['pass_hash']
+@app.route('/Product_manager_reg/submit', methods=['POST'], strict_slashes=False)
+def Product_manager_regsubmit(): 
+  data2 = json.loads(request.get_data())
+  print(request.get_data())
+  name= data2['name']
+  pass_hash=data2['pass_hash']
 
   PM__= Product_Manager(name=name,pass_hash=pass_hash)
   db.session.add(PM__)
@@ -215,23 +217,26 @@ def Product_manager_regsubmit():
 def Products_reg():
   return render_template('Products_reg.html')
             
-@app.route('/Products_reg/submit', methods=['POST'])
+@app.route('/Products_reg/submit', methods=['POST'], strict_slashes=False)
 def Prsubmit():  
-  name=request.form['name']
-  model=request.form['model']
-  description=request.form['description']
-  edition_number=request.form['edition_number']
-  quantity =request.form['quantity']
-  amount_sold = request.form['amount_sold']
-  price =request.form['price']
-  raiting=request.form['raiting']
-  author = request.form['author']
-  warranty=request.form['warranty']
-  distributor_Information =request.form['distributor_Information']
-  sale=request.form['sale']
-  picture_url0=request.form['picture_url0']
-  picture_url1=request.form['picture_url1']
-  picture_url2=request.form['picture_url2']
+
+  data2 = json.loads(request.get_data())
+  print(request.get_data())
+  name= data2['name']
+  model=data2['model']
+  description=data2['description']
+  edition_number=data2['edition_number']
+  quantity= data2['quantity']
+  amount_sold=data2['amount_sold']
+  price=data2['price']
+  raiting=data2['raiting']
+  author = data2['author']
+  warranty=data2['warranty']
+  distributor_Information =data2['distributor_Information']
+  sale=data2['sale']
+  picture_url0=data2['picture_url0']
+  picture_url1=data2['picture_url1']
+  picture_url2=data2['picture_url2']
 
   products__ = Products(name,model,description,edition_number
               ,quantity, amount_sold, price, raiting, warranty, distributor_Information, author, sale,
@@ -247,10 +252,12 @@ def Prsubmit():
 def comment_reg():
   return render_template('comment_reg.html')  
             
-@app.route('/comment_reg/submit', methods=['POST'])
+@app.route('/comment_reg/submit', methods=['POST'],  strict_slashes=False)
 def comment_regsubmit():  
-  text=request.form['text']
-  stars=request.form['stars']
+  data2 = json.loads(request.get_data())
+  print(request.get_data())
+  text=data2['text']
+  stars=data2['stars']
   comment__ = Comment(text,stars)
   db.session.add(comment__)
   db.session.commit() 
@@ -262,11 +269,12 @@ def comment_regsubmit():
 def Sales_manager_reg():
   return render_template('Sales_manager_reg.html')  
             
-@app.route('/Sales_manager_reg/submit', methods=['POST'])
+@app.route('/Sales_manager_reg/submit', methods=['POST'], strict_slashes=False)
 def Sales_manager_regsubmit():
-  
-  name= request.form['name']
-  pass_hash=request.form['pass_hash']
+  data2 = json.loads(request.get_data())
+  print(request.get_data())
+  name= data2['name']
+  pass_hash=data2['pass_hash']
 
   Sales_manager = Sales_Manager(name,pass_hash)
   db.session.add(Sales_manager)
@@ -280,9 +288,11 @@ def Sales_manager_regsubmit():
 def Prc():
   return render_template('Product_Catogary_reg.html')  
             
-@app.route('/Product_Catogary_reg/submit', methods=['POST'])
+@app.route('/Product_Catogary_reg/submit', methods=['POST'], strict_slashes=False)
 def Prcsubmit():  
-  name=request.form['name']
+  data2 = json.loads(request.get_data())
+  print(request.get_data())
+  name= data2['name']
   PC__ = Product_Category(name)
   db.session.add(PC__)
   db.session.commit() 
@@ -299,12 +309,14 @@ def Purchasedd():
 
   return render_template('purchased.html',data=todata)  
             
-@app.route('/purchased/submit', methods=['POST'])
+@app.route('/purchased/submit', methods=['POST'], strict_slashes=False)
 def Purchasedsubmit():  
-  price=request.form['price']
-  sale=request.form['sale']
-  quantity=request.form['quantity']
-  shipment=request.form['shipment']
+  data2 = json.loads(request.get_data())
+  print(request.get_data())
+  price=data2['price']
+  sale=data2['sale']
+  quantity=data2['quantity']
+  shipment=data2['shipment']
   PC__ = Purchased(price=price, sale=sale, quantity=quantity,shipment=shipment)
   db.session.add(PC__)
   db.session.commit() 
@@ -356,10 +368,12 @@ def all_books_rangedd():
   return render_template('all_books_ranged.html',data =todata )  #bunu degistirdim
 
 
-@app.route('/all_books_ranged/submit', methods=['POST'] )
+@app.route('/all_books_ranged/submit', methods=['POST'], strict_slashes=False )
 def get_all_books_ranged_sub():
-  min = int ( request.form['min'] ) 
-  max = int ( request.form['max'] ) 
+  data2 = json.loads(request.get_data())
+  print(request.get_data()) 
+  min = int ( data2['min'] ) 
+  max = int ( data2['max'] ) 
 
   allproducts=Products.query.filter_by().all()
   jsonprd = []
@@ -405,7 +419,7 @@ def login():
   return render_template('login.html')  
 
 
-@app.route('/login/submit_test', methods=['POST']  )
+@app.route('/login/submit_test', methods=['POST'], strict_slashes=False  )
 def loginsubmit_test():
   url = 'http://127.0.0.1:5000/login/submit'
   myobj = {'email': request.form['email'] , 
@@ -471,10 +485,13 @@ def Under():
   return render_template('Under.html',data =todata )  #bunu degistirdim
 
 
-@app.route('/Under/submit', methods=['POST'])
+@app.route('/Under/submit', methods=['POST'], strict_slashes=False)
 def Undersubmit():
-  Pid=request.form['Pid']
-  Pcid=request.form['Pcid']
+
+  data2 = json.loads(request.get_data())
+  print(request.get_data()) 
+  Pid=data2['Pid']
+  Pcid=data2['Pcid']
   statement = under.insert().values(Pid=Pid, Pcid=Pcid)
   db.session.execute(statement)
   db.session.commit()
@@ -506,10 +523,12 @@ def Managescategory():
   return render_template('Manages_category.html',data =todata )  #bunu degistirdim
 
 
-@app.route('/Manages_category/submit', methods=['POST'])
+@app.route('/Manages_category/submit', methods=['POST'], strict_slashes=False)
 def Manages_categorysubmit():
-  Pcid=request.form['Pcid']
-  Pmid=request.form['Pmid']
+  data2 = json.loads(request.get_data())
+  print(request.get_data()) 
+  Pcid=data2['Pcid']  
+  Pmid=data2['Pmid']
   statement = manages_category.insert().values(Pmid=Pmid, Pcid=Pcid)
   db.session.execute(statement)
   db.session.commit()
@@ -540,10 +559,12 @@ def Managesprod():
   return render_template('Manages.html',data =todata )  #bunu degistirdim
 
 
-@app.route('/Manages/submit', methods=['POST'])
+@app.route('/Manages/submit', methods=['POST'], strict_slashes=False )
 def Managessubmit():
-  Pid=request.form['Pid']
-  Pmid=request.form['Pmid']
+  data2 = json.loads(request.get_data())
+  print(request.get_data())  
+  Pmid=data2['Pmid']  
+  Pid=data2['Pid']
   statement = manages.insert().values(Pmid=Pmid, Pid=Pid)
   db.session.execute(statement)
   db.session.commit()
@@ -574,10 +595,12 @@ def changesprice():
   return render_template('Change_price.html',data =todata )  #bunu degistirdim
 
 
-@app.route('/Change_price/submit', methods=['POST'])
+@app.route('/Change_price/submit', methods=['POST'], strict_slashes=False )
 def changespricesubmit():
-  Pid=request.form['Pid']
-  Sid=request.form['Sid']
+  data2 = json.loads(request.get_data())
+  print(request.get_data()) 
+  Pid=data2['Pid']
+  Sid=data2['Sid']
   statement = change_price.insert().values(Sid=Sid, Pid=Pid)
   db.session.execute(statement)
   db.session.commit()
@@ -608,10 +631,13 @@ def Wishes():
   return render_template('Wishes.html',data =todata )  
 
 
-@app.route('/Wishes/submit', methods=['POST'])
+@app.route('/Wishes/submit', methods=['POST'], strict_slashes=False )
 def Wishessubmit():
-  Pid=request.form['Pid']
-  email=request.form['email']
+  data2 = json.loads(request.get_data())
+  print(request.get_data()) 
+  
+  Pid=data2['Pid']
+  email=data2['email']
   statement = wishes.insert().values(email=email, Pid=Pid)
   db.session.execute(statement)
   db.session.commit()
@@ -644,11 +670,14 @@ def Shopping_Cart():
   return render_template('Shopping_Cart.html',data =todata )  
 
 
-@app.route('/Shopping_Cart/submit', methods=['POST'])
+@app.route('/Shopping_Cart/submit', methods=['POST'], strict_slashes=False )
 def Shopping_Cartsubmit():
-  Pid= int(request.form['Pid']) 
-  email=request.form['email']
-  quantity=int(request.form['quantity'])
+  data2 = json.loads(request.get_data())
+  print(request.get_data()) 
+  
+  Pid= int(data2['Pid']) 
+  email=data2['email']
+  quantity=int(data2['quantity'])
 
   allShoppingCarts = db.session.query(shopping_cart).all()  # db.session.query(followers).filter(...).all()
   for i in allShoppingCarts:
@@ -694,11 +723,13 @@ def Approval_page():
   return render_template('Approval.html',data =todata )  
 
 
-@app.route('/Approval/submit', methods=['POST'])
+@app.route('/Approval/submit', methods=['POST'], strict_slashes=False )
 def Approval_pagesubmit():
-  Pmid= int(request.form['Pmid']) 
-  cid=request.form['cid']
-  approved=bool(request.form['approved'])
+  data2 = json.loads(request.get_data())
+  print(request.get_data())   
+  Pmid= int(data2['Pmid']) 
+  cid=data2['cid']
+  approved=bool(data2['approved'])
 
   statement = approval.insert().values(Pmid=Pmid, cid=cid, approved=approved)
   db.session.execute(statement)
@@ -738,11 +769,13 @@ def Commentss_page():
   return render_template('Comments.html',data =todata )  
 
 
-@app.route('/Comments/submit', methods=['POST'])
+@app.route('/Comments/submit', methods=['POST'], strict_slashes=False )
 def Commentsssubmit():
-  Pid= int(request.form['Pid'])
-  cid= int(request.form['cid']) 
-  email=request.form['email']
+  data2 = json.loads(request.get_data())
+  print(request.get_data())   
+  Pid= int(data2['Pid'])
+  cid= int(data2['cid']) 
+  email=data2['email']
 
   #statement = shopping_cart.insert().values(customer_email=email, product_id=Pid, comment_id=cid)
   assoc = Comments(customer_email=email, product_pid=Pid, comment_id=cid)
@@ -783,13 +816,16 @@ def buydlist():
   return render_template('buy_dlist.html',data =todata )  
 
 
-@app.route('/buy_dlist/submit', methods=['POST'])
+@app.route('/buy_dlist/submit', methods=['POST'], strict_slashes=False )
 def buydlistsubmit():
-  customer_email= request.form['uid']
-  product_pid= int(request.form['Pid']) 
-  purchased_purcid= int(request.form['purcid'])
-  quantity= int(request.form['quantity'])
-  did= int(request.form['did'])
+  
+  data2 = json.loads(request.get_data())
+  print(request.get_data())   
+  customer_email= data2['uid']
+  product_pid= int(data2['Pid']) 
+  purchased_purcid= int(data2['purcid'])
+  quantity= int(data2['quantity'])
+  did= int(data2['did'])
 
   #statement = shopping_cart.insert().values(customer_email=email, product_id=Pid, comment_id=cid)
   assoc = Buy_Dlist(did = did, customer_email=customer_email, product_pid=product_pid, purchased_purcid=purchased_purcid, quantity=quantity)
@@ -830,12 +866,16 @@ def refunds():
   return render_template('refunds.html',data =todata )  
 
 
-@app.route('/refunds/submit', methods=['POST'])
+@app.route('/refunds/submit', methods=['POST'] , strict_slashes=False )
 def refundssubmit():
-  customer_email= request.form['uid']
-  sales_manager_id= int(request.form['sid'])
-  purchased_purcid= int(request.form['purcid'])
-  refund_state= request.form['refund']
+  data2 = json.loads(request.get_data())#request.get_json()
+  #, strict_slashes=False 
+
+  
+  customer_email= data2['uid']
+  sales_manager_id= int(data2['sid'])
+  purchased_purcid= int(rdata2['purcid'])
+  refund_state= data2['refund']
 
   #statement = shopping_cart.insert().values(customer_email=email, product_id=Pid, comment_id=cid)
   assoc = Refunds(customer_email=customer_email, sales_manager_id=sales_manager_id, purchased_purcid=purchased_purcid, refund_state=refund_state)
@@ -844,14 +884,18 @@ def refundssubmit():
   return render_template('success.html', data= "")    
 
 
-@app.route('/check_stock/submit', methods=['POST'])
+@app.route('/check_stock/submit', methods=['POST'] , strict_slashes=False  )
 def check_stock_sub():
-  Pid = request.form['Pid']
+  data2 = json.loads(request.get_data())#request.get_json()
+  #, strict_slashes=False 
+
+
+  Pid = data2['Pid']
   in_stock = Products.query.filter_by(Pid=Pid).all()
   st={}
   if(len(in_stock)==0 ):
     st["status"] = False 
-    st["quantity"] = NULL 
+    st["quantity"] = None 
   else: 
     st["status"] = True 
     st["quantity"] = str(in_stock[0].quantity)
@@ -865,15 +909,19 @@ def check_stock():
 
 
 
-@app.route('/dec_stock/submit', methods=['POST'])
+@app.route('/dec_stock/submit', methods=['POST'], strict_slashes=False )
 def dec_stock_sub():
-  Pid = request.form['Pid']
-  quantity = int(request.form['quantity'])
+  data2 = json.loads(request.get_data())#request.get_json()
+  #, strict_slashes=False 
+
+
+  Pid = data2['Pid']
+  quantity = int(data2['quantity'])
   in_stock = Products.query.filter_by(Pid=Pid).all()
   st={}
   if(len(in_stock)==0 ):
     st["status"] = False 
-    st["quantity"] = NULL 
+    st["quantity"] = None 
   else:    
     if(in_stock[0].quantity >=quantity):
       db.session.query(Products)\
@@ -921,11 +969,15 @@ def all_books_category_ranged():
   return render_template('all_books_category_ranged.html',data =todata )  #bunu degistirdim
 
 
-@app.route('/all_books_category_ranged/submit', methods=['POST'] )
+@app.route('/all_books_category_ranged/submit', methods=['POST'], strict_slashes=False  )
 def all_books_category_ranged_sub():
-  min = int ( request.form['min'] ) 
-  max = int ( request.form['max'] ) 
-  Pcid = int(request.form['Pcid'] )
+  data2 = json.loads(request.get_data())#request.get_json()
+  #, strict_slashes=False 
+
+
+  min = int ( data2['min'] ) 
+  max = int ( data2['max'] ) 
+  Pcid = int(data2['Pcid'] )
   allproducts=Products.query.filter_by().all()
   jsonprd = []
   allUnders = db.session.query(under).all() 
@@ -978,11 +1030,15 @@ def remove_from_cart():
   return render_template('remove_from_cart.html',data =todata ) 
 
   
-@app.route('/remove_from_cart/submit', methods=['POST'] )
+@app.route('/remove_from_cart/submit', methods=['POST'] , strict_slashes=False )
 def remove_from_cart_sub():
-  email =  request.form['email'] 
-  Pid = int ( request.form['Pid'] )
-  quantity = int ( request.form['quantity'] )
+  data2 = json.loads(request.get_data())#request.get_json()
+  #, strict_slashes=False 
+
+  
+  email =  data2['email'] 
+  Pid = int (data2['Pid'] )
+  quantity = int ( data2['quantity'] )
   if quantity > 0 :
     allUnders = db.session.query(shopping_cart)\
         .filter(shopping_cart.c.email == email ,shopping_cart.c.Pid == Pid )\
@@ -1049,12 +1105,15 @@ def gettingnextdid():
   return str(maxDid)
   
 
-@app.route('/to_purchase/submit', methods=['POST'] )
+@app.route('/to_purchase/submit', methods=['POST'] , strict_slashes=False )
 def to_purchase_sub():
-  
-  quantity=int ( request.form['quantity'] )
-  price=int ( request.form['price'] )
-  sale=float( request.form['sale'] )
+  data2 = json.loads(request.get_data())#request.get_json()
+  #, strict_slashes=False 
+
+
+  quantity=int (data2['quantity'] )
+  price=int ( data2['price'] )
+  sale=float( data2['sale'] )
   shipment = "Processing"
   PC__ = Purchased(price=price, sale=sale, quantity=quantity,shipment=shipment)
   db.session.add(PC__)
@@ -1115,13 +1174,16 @@ def deliveryprocess():
 
   return render_template('delivery_process.html',data =todata )  #bunu degistirdim  
 
-@app.route('/delivery_process/submit', methods=['POST'] )
+@app.route('/delivery_process/submit', methods=['POST'] , strict_slashes=False  )
 def deliveryprocesssubmit():
+  data2 = json.loads(request.get_data())#request.get_json()
+  #, strict_slashes=False 
+
   
-  Process=str ( request.form['Process'] )
-  Pmid=int ( request.form['Pmid'] )
-  Pid=int( request.form['Pid'] )
-  purcid = int( request.form['purcid'] )
+  Process=str ( data2['Process'] )
+  Pmid=int ( data2['Pmid'] )
+  Pid=int( data2['Pid'] )
+  purcid = int( data2['purcid'] )
  
   allManages = db.session.query(manages).all()
   valid = False #aslinda not valid anlaminda
@@ -1169,10 +1231,13 @@ def ask_bank(creddit_card_number,cvc,exp_date):
 def execute_transaction(creddit_card_number,cvc,exp_date, total_price):
   return True
 
-@app.route('/get_users_purchases/submit' , methods=["POST"])
+@app.route('/get_users_purchases/submit' , methods=["POST"] , strict_slashes=False )
 def get_users_purchases():
-  Pid=str ( request.form['Pid'] )  
-  purcid = int( request.form['purcid'] )
+  data2 = json.loads(request.get_data())#request.get_json()
+  #, strict_slashes=False 
+
+  Pid=str ( data2['Pid'] )  
+  purcid = int(data2['purcid'] )
   allManages = db.session.query(Buy_Dlist).all()
   Purchasesss = db.session.query(Purchased).all()
   ll=[]
@@ -1192,12 +1257,19 @@ def bank():
   return render_template("bank.html")
 
 
-@app.route('/bank/submit',methods=['POST'] )
+@app.route('/bank/submit',methods=['POST']  , strict_slashes=False  )
 def bank_sub():
-  creddit_card_number =  int(request.form['creddit_card_number'] )
-  cvc = int ( request.form['cvc'] )
-  exp_date =  int(request.form['date'] )
-  total_price =  int(request.form['total_price']  )
+  data2 = json.loads(request.get_data())#request.get_json()
+  #, strict_slashes=False 
+  #creddit_card_number =  int(request.form['creddit_card_number'] )
+  creddit_card_number =  int(data2['creddit_card_number'] )
+  #cvc = int ( request.form['cvc'] )
+  cvc = int ( data2['cvc'] )
+  #exp_date =  int(request.form['date'] )
+  exp_date =  int(data2['date'] )
+  #total_price =  int(request.form['total_price']  )
+  total_price =  int(data2['total_price']  )
+
   if ask_bank(creddit_card_number,cvc,exp_date):
     execute_transaction(creddit_card_number,cvc,exp_date, total_price)
     return "true"
