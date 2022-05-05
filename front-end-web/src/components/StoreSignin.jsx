@@ -64,7 +64,7 @@ const Link = styled.a`
   cursor: pointer;
 `;
 
-const Signin = ({ onLogin }) => {
+const StoreSignin = ({ onLogin }) => {
   let email = ""
   let password = ""
 
@@ -92,14 +92,14 @@ const Signin = ({ onLogin }) => {
   
   return (
       <Wrapper>
-        <Title>LOG IN</Title>
+        <Title>LOG IN TO YOUR STORE</Title>
         <UserInfo>
           <Input placeholder="email" onChange={event => setEmail(event.target.value)}/>
           <Input placeholder="password" onChange={event => setPassword(event.target.value)}/>
-          <Button onClick={() => {checkAndSubmit()}}>LOG IN</Button>
+          <Button onClick={() => {checkAndSubmit()}}>LOGIN</Button>
         </UserInfo>
       </Wrapper>
   );
 };
 
-export default Signin;
+export default StoreSignin;
