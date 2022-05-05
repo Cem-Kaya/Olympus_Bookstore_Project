@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bookstore/pages/search_page.dart';
 import 'package:bookstore/utils/api.dart';
 import 'package:bookstore/utils/colors.dart';
 import 'package:bookstore/utils/dimensions.dart';
@@ -62,6 +63,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  String _search="";
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: nav_draw(),
@@ -70,8 +72,16 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Row(children: [
-              Expanded(child: TextFormField()),
-              IconButton(onPressed: () {print(items);}, icon: Icon(Icons.search))
+              Expanded(child: TextFormField(
+                onChanged: (value) { setState(() { _search = value; }); },
+              )),
+              IconButton(onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => search_page(
+
+                      search: _search,
+                    )));
+              }, icon: Icon(Icons.search))
             ]),
             SizedBox(
               height: 60,
