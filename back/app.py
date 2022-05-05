@@ -400,15 +400,24 @@ def scriptjs():
 def scriptformtojs():    
   return render_template("form-to-json.js")
 
-
 @app.route('/login')
 def login():
   return render_template('login.html')  
 
 
+@app.route('/login/submit_test', methods=['POST']  )
+def loginsubmit_test():
+  url = 'http://127.0.0.1:5000/login/submit'
+  myobj = {'email': request.form['email'] , 
+           'pass_hash': request.form['pass_hash'] 
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )
+
+
+
 @app.route('/login/submit', methods=['POST'] , strict_slashes=False )
 def loginsubmit():
-  data2 = request.get_json()
+  data2 = json.loads(request.get_data())#request.get_json()
   print(request.get_data())
   #in_email=request.form['email']
   in_email=data2['email']
