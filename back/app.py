@@ -3,6 +3,7 @@ import json
 from unittest import skip
 import requests as req
 
+from flask_cors import CORS
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import null
@@ -12,6 +13,7 @@ from DB_init_SQL import *
 
  
 app = Flask(__name__)
+CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:123123@localhost/STORE'
 app.config['SQLALCHEMY_MAX_OVERFLOW']= -1 
@@ -268,6 +270,7 @@ def login():
 
 @app.route('/login/submit', methods=['POST'])
 def loginsubmit():
+  print(request.get_data())
   in_email=request.form['email']
   in_pass_hash=request.form['pass_hash']
   ret=Customers.query.filter_by(email=in_email).all()
