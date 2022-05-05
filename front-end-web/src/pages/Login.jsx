@@ -4,6 +4,8 @@ import Header from "../components/Header";
 import Signin from '../components/Signin'
 import Signup from '../components/Signup'
 import Footer from "../components/Footer";
+import { useNavigate } from "react-router-dom";
+
 const Container = styled.div`
   width: 100%;
   height: 100vh;
@@ -39,9 +41,66 @@ const Form = styled.form`
 `;
 
 const Login = () => {
-  const [count,setCount]= useState(()=>{
-    return 0;
-  })
+
+  const [loginStatus, setLoginStatus] = useState()
+  const navigate = useNavigate()
+
+  const LogIn = async (email, passHash) =>  {
+    const serverAnswer = await tryLogin(email, passHash)
+    console.log("Server answer: " , serverAnswer)
+    setValues(serverAnswer)
+  }
+
+  //body: `email=${email}&pass_hash=${passHash}`
+  const tryLogin = async ( email, passHash ) => {    
+    const res = await fetch('/login/submit', {
+      method: "POST",
+      headers: {
+        'Accept' : 'application/json',
+        'Content-Type' : 'application/json'
+        },
+      body: JSON.stringify({email: email, pass_hash: passHash})
+    })
+
+    const data = await res.json()
+    console.log(data)
+    return data
+  }
+  
+  const SignUp = async (username, email, passHash, homeAddress) =>  {
+    const serverAnswer = await trySignUp(username, email, passHash, homeAddress)
+    setValues(serverAnswer)
+  }
+
+  const trySignUp = async (username, email, passHash, homeAddress) => {
+    const res = await fetch(`/signup/submit`, {
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+       },
+      method: "POST",
+      body: JSON.stringify({
+        name: username,
+        email: email,
+        pass_hash: passHash,
+        homeadress: homeAddress
+      }),
+    })
+    const data = await res.json()
+    console.log(data)
+    return data
+  }
+
+  const setValues = (serverAnswer) => {
+    setLoginStatus(serverAnswer.status)
+    console.log(loginStatus)
+    window.localStorage.setItem('logged_in', JSON.stringify(loginStatus))
+    window.localStorage.setItem('user_id', JSON.stringify(serverAnswer.uid))
+
+    if(loginStatus === true){
+      navigate("/")
+    }
+  }
 
 const types= ['LOGIN', 'SIGNUP'];
 const [type,setType]= useState();
@@ -50,10 +109,9 @@ function ToogleGroup(){
 
   const isempty = type==='';
   if (isempty) {
-      setType(types[0])
-    
+      setType(types[0])   
   }
-  const istype= type==='LOGIN';
+  const istype = type==='LOGIN';
     return(
       <Container>
       <Form>
@@ -63,9 +121,7 @@ function ToogleGroup(){
           </Button>
         ))}
       </Form>
-      {istype ? (
-        <Signup></Signup>):
-        (<Signin></Signin>)
+      {istype ? (<Signin onLogin={LogIn}></Signin>) : (<Signup onSignUp={SignUp}></Signup>)      
       }
       </Container>
     );

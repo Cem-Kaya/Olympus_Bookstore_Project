@@ -136,7 +136,7 @@ const Header = ({itemsInCart, onAddToCart, onRemoveFromCart, addToCartAllowed}) 
                 <div className="dropdown-menu">
                   <button className="dropdown-item" onClick={() => {setSelection("Title")}}>Title</button>
                   <button className="dropdown-item" onClick={() => {setSelection("Author")}}>Author</button>
-                  {/*<button className="dropdown-item" onClick={() => {setSelection("Publisher")}}>Publisher</button>*/}
+                  <button className="dropdown-item" onClick={() => {setSelection("Description")}}>Publisher</button>
                 </div>
               </div>
               <input type="text" className="form-control" placeholder="Search..." aria-label="Text input with dropdown button" onChange={event => setTitle(event.target.value)} onKeyDown={e => e.key === 'Enter' && searchButtonClicked()}/>

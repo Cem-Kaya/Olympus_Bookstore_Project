@@ -37,11 +37,11 @@ const Title = styled.h1`
   padding: 10px;
 `;
 
-const Form = styled.form`
+const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const Formrow = styled.form`
+const Formrow = styled.div`
   display: flex;
   flex-direction: row;
 `;
@@ -74,22 +74,60 @@ const Agreement = styled.span`
   margin: 20px 0px;
 `;
 
-export const Signup = () => {
+export const Signup = ({ onSignUp }) => {
+  let email = ""
+  let password = ""
+  let firstName = ""
+  let lastName = ""
+  let homeAddress = ""
+  let confirmPassword = ""
+
+  const setEmail = (val) => {
+		email = val
+	}
+  const setPassword = (val) => {
+		password = val
+	}
+  const setFName = (val) => {
+		firstName = val
+	}
+  const setLName = (val) => {
+		lastName = val
+	}
+  const setConfirmPassword = (val) => {
+		confirmPassword = val
+	}
+  const setHomeAddress = (val) => {
+		homeAddress = val
+	}
+  const checkAndSubmit = () => {
+    if(email === "" || password === "" || firstName === "" || lastName === "" || homeAddress === "")
+    {
+      console.log("empty string")
+    }
+    else{
+      //encrypt password
+      console.log("ssssss")
+      let name = firstName.trim() + " " + lastName.trim()
+      onSignUp(name, email, password, homeAddress)
+    }
+    //else if --> some controls
+  }
   return (
     <Wrapper>
       <Title>CREATE AN ACCOUNT</Title>
-      <Form>
+      <UserInfo>
         <Formrow>
-        <Input placeholder="name" />
-        <Input placeholder="last name" />
+        <Input placeholder="name" onChange={event => setFName(event.target.value)}/>
+        <Input placeholder="last name" onChange={event => setLName(event.target.value)}/>
 
         </Formrow>
-        <Input placeholder="username" />
-        <Input placeholder="email" />
-        <Input placeholder="password" />
-        <Input placeholder="confirm password" />
-        <Button>CREATE</Button>
-      </Form>
+        <Input placeholder="email" onChange={event => setEmail(event.target.value)}/>
+        <Input placeholder="password" onChange={event => setPassword(event.target.value)}/>
+        <Input placeholder="confirm password" onChange={event => setConfirmPassword(event.target.value)}/>
+        <Input placeholder="home address" onChange={event => setHomeAddress(event.target.value)}/>
+        <Button onClick={() => {checkAndSubmit()}}>CREATE</Button>
+      </UserInfo>
     </Wrapper>
   )
 }

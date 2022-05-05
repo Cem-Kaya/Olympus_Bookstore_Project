@@ -35,7 +35,7 @@ const Title = styled.h1`
   padding: 10px;
 `;
 
-const Form = styled.form`
+const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
 `;
@@ -64,15 +64,35 @@ const Link = styled.a`
   cursor: pointer;
 `;
 
-const Signin = () => {
+const Signin = ({ onLogin }) => {
+  let email = ""
+  let password = ""
+
+  const setEmail = (val) => {
+		email = val
+	}
+  const setPassword = (val) => {
+		password = val
+	}
+  const checkAndSubmit = () => {
+    if(email === "" || password === ""){
+      console.log("empty string")
+    }
+    //else if --> some controls
+    else{
+      //encrypt password
+      onLogin(email, password)
+    }
+  }
+  
   return (
       <Wrapper>
-        <Title>SIGN IN</Title>
-        <Form>
-          <Input placeholder="email" />
-          <Input placeholder="password" />
-          <Button>LOGIN</Button>
-        </Form>
+        <Title>LOGIN</Title>
+        <UserInfo>
+          <Input placeholder="email" onChange={event => setEmail(event.target.value)}/>
+          <Input placeholder="password" onChange={event => setPassword(event.target.value)}/>
+          <Button onClick={() => {checkAndSubmit()}}>LOGIN</Button>
+        </UserInfo>
       </Wrapper>
   );
 };

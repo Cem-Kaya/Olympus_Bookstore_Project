@@ -1,8 +1,6 @@
 import React from 'react'
 import './ExtraStyles.css'
 import { useNavigate } from "react-router-dom"
-import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
 
 const Filters = ({ products, params }) => {
 
@@ -49,7 +47,7 @@ const Filters = ({ products, params }) => {
   return (
     <div className="container">
 		<div className="row">
-		<div className="card text-dark" style={{width: "32rem"}}>
+		<div className="card text-light bg-secondary" style={{width: "32rem"}}>
 			<article className="filter-group">
 				<header className="card-header bg-light rounded-0">
 					<a href="" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" className="text-dark">
