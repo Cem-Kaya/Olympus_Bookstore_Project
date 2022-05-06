@@ -193,16 +193,32 @@ class _search_pageState extends State<search_page> {
                         }
                       }
                       else if (selected == "Release Date") {
-                        list!.sort((a, b) => a.releaseDate!.compareTo(b.releaseDate!));
+                        if(ascending){
+                        list!.sort((a, b) => a.releaseDate!.compareTo(b.releaseDate!));}
+                        else{
+                          list!.sort((a, b) => a.releaseDate!.compareTo(b.releaseDate!));
+                        }
                       }
                       else if (selected == "Rating") {
-                        list!.sort((b, a) => a.raiting!.compareTo(b.raiting!));
+                        if(ascending){
+                        list!.sort((b, a) => a.raiting!.compareTo(b.raiting!));}
+                        else
+                          {list!.sort((a, b) => a.raiting!.compareTo(b.raiting!));}
                       }
+
                       else if (selected == "Most Sold") {
-                        list!.sort((b, a) => a.amountSold!.compareTo(b.amountSold!));
+                        if(ascending){
+                        list!.sort((b, a) => a.amountSold!.compareTo(b.amountSold!));}
+                        else{
+                          list!.sort((a, b) => a.amountSold!.compareTo(b.amountSold!));
+                        }
                       }
                       else {
-                        list!.sort((a, b) => a.id!.compareTo(b.id!));
+                        if(ascending){
+                        list!.sort((a, b) => a.id!.compareTo(b.id!));}
+                        else{
+                          list!.sort((b, a) => a.id!.compareTo(b.id!));
+                        }
                       }
                       //if(selected =="Name"){
                       //list.sort((a, b) => a.title.compareTo(b.title));;
@@ -226,8 +242,46 @@ class _search_pageState extends State<search_page> {
                     else {
                       ascending = true;
                     }
+                    if (selected == "Name") {
+                      if (ascending){
+                        list!.sort((a, b) => a.title!.compareTo(b.title!));
+                      }
+                      else {
+                        list!.sort((b, a) => a.title!.compareTo(b.title!));
+                      }
+                    }
+                    else if (selected == "Release Date") {
+                      if(ascending){
+                        list!.sort((a, b) => a.releaseDate!.compareTo(b.releaseDate!));}
+                      else{
+                        list!.sort((b, a) => a.releaseDate!.compareTo(b.releaseDate!));
+                      }
+                    }
+                    else if (selected == "Rating") {
+                      if(ascending){
+                        list!.sort((b, a) => a.raiting!.compareTo(b.raiting!));}
+                      else
+                      {list!.sort((a, b) => a.raiting!.compareTo(b.raiting!));}
+                    }
+
+                    else if (selected == "Most Sold") {
+                      if(ascending){
+                        list!.sort((b, a) => a.amountSold!.compareTo(b.amountSold!));}
+                      else{
+                        list!.sort((a, b) => a.amountSold!.compareTo(b.amountSold!));
+                      }
+                    }
+                    else {
+                      if(ascending){
+                        list!.sort((a, b) => a.id!.compareTo(b.id!));}
+                      else{
+                        list!.sort((a, b) => a.id!.compareTo(b.id!));
+                      }
+                    }
                   });
-                }, icon: Icon(Icons.arrow_circle_down)),
+                }, icon:
+               myicon(ascending),
+                )
               ],
             ),
             SizedBox(
@@ -282,5 +336,13 @@ class _search_pageState extends State<search_page> {
     )),
       )*/
     );
+  }
+}
+Widget myicon(bool a){
+  if(a){
+    return Icon(Icons.arrow_downward);
+  }
+  else{
+    return Icon(Icons.arrow_upward);
   }
 }

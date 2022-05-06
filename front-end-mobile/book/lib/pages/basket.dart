@@ -50,12 +50,12 @@ class _BasketPageState extends State<BasketPage> {
             ),
           ),
           TextButton(onPressed: (){
-            /*Navigator.of(context).push(MaterialPageRoute(
+            Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => mockup(
 
-                  sum: sum,
-                )));*/
-          }, child: Text("$sum is"))
+                  sum: s,
+                )));
+          }, child: Text("Your sum is $s \n   Pay in here"))
         ],
       ),
     );

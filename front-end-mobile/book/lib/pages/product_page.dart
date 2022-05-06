@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:bookstore/pages/send_comment.dart';
 import 'package:bookstore/views/action_bar.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
@@ -232,7 +233,14 @@ class _ProductPageState extends State<ProductPage> {
                                         Container(
                                           width: size.width / 2 - 44,
                                           child: OutlinedButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                Navigator.of(context).push(MaterialPageRoute(
+                                                    builder: (context) => AddReview(
+                                                     prod: widget.productID
+
+
+                                                    )));
+                                              },
                                               child: Text("Add a Review")),
                                         ),
                                       ],
@@ -299,7 +307,7 @@ class _ProductPageState extends State<ProductPage> {
                         SizedBox(
                           width: size.width / 2 - 50,
                           child: OutlinedButton(
-                            onPressed: () {
+                            onPressed: () async{
                               //print(stocks);
                               if (stocks > (_product?.inStock ?? 0)) {
                                 showDialog(
@@ -320,6 +328,22 @@ class _ProductPageState extends State<ProductPage> {
                               } else {
                                 addBasket(_product?.id, stocks, _product?.title,
                                     _product?.price, _product?.img);
+                                await showDialog(
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                      title: const Text("Success"),
+                                      content: const Text(
+                                          "Added to Basket."),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(_);
+                                            },
+                                            child: const Text("Ok"))
+                                      ],
+                                    ));
+                                Navigator.pop(context);
+
                               }
                             },
                             child: Text("Buy"),

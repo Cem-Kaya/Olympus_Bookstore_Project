@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bookstore/utils/colors.dart';
 import 'package:bookstore/utils/dimensions.dart';
 import 'package:bookstore/utils/styles.dart';
@@ -18,16 +20,28 @@ class _SignUpState extends State<SignUp> {
   String adress = "";
   String mail = "";
   String pass = "";
+  var response;
+  late Map<String, dynamic> temp;
+
 postlog(String name,String email,String pass,String add) async{
-  var response =await http.post(Uri.parse("http://10.0.2.2:5000/signup"),
-  body:{
+  try{
+
+  response =await http.post(Uri.parse("http://10.0.2.2:5000/signup/submit"),
+  headers:<String, String>{'Content-Type': 'application/json; charset=UTF-8' ,},
+  body:jsonEncode(<String, String>{
     "name":name,
     "email":email,
     "pass_hash":pass,
     "homeadress":add,
-
-  });
+      },
+    ),
+  );
   print(response.body);
+  temp=json.decode(response.body);}
+  catch(e){
+    print("error is ${e.toString()}");
+
+  }
 }
   @override
   Widget build(BuildContext context) {
@@ -241,6 +255,14 @@ postlog(String name,String email,String pass,String add) async{
                             print("aaaaa");
                             print("$name, $mail, $pass, $adress");
                             postlog(name, mail, pass, adress);
+                            if(true){
+                              print("a");
+                              print(temp["status"]);
+                            }
+                            else{
+                              print(temp.runtimeType);
+                            }
+
 
                           }
                           
