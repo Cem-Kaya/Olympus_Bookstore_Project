@@ -110,6 +110,7 @@ const TextBoxPrize = styled.div`
         <InnerContainer>
             <Image src={item.img} />
             <TextBoxContainer>  
+                <TextBoxAuthor>{item.in_stock === 0 ? <h5 className="text-danger">Sold Out</h5> : item.in_stock <= 5 ? <h6 className="text-warning">Only {item.in_stock} remained in stock</h6> : ""}</TextBoxAuthor>
                 <TextBoxTitle>{item.title}</TextBoxTitle>
                 <TextBoxAuthor style={{marginTop: "8px"}}>{"Author: " + item.author}</TextBoxAuthor>
                 <TextBoxPublisher style={{marginBottom: "8px"}}>{"Publisher: " + item.publisher}</TextBoxPublisher>
@@ -121,7 +122,13 @@ const TextBoxPrize = styled.div`
             <SearchOutlined />
           </Icon>
           <Icon>
-            <AddShoppingCart onClick={() => {onAddToCart(item)}}/>
+            {
+              item.in_stock === 0 ? 
+              <AddShoppingCart color="disabled" disabled={true} onClick={() => {onAddToCart(item)}}/>
+              :
+              <AddShoppingCart onClick={() => {onAddToCart(item)}}/>
+            }
+            
           </Icon>
           <Icon>
             <FavoriteBorderOutlined />
