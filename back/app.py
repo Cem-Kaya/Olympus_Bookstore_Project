@@ -109,10 +109,10 @@ def alltables():
   todata +="</table> "  
 
   todata+= "<h3> Manages  </h3>"
-  todata+= "<table> <tr> <th> Pid </th> <th> Pmid </th> </tr> "
+  todata+= "<table> <tr><th> Pmid </th> <th> Pid </th>  </tr> "
   allUnders = db.session.query(manages).all()  # db.session.query(followers).filter(...).all()
   for i in allUnders:
-    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Pid,i.Pmid) 
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Pmid,i.Pid) 
   todata +="</table>   "
   
 
@@ -246,6 +246,8 @@ def Product_manager_regsubmit():
 
 @app.route('/Products_reg')
 def Products_reg():
+
+
   return render_template('Products_reg.html')
 
 @app.route('/Products_reg/submit_test', methods=['POST'], strict_slashes=False  )
@@ -265,7 +267,11 @@ def Products_regsubmittest():
            'sale': request.form['sale'], 
            'picture_url0': request.form['picture_url0'], 
            'picture_url1': request.form['picture_url1'], 
-           'picture_url2': request.form['picture_url2'] 
+           'picture_url2': request.form['picture_url2'],
+           'Pcid': request.form['Pcid'],
+           'Sid': request.form['Sid'],
+           'Pmid': request.form['Pmid']
+           
     }
   return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )   
 
@@ -274,9 +280,9 @@ def Prsubmit():
 
   data2 = json.loads(request.get_data())
   print(request.get_data())
-  Pid = data2['Pid']
   Pcid = data2['Pcid']
   Sid = data2['Sid']
+  Pmid = data2['Pmid']
   name= data2['name']
   model=data2['model']
   description=data2['description']
@@ -299,7 +305,20 @@ def Prsubmit():
 
   db.session.add(products__)
   db.session.commit() 
+  Pid = products__.Pid
 
+  statement = manages.insert().values(Pmid=Pmid, Pid=Pid)
+  db.session.execute(statement)
+  db.session.commit()
+
+  statement = change_price.insert().values(Sid=Sid, Pid=Pid)
+  db.session.execute(statement)
+  db.session.commit()  
+
+  statement = under.insert().values(Pcid=Pcid, Pid=Pid)
+  db.session.execute(statement)
+  db.session.commit()  
+    
   
   retjs ={}
   retjs["status"] = True
@@ -327,6 +346,14 @@ def comment_regsubmit():
 @app.route('/Sales_manager_reg')
 def Sales_manager_reg():
   return render_template('Sales_manager_reg.html')  
+
+@app.route('/Sales_manager_reg/submit_test', methods=['POST'], strict_slashes=False  )
+def sales_manager_submittest():
+  url = 'http://127.0.0.1:5000/Sales_manager_reg/submit'
+  myobj = {'name': request.form['name'] , 
+           'pass_hash': request.form['pass_hash']
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
             
 @app.route('/Sales_manager_reg/submit', methods=['POST'], strict_slashes=False)
 def Sales_manager_regsubmit():
@@ -335,11 +362,13 @@ def Sales_manager_regsubmit():
   name= data2['name']
   pass_hash=data2['pass_hash']
 
-  Sales_manager = Sales_Manager(name,pass_hash)
-  db.session.add(Sales_manager)
-  db.session.commit()  
+  Sales_manager__ = Sales_Manager(name,pass_hash)
+  db.session.add(Sales_manager__)
+  db.session.commit()
+  retjs = {}  
+  retjs["status"] = True
+  return json.dumps(retjs)
 
-  return render_template('success.html', data= name)
 
 
 
@@ -793,6 +822,15 @@ def Approval_page():
   todata +="</table>   "
   return render_template('Approval.html',data =todata )  
 
+@app.route('/Approval/submit_test', methods=['POST'], strict_slashes=False  )
+def Approval_pagesubmittest():
+  url = 'http://127.0.0.1:5000/Approval/submit'
+  myobj = {'Pmid': request.form['Pmid'] , 
+           'cid': request.form['cid'],
+           'approved' : request.form['approved']
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )      
+
 
 @app.route('/Approval/submit', methods=['POST'], strict_slashes=False )
 def Approval_pagesubmit():
@@ -805,7 +843,9 @@ def Approval_pagesubmit():
   statement = approval.insert().values(Pmid=Pmid, cid=cid, approved=approved)
   db.session.execute(statement)
   db.session.commit()
-  return render_template('success.html', data= "")  
+  return json.dumps({"status":True })
+
+ 
 
 
 @app.route('/Comments')
@@ -835,7 +875,7 @@ def Commentss_page():
   todata+= "<table> <tr> <th> email </th> <th> Pid </th><th> cid </th><th> date </th></tr> "
   allCommentsR = db.session.query(Comments).all()  # db.session.query(followers).filter(...).all()
   for i in allCommentsR:
-    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.customer_email, i.comment_id, i.product_pid, i.date) 
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.customer_email, i.product_pid, i.comment_id, i.date) 
   todata +="</table>   "
   return render_template('Comments.html',data =todata )  
 
@@ -856,6 +896,51 @@ def Comment_all_ssubmit():
   db.session.add(assoc)
   db.session.commit()
   return json.dumps({"status":True })
+
+
+@app.route('/get_all_approved_comments')
+def get_all_approved_commentshtml():
+  return render_template('get_all_approved_comments.html')    
+
+@app.route('/get_all_approved_comments/submit_test' , methods=['POST'], strict_slashes=False  )
+def get_all_approved_commentstest():
+  url = 'http://127.0.0.1:5000/get_all_approved_comments/submit' 
+  myobj = {'Pid': request.form['Pid']
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
+  
+         
+
+@app.route('/get_all_approved_comments/submit' , methods=['POST'], strict_slashes=False  )
+def get_all_approved_comments():
+  data2 = json.loads(request.get_data())
+  print(request.get_data())   
+  Pid= int(data2['Pid'])
+  allCustomers=Comment.query.filter_by().all()
+
+#burada o pid altindaki all commentslerin comments relationsihpinde eristim
+  allcomments = db.session.query(Comments).filter(Comments.product_pid== Pid )
+
+
+
+  allapprovedcomments = []
+  for i in allcomments:
+    if (a:= db.session.query(approval)\
+        .filter(approval.c.cid== i.comment_id ,approval.c.approved ==True ).first()) != None:
+      allapprovedcomments.append(a)
+
+  #appcoms= [i.cid if i.Pid ==Pid  and i.approved  else ""  for i in allapprovedcomments  ]
+  
+
+  retjs={}
+  print(allapprovedcomments)
+  for i,j in enumerate(allapprovedcomments): 
+    print(j)
+    retjs[i]={"text": (b:= db.session.query(Comment).filter(Comment.cid == j.cid ).first()).text,  
+    "uid":  db.session.query(Comments).filter(Comments.comment_id == j.cid).first().customer_email ,
+    "stars": b.stars}
+  return json.dumps(retjs)
+       
 
 
 
