@@ -8,6 +8,7 @@ import '../components/ExtraStyles.css'
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { popularProducts } from "../data"
+import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCartItems'
 
 const UpperContainer = styled.div`
     width: 100%;
@@ -77,63 +78,26 @@ const SearchPage = () => {
       });
     }, [params]);
   
-    useEffect(() => {
-      if(JSON.parse(window.localStorage.getItem('cart_items')) === null){
-        setCartItems([])
-      }
-      else{
-        setCartItems(JSON.parse(window.localStorage.getItem('cart_items')))
-      }
-    }, []);
+    const [cartItemsChanged, setCartItemsChanged] = useState(false);
     
-    useEffect(() => {
-      if(cartItems === null)  {setCartItems([])}
-      window.localStorage.setItem('cart_items', JSON.stringify(cartItems));
-    }, [cartItems]);
-
     const AddToCart = (item) => {
-      let getItemAsList = cartItems.filter((elem) => elem.id === item.id)
-      if(getItemAsList.length === 0)
-      {
-        item = {...item, count: 1}
-        if(cartItems.length === 0){
-          setCartItems([item])
-        }
-        else{
-          setCartItems([...cartItems, item])
-        }
-      }
+      addNewItem(item)
+      setCartItemsChanged(!cartItemsChanged)
     }
-    
-  const HeaderAddToCart = (item) => {
-    setCartItems(
-      cartItems.map(
-        (elem) => elem.id === item.id ? { ...elem, count: elem.count + 1} : elem
-      )
-    )
-  }
   
-  const HeaderRemoveFromCart = (item) => {
-    let listOfItem = cartItems.filter((elem) => elem.id === item.id)
-    let count = listOfItem[0].count
-
-    if(count !== 1){
-      setCartItems(
-        cartItems.map(
-          (elem) => elem.id === item.id ? { ...elem, count: elem.count - 1} : elem
-        )
-      )
+    const HeaderAddToCart = (item) => {
+      add1Item(item)
+      setCartItemsChanged(!cartItemsChanged)
     }
-    else
-    {
-      let filteredState = cartItems.filter((elem) => elem.id !== item.id)
-      filteredState.length === 0 ? setCartItems([]) : setCartItems([...filteredState])
+  
+    const HeaderRemoveFromCart = (item) => {
+      remove1Item(item)
+      setCartItemsChanged(!cartItemsChanged)
     }
-  }
 
     return (
       <div>
-        <Header itemsInCart={cartItems} onAddToCart={HeaderAddToCart} onRemoveFromCart={HeaderRemoveFromCart}></Header>  
+        <Header itemsInCartChanged={cartItemsChanged} onAddToCart={HeaderAddToCart} onRemoveFromCart={HeaderRemoveFromCart}></Header>  
         <UpperContainer>  
             <TopButtons>
             <div className="custom-control custom-switch">

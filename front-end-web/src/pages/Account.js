@@ -7,6 +7,8 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom"
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { useEffect } from 'react';
+import { checkLogInStatus } from "../helperFunctions/helperLogin";
 
 const TextStyle = styled.div`
     display: flex;
@@ -44,7 +46,14 @@ const Account = () => {
   const categories = ["My Store", "Order History"]
   const links = ["/StoreLogin", "/OrderHistory"]
 
+  useEffect(() => {
+    if(checkLogInStatus() === true){
+      navigate("/")
+    }
+  }, [navigate]);
+
   return (
+
     <div>
       <Header></Header>
       <Container>

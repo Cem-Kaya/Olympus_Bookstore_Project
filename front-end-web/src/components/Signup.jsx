@@ -110,7 +110,7 @@ export const Signup = ({ onSignUp }) => {
     else if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
     {
       const sha2_256 = require('simple-js-sha2-256')
-      password = sha2_256(password)
+      //password = sha2_256(password)
       let name = firstName.trim() + " " + lastName.trim()
       console.log(name, email, password, homeAddress)
       onSignUp(name, email, password, homeAddress)

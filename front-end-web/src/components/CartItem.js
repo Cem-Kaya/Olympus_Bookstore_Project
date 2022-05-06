@@ -17,14 +17,14 @@ const CartItem = ({item, onAddToCart, onRemoveFromCart, onRemoveAll}) => {
         <button href="" className="btn btn-light" onClick={() => {onRemoveFromCart(item)}}>-</button>
       </td>
       <td>
-        <h3>{item.count}</h3>
+        <h3>{item.quantity}</h3>
       </td>
       <td>
         <button href="" className="btn btn-light" onClick={() => {onAddToCart(item)}}>+</button> 
       </td>
       <td> 
           <div className="price-wrap"> 
-              <var className="price">{(item.price * item.count).toFixed(2) + " TL"} </var> 
+              <var className="price">{(item.price * item.quantity).toFixed(2) + " TL"} </var> 
               <small className="text-muted"> {(item.price).toFixed(2) + " TL each"} </small> 
           </div> 
       </td>

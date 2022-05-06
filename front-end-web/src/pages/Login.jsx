@@ -6,6 +6,7 @@ import Signup from '../components/Signup'
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
+import { logIn, signUp, checkLogInStatus } from "../helperFunctions/helperLogin";
 
 const Container = styled.div`
   width: 100%;
@@ -47,80 +48,40 @@ const Login = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if(JSON.parse(window.localStorage.getItem('logged_in')) !== null && 
-        JSON.parse(window.localStorage.getItem('logged_in')) === true){
-      loginStatus = true
-    }
+      loginStatus = checkLogInStatus()
   }, []);
 
   const LogIn = async (email, passHash) =>  {
-    const serverAnswer = await tryLogin(email, passHash)
-    console.log("Server answer: " , serverAnswer)
-    setValues(serverAnswer)
-
+    try{
+      const serverAnswer = await logIn(email, passHash)
+      console.log("Server answer: " , serverAnswer)
+      setValues(serverAnswer)
+    }
+    catch (e){
+      console.log(e)
+    }
     if(loginStatus === true){
       navigate("/")
-    }
-  }
-
-  //body: `email=${email}&pass_hash=${passHash}`
-  const tryLogin = async ( email, passHash ) => {    
-    try{
-      const res = await fetch('/login/submit', {
-        method: "POST",
-        headers: {
-          'Accept' : 'application/json',
-          'Content-Type' : 'application/json'
-          },
-        body: JSON.stringify({email: email, pass_hash: passHash})
-      })
-      const data = await res.json()
-      console.log(data)
-      return data
-    }
-    catch(e){
-      console.log(e)
     }
   }
   
   const SignUp = async (username, email, passHash, homeAddress) =>  {
-    const serverAnswer = await trySignUp(username, email, passHash, homeAddress)
-    setValues(serverAnswer)
-
-    if(loginStatus === true){
-      navigate("/")
-    }
-  }
-
-  const trySignUp = async (username, email, passHash, homeAddress) => {
     try{
-      const res = await fetch(`/signup/submit`, {
-        headers : { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        method: "POST",
-        body: JSON.stringify({
-          name: username,
-          email: email,
-          pass_hash: passHash,
-          homeadress: homeAddress
-        }),
-      })
-      const data = await res.json()
-      console.log(data)
-      return data
+      const serverAnswer = await signUp(username, email, passHash, homeAddress)
+      setValues(serverAnswer)
     }
     catch(e){
       console.log(e)
+    }
+
+    if(loginStatus === true){
+      navigate("/")
     }
   }
 
   const setValues = (serverAnswer) => {
     loginStatus = serverAnswer["status"]
     console.log(loginStatus)
-    window.localStorage.setItem('logged_in', JSON.stringify(loginStatus))
-    window.localStorage.setItem('user_id', JSON.stringify(serverAnswer["uid"]))
   }
 
 const types= ['LOGIN', 'SIGNUP'];

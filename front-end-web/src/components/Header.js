@@ -11,6 +11,8 @@ import {useNavigate} from "react-router-dom";
 import React from "react";
 import '../App.css';
 import { useState, useEffect } from 'react';
+import { checkLogInStatus, logOut, getUserID } from "../helperFunctions/helperLogin";
+import { add1Item, remove1Item, getCartItems } from '../helperFunctions/helperCartItems';
 
 const HeaderDark = styled.div`
   padding: 10px;
@@ -61,7 +63,7 @@ const DropDownItemCount = styled.div`
 `;
 
 
-const Header = ({itemsInCart, onAddToCart, onRemoveFromCart, addToCartAllowed}) => {
+const Header = ({itemsInCartChanged, onAddToCart, onRemoveFromCart, addToCartAllowed}) => {
   const history= useNavigate();
 
   const [cartItems, setCartItems] = useState([]);
@@ -72,30 +74,13 @@ const Header = ({itemsInCart, onAddToCart, onRemoveFromCart, addToCartAllowed}) 
   const [selection, setSelection] = useState("");
 
   useEffect(() => {
-    if(itemsInCart !== undefined && itemsInCart !== null) {
-      setCartItems(itemsInCart)
-    }
-    else if(JSON.parse(window.localStorage.getItem('cart_items')) === null){
-      setCartItems([])
-    }
-    else{
-      setCartItems(JSON.parse(window.localStorage.getItem('cart_items')));
-    }
-  }, [itemsInCart]);
+    setCartItems(getCartItems())
+  }, [itemsInCartChanged]);
 
   useEffect(() => {
-    if(JSON.parse(window.localStorage.getItem('logged_in')) !== null && 
-        JSON.parse(window.localStorage.getItem('logged_in')) === true){
-      setLoginStatus(true)
-    }
+    console.log(checkLogInStatus())
+    setLoginStatus(checkLogInStatus())
   }, []);
-
-  useEffect(() => {
-    if(cartItems === null)  {setCartItems([])}
-    if(itemsInCart === undefined){
-      window.localStorage.setItem('cart_items', JSON.stringify(cartItems))
-    }
-  }, [cartItems, itemsInCart]);
 
   const handleDropdownOpen = () => {
     setdropDownOpen(!dropDownOpen);
@@ -118,36 +103,43 @@ const Header = ({itemsInCart, onAddToCart, onRemoveFromCart, addToCartAllowed}) 
   }
 
   const HeaderAddToCart = (item) => {
-    setCartItems(
-      cartItems.map(
-        (elem) => elem.id === item.id ? { ...elem, count: elem.count + 1} : elem
-      )
-    )
+    add1Item(item)
+    setCartItems(getCartItems())
   }
 
   const HeaderRemoveFromCart = (item) => {
-    let listOfItem = cartItems.filter((elem) => elem.id === item.id)
-    let count = listOfItem[0].count
-
-    if(count !== 1){
-      setCartItems(
-        cartItems.map(
-          (elem) => elem.id === item.id ? { ...elem, count: elem.count - 1} : elem
-        )
-      )
-    }
-    else
-    {
-      let filteredState = cartItems.filter((elem) => elem.id !== item.id)
-      filteredState.length === 0 ? setCartItems([]) : setCartItems([...filteredState])
-    }
+    remove1Item(item)
+    setCartItems(getCartItems())
   }
 
-  const logOut = () => {
-    window.localStorage.setItem('logged_in', JSON.stringify(false))
-    window.localStorage.setItem('user_id', JSON.stringify(""))
+  const LogOut = () => {
+    logOut()
     setLoginStatus(false)
   }
+/*
+  const GetCartItems = async (email) =>  {
+    const serverAnswer = await tryGetCart(email)
+    console.log("Server answer: " , serverAnswer)
+  }
+
+  const tryGetCart = async ( email ) => {    
+    try{
+      const res = await fetch('/Shopping_Cart', {
+        method: "GET",
+        headers: {
+          'Accept' : 'application/json',
+          'Content-Type' : 'application/json'
+          },
+
+      })
+      const data = await res.json()
+      console.log(data)
+      return data
+    }
+    catch(e){
+      console.log(e)
+    }
+  }*/
 
   return (
     <HeaderDark>
@@ -172,7 +164,7 @@ const Header = ({itemsInCart, onAddToCart, onRemoveFromCart, addToCartAllowed}) 
                 loginStatus ? 
                 <Dropdown>
                   <button className='buttonStyle' onClick={() =>{handleDropdownOpenAccount()}}>
-                    {JSON.parse(window.localStorage.getItem('user_id'))}
+                    {getUserID()}
                     <AccountCircle/>
                   </button>
                   {dropDownOpenAccount && (<div className="dropdown">
@@ -184,7 +176,7 @@ const Header = ({itemsInCart, onAddToCart, onRemoveFromCart, addToCartAllowed}) 
                             </button>
                           </DropDownItem>
                           <DropDownItem>  
-                            <button className='buttonStyle' onClick={() =>{logOut()}}>
+                            <button className='buttonStyle' onClick={() =>{LogOut()}}>
                               Log Out
                             </button>
                           </DropDownItem>
@@ -219,9 +211,9 @@ const Header = ({itemsInCart, onAddToCart, onRemoveFromCart, addToCartAllowed}) 
                           <DropDownItem>  
                             <p>{item.title}</p>
                             <DropDownItemCount>
-                              <button className="btn-primary" onClick={() =>{itemsInCart === undefined ? HeaderRemoveFromCart(item) : onRemoveFromCart(item)}}>-</button>
-                              <p>{" " + item.count + " "}</p>
-                              <button className="btn-primary" onClick={() =>{itemsInCart === undefined ? HeaderAddToCart(item) : onAddToCart(item)}}>+</button>
+                              <button className="btn-primary" onClick={() =>{itemsInCartChanged === undefined ? HeaderRemoveFromCart(item) : onRemoveFromCart(item)}}>-</button>
+                              <p>{" " + item.quantity + " "}</p>
+                              <button className="btn-primary" onClick={() =>{itemsInCartChanged === undefined ? HeaderAddToCart(item) : onAddToCart(item)}}>+</button>
                             </DropDownItemCount>  
                           </DropDownItem>
                         </li>

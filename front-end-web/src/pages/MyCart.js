@@ -4,90 +4,50 @@ import Header from '../components/Header'
 import { useState, useEffect } from 'react'
 import { Delete } from "@material-ui/icons";
 import { useNavigate } from "react-router-dom";
+import { checkLogInStatus } from '../helperFunctions/helperLogin';
+import { add1Item, remove1Item, emptyCart, removeAllItem, getCartItems } from '../helperFunctions/helperCartItems'
 
 const MyCart = ({params}) => {
 
   const history= useNavigate();
   const [items, setItems] = useState([]);
-  
-  //let location = useLocation();
-  //console.log(location)
-  //let itemList = location.state;
-  //console.log(itemList)
 
   useEffect(() => {
-    if(JSON.parse(window.localStorage.getItem('cart_items')) === null){
-      setItems([])
-    }
-    else{
-      setItems(JSON.parse(window.localStorage.getItem('cart_items')))
-    }
-  }, [/*itemList*/]);
-
-  useEffect(() => {
-    if(items === null)  {setItems([])}
-    window.localStorage.setItem('cart_items', JSON.stringify(items));
-  }, [items]);
+    setItems(getCartItems())
+  }, []);
 
   const costOfItems = () => {
     let sum = 0;
     items.forEach(element => {
-      sum += (element.price * element.count);
+      sum += (element.price * element.quantity);
     });
     return sum;
   }
 
   const RemoveAllFromCart = (item) => {
-
-    let filteredState = items.filter((elem) => elem.id !== item.id)
-    filteredState.length === 0 ? setItems([]) : setItems([...filteredState]) 
+    removeAllItem(item)
+    setItems(getCartItems())
   }
 
   const RemoveFromCart = (item) => {
-    let listOfItem = items.filter((elem) => elem.id === item.id)
-    let count = listOfItem[0].count
-
-    if(count !== 1){
-      setItems(
-        items.map(
-          (elem) => elem.id === item.id ? { ...elem, count: elem.count - 1} : elem
-        )
-      )
-    }
-    else
-    {
-      let filteredState = items.filter((elem) => elem.id !== item.id)
-      filteredState.length === 0 ? setItems([]) : setItems([...filteredState])
-    }
+    remove1Item(item)
+    setItems(getCartItems())
   }
 
   const AddToCart = (item) => {
+    add1Item(item)
+    setItems(getCartItems)
+  }
 
-    let getItemAsList = items.filter((elem) => elem.id === item.id)
-    if(getItemAsList.length === 0)
-    {
-      item = {...item, count: 1}
-      if(items.length === 0){
-        setItems([item])
-      }
-      else{
-        setItems([...items, item])
-      }
-    } 
-    else
-    {
-      setItems(
-        items.map(
-          (elem) => elem.id === item.id ? { ...elem, count: elem.count + 1} : elem
-        )
-      )
-    }
+  const EmptyCart = () => {
+    emptyCart()
+    setItems(getCartItems())
   }
 
   return (
 
     <div className="App">
-      <Header itemsInCart={items} addToCartAllowed={false} />
+      <Header itemsInCartChanged={items} addToCartAllowed={false} />
         <section className="section-pagetop bg">
         <div className="container">
             <h2 className="title-page">Shopping cart</h2>
@@ -129,7 +89,7 @@ const MyCart = ({params}) => {
         
         <div className="card-body border-top">
             
-            <button className="btn btn-danger float-md-right" style={{verticalAlign:"baseline"}} onClick={() => {setItems([])}}> Empty Cart <Delete/> </button>
+            <button className="btn btn-danger float-md-right" style={{verticalAlign:"baseline"}} onClick={() => {EmptyCart()}}> Empty Cart <Delete/> </button>
             <button className="btn btn-light float-md-left" onClick={() => {history('/')}}> <i className="fa fa-chevron-left"></i> Continue shopping </button>
         </div>  
         </div> 
@@ -176,7 +136,12 @@ const MyCart = ({params}) => {
                             </p>
                             </dd>
                             <hr />
-                            <button className="btn btn-primary float-md-right"> Proceed to Checkout <i className="fa fa-chevron-right"></i> </button>
+                            {
+                              checkLogInStatus() ?
+                              <button className="btn btn-primary float-md-right"> Proceed to Checkout <i className="fa fa-chevron-right"></i> </button>
+                              :
+                              <a className="page-link" href="/Login">Not Logged In Yet! Please Log In First</a>
+                            }
                     </div> 
                 </div>  
             </aside> 
