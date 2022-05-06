@@ -1,4 +1,5 @@
 #from crypt import methods
+import enum
 import json
 from unittest import skip
 import requests as req
@@ -165,6 +166,16 @@ def alltables():
 def signup():
   return render_template('signup.html')  
 
+@app.route('/signup/submit_test', methods=['POST'], strict_slashes=False  )
+def signupsubmit_test():
+  url = 'http://127.0.0.1:5000/signup/submit'
+  myobj = {'name': request.form['name'] , 
+           'pass_hash': request.form['pass_hash'],
+          'email': request.form['email'],
+          'homeadress': request.form['homeadress']
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )  
+
 
 
 @app.route('/signup/submit', methods=['POST'],  strict_slashes=False)
@@ -323,6 +334,18 @@ def Purchasedsubmit():
   return render_template('success.html', data= "")    
 
 
+@app.route('/get_shoping/submit', methods=['POST'],  strict_slashes=False)
+def get_shopingsubmit():  
+  data2 = json.loads(request.get_data())
+  uid = data2["uid"]  
+  retjs={}
+  allShoppingCarts = db.session.query(shopping_cart)\
+       .filter(shopping_cart.c.email == uid  )  # db.session.query(followers).filter(...).all()
+  for j,i in enumerate(allShoppingCarts):
+    retjs[i]={"Pid":i.Pid , "quantity":i.quantity  }    
+  return json.dumps(retjs)
+      
+       
 
 
 
