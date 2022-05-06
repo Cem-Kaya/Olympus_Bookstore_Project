@@ -259,7 +259,7 @@ class Purchased(db.Model):
 class Comment(db.Model):
   __tablename__='Comment'
   cid=db.Column(db.Integer,primary_key=True)
-  text=db.Column(db.String(250))
+  text=db.Column(db.String(2500))
   stars=db.Column(db.Integer)
   Comments = db.relationship("Comments", back_populates="Comment")
   

@@ -1,7 +1,7 @@
 import json
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
-
+import requests as req
 from DB_init_SQL import * 
 
  
@@ -40,11 +40,12 @@ if __name__ =="__main__":
     product_categories.append(Product_Category("Manga"))
     product_categories.append(Product_Category("Woodworking"))
     product_categories.append(Product_Category("Light Novel"))
+    product_categories.append(Product_Category("Drama"))
     for pc in product_categories:
         db.session.add(pc)        
     #db.session.commit()   
 
-    
+
     
 
     custs =[]
@@ -195,7 +196,154 @@ if __name__ =="__main__":
         "https://i.idefix.com/cache/600x600-0/originals/0000000572949-1.jpg",
         "https://i.idefix.com/cache/600x600-0/originals/0000000572949-1.jpg"
     ))    
-  
+
+    
     for cs in custs:
         db.session.add(cs)        
     db.session.commit()
+
+
+    statement = under.insert().values(Pcid=1, Pid=8)
+    db.session.execute(statement)
+    db.session.commit() 
+    statement = under.insert().values(Pcid=1, Pid=9)
+    db.session.execute(statement)
+    db.session.commit()     
+    statement = under.insert().values(Pcid=1, Pid=2)
+    db.session.execute(statement)
+    db.session.commit()       
+    statement = under.insert().values(Pcid=1, Pid=12)
+    db.session.execute(statement)
+    db.session.commit()  
+    statement = under.insert().values(Pcid=1, Pid=4)
+    db.session.execute(statement)
+    db.session.commit()      
+    statement = under.insert().values(Pcid=2, Pid=1)
+    db.session.execute(statement)
+    db.session.commit()  
+    statement = under.insert().values(Pcid=2, Pid=5)
+    db.session.execute(statement)
+    db.session.commit()      
+    statement = under.insert().values(Pcid=2, Pid=6)
+    db.session.execute(statement)
+    db.session.commit()  
+    statement = under.insert().values(Pcid=2, Pid=7)
+    db.session.execute(statement)
+    db.session.commit() 
+    statement = under.insert().values(Pcid=2, Pid=14)
+    db.session.execute(statement)
+    db.session.commit()          
+    statement = under.insert().values(Pcid=2, Pid=15)
+    db.session.execute(statement)
+    db.session.commit()    
+    statement = under.insert().values(Pcid=2, Pid=16)
+    db.session.execute(statement)
+    db.session.commit()            
+    statement = under.insert().values(Pcid=3, Pid=10)
+    db.session.execute(statement)
+    db.session.commit() 
+    statement = under.insert().values(Pcid=4, Pid=11)
+    db.session.execute(statement)
+    db.session.commit()     
+    statement = under.insert().values(Pcid=4, Pid=3)
+    db.session.execute(statement)
+    db.session.commit() 
+    statement = under.insert().values(Pcid=6, Pid=13)
+    db.session.execute(statement)
+    db.session.commit()              
+
+    statement = manages.insert().values(Pmid=1, Pid=8)
+    db.session.execute(statement)
+    db.session.commit() 
+    statement = manages.insert().values(Pmid=1, Pid=9)
+    db.session.execute(statement)
+    db.session.commit()     
+    statement = manages.insert().values(Pmid=1, Pid=2)
+    db.session.execute(statement)
+    db.session.commit()       
+    statement = manages.insert().values(Pmid=1, Pid=12)
+    db.session.execute(statement)
+    db.session.commit()  
+    statement = manages.insert().values(Pmid=1, Pid=4)
+    db.session.execute(statement)
+    db.session.commit()      
+    statement = manages.insert().values(Pmid=1, Pid=1)
+    db.session.execute(statement)
+    db.session.commit()  
+    statement = manages.insert().values(Pmid=1, Pid=5)
+    db.session.execute(statement)
+    db.session.commit()      
+    statement = manages.insert().values(Pmid=1, Pid=6)
+    db.session.execute(statement)
+    db.session.commit()  
+    statement = manages.insert().values(Pmid=1, Pid=7)
+    db.session.execute(statement)
+    db.session.commit() 
+    statement = manages.insert().values(Pmid=1, Pid=14)
+    db.session.execute(statement)
+    db.session.commit()          
+    statement = manages.insert().values(Pmid=1, Pid=15)
+    db.session.execute(statement)
+    db.session.commit()    
+    statement = manages.insert().values(Pmid=1, Pid=16)
+    db.session.execute(statement)
+    db.session.commit()            
+    statement = manages.insert().values(Pmid=1, Pid=10)
+    db.session.execute(statement)
+    db.session.commit() 
+    statement = manages.insert().values(Pmid=1, Pid=11)
+    db.session.execute(statement)
+    db.session.commit()     
+    statement = manages.insert().values(Pmid=2, Pid=3)
+    db.session.execute(statement)
+    db.session.commit() 
+    statement = manages.insert().values(Pmid=2, Pid=13)
+    db.session.execute(statement)
+    db.session.commit()  
+
+
+#comment - comments - approval
+
+    myComment = []
+    myComment.append(Comment("Bu urun gercekten cok uygun bir fiyatta ancak icerikleri hayal kirikligina ugratti.",3) )
+    myComment.append(Comment("Mukemmel, 10/10",5) )
+    myComment.append(Comment("Berbat, 0/10",1) )
+    for cm in myComment:
+        db.session.add(cm)        
+    db.session.commit()
+
+    statement = approval.insert().values(Pmid=1, cid=1, approved = True)
+    db.session.execute(statement)
+    db.session.commit()  
+    statement = approval.insert().values(Pmid=1, cid=2, approved = True)
+    db.session.execute(statement)
+    db.session.commit()      
+    statement = approval.insert().values(Pmid=1, cid=3, approved = False)
+    db.session.execute(statement)
+    db.session.commit()      
+
+    assoc = Comments(customer_email = "a@a.com", product_pid=1, comment_id=1)
+    db.session.add(assoc)
+    db.session.commit()
+    assoc = Comments(customer_email = "b@b.com", product_pid=1, comment_id=2)
+    db.session.add(assoc)
+    db.session.commit()    
+    assoc = Comments(customer_email = "u@u.com", product_pid=1, comment_id=3)
+    db.session.add(assoc)
+    db.session.commit()        
+
+################################
+    url = 'http://127.0.0.1:5000/to_purchase/submit'
+    myobj = {'email': 'a@a.com',
+            "quantity":5,
+            "price":26,
+            "sale":float( 0.5 ),
+            "shipment" : "Processing",
+            "Pid" : 1,
+            "purcid" : 1,
+            "did" : 1
+            
+    }
+       
+  
+    data= req.post(url, data = json.dumps(myobj))

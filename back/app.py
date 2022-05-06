@@ -32,6 +32,39 @@ db=SQLAlchemy(app)
 def index():
   return render_template('index.html')
 
+@app.route('/customer_info')  
+def customerinfo():
+  return render_template('customer_info.html') 
+
+@app.route('/customer_info/submit_test', methods=['POST'], strict_slashes=False  )
+def customerinfotest():
+  url = 'http://127.0.0.1:5000/customer_info/submit'
+  myobj = {'email': request.form['email']  
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
+
+@app.route('/customer_info/submit', methods=['POST'],  strict_slashes=False)
+def customerinfosubmit():
+  
+  data2 = json.loads(request.get_data())
+  print(request.get_data())
+  email= data2['email']
+
+
+  retjs ={}
+  if len(Customers.query.filter_by(email=email).all())==0:
+    retjs["status"] = False
+    retjs["uid"] = None
+  else:    
+    myCustomer = Customers.query.filter_by(email=email).first()
+    retjs["status"] = True
+    retjs["uid"] = email
+    retjs["name"] = myCustomer.name
+    retjs["pass_hash"] = myCustomer.pass_hash
+    retjs["homeaddress"] = myCustomer.homeadress
+
+  return json.dumps(retjs)
+
 
 @app.route('/super_secret_all_tables_panel')
 def alltables():
@@ -396,7 +429,31 @@ def Purchasedd():
   todata +="</table>"
 
   return render_template('purchased.html',data=todata)  
-            
+
+
+@app.route('/get_ones_purch_hist/submit', methods=['POST'], strict_slashes=False)
+def get_ones_purchsubmit():  
+  data2 = json.loads(request.get_data())
+  email=data2["uid"]  
+  alldlist=db.session.query(Buy_Dlist)\
+       .filter(Buy_Dlist.customer_email == email )
+  retjs={}
+  #TODO  
+  for k , j in  enumerate( alldlist):
+    retjs[k]= { "pid" : j.product_pid , "date":str(j.date ), "quantity": j.quantity , "purcid": j.purchased_purcid , 
+      "sale": (b:=db.session.query(Purchased).filter(Purchased.purcid == j.purchased_purcid ).first()).sale, "price":b.price,
+      "shipment":b.shipment
+     }
+  return json.dumps(retjs )
+  
+@app.route('/get_ones_purch_hist/submit_test' ,strict_slashes=False)
+def get_ones_purchsubmit_test():  
+  url = 'http://127.0.0.1:5000/get_ones_purch_hist/submit'
+  myobj = {'uid': "a@a.com" }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )
+
+
+
 @app.route('/purchased/submit', methods=['POST'], strict_slashes=False)
 def Purchasedsubmit():  
   data2 = json.loads(request.get_data())
@@ -1311,10 +1368,10 @@ def to_purchase_sub():
     pucidvalues.append(int(i.purcid))
   maxPurcid=max(pucidvalues)
 
-  email=request.form['email']
-  Pid=int(request.form['Pid'])
+  email=data2['email']
+  Pid=int(data2['Pid'])
   purcid=maxPurcid #how do we get this?
-  did=int(request.form['did'])
+  did=int(data2['did'])
   assoc = Buy_Dlist(did = did, customer_email=email, product_pid=Pid, purchased_purcid=purcid, quantity=quantity)
   db.session.add(assoc)
   db.session.commit()
