@@ -1,9 +1,13 @@
+import 'package:bookstore/services/root_index.dart';
+import 'package:bookstore/services/user_logged_data.dart';
 import 'package:flutter/material.dart';
 import 'package:bookstore/pages/homepage.dart';
 import 'package:bookstore/pages/profile.dart';
 import 'package:bookstore/pages/sell_product.dart';
 import 'package:bookstore/pages/sign_in.dart';
 import 'package:bookstore/pages/suggestions.dart';
+import 'package:bookstore/pages/profile.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'pages/basket.dart';
 import 'pages/favorites.dart';
@@ -22,7 +26,7 @@ class _RootState extends State<Root> {
     const Favorites(),
     const Suggestions(),
     const SellProduct(),
-    const SignIn()
+    const SignIn(),
   ];
 
   Future<void> walk() async {
@@ -44,15 +48,30 @@ class _RootState extends State<Root> {
 
   //BottomNavigation
   static int _selectedBottomTabIndex = 0;
+  bool temp = false;
 
-  void _onBottomTabPress(int index) {
+  /*void _onBottomTabPress(int index) {
     setState(() {
-      _selectedBottomTabIndex = index;
+      if (temp && index == 5) {
+        Navigator.pushNamed(context, '/profile');
+      } else {
+        _selectedBottomTabIndex = index;
+      }
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
+    Function login = Provider.of<logged_in_user>(context).getUser;
+    Function select_index = Provider.of<ClassRoot>(context).getRoot;
+    Function change_index = Provider.of<ClassRoot>(context).changeRoot;
+    _selectedBottomTabIndex = select_index();
+
+    if (login().email == "") {
+      temp = false;
+    } else {
+      temp = true;
+    }
     return Scaffold(
       body: routes[_selectedBottomTabIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -84,7 +103,13 @@ class _RootState extends State<Root> {
         ],
         currentIndex: _selectedBottomTabIndex,
         selectedItemColor: Colors.amber[800],
-        onTap: _onBottomTabPress,
+        onTap: (_selectedBottomTabIndex) {
+          if (temp && _selectedBottomTabIndex == 5) {
+            Navigator.pushNamed(context, '/profile');
+          } else {
+            change_index(_selectedBottomTabIndex);
+          }
+        },
       ),
     );
   }

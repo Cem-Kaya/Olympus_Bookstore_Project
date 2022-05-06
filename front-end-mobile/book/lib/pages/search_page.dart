@@ -136,7 +136,9 @@ class _search_pageState extends State<search_page> {
         child: Column(
           children: [
             Row(children: [
-              SizedBox(width: 5,),
+              SizedBox(
+                width: 5,
+              ),
               Expanded(child: TextFormField(
                 onChanged: (value) {
                   setState(() {
@@ -180,43 +182,45 @@ class _search_pageState extends State<search_page> {
                     height: 2,
                     color: Colors.deepPurpleAccent,
                   ),
-                  onChanged: (String? newValue) { //ascending does not work, no update on products
+                  onChanged: (String? newValue) {
+                    //ascending does not work, no update on products
                     setState(() {
                       list = items as List<PreviewBooks>;
                       selected = newValue!;
                       if (selected == "Name") {
-                        if (ascending){
+                        if (ascending) {
                           list!.sort((a, b) => a.title!.compareTo(b.title!));
-                        }
-                        else {
+                        } else {
                           list!.sort((b, a) => a.title!.compareTo(b.title!));
                         }
-                      }
-                      else if (selected == "Release Date") {
-                        if(ascending){
-                        list!.sort((a, b) => a.releaseDate!.compareTo(b.releaseDate!));}
-                        else{
-                          list!.sort((a, b) => a.releaseDate!.compareTo(b.releaseDate!));
+                      } else if (selected == "Release Date") {
+                        if (ascending) {
+                          list!.sort((a, b) =>
+                              a.releaseDate!.compareTo(b.releaseDate!));
+                        } else {
+                          list!.sort((a, b) =>
+                              a.releaseDate!.compareTo(b.releaseDate!));
                         }
-                      }
-                      else if (selected == "Rating") {
-                        if(ascending){
-                        list!.sort((b, a) => a.raiting!.compareTo(b.raiting!));}
-                        else
-                          {list!.sort((a, b) => a.raiting!.compareTo(b.raiting!));}
-                      }
-
-                      else if (selected == "Most Sold") {
-                        if(ascending){
-                        list!.sort((b, a) => a.amountSold!.compareTo(b.amountSold!));}
-                        else{
-                          list!.sort((a, b) => a.amountSold!.compareTo(b.amountSold!));
+                      } else if (selected == "Rating") {
+                        if (ascending) {
+                          list!
+                              .sort((b, a) => a.raiting!.compareTo(b.raiting!));
+                        } else {
+                          list!
+                              .sort((a, b) => a.raiting!.compareTo(b.raiting!));
                         }
-                      }
-                      else {
-                        if(ascending){
-                        list!.sort((a, b) => a.id!.compareTo(b.id!));}
-                        else{
+                      } else if (selected == "Most Sold") {
+                        if (ascending) {
+                          list!.sort(
+                              (b, a) => a.amountSold!.compareTo(b.amountSold!));
+                        } else {
+                          list!.sort(
+                              (a, b) => a.amountSold!.compareTo(b.amountSold!));
+                        }
+                      } else {
+                        if (ascending) {
+                          list!.sort((a, b) => a.id!.compareTo(b.id!));
+                        } else {
                           list!.sort((b, a) => a.id!.compareTo(b.id!));
                         }
                       }
@@ -226,61 +230,67 @@ class _search_pageState extends State<search_page> {
                       //print(list.title);}}
                     });
                   },
-                  items: <String>['All','Name', 'Release Date', 'Rating', 'Most Sold']
-                      .map<DropdownMenuItem<String>>((String value) {
+                  items: <String>[
+                    'All',
+                    'Name',
+                    'Release Date',
+                    'Rating',
+                    'Most Sold'
+                  ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
                     );
                   }).toList(),
                 ),
-                IconButton(onPressed: (){
-                  setState(() {
-                    if (ascending){
-                      ascending = false;
-                    }
-                    else {
-                      ascending = true;
-                    }
-                    if (selected == "Name") {
-                      if (ascending){
-                        list!.sort((a, b) => a.title!.compareTo(b.title!));
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      if (ascending) {
+                        ascending = false;
+                      } else {
+                        ascending = true;
                       }
-                      else {
-                        list!.sort((b, a) => a.title!.compareTo(b.title!));
+                      if (selected == "Name") {
+                        if (ascending) {
+                          list!.sort((a, b) => a.title!.compareTo(b.title!));
+                        } else {
+                          list!.sort((b, a) => a.title!.compareTo(b.title!));
+                        }
+                      } else if (selected == "Release Date") {
+                        if (ascending) {
+                          list!.sort((a, b) =>
+                              a.releaseDate!.compareTo(b.releaseDate!));
+                        } else {
+                          list!.sort((b, a) =>
+                              a.releaseDate!.compareTo(b.releaseDate!));
+                        }
+                      } else if (selected == "Rating") {
+                        if (ascending) {
+                          list!
+                              .sort((b, a) => a.raiting!.compareTo(b.raiting!));
+                        } else {
+                          list!
+                              .sort((a, b) => a.raiting!.compareTo(b.raiting!));
+                        }
+                      } else if (selected == "Most Sold") {
+                        if (ascending) {
+                          list!.sort(
+                              (b, a) => a.amountSold!.compareTo(b.amountSold!));
+                        } else {
+                          list!.sort(
+                              (a, b) => a.amountSold!.compareTo(b.amountSold!));
+                        }
+                      } else {
+                        if (ascending) {
+                          list!.sort((a, b) => a.id!.compareTo(b.id!));
+                        } else {
+                          list!.sort((b, a) => a.id!.compareTo(b.id!));
+                        }
                       }
-                    }
-                    else if (selected == "Release Date") {
-                      if(ascending){
-                        list!.sort((a, b) => a.releaseDate!.compareTo(b.releaseDate!));}
-                      else{
-                        list!.sort((b, a) => a.releaseDate!.compareTo(b.releaseDate!));
-                      }
-                    }
-                    else if (selected == "Rating") {
-                      if(ascending){
-                        list!.sort((b, a) => a.raiting!.compareTo(b.raiting!));}
-                      else
-                      {list!.sort((a, b) => a.raiting!.compareTo(b.raiting!));}
-                    }
-
-                    else if (selected == "Most Sold") {
-                      if(ascending){
-                        list!.sort((b, a) => a.amountSold!.compareTo(b.amountSold!));}
-                      else{
-                        list!.sort((a, b) => a.amountSold!.compareTo(b.amountSold!));
-                      }
-                    }
-                    else {
-                      if(ascending){
-                        list!.sort((a, b) => a.id!.compareTo(b.id!));}
-                      else{
-                        list!.sort((a, b) => a.id!.compareTo(b.id!));
-                      }
-                    }
-                  });
-                }, icon:
-               myicon(ascending),
+                    });
+                  },
+                  icon: myicon(ascending),
                 )
               ],
             ),
@@ -338,11 +348,11 @@ class _search_pageState extends State<search_page> {
     );
   }
 }
-Widget myicon(bool a){
-  if(a){
+
+Widget myicon(bool a) {
+  if (a) {
     return Icon(Icons.arrow_downward);
-  }
-  else{
+  } else {
     return Icon(Icons.arrow_upward);
   }
 }

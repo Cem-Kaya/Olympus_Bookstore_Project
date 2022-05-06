@@ -1,11 +1,15 @@
 import 'dart:convert';
 
+import 'package:bookstore/services/user_logged_data.dart';
 import 'package:bookstore/utils/colors.dart';
 import 'package:bookstore/utils/dimensions.dart';
 import 'package:bookstore/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import "package:http/http.dart" as http;
+import 'package:provider/provider.dart';
+
+import '../services/root_index.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -23,28 +27,33 @@ class _SignUpState extends State<SignUp> {
   var response;
   late Map<String, dynamic> temp;
 
-postlog(String name,String email,String pass,String add) async{
-  try{
-
-  response =await http.post(Uri.parse("http://10.0.2.2:5000/signup/submit"),
-  headers:<String, String>{'Content-Type': 'application/json; charset=UTF-8' ,},
-  body:jsonEncode(<String, String>{
-    "name":name,
-    "email":email,
-    "pass_hash":pass,
-    "homeadress":add,
-      },
-    ),
-  );
-  print(response.body);
-  temp=json.decode(response.body);}
-  catch(e){
-    print("error is ${e.toString()}");
-
+  postlog(String name, String email, String pass, String add) async {
+    try {
+      response = await http.post(
+        Uri.parse("http://10.0.2.2:5000/signup/submit"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          <String, String>{
+            "name": name,
+            "email": email,
+            "pass_hash": pass,
+            "homeadress": add,
+          },
+        ),
+      );
+      print(response.body);
+      temp = json.decode(response.body);
+    } catch (e) {
+      print("error is ${e.toString()}");
+    }
   }
-}
+
   @override
   Widget build(BuildContext context) {
+    Function login = Provider.of<logged_in_user>(context).log_user;
+    Function change_index = Provider.of<ClassRoot>(context).changeRoot;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -79,7 +88,7 @@ postlog(String name,String email,String pass,String add) async{
                                 color: AppColors.primary,
                               ),
                               borderRadius:
-                              BorderRadius.all(Radius.circular(30)),
+                                  BorderRadius.all(Radius.circular(30)),
                             ),
                           ),
                           keyboardType: TextInputType.name,
@@ -114,14 +123,14 @@ postlog(String name,String email,String pass,String add) async{
                           decoration: InputDecoration(
                             fillColor: AppColors.DarkTextColor,
                             filled: true,
-                            hintText: "Adress",
+                            hintText: "Address",
                             hintStyle: kButtonLightTextStyle,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: AppColors.primary,
                               ),
                               borderRadius:
-                              BorderRadius.all(Radius.circular(30)),
+                                  BorderRadius.all(Radius.circular(30)),
                             ),
                           ),
                           keyboardType: TextInputType.text,
@@ -139,7 +148,6 @@ postlog(String name,String email,String pass,String add) async{
                           onSaved: (value) {
                             if (value != null) {
                               adress = value;
-
                             }
                           }),
                     ),
@@ -164,7 +172,7 @@ postlog(String name,String email,String pass,String add) async{
                                 color: AppColors.primary,
                               ),
                               borderRadius:
-                              BorderRadius.all(Radius.circular(30)),
+                                  BorderRadius.all(Radius.circular(30)),
                             ),
                           ),
                           keyboardType: TextInputType.emailAddress,
@@ -186,7 +194,8 @@ postlog(String name,String email,String pass,String add) async{
                             if (value != null) {
                               mail = value;
                             }
-                          }),
+                          }
+                          ),
                     ),
                   ],
                 ),
@@ -249,23 +258,32 @@ postlog(String name,String email,String pass,String add) async{
                     Expanded(
                       flex: 1,
                       child: OutlinedButton(
-                        onPressed: () async{
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                            print("aaaaa");
                             print("$name, $mail, $pass, $adress");
-                            postlog(name, mail, pass, adress);
-                            if(true){
-                              print("a");
-                              print(temp["status"]);
+                            await postlog(name, mail, pass, adress);
+                            if (temp["status"]) {
+                              Navigator.pop(context);
+                              login(mail);
+                              change_index(0);
+                            } else {
+                              await showDialog(
+                                  context: context,
+                                  builder: (_) => AlertDialog(
+                                        title: const Text("Error"),
+                                        content: const Text(
+                                            "The account already exist."),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(_);
+                                              },
+                                              child: const Text("Ok"))
+                                        ],
+                                      ));
                             }
-                            else{
-                              print(temp.runtimeType);
-                            }
-
-
                           }
-                          
                         },
                         child: Padding(
                           padding: Dimen.smallPadding,

@@ -1,26 +1,47 @@
+import 'dart:convert';
 import 'package:bookstore/views/product_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
+import "package:http/http.dart" as http;
 import '../views/action_bar.dart';
 
-
 class AddReview extends StatefulWidget {
-  const AddReview({Key? key, required this.prod }) : super(key: key);
+  const AddReview({Key? key, required this.prod}) : super(key: key);
   final int prod;
-
-
 
   @override
   State<AddReview> createState() => _AddReviewState();
 }
 
-
-
 class _AddReviewState extends State<AddReview> {
   num rating = 1;
   String comment = "";
+  var response;
+  late Map<String, dynamic> temp;
+
+  AccountLogin(String email, String pass) async {
+    try {
+      print("aaaa");
+      response = await http.post(
+        Uri.parse("http://10.0.2.2:5000/login/submit_test"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          <String, String>{
+            "email": email,
+            "pass_hash": pass,
+          },
+        ),
+      );
+      print("bbbb");
+      print(response.body);
+      temp = json.decode(response.body);
+    } catch (e) {
+      print("error is ${e.toString()}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,17 +81,17 @@ class _AddReviewState extends State<AddReview> {
               await showDialog(
                   context: context,
                   builder: (_) => AlertDialog(
-                    title: const Text("Success"),
-                    content: const Text(
-                        "Review submitted. It will be shown once approved by the seller."),
-                    actions: [
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pop(_);
-                          },
-                          child: const Text("Ok"))
-                    ],
-                  ));
+                        title: const Text("Success"),
+                        content: const Text(
+                            "Review submitted. It will be shown once approved by the seller."),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(_);
+                              },
+                              child: const Text("Ok"))
+                        ],
+                      ));
               Navigator.pop(context);
               Navigator.pop(context);
             },

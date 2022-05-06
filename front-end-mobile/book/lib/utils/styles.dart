@@ -1,9 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:bookstore/utils/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-
-import 'colors.dart';
 
 final kHeadingTextStyle = GoogleFonts.montserrat(
   color: AppColors.headingColor,
@@ -50,3 +48,17 @@ final kImportantText = GoogleFonts.montserrat(
   fontSize: 10.0,
   letterSpacing: -0.7,
 );
+
+final kProfileNameText = GoogleFonts.montserrat(
+  color: AppColors.LightTextColor,
+  fontSize: 15.0,
+  letterSpacing: -0.7,
+);
+
+final kProfileMailText = GoogleFonts.montserrat(
+  fontStyle: FontStyle.italic,
+  color: AppColors.LightTextColor,
+  fontSize: 15.0,
+  letterSpacing: -0.7,
+);
+

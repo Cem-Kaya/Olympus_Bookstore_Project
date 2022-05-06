@@ -1,12 +1,49 @@
+import 'package:bookstore/views/profile_body.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class Profile extends StatelessWidget {
+import '../services/user_logged_data.dart';
+import '../utils/colors.dart';
+
+class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
 
   @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Profile"),
+    Function sign_out = Provider.of<logged_in_user>(context).log_off_user;
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Profile"),
+        backgroundColor: AppColors.background,
+        centerTitle: true,
+        elevation: 0.0,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: ElevatedButton.icon(
+              label: const Text(
+                "Log Out",
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: (){
+                sign_out();
+                Navigator.pop(context); //maybe t will change to home page
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(AppColors.notification),
+              ),
+              icon: const Icon(Icons.logout),
+            ),
+          ),
+        ],
+      ),
+      body: ProfileBody(),
+
     );
   }
 }

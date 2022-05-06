@@ -77,6 +77,13 @@ class Basket with ChangeNotifier {
     notifyListeners();
   }
 
+  void clean_basket() {
+
+    for (var i in myBasket) {
+      remove_basket(i.product_id!);
+    }
+  }
+
   num getSum() {
     num sum = 0;
     for (var i in myBasket) {
