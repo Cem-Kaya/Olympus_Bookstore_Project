@@ -208,6 +208,14 @@ def signupsubmit():
 def Product_manager_reg():
   return render_template('Product_manager_reg.html')  
 
+@app.route('/Product_manager_reg/submit_test', methods=['POST'], strict_slashes=False  )
+def Product_manager_regsubmittest():
+  url = 'http://127.0.0.1:5000/Product_manager_reg/submit'
+  myobj = {'name': request.form['name'] , 
+           'pass_hash': request.form['pass_hash'],
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
+
 @app.route('/Product_manager_reg/submit', methods=['POST'], strict_slashes=False)
 def Product_manager_regsubmit(): 
   data2 = json.loads(request.get_data())
@@ -218,8 +226,20 @@ def Product_manager_regsubmit():
   PM__= Product_Manager(name=name,pass_hash=pass_hash)
   db.session.add(PM__)
   db.session.commit()
+  retjs ={}
+  allproductmanagers = db.session.query(Product_Manager).all()
+  pidvalues = []
+  if(len(allproductmanagers) == 0):
+    pidvalues.append(int(1))
+  else:
+    for i in allproductmanagers:
+      pidvalues.append(i.Pmid)
+  maxPmid=max(pidvalues)
 
-  return render_template('success.html', data= name)
+  retjs["status"] = True
+  retjs["Pmid"] = maxPmid
+
+  return json.dumps(retjs)
 
 
 
@@ -227,12 +247,36 @@ def Product_manager_regsubmit():
 @app.route('/Products_reg')
 def Products_reg():
   return render_template('Products_reg.html')
-            
+
+@app.route('/Products_reg/submit_test', methods=['POST'], strict_slashes=False  )
+def Products_regsubmittest():
+  url = 'http://127.0.0.1:5000/Products_reg/submit'
+  myobj = {'name': request.form['name'] , 
+           'model': request.form['model'],
+           'description': request.form['description'],
+           'edition_number': request.form['edition_number'],
+           'quantity': request.form['quantity'],
+           'amount_sold': request.form['amount_sold'],
+           'price': request.form['price'],  
+           'raiting': request.form['raiting'], 
+           'author': request.form['author'], 
+           'warranty': request.form['warranty'], 
+           'distributor_Information': request.form['distributor_Information'],   
+           'sale': request.form['sale'], 
+           'picture_url0': request.form['picture_url0'], 
+           'picture_url1': request.form['picture_url1'], 
+           'picture_url2': request.form['picture_url2'] 
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )   
+
 @app.route('/Products_reg/submit', methods=['POST'], strict_slashes=False)
 def Prsubmit():  
 
   data2 = json.loads(request.get_data())
   print(request.get_data())
+  Pid = data2['Pid']
+  Pcid = data2['Pcid']
+  Sid = data2['Sid']
   name= data2['name']
   model=data2['model']
   description=data2['description']
@@ -256,7 +300,11 @@ def Prsubmit():
   db.session.add(products__)
   db.session.commit() 
 
-  return render_template('success.html', data= name)  
+  
+  retjs ={}
+  retjs["status"] = True
+  return json.dumps(retjs)
+
 
 
 @app.route('/comment_reg')
@@ -790,6 +838,36 @@ def Commentss_page():
     todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.customer_email, i.comment_id, i.product_pid, i.date) 
   todata +="</table>   "
   return render_template('Comments.html',data =todata )  
+
+@app.route('/Comment_all_/submit', methods=['POST'], strict_slashes=False )
+def Comment_all_ssubmit():
+  data2 = json.loads(request.get_data())
+  text=data2['text']
+  stars=data2['stars']
+  comment__ = Comment(text,stars)
+  db.session.add(comment__)
+  db.session.commit() 
+  
+  Pid= int(data2['Pid'])
+  cid= int(comment__.cid) 
+  email=data2['email']
+  print(cid)
+  assoc = Comments(customer_email=email, product_pid=Pid, comment_id=cid)
+  db.session.add(assoc)
+  db.session.commit()
+  return json.dumps({"status":True })
+
+
+
+@app.route('/Comment_all_ssubmit/submit_test' , methods=['POST'], strict_slashes=False  )
+def Comment_all_ssubmit_test():
+  url = 'http://127.0.0.1:5000/Comment_all_/submit'
+  myobj = {'text': request.form['text'] , 
+           'stars': request.form['stars'],
+          'Pid': request.form['Pid'] ,
+          'email':request.form['email']
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )  
 
 
 @app.route('/Comments/submit', methods=['POST'], strict_slashes=False )
