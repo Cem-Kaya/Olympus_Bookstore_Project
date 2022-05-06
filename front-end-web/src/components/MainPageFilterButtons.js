@@ -9,14 +9,14 @@ const ButtonContainer = styled.div`
     margin-right: 60px;
 `;
 
-const MainPageFilterButtons = () => {
+const MainPageFilterButtons = ({onChangeTag}) => {
   return (
     <ButtonContainer>
         <div className="button-group-horizontal">
-            <button className="button">Best Seller</button>
-            <button className="button">Top Rated</button>
-            <button className="button">New Books</button>
-            <button className="button">Top Deals</button>
+            <button className="button" onClick={() => onChangeTag("Best Seller")}>Best Seller</button>
+            <button className="button" onClick={() => onChangeTag("Top Rated")}>Top Rated</button>
+            <button className="button" onClick={() => onChangeTag("New Books")}>New Books</button>
+            <button className="button" onClick={() => onChangeTag("Top Deals")}>Top Deals</button>
         </div>
     </ButtonContainer>
   )

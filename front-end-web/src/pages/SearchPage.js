@@ -65,35 +65,95 @@ const RightContainer = styled.div`
 
 const SearchPage = () => {
     let params = useParams();
-    const [cartItems, setCartItems] = useState([]);
     const [sortBy, setSortBy] = useState("Popular");
+    const [items, setItems] = useState([]);
+    const [onlyInStock, setOnlyInStock] = useState("false")
 
-    //console.log(params)
-    //console.log(sortBy)
+    useEffect (() => {
+        const getBooks = async () =>  {
+          const itemsFromServer = await fetchBooks()
+          setItems(itemsFromServer)
+        }
+        getBooks()
+      }, [])
 
-    useEffect(() => {
-      const filterCategories = ["author", "publisher", "raiting"]
-      filterCategories.forEach(element => {
-        params[element] === "*" ? params[element] = [] : params[element] = params[element].split(",")
-      });
-    }, [params]);
+    useEffect (() => {
+        const filterCategories = ["author", "publisher", "raiting"]
+        filterCategories.forEach(element => {
+          params[element] === "*" || params[element] === [] ? params[element] = [] : params[element] = params[element].split(",")
+        })
+        console.log(params)
+    }, [params])
+    
+    const fetchBooks = async () => {
+        const res = await fetch(`/all_books`     , {headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+            }}
+            )
+        const data = await res.json()
+
+        console.log(data)
+        return data
+    }
   
     const [cartItemsChanged, setCartItemsChanged] = useState(false);
     
-    const AddToCart = (item) => {
-      addNewItem(item)
+    const AddToCart = async (item) => {
+      await addNewItem(item)
       setCartItemsChanged(!cartItemsChanged)
     }
   
-    const HeaderAddToCart = (item) => {
-      add1Item(item)
+    const HeaderAddToCart = async (item) => {
+      await add1Item(item)
       setCartItemsChanged(!cartItemsChanged)
     }
   
-    const HeaderRemoveFromCart = (item) => {
-      remove1Item(item)
+    const HeaderRemoveFromCart = async (item) => {
+      await remove1Item(item)
       setCartItemsChanged(!cartItemsChanged)
     }
+
+    const FilterItems = () => {
+        console.log(params)
+        let itemsCopy = [...items]
+        let nonEmptyElements = []
+
+        if(params.hasOwnProperty("title")){
+            var regexObj = new RegExp(params["title"], "i"); 
+            console.log(regexObj)
+            itemsCopy = itemsCopy.filter(elem => regexObj.test(elem["title"]) === true)
+        }
+        else if(params.hasOwnProperty("description")){
+            var regexObj2 = new RegExp(params["description"], "i"); 
+            console.log(regexObj2)
+            itemsCopy = itemsCopy.filter(elem => regexObj2.test(elem["description"]) === true)
+        }
+
+        if(onlyInStock === false){
+            itemsCopy = itemsCopy.filter(elem => elem["in_stock"] !== 0)
+        }
+        
+        for (var key of Object.keys(params)) {
+            if(key !== "category" && key !== "description" && key !== "title" && key !== "pr_lower" && key !== "pr_upper" && params[key] !== "*" && params[key].length !== 0){
+                nonEmptyElements.push(key)
+            }
+        }
+        console.log(nonEmptyElements)
+        nonEmptyElements.forEach(key => {
+                itemsCopy = itemsCopy.filter(elem => params[key].includes(elem[key]))
+            });
+        if(params["pr_lower"] !== "*"){
+            itemsCopy = itemsCopy.filter(elem => elem["price"] >= parseInt(params["pr_lower"]))
+        }
+        if(params["pr_upper"] !== "*"){
+            itemsCopy = itemsCopy.filter(elem => elem["price"] <= parseInt(params["pr_upper"]))
+        }
+        console.log(itemsCopy)
+        return itemsCopy
+    }
+    let filteredItems = FilterItems()
+    let pageNum = items.length / 16
 
     return (
       <div>
@@ -101,7 +161,7 @@ const SearchPage = () => {
         <UpperContainer>  
             <TopButtons>
             <div className="custom-control custom-switch">
-                <input type="checkbox" className="custom-control-input" id="customSwitch1"/>
+                <input type="checkbox" className="custom-control-input" id="customSwitch1" onClick={() => {setOnlyInStock(!onlyInStock)}}/>
                 <label className="custom-control-label" htmlFor="customSwitch1">Show Only In Stock Items</label>
             </div>
             <div className="">
@@ -119,16 +179,14 @@ const SearchPage = () => {
         </UpperContainer>
         <BodyContainer>  
             <LeftContainer>
-                <Filters products={popularProducts} params={params}/>
+                <Filters products={filteredItems} params={params}/>
             </LeftContainer>
             <RightContainer>
-                <Products products={popularProducts} onAddToCart={AddToCart}></Products>
+                <Products products={filteredItems} onAddToCart={AddToCart} sortBy={sortBy} highToLow={sortBy !== "Price low to high"}></Products>
                 <nav className="mt-4" aria-label="Page navigation sample">
                     <ul className="pagination">
                         <li className="page-item disabled"><a className="page-link" href="#">Previous</a></li>
                         <li className="page-item active"><a className="page-link" href="#">1</a></li>
-                        <li className="page-item"><a className="page-link" href="#">2</a></li>
-                        <li className="page-item"><a className="page-link" href="#">3</a></li>
                         <li className="page-item"><a className="page-link" href="#">Next</a></li>
                     </ul>
                 </nav>

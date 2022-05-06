@@ -66,12 +66,12 @@ const Filters = ({ products, params }) => {
 							</div>
 						</form>*/}
 						{
-							getCounts("author").sort((a, b) => (a.count > b.count) ? -1 : 1).map((item) => (
-								<label className="custom-control custom-checkbox">
+							getCounts("author").sort((a, b) => (a.count > b.count) ? -1 : 1).map((item,index) => (
+								<label className="custom-control custom-checkbox" key={index}>
 								<input type="checkbox" className="custom-control-input" onChange={() => {onCheckStateChangedArray("author", item.author)}}/>
 								<div className="custom-control-label">{item.author}  
 									<b className="badge badge-pill badge-light float-right">{item.count}</b>  </div>
-							</label>
+								</label>
 							))
 						}
 					</div>
@@ -96,8 +96,8 @@ const Filters = ({ products, params }) => {
 							</div>
 						</form>*/}
 						{
-							getCounts("publisher").sort((a, b) => (a.count > b.count) ? -1 : 1).map((item) => (
-								<label className="custom-control custom-checkbox">
+							getCounts("publisher").sort((a, b) => (a.count > b.count) ? -1 : 1).map((item,index) => (
+								<label className="custom-control custom-checkbox" key={index}>
 								<input type="checkbox" className="custom-control-input" onChange={() => {onCheckStateChangedArray("publisher", item.publisher)}}/>
 								<div className="custom-control-label">{item.publisher}  
 									<b className="badge badge-pill badge-light float-right">{item.count}</b>  </div>

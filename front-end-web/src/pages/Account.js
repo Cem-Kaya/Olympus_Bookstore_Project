@@ -47,7 +47,7 @@ const Account = () => {
   const links = ["/StoreLogin", "/OrderHistory"]
 
   useEffect(() => {
-    if(checkLogInStatus() === true){
+    if(checkLogInStatus() === false){
       navigate("/")
     }
   }, [navigate]);

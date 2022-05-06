@@ -22,7 +22,6 @@ const HeaderDark = styled.div`
   background-color: #282c34;
   color: aliceblue;
   border-bottom: 2px solid pink;
-  
   `;
 
 const Container = styled.div`
@@ -97,24 +96,29 @@ const Header = ({itemsInCartChanged, onAddToCart, onRemoveFromCart, addToCartAll
     if(selected === "title"){
       history(`/Search/${selected}=${title}/&author=*/&publisher=*/&pr_lower=*/&pr_upper=*/&raiting=*`)
     }
+    else if(selected === "description"){
+      history(`/Search/${selected}=${title}/&author=*/&publisher=*/&pr_lower=*/&pr_upper=*/&raiting=*`)
+    }
     else{
       history(`/Search/category=*/&${selected}=${title}/&publisher=*/&pr_lower=*/&pr_upper=*/&raiting=*`)
     }
   }
 
-  const HeaderAddToCart = (item) => {
-    add1Item(item)
+  const HeaderAddToCart = async (item) => {
+    await add1Item(item)
     setCartItems(getCartItems())
   }
 
-  const HeaderRemoveFromCart = (item) => {
-    remove1Item(item)
+  const HeaderRemoveFromCart = async (item) => {
+    await remove1Item(item)
     setCartItems(getCartItems())
+
   }
 
   const LogOut = () => {
     logOut()
     setLoginStatus(false)
+    history("/")
   }
 /*
   const GetCartItems = async (email) =>  {
@@ -154,7 +158,7 @@ const Header = ({itemsInCartChanged, onAddToCart, onRemoveFromCart, addToCartAll
                 <div className="dropdown-menu">
                   <button className="dropdown-item" onClick={() => {setSelection("Title")}}>Title</button>
                   <button className="dropdown-item" onClick={() => {setSelection("Author")}}>Author</button>
-                  <button className="dropdown-item" onClick={() => {setSelection("Description")}}>Publisher</button>
+                  <button className="dropdown-item" onClick={() => {setSelection("Description")}}>Description</button>
                 </div>
               </div>
               <input type="text" className="form-control" placeholder="Search..." aria-label="Text input with dropdown button" onChange={event => setTitle(event.target.value)} onKeyDown={e => e.key === 'Enter' && searchButtonClicked()}/>

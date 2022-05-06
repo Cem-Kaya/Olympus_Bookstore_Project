@@ -25,6 +25,7 @@ function App() {
         <Route path='/StoreLogin' element={<StoreLogin/>}/>
         <Route path="/Search/category=:category" element={<SearchPage/>}/>
         <Route path="/Search/title=:title/&author=:author/&publisher=:publisher/&pr_lower=:pr_lower/&pr_upper=:pr_upper/&raiting=:raiting" element={<SearchPage/>}/>
+        <Route path="/Search/description=:description/&author=:author/&publisher=:publisher/&pr_lower=:pr_lower/&pr_upper=:pr_upper/&raiting=:raiting" element={<SearchPage/>}/>
         <Route path="/Search/category=:category/&author=:author/&publisher=:publisher/&pr_lower=:pr_lower/&pr_upper=:pr_upper/&raiting=:raiting" element={<SearchPage/>}/>
         <Route path='*' element={<ErrorPage/>}/>
       </Routes>

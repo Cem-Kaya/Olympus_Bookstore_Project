@@ -9,13 +9,39 @@ const Container = styled.div`
     margin-right: 60px;
 `;
 
-const Products = ({onAddToCart, products, sortBy}) => {
+const Products = ({onAddToCart, products, sortBy, highToLow}) => {
 
+  const GetSortByParameter = () => {
+    if(sortBy === "Popular" || sortBy === "Best Seller"){
+      return "amount_sold"
+    }
+    else if(sortBy === "Price high to low"){
+      return "price"
+    }
+    else if(sortBy === "Price low to high"){
+      highToLow = false
+      return "price"
+    }
+    else if(sortBy === "Newest" || sortBy === "New Books"){
+      return "model"
+    }
+    else if(sortBy === "Top Rated"){
+      return "raiting"
+    }
+    else {
+      return "discount"
+    }
+  }
+
+  let sbValue = GetSortByParameter()
   return (
     <Container>
-      {products.map((item) => (
+
+      { 
+        products.length > 0 ? products.sort((a, b) => highToLow ? ((a[sbValue] > b[sbValue]) ? -1 : 1) : 
+        ((a[sbValue] > b[sbValue]) ? 1 : -1)).map((item) => (
         <Product item={item} onAddToCart={onAddToCart} key={item.id} />
-      ))}
+      )) : ""}
     </Container>
   );
 };

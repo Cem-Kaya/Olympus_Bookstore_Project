@@ -64,6 +64,7 @@ export const sliderItems = [
       amount_sold: "125",
       release_date: "09-2021",
       discount: "0%",
+      in_stock: 0
     },
     {
       id:3,

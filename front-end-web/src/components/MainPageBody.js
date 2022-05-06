@@ -42,7 +42,7 @@ const VisualPart = styled.div`
   margin-left:8%;
 `;
 
-const Body = ({onAddToCart, products}) => {
+const Body = ({onAddToCart, products, onChangeTag, sortBy, highToLow}) => {
   return (
     <BodyContainer>
       <LeftContainer>
@@ -52,8 +52,8 @@ const Body = ({onAddToCart, products}) => {
         <VisualPart>
           <Slider></Slider>
         </VisualPart>
-        <MainPageFilterButtons/>
-        <Products onAddToCart={onAddToCart} products={products}/>
+        <MainPageFilterButtons onChangeTag={onChangeTag}/>
+        <Products onAddToCart={onAddToCart} products={products} sortBy={sortBy} highToLow={highToLow}/>
       </RightContainer>
     </BodyContainer>
   )
