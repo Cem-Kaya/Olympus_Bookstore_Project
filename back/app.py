@@ -467,6 +467,13 @@ def Purchasedsubmit():
   db.session.commit() 
   return render_template('success.html', data= "")    
 
+@app.route('/get_shoping/submit_test' ,strict_slashes=False)
+def get_shopingsubmittest():  
+  url = 'http://127.0.0.1:5000/get_shoping/submit'
+  myobj = {'uid': "a@a.com" }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )
+
+
 
 @app.route('/get_shoping/submit', methods=['POST'],  strict_slashes=False)
 def get_shopingsubmit():  
@@ -476,7 +483,7 @@ def get_shopingsubmit():
   allShoppingCarts = db.session.query(shopping_cart)\
        .filter(shopping_cart.c.email == uid  )  # db.session.query(followers).filter(...).all()
   for j,i in enumerate(allShoppingCarts):
-    retjs[i]={"Pid":i.Pid , "quantity":i.quantity  }    
+    retjs[j]={"Pid":i.Pid , "quantity":i.quantity  }    
   return json.dumps(retjs)
       
        
@@ -825,6 +832,16 @@ def Shopping_Cart():
     todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.email,i.Pid, i.date, i.quantity) 
   todata +="</table>   "
   return render_template('Shopping_Cart.html',data =todata )  
+
+@app.route('/Shopping_Cart/submit_test', methods=['POST'], strict_slashes=False  )
+def Shopping_Cartsubmittest():
+  url = 'http://127.0.0.1:5000/Shopping_Cart/submit'
+  myobj = {'Pid': request.form['Pid'] , 
+           'email': request.form['email'],
+           'quantity' : request.form['quantity']
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )      
+
 
 
 @app.route('/Shopping_Cart/submit', methods=['POST'], strict_slashes=False )
