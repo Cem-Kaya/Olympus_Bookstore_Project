@@ -1075,6 +1075,19 @@ def buydlist():
   todata +="</table>   "
   return render_template('buy_dlist.html',data =todata )  
 
+@app.route('/buy_dlist/submit_test' , methods=['POST'], strict_slashes=False  )
+def buydlistsubmittest():
+  url = 'http://127.0.0.1:5000/buy_dlist/submit'
+  myobj = {
+           'quantity': request.form['quantity'],
+          'Pid': request.form['Pid'] ,
+          'uid':request.form['uid'],
+          'purcid':request.form['purcid'],
+          'did':request.form['did']
+          
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )  
+
 
 @app.route('/buy_dlist/submit', methods=['POST'], strict_slashes=False )
 def buydlistsubmit():
@@ -1311,6 +1324,7 @@ def remove_from_cart_sub():
     db.session.commit()
   return render_template('success.html',data ="" ) 
 
+
 @app.route('/to_purchase')
 def topurchase():
 
@@ -1353,6 +1367,13 @@ def topurchase():
   return render_template('to_purchase.html',data =todata ) 
 
 
+@app.route('/getnextdid/submit_test', methods=['POST'], strict_slashes=False  )
+def gettingnextdidtest():
+  url = 'http://127.0.0.1:5000/getnextdid'
+  myobj = {    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
+
+
 @app.route('/getnextdid')
 def gettingnextdid():
   allbuy_dlists = db.session.query(Buy_Dlist).all()
@@ -1364,6 +1385,20 @@ def gettingnextdid():
   maxDid=max(didvalues)+1 #actually max+1
   return str(maxDid)
   
+@app.route('/to_purchase/submit_test', methods=['POST'] , strict_slashes=False )
+def to_purchase_sub_test():
+
+  url = 'http://127.0.0.1:5000/to_purchase/submit'
+  myobj = {'quantity': request.form['quantity'],
+           'price': request.form['price'],
+           'sale': request.form['sale'],
+           'email': request.form['email'],
+           'Pid': request.form['Pid'],
+           'did': request.form['did']
+           }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
+
+
 
 @app.route('/to_purchase/submit', methods=['POST'] , strict_slashes=False )
 def to_purchase_sub():
