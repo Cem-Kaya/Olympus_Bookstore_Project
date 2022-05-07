@@ -361,7 +361,15 @@ def Prsubmit():
 
 @app.route('/comment_reg')
 def comment_reg():
-  return render_template('comment_reg.html')  
+  return render_template('comment_reg.html')
+
+@app.route('/comment_reg/submit_test', methods=['POST'], strict_slashes=False  )
+def comment_regsubmittest():
+  url = 'http://127.0.0.1:5000/comment_reg/submit'
+  myobj = {'text': request.form['text'] , 
+           'stars': request.form['stars']
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
             
 @app.route('/comment_reg/submit', methods=['POST'],  strict_slashes=False)
 def comment_regsubmit():  
@@ -372,7 +380,11 @@ def comment_regsubmit():
   comment__ = Comment(text,stars)
   db.session.add(comment__)
   db.session.commit() 
-  return render_template('success.html', data= text )  
+  retjs ={}
+  retjs["status"] = True
+  return json.dumps(retjs)
+  #return render_template('success.html', data= text ) 
+
 
 
 
@@ -430,6 +442,12 @@ def Purchasedd():
 
   return render_template('purchased.html',data=todata)  
 
+@app.route('/get_ones_purch_hist/submit_test' ,strict_slashes=False)
+def get_ones_purchsubmit_test():  
+  url = 'http://127.0.0.1:5000/get_ones_purch_hist/submit'
+  myobj = {'uid': "a@a.com" }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )
+
 
 @app.route('/get_ones_purch_hist/submit', methods=['POST'], strict_slashes=False)
 def get_ones_purchsubmit():  
@@ -467,13 +485,17 @@ def get_all_purchsubmit():
 
 
 
-@app.route('/get_ones_purch_hist/submit_test' ,strict_slashes=False)
-def get_ones_purchsubmit_test():  
-  url = 'http://127.0.0.1:5000/get_ones_purch_hist/submit'
-  myobj = {'uid': "a@a.com" }
+
+
+@app.route('/purchased/submit_test' ,methods=['POST'], strict_slashes=False)
+def purchasedsubmittest():  
+  url = 'http://127.0.0.1:5000/purchased/submit'
+  myobj = {'price': request.form['price'] , 
+           'sale': request.form['sale'],
+           'quantity': request.form['quantity'],
+           'shipment': request.form['shipment']
+           }
   return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )
-
-
 
 @app.route('/purchased/submit', methods=['POST'], strict_slashes=False)
 def Purchasedsubmit():  
@@ -485,8 +507,11 @@ def Purchasedsubmit():
   shipment=data2['shipment']
   PC__ = Purchased(price=price, sale=sale, quantity=quantity,shipment=shipment)
   db.session.add(PC__)
-  db.session.commit() 
-  return render_template('success.html', data= "")    
+  db.session.commit()
+  retjs = {}
+  retjs["status"] = True
+  return  json.dumps(retjs)
+  #return render_template('success.html', data= "")    
 
 @app.route('/get_shoping/submit_test' ,strict_slashes=False)
 def get_shopingsubmittest():  
