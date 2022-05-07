@@ -75,17 +75,20 @@ class _search_pageState extends State<search_page> {
   Future<void> getProduct() async {
     List<PreviewBooks>? search_title = await items
         ?.where((element) =>
-            element.title!.toLowerCase().contains(my_search.toLowerCase()))
+            element.title!.toLowerCase().contains(my_search.toLowerCase())|| element.description!
+        .toLowerCase()
+        .contains(my_search.toLowerCase()))
         .toList();
+    /*
     List<PreviewBooks>? search_des = await items
         ?.where((element) => element.description!
             .toLowerCase()
             .contains(my_search.toLowerCase()))
-        .toList();
+        .toList();*/
     //var exclusion = search_title?.except(search_des!);       // [1, 2]
     //var intersection = search_title?.intersect(search_des!); // [3, 4]
-    var union = search_title?.union(search_des!);
-    list = union as List<PreviewBooks>?;
+    //var union = search_title?.union(search_des!);
+    list = search_title;
     print(list);
     for (var i in list!) {
       print(i.title);
@@ -185,7 +188,7 @@ class _search_pageState extends State<search_page> {
                   onChanged: (String? newValue) {
                     //ascending does not work, no update on products
                     setState(() {
-                      list = items as List<PreviewBooks>;
+                      //list = items as List<PreviewBooks>;
                       selected = newValue!;
                       if (selected == "Name") {
                         if (ascending) {
@@ -306,7 +309,7 @@ class _search_pageState extends State<search_page> {
                         child: Wrap(
                             alignment: WrapAlignment.spaceAround,
                             children: <Widget>[
-                              for (var i in items!)
+                              for (var i in list!)
                                 Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 8.0),

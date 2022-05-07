@@ -30,10 +30,12 @@ class _HomePageState extends State<HomePage> {
   ];
   static int _currentCategory = 0;
 
+
   @override
   void initState() {
     super.initState();
     allBooks();
+    print("iii");
     // obtain shared preferences
   }
   var counter = 0;

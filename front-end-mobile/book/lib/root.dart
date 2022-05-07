@@ -67,7 +67,7 @@ class _RootState extends State<Root> {
     Function change_index = Provider.of<ClassRoot>(context).changeRoot;
     _selectedBottomTabIndex = select_index();
 
-    if (login().email == "") {
+    if (login() == "") {
       temp = false;
     } else {
       temp = true;

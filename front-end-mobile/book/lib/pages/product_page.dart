@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:bookstore/pages/reviews.dart';
 import 'package:bookstore/pages/send_comment.dart';
 import 'package:bookstore/views/action_bar.dart';
 import 'package:expandable/expandable.dart';
@@ -226,7 +227,12 @@ class _ProductPageState extends State<ProductPage> {
                                         Container(
                                           width: size.width / 2 - 44,
                                           child: OutlinedButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Navigator.of(context).push(MaterialPageRoute(
+                                                  builder: (context) => reviews(
+
+                                                  )));
+                                            },
                                             child: Text("Read Reviews"),
                                           ),
                                         ),

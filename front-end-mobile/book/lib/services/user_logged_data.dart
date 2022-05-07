@@ -12,7 +12,7 @@ class logged_in_user with ChangeNotifier {
   user User = user(email: "");
 
   getUser() {
-    return User;
+    return User.email;
   }
 
   log_user(String mail) {

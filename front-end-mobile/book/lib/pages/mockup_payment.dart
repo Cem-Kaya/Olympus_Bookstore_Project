@@ -51,10 +51,10 @@ class _mockupState extends State<mockup> {
   @override
   Widget build(BuildContext context) {
     Function a = Provider.of<Basket>(context).get;
-    Function clean = Provider.of<Basket>(context).clean_basket;
+    //Function clean = Provider.of<Basket>(context).clean_basket();
     Function login = Provider.of<logged_in_user>(context).getUser;
     var temp_basket = a();
-    var user_mail = login().email;
+    var user_mail = login();
 
     return Scaffold(
         appBar: ActionBar(),
@@ -265,7 +265,7 @@ class _mockupState extends State<mockup> {
                                 for (var i in temp_basket) {
                                   Checkout(user_mail, i.stocks, i.product_id);
                                 }
-                                clean();
+                                //clean();
                                 await showDialog(
                                     context: context,
                                     builder: (_) => AlertDialog(

@@ -61,7 +61,7 @@ class _BasketPageState extends State<BasketPage> {
           ),
           TextButton(
               onPressed: () async {
-                if (login().email != "") {
+                if (login() != "") {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => mockup(
                             sum: s,

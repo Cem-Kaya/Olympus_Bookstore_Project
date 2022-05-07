@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import "package:http/http.dart" as http;
+import 'package:provider/provider.dart';
+import '../services/user_logged_data.dart';
 import '../views/action_bar.dart';
 
 class AddReview extends StatefulWidget {
@@ -18,33 +20,17 @@ class _AddReviewState extends State<AddReview> {
   num rating = 1;
   String comment = "";
   var response;
-  late Map<String, dynamic> temp;
-
-  AccountLogin(String email, String pass) async {
-    try {
-      print("aaaa");
-      response = await http.post(
-        Uri.parse("http://10.0.2.2:5000/login/submit_test"),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(
-          <String, String>{
-            "email": email,
-            "pass_hash": pass,
-          },
-        ),
-      );
-      print("bbbb");
-      print(response.body);
-      temp = json.decode(response.body);
-    } catch (e) {
-      print("error is ${e.toString()}");
-    }
-  }
+  var temp;
+  postlog(num pid,String email,String text,num stars) async{
+    try{ response =await http.post(Uri.parse("http://10.0.2.2:5000/Comment_all_/submit"),
+      headers:<String, String>{'Content-Type': 'application/json; charset=UTF-8' ,},
+      body:jsonEncode({ "Pid":pid, "email":email, "text":text, "stars":stars, }, ), );
+    print(response.body); temp=json.decode(response.body);}
+    catch(e){ print("error is ${e.toString()}"); } }
 
   @override
   Widget build(BuildContext context) {
+    Function login = Provider.of<logged_in_user>(context).getUser;
     return Scaffold(
       appBar: ActionBar(),
       body: Column(children: [
@@ -78,6 +64,7 @@ class _AddReviewState extends State<AddReview> {
         ),
         OutlinedButton(
             onPressed: () async {
+              postlog(widget.prod, login(), comment, rating);
               await showDialog(
                   context: context,
                   builder: (_) => AlertDialog(

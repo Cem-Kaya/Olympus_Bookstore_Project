@@ -71,13 +71,13 @@ class Basket with ChangeNotifier {
     }
   }
 
-  void remove_basket(num productid) {
+  remove_basket(num productid) {
     myBasket.remove(myBasket[
         myBasket.indexWhere((element) => productid == element.product_id)]);
     notifyListeners();
   }
 
-  void clean_basket() {
+  clean_basket() {
 
     for (var i in myBasket) {
       remove_basket(i.product_id!);
