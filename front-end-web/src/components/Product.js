@@ -5,6 +5,7 @@ import {
   } from "@material-ui/icons";
   import styled from "styled-components";
   import React from "react";
+import { useNavigate } from "react-router-dom";
   
   const Info = styled.div`
     opacity: 0;
@@ -105,6 +106,7 @@ const TextBoxPrize = styled.div`
 
 
   const Product = ({ item, onAddToCart }) => {
+    let navigate = useNavigate()
     return (
       <Container>
         <InnerContainer>
@@ -119,7 +121,7 @@ const TextBoxPrize = styled.div`
         </InnerContainer>
         <Info>
           <Icon>
-            <SearchOutlined />
+            <SearchOutlined onClick={() => {navigate(`/SingleProduct=${item.id}`)}} />
           </Icon>
           <Icon>
             {

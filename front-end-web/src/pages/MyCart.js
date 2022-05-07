@@ -138,7 +138,7 @@ const MyCart = ({params}) => {
                             <hr />
                             {
                               checkLogInStatus() ?
-                              <button className="btn btn-primary float-md-right"> Proceed to Checkout <i className="fa fa-chevron-right"></i> </button>
+                              <button className="btn btn-primary float-md-right" onClick={() => history("/Checkout")}> Proceed to Checkout <i className="fa fa-chevron-right"></i> </button>
                               :
                               <a className="page-link" href="/Login">Not Logged In Yet! Please Log In First</a>
                             }

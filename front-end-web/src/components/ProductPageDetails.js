@@ -1,0 +1,159 @@
+import React from 'react'
+import styled from 'styled-components'
+import './ExtraStyles.css'
+
+const Line = styled.div`
+    height: 1px;
+    background-color: #f7f7f7;
+    border: none;
+    margin-top: 10px;
+`;
+
+const ProductPageDetails = ({item}) => {
+    console.log(item)
+    let comment = ""
+    let raiting = "1"
+
+    const onCommentChange = (val) => {
+        comment = val
+    }
+    const onRaitingChange = (val) => {
+        raiting = val
+    }
+    
+  return (
+    item === undefined ? <></>
+    :
+    <div>    
+        <div className="container mt-5 mb-5 bg-dark">
+    <div className="row d-flex justify-content-center">
+        <div className="col-md-10">
+            <div className="card">
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="images p-3">
+                            <div className="text-center p-4">{console.log(item)} <img id="main-image" alt="img0" src={item.img} width="250" /> </div>
+                            <div className="thumbnail text-center"> <img src={item.img1} alt="img1" width="70"/> <img src={item.img2} alt="img2" width="70"/> </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="product p-4">
+                            <div className="mt-4 mb-3"> 
+                                <h5 className="text-uppercase float-md">{item.title}</h5>
+                            </div>
+                            
+                            <hr/>
+                            <span className="text-uppercase text-muted brand float-left">{"Author: " + item.author}</span><br></br>
+                            <span className="text-muted brand float-left">{"Publisher: " + item.publisher}</span><br></br>
+                            <span className="text-uppercase text-warning brand float-left">{item.amount_sold + " sold. " + item.in_stock + " remained in stock"}</span><br></br>
+                            <span className="text-uppercase text-warning brand float-left">{item.discount + " discount. " + item.price + " TL is the new price"}</span><br></br>
+                            </div>
+                            
+                            <div className="cart mt-4 align-items-center"> <button className="btn btn-danger text-uppercase mr-2 px-4">Add to cart</button> <button data-original-title="Save to Wishlist" title="" className="btn btn-light mr-2" data-toggle="tooltip"> <i className="fa fa-heart"></i></button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <Line/>
+    </div>
+    
+    <div className="container mt-5 mb-5 text-light">
+        <div className="row row-underline">
+            <div className="col-md-6"> <span className=" deal-text float-left "><h4>Description</h4></span> </div><br></br>
+            <p>{item.description}</p>
+        </div>
+        <Line/>
+    </div>
+    <div className="container mt-5 mb-5">
+    <div className="row row-underline text-light">
+                <div className="col-md-6"> <span className=" deal-text float-left"><h4>Other Details</h4></span> </div><br></br>
+            </div>
+            <br></br>
+            <div className="row text-light">
+                <div className="col-md-12">
+                    <table className="col-md-12">
+                        <tbody>
+                            <tr className="row mt-10">
+                                <td className="col-md-4"><span className="p_specification">Edition Number:</span> </td>
+                                <td className="col-md-8">
+                                    <ul>
+                                        <li>{item.edition_number}</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr className="row mt-10">
+                                <td className="col-md-4"><span className="p_specification">Model Number :</span> </td>
+                                <td className="col-md-8">
+                                    <ul>
+                                        <li>{item.model}</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr className="row mt-10">
+                                <td className="col-md-4"><span className="p_specification">Start of Sale Date  :</span> </td>
+                                <td className="col-md-8">
+                                    <ul>
+                                        <li>{item.release_date.split(" ")[0]}</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <Line/>
+            </div>
+            
+            <section className="content-item" id="comments">
+    <div className="container text-light">   
+    	<div className="row">
+            <div className="col-sm-8">   
+                <form>
+                	<h3 className="pull-left float-left text-light">New Comment</h3><br></br><br></br>
+                    <div className="rating float-left"> <input type="radio" name="rating" value="5" onChange={event => onRaitingChange(event.target.value)} id="5"/><label htmlFor="5">☆</label> <input type="radio" name="rating" value="4" onChange={event => onRaitingChange(event.target.value)} id="4"/><label htmlFor="4">☆</label> <input type="radio" name="rating" value="3" onChange={event => onRaitingChange(event.target.value)} id="3"/><label htmlFor="3">☆</label> <input type="radio" name="rating" value="2" onChange={event => onRaitingChange(event.target.value)} id="2"/><label htmlFor="2">☆</label> <input type="radio" name="rating" value="1" onChange={event => onRaitingChange(event.target.value)} id="1"/><label htmlFor="1">☆</label>
+                    </div>
+                	<button type="submit" className="btn btn-normal pull-right btn-danger">Submit</button>
+                    
+                    <fieldset>
+                    <br></br>
+                        <div className="row">
+                            <div className="form-group col-xs-12 col-sm-9 col-lg-10">
+                                <textarea className="form-control" id="message" placeholder="Your message" required="" onChange={event => onCommentChange(event.target.value)}></textarea>
+                            </div>
+                        </div>  	
+                    </fieldset>
+                </form>
+
+                <h3 className='text-light'>4 Comments</h3>
+                <div className="media">
+                <div className="container mt-5 mb-5 border">
+                    <br></br>
+
+                    <div className="media-body text-light">
+                        <h4 className="media-heading float-left">John Doe</h4><br></br><br></br>
+                        <div className="d-flex justify-content-between align-items-center">
+                            <div className="ratings">
+                                <i className="fa fa-star text-light"></i>
+                                <i className="fa fa-star text-light"></i>
+                                <i className="fa fa-star text-light"></i>
+                                <i className="fa fa-star text-light"></i>
+                            </div>
+                        </div>
+                        <br></br>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscinsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssg elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <ul className="list-unstyled list-inline media-detail pull-left">
+                            <li><i className="fa fa-calendar"></i>27/02/2014</li>
+                        </ul>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+            </div>
+  )
+}
+
+export default ProductPageDetails

@@ -8,10 +8,12 @@ const OrderHistory = () => {
 
   
 const [orders, setOrders] = useState([])
-  
+const [books, setBooks] = useState([])
+
 useEffect (() => {
   const getOrders = async () =>  {
     const itemsFromServer = await fetchOrders()
+    console.log(itemsFromServer)
     if(Object.keys(itemsFromServer).length === 0){
       setOrders([])
     }
@@ -22,9 +24,23 @@ useEffect (() => {
       }
       setOrders(itemArray)
     }
+    const serverbooks = await fetchBooks()
+    setBooks(serverbooks)
   }
   getOrders()
 }, [])
+
+const fetchBooks = async () => {
+  const res = await fetch(`/all_books`     , {headers : { 
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+      }}
+      )
+  const data = await res.json()
+
+  console.log(data)
+  return data
+}
 
 const fetchOrders = async () => {
   const res = await fetch('/get_ones_purch_hist/submit', {
@@ -39,6 +55,24 @@ const fetchOrders = async () => {
 
     console.log(data)
     return data
+  }
+
+  const elems = () => {
+    let orderArray = []
+    for (var key of Object.keys(orders)) {
+      orderArray.push(orders[key])
+    }
+    return orderArray
+  }
+
+  const getName = (item) => {
+    let title = ""
+    books.forEach(element => {
+      if(element.id === item.pid){
+        title = element.title
+      }
+    })
+    return title
   }
 
   return (
@@ -56,14 +90,15 @@ const fetchOrders = async () => {
         <tbody>
           {orders.length === 0 ? <tr><p>No Orders Yet</p></tr>
             : 
-            orders.map((element, index) => (
-              <tr>
-                <th scope="row">1</th>
-                <td>{element}</td>
-                <td>{element}</td>
-                <td>{element}</td>
+            elems().map((element, index) => (
+              <tr key={index}>
+                <th scope="col">{getName(element)}</th>
+                <th scope="col">{element.quantity}</th>
+                <th scope="col">{element.date}</th>
+                <th scope="col">{element.shipment}</th>
               </tr>
-            ))}
+            ))
+          }
 
         </tbody>
       </table>
