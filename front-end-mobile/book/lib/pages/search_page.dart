@@ -151,10 +151,12 @@ class _search_pageState extends State<search_page> {
               )),
               IconButton(
                   onPressed: () {
+                    Navigator.pop(context);
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => search_page(
                               search: my_search,
                             )));
+
                   },
                   icon: Icon(Icons.search))
             ]),

@@ -28,18 +28,23 @@ class _mockupState extends State<mockup> {
   String? name;
   var response;
 
-  Checkout(String email, int quantity, int pid) async { //it will be handled
+  Checkout(String email, int pid, int quantity,num price,double sale,int did) async { //it will be handled
     try {
+
       response = await http.post(
-        Uri.parse("http://10.0.2.2:5000/Shopping_Cart/submit"), //it will be handled
+        Uri.parse("http://10.0.2.2:5000/to_purchase/submit"), //it will be handled
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(
           {
             "email": email,
-            "quantity": quantity,
             "Pid": pid,
+            "quantity": quantity,
+            "price":price,
+            "sale": sale,
+            "did":did,
+
           },
         ),
       );
@@ -51,7 +56,7 @@ class _mockupState extends State<mockup> {
   @override
   Widget build(BuildContext context) {
     Function a = Provider.of<Basket>(context).get;
-    //Function clean = Provider.of<Basket>(context).clean_basket();
+    Function clean = Provider.of<Basket>(context).clean_basket;
     Function login = Provider.of<logged_in_user>(context).getUser;
     var temp_basket = a();
     var user_mail = login();
@@ -263,9 +268,9 @@ class _mockupState extends State<mockup> {
                               if (name != null && card != null && CVV != null) {
 
                                 for (var i in temp_basket) {
-                                  Checkout(user_mail, i.stocks, i.product_id);
+                                  Checkout(user_mail,i.product_id,i.stocks,i.price,1.0,3);
                                 }
-                                //clean();
+                                clean();
                                 await showDialog(
                                     context: context,
                                     builder: (_) => AlertDialog(

@@ -78,15 +78,17 @@ class Basket with ChangeNotifier {
   }
 
   clean_basket() {
+    myBasket = [];
+    notifyListeners();
 
-    for (var i in myBasket) {
-      remove_basket(i.product_id!);
+
     }
-  }
+
 
   num getSum() {
     num sum = 0;
     for (var i in myBasket) {
+
       sum = sum + (i.stocks * i.price);
     }
     return sum;
