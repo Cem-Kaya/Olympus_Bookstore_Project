@@ -104,13 +104,13 @@ const Header = ({itemsInCartChanged, onAddToCart, onRemoveFromCart, addToCartAll
     }
   }
 
-  const HeaderAddToCart = async (item) => {
-    await add1Item(item)
+  const HeaderAddToCart = (item) => {
+    add1Item(item)
     setCartItems(getCartItems())
   }
 
-  const HeaderRemoveFromCart = async (item) => {
-    await remove1Item(item)
+  const HeaderRemoveFromCart = (item) => {
+    remove1Item(item)
     setCartItems(getCartItems())
 
   }

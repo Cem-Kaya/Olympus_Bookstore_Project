@@ -24,23 +24,23 @@ const MyCart = ({params}) => {
     return sum;
   }
 
-  const RemoveAllFromCart = async (item) => {
-    await removeAllItem(item)
+  const RemoveAllFromCart = (item) => {
+    removeAllItem(item)
     setItems(getCartItems())
   }
 
-  const RemoveFromCart = async (item) => {
-    await remove1Item(item)
+  const RemoveFromCart = (item) => {
+    remove1Item(item)
     setItems(getCartItems())
   }
 
-  const AddToCart = async (item) => {
-    await add1Item(item)
+  const AddToCart = (item) => {
+    add1Item(item)
     setItems(getCartItems())
   }
 
-  const EmptyCart = async () => {
-    await emptyCart()
+  const EmptyCart = () => {
+    emptyCart()
     setItems(getCartItems())
   }
 

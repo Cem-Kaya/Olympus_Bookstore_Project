@@ -1,5 +1,5 @@
 
-export const logIn = async (email, passHash) => {
+export const storeLogIn = async (email, passHash) => {
     try{
         console.log(email)
         const res = await fetch('/login/submit', {
@@ -11,8 +11,6 @@ export const logIn = async (email, passHash) => {
           body: JSON.stringify({email: email, pass_hash: passHash})
         })
         const data = await res.json()
-        window.localStorage.setItem('logged_in', JSON.stringify(data["status"]))
-        window.localStorage.setItem('user_id', JSON.stringify(data["uid"]))
         console.log(data)
 
         return data
@@ -22,7 +20,7 @@ export const logIn = async (email, passHash) => {
     }
 }
 
-export const signUp = async (username, email, passHash, homeAddress) =>  {
+export const storeSignUp = async (username, email, passHash, homeAddress) =>  {
     try{
         const res = await fetch(`/signup/submit`, {
           headers : { 
@@ -38,8 +36,6 @@ export const signUp = async (username, email, passHash, homeAddress) =>  {
           }),
         })
         const data = await res.json()
-        window.localStorage.setItem('logged_in', JSON.stringify(data["status"]))
-        window.localStorage.setItem('user_id', JSON.stringify(data["uid"]))
         console.log(data)
 
         return data
@@ -47,21 +43,4 @@ export const signUp = async (username, email, passHash, homeAddress) =>  {
     catch(e){
         throw e
     }
-}
-
-export const checkLogInStatus = () => {
-    if(JSON.parse(window.localStorage.getItem('logged_in')) !== null && 
-        JSON.parse(window.localStorage.getItem('logged_in')) === true){
-      return true
-    }
-    return false
-}
-
-export const logOut = () => {
-    window.localStorage.setItem('logged_in', JSON.stringify(false))
-    window.localStorage.setItem('user_id', JSON.stringify(""))
-}
-
-export const getUserID = () => {
-    return JSON.parse(window.localStorage.getItem('user_id'))
 }

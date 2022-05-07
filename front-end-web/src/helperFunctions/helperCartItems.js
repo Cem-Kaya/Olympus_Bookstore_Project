@@ -3,22 +3,30 @@ import { checkLogInStatus, getUserID } from "./helperLogin"
 export const getCartItems = () => {
     if(false)
     {
-        const email = getUserID()
+        let email = getUserID()
+        email = JSON.stringify(email)
         
         const GetAndSetCart = async (email) =>  {
             const serverAnswer = await tryGetCart(email)
             console.log("Server answer: " , serverAnswer)
+            if(Object.keys(serverAnswer).length === 0){
+              console.log("empty")
+              window.localStorage.setItem('cart_items', JSON.stringify([]))
+            }
+            else{
+              console.log(serverAnswer)
+              window.localStorage.setItem('cart_items', JSON.stringify(serverAnswer))
+            }
         }
         const tryGetCart = async ( email ) => {    
             try{
-                console.log(JSON.stringify({"uid" : email}))
-              const res = await fetch('/get_shoping/submit', {
+                const res = await fetch('/get_shoping/submit', {
                 method: "POST",
                 headers: {
                   'Accept' : 'application/json',
                   'Content-Type' : 'application/json'
                   },
-                  body: JSON.stringify({"uid" : email})
+                  body: JSON.stringify({uid : email})
               })
               const data = await res.json()
               return data
@@ -30,6 +38,7 @@ export const getCartItems = () => {
         GetAndSetCart(email)
     }
     
+    console.log(JSON.parse(window.localStorage.getItem('cart_items')))
     if(JSON.parse(window.localStorage.getItem('cart_items')) === null){
         return []
     }
@@ -39,17 +48,14 @@ export const getCartItems = () => {
 
 }
 
-export const addNewItem = async (item) => {
+export const addNewItem = (item) => {
     if(false)
     {
-        const email = getUserID()
+        let email = getUserID()
         
         const AddNewItemToCart = async (email, item) =>  {
             const serverAnswer = await tryAddNewItem(email, item)
             console.log("Server answer: " , serverAnswer)
-            if(serverAnswer === undefined){
-                window.localStorage.setItem('cart_items', JSON.stringify([]))
-            }
         }
         const tryAddNewItem = async ( email, item ) => {    
             try{
@@ -59,7 +65,7 @@ export const addNewItem = async (item) => {
                   'Accept' : 'application/json',
                   'Content-Type' : 'application/json'
                   },
-                  body: JSON.stringify({"Pid" : item.id, "email": email, "quantity": 1})
+                  body: JSON.stringify({Pid : item.id, email: email, quantity: 1})
               })
               const data = await res.json()
               return data
@@ -68,10 +74,13 @@ export const addNewItem = async (item) => {
               console.log(e)
             }
         }
-        await AddNewItemToCart(email, item)
+        AddNewItemToCart(email, item)
+        getCartItems()
     }
     else
     {
+      if(item.in_stock > 0)
+      {
         let cartItems = getCartItems()
         let getItemAsList = cartItems.filter((elem) => elem.id === item.id)
         if(getItemAsList.length === 0)
@@ -84,11 +93,16 @@ export const addNewItem = async (item) => {
             window.localStorage.setItem('cart_items', JSON.stringify([...cartItems, item]))
           }
         }
+        return true
+      }
+      else{
+        return false
+      }
     }
-    return
+    return true
 }
 
-export const add1Item = async (item) => {
+export const add1Item = (item) => {
     if(false)
     {
         const email = getUserID()
@@ -108,7 +122,7 @@ export const add1Item = async (item) => {
                   'Accept' : 'application/json',
                   'Content-Type' : 'application/json'
                   },
-                  body: JSON.stringify({"Pid" : item.id, "email": email, "quantity": item.quantity + 1})
+                  body: JSON.stringify({Pid : item.id, email: email, quantity: item.quantity + 1})
               })
               const data = await res.json()
               return data
@@ -117,34 +131,52 @@ export const add1Item = async (item) => {
               console.log(e)
             }
         }
-        await AddItemToCart(email, item)
+        AddItemToCart(email, item)
+        getCartItems()
     }
     else
     {
         let cartItems = getCartItems()
         let getItemAsList = cartItems.filter((elem) => elem.id === item.id)
+      
         if(getItemAsList.length === 0)
         {
-          item = {...item, quantity: 1}
-          if(cartItems.length === 0){
-            window.localStorage.setItem('cart_items', JSON.stringify([item]))
+          if(item.in_stock > 0)
+          {
+            item = {...item, quantity: 1}
+            if(cartItems.length === 0){
+              window.localStorage.setItem('cart_items', JSON.stringify([item]))
+            }
+            else{
+              window.localStorage.setItem('cart_items', JSON.stringify([...cartItems, item]))
+            }
+            return true
           }
           else{
-            window.localStorage.setItem('cart_items', JSON.stringify([...cartItems, item]))
+            return false
           }
         } 
         else
         {
-            let filteredItems = cartItems.map(
-              (elem) => elem.id === item.id ? { ...elem, quantity: elem.quantity + 1} : elem
-            )
-            window.localStorage.setItem('cart_items', JSON.stringify([...filteredItems]))
+          console.log(getItemAsList[0].quantity)
+          if(item.in_stock > getItemAsList[0].quantity)
+          {
+              let filteredItems = cartItems.map(
+                (elem) => elem.id === item.id ? { ...elem, quantity: elem.quantity + 1} : elem
+              )
+              window.localStorage.setItem('cart_items', JSON.stringify([...filteredItems]))
+              return true
+          }
+          else{
+            return false
+          }
         }
-    }
-    return
+      }
+  return true
 }
 
-export const remove1Item = async (item) => {
+
+export const remove1Item = (item) => {
     if(false)
     {
         const email = getUserID()
@@ -164,7 +196,7 @@ export const remove1Item = async (item) => {
                   'Accept' : 'application/json',
                   'Content-Type' : 'application/json'
                   },
-                  body: JSON.stringify({"Pid" : item.id, "email": email, "quantity": item.quantity - 1})
+                  body: JSON.stringify({Pid : item.id, email: email, quantity: item.quantity - 1})
               })
               const data = await res.json()
               return data
@@ -173,7 +205,8 @@ export const remove1Item = async (item) => {
               console.log(e)
             }
         }
-        await RemoveItemFromCart(email, item)
+        RemoveItemFromCart(email, item)
+        getCartItems()
     }
     else
     {
@@ -201,10 +234,10 @@ export const remove1Item = async (item) => {
             : window.localStorage.setItem('cart_items', JSON.stringify([...filteredState]))
         }
     }
-    return
+    return true
 }
 
-export const removeAllItem = async (item) => {
+export const removeAllItem = (item) => {
     if(false)
     {
         const email = getUserID()
@@ -224,7 +257,7 @@ export const removeAllItem = async (item) => {
                   'Accept' : 'application/json',
                   'Content-Type' : 'application/json'
                   },
-                  body: JSON.stringify({"Pid" : item.id, "email": email, "quantity": 0})
+                  body: JSON.stringify({Pid : item.id, email: email, quantity: 0})
               })
               const data = await res.json()
               return data
@@ -233,7 +266,8 @@ export const removeAllItem = async (item) => {
               console.log(e)
             }
         }
-        await RemoveAllFromCart(email, item)
+        RemoveAllFromCart(email, item)
+        getCartItems()
     }
     else
     {
@@ -243,17 +277,20 @@ export const removeAllItem = async (item) => {
             window.localStorage.setItem('cart_items', JSON.stringify([])) 
             : window.localStorage.setItem('cart_items', JSON.stringify([...filteredState])) 
     }
-    return
+    return true
 }
 
-export const emptyCart = async () => {
+export const emptyCart = () => {
     if(false)
     {
-
+      getCartItems().forEach(element => {
+        removeAllItem(element)
+      });
+      getCartItems()
     }
     else
     {
-        window.localStorage.setItem('cart_items', JSON.stringify([])) 
+      window.localStorage.setItem('cart_items', JSON.stringify([])) 
     }
-    return
+    return true
 }

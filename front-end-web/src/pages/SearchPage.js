@@ -99,13 +99,13 @@ const SearchPage = () => {
   
     const [cartItemsChanged, setCartItemsChanged] = useState(false);
     
-    const AddToCart = async (item) => {
-      await addNewItem(item)
+    const AddToCart = (item) => {
+      addNewItem(item)
       setCartItemsChanged(!cartItemsChanged)
     }
   
-    const HeaderAddToCart = async (item) => {
-      await add1Item(item)
+    const HeaderAddToCart = (item) => {
+      add1Item(item)
       setCartItemsChanged(!cartItemsChanged)
     }
   
@@ -129,6 +129,13 @@ const SearchPage = () => {
             console.log(regexObj2)
             itemsCopy = itemsCopy.filter(elem => regexObj2.test(elem["description"]) === true)
         }
+        {/*else if(params["author"] !== "*" && params["author"].length === 1){
+            var regexObj3 = new RegExp(params["author"][0], "i"); 
+            console.log(regexObj3)
+            itemsCopy = itemsCopy.filter(elem => regexObj3.test(elem["author"]) === true)
+            console.log(itemsCopy)
+            params["author"] = []
+        }*/}
 
         if(onlyInStock === false){
             itemsCopy = itemsCopy.filter(elem => elem["in_stock"] !== 0)

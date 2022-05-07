@@ -7,8 +7,8 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom"
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { useEffect } from 'react';
-import { checkLogInStatus } from "../helperFunctions/helperLogin";
+import { useState, useEffect } from 'react';
+import { checkLogInStatus, getUserID } from "../helperFunctions/helperLogin";
 
 const TextStyle = styled.div`
     display: flex;
@@ -45,12 +45,37 @@ const Account = () => {
   let navigate = useNavigate();
   const categories = ["My Store", "Order History"]
   const links = ["/StoreLogin", "/OrderHistory"]
+  const [info, setInfo] = useState({name: "", pass_hash: "", status: false, uid: "", homeaddress: ""})
 
   useEffect(() => {
     if(checkLogInStatus() === false){
       navigate("/")
     }
   }, [navigate]);
+
+  useEffect (() => {
+    const getInfo = async () =>  {
+      const itemsFromServer = await fetchInfo()
+      console.log(itemsFromServer)
+      setInfo(itemsFromServer)
+    }
+    getInfo()
+  }, [])
+
+  const fetchInfo = async () => {
+    const res = await fetch('/customer_info/submit', {
+      method: "POST",
+      headers: {
+        'Accept' : 'application/json',
+        'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify({email: getUserID()})
+    })
+    const data = await res.json()
+
+    console.log(data)
+    return data
+  }
 
   return (
 
@@ -71,21 +96,15 @@ const Account = () => {
             ))}
         </div>
         </LeftContainer>
-        <RightContainer>
-        <h4>Account Info</h4>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </RightContainer>
+        { info.status === true ?
+          <RightContainer>
+            <h4>Account Info</h4><br></br>
+            <h5>Name: {info.name}</h5><br></br>
+            <h5>E-mail: {info.uid}</h5><br></br>
+            <h5>Address: {info.homeaddress}</h5><br></br>
+          </RightContainer>
+          : ""
+        }
       </Container>
       <Footer></Footer>
     </div>

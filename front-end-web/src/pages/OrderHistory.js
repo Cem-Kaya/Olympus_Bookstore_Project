@@ -10,10 +10,10 @@ const OrderHistory = () => {
 const [orders, setOrders] = useState([])
   
 useEffect (() => {
-  const getBooks = async () =>  {
-    const itemsFromServer = await fetchBooks()
-    if(console.log(Object.keys(itemsFromServer).length === 0)){
-      setOrders(itemsFromServer)
+  const getOrders = async () =>  {
+    const itemsFromServer = await fetchOrders()
+    if(Object.keys(itemsFromServer).length === 0){
+      setOrders([])
     }
     else{
       let itemArray = []
@@ -23,10 +23,10 @@ useEffect (() => {
       setOrders(itemArray)
     }
   }
-  getBooks()
+  getOrders()
 }, [])
 
-const fetchBooks = async () => {
+const fetchOrders = async () => {
   const res = await fetch('/get_ones_purch_hist/submit', {
     method: "POST",
     headers: {

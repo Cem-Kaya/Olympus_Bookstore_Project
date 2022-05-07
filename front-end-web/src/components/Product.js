@@ -110,7 +110,7 @@ const TextBoxPrize = styled.div`
         <InnerContainer>
             <Image src={item.img} />
             <TextBoxContainer>  
-                <TextBoxAuthor>{item.in_stock === 0 ? <h5 className="text-danger">Sold Out</h5> : item.in_stock <= 5 ? <h6 className="text-warning">Only {item.in_stock} remained in stock</h6> : ""}</TextBoxAuthor>
+                <TextBoxAuthor>{item.in_stock === 0 ? <h5 className="text-danger">Sold Out</h5> : item.in_stock <= 5 ? <h6 className="text-warning">Only {item.in_stock} remained in stock</h6> : <h6 className="text-primary">{item.in_stock} remained in stock</h6>}</TextBoxAuthor>
                 <TextBoxTitle>{item.title}</TextBoxTitle>
                 <TextBoxAuthor style={{marginTop: "8px"}}>{"Author: " + item.author}</TextBoxAuthor>
                 <TextBoxPublisher style={{marginBottom: "8px"}}>{"Publisher: " + item.publisher}</TextBoxPublisher>

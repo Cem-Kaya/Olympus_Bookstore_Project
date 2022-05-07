@@ -47,10 +47,6 @@ const Login = () => {
   let loginStatus = false
   const navigate = useNavigate()
 
-  useEffect(() => {
-      loginStatus = checkLogInStatus()
-  }, []);
-
   const LogIn = async (email, passHash) =>  {
     try{
       const serverAnswer = await logIn(email, passHash)
@@ -60,7 +56,7 @@ const Login = () => {
     catch (e){
       console.log(e)
     }
-    if(loginStatus === true){
+    if(checkLogInStatus()){
       navigate("/")
     }
   }
@@ -74,7 +70,7 @@ const Login = () => {
       console.log(e)
     }
 
-    if(loginStatus === true){
+    if(checkLogInStatus()){
       navigate("/")
     }
   }

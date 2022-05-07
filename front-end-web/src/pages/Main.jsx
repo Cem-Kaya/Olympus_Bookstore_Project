@@ -32,18 +32,18 @@ const Main = () => {
     return data
   }
 
-  const AddToCart = async (item) => {
-    await addNewItem(item)
+  const AddToCart = (item) => {
+    addNewItem(item)
     setCartItemsChanged(!cartItemsChanged)
   }
 
-  const HeaderAddToCart = async (item) => {
-    await add1Item(item)
+  const HeaderAddToCart = (item) => {
+    add1Item(item)
     setCartItemsChanged(!cartItemsChanged)
   }
 
-  const HeaderRemoveFromCart = async (item) => {
-    await remove1Item(item)
+  const HeaderRemoveFromCart = (item) => {
+    remove1Item(item)
     setCartItemsChanged(!cartItemsChanged)
   }
 
