@@ -7,10 +7,12 @@ import 'package:provider/provider.dart';
 import '../services/basket_data.dart';
 import '../services/user_logged_data.dart';
 import '../utils/api.dart';
+import '../utils/colors.dart';
 import '../utils/dimensions.dart';
 import '../utils/jsonParse/previewBooks.dart';
 import 'package:http/http.dart' as http;
 
+import '../utils/styles.dart';
 import '../views/action_bar.dart';
 
 var a;
@@ -31,18 +33,33 @@ class _BasketPageState extends State<BasketPage> {
     num s = sum();
     int counter = temp_basket.length;
     Function login = Provider.of<logged_in_user>(context).getUser;
-
+    Size size = MediaQuery.of(context).size;
     if (s == 0) {
       return Scaffold(
-        appBar: ActionBar(),
-        body: (
-            const Center(
-            child: Text("No purchase has been made"),)
+        appBar: AppBar(
+          title: Text(
+            'My Basket',
+            style: kAppBarTitleTextStyle,
+          ),
+          backgroundColor: AppColors.primaryBackground,
+          centerTitle: true,
+          elevation: 0.0,
         ),
+        body: (const Center(
+          child: Text("No product has been added. Add some!"),
+        )),
       );
     }
     return Scaffold(
-      appBar: ActionBar(),
+      appBar: AppBar(
+        title: Text(
+          'My Basket',
+          style: kAppBarTitleTextStyle,
+        ),
+        backgroundColor: AppColors.primaryBackground,
+        centerTitle: true,
+        elevation: 0.0,
+      ),
       body: Column(
         children: [
           SingleChildScrollView(
@@ -54,12 +71,68 @@ class _BasketPageState extends State<BasketPage> {
                   one_basket_item(
                     view_bask: temp_basket[index],
                   ),
-                  SizedBox(width: 8)
+                  SizedBox(width: 8),
                 ]),
               ),
             ),
           ),
-          TextButton(
+          Spacer(),
+          Container(
+            height: 100,
+            alignment: Alignment.bottomLeft,
+            width: size.width,
+            padding: EdgeInsets.only(
+              top: 16,
+              bottom: 32,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text("Total: \$ $s", style: kPurchaseTextStyle),
+                OutlinedButton(
+                  onPressed: () async {
+                    if (login() != "") {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => mockup(
+                            sum: s,
+                          )));
+                    } else {
+                      await showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            title: const Text("Error"),
+                            content: const Text(
+                                "For continue checkout, you need to login"),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(_);
+                                  },
+                                  child: const Text("Ok"))
+                            ],
+                          ));
+                    }
+                  },
+                  child: Text(
+                    "Check Out",
+                    style: kButtonDarkTextStyle,
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(AppColors.background),
+                  ),
+                ),
+              ],
+            ),
+          )
+
+          /*TextButton(
               onPressed: () async {
                 if (login() != "") {
                   Navigator.of(context).push(MaterialPageRoute(
@@ -83,7 +156,8 @@ class _BasketPageState extends State<BasketPage> {
                           ));
                 }
               },
-              child: Text("Your sum is $s \n   Pay in here"))
+              child: Text("Your sum is $s \n   Pay in here")),
+          */
         ],
       ),
     );

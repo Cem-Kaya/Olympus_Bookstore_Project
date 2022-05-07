@@ -61,4 +61,9 @@ final kProfileMailText = GoogleFonts.montserrat(
   fontSize: 15.0,
   letterSpacing: -0.7,
 );
-
+final kPurchaseTextStyle = GoogleFonts.montserrat(
+  color: AppColors.secondary,
+  fontSize: 24.0,
+  fontWeight: FontWeight.w600,
+  letterSpacing: -0.7,
+);

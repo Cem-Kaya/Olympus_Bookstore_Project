@@ -32,7 +32,7 @@ class _AddReviewState extends State<AddReview> {
   Widget build(BuildContext context) {
     Function login = Provider.of<logged_in_user>(context).getUser;
     return Scaffold(
-      appBar: ActionBar(),
+      appBar: ActionBar(title: "Add Review",),
       body: Column(children: [
         RatingBar(
           initialRating: 2.5,

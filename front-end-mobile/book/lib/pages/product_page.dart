@@ -69,7 +69,7 @@ class _ProductPageState extends State<ProductPage> {
 
   Future<void> getProduct() async {
     PreviewBooks wanted =
-        items[items.indexWhere((element) => element.id == widget.productID)];
+        await items[await items.indexWhere((element) => element.id == widget.productID)];
 
     _product = wanted;
     //print(_product?.title);
@@ -152,36 +152,58 @@ class _ProductPageState extends State<ProductPage> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text("${_product?.title}",
-                                style: kHeadingTextStyle),
+                            Text(
+                              "${_product?.title}",
+                              style: kHeadingTextStyle,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                              softWrap: true,
+                            ),
                             Padding(
                               padding: EdgeInsets.symmetric(vertical: 8),
-                              child: Row(children: [
-                                Row(
-                                  children: <Widget>[
-                                    RatingBarIndicator(
-                                      rating: _product?.raiting as double,
-                                      itemBuilder: (context, index) =>
-                                          const Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: <Widget>[
+                                        RatingBarIndicator(
+                                          rating: _product?.raiting as double,
+                                          itemBuilder: (context, index) =>
+                                              const Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                          itemCount: 5,
+                                          itemSize: 25.0,
+                                          unratedColor:
+                                              Colors.amber.withAlpha(50),
+                                          direction: Axis.horizontal,
+                                        ),
+                                        Text(
+                                          "  ${_product?.raiting}",
+                                          style: const TextStyle(
+                                              color: Colors.amber,
+                                              fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.all(3.0),
+                                      padding: const EdgeInsets.all(3.0),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(color: AppColors.notification)
                                       ),
-                                      itemCount: 5,
-                                      itemSize: 25.0,
-                                      unratedColor: Colors.amber.withAlpha(50),
-                                      direction: Axis.horizontal,
+                                      child: Text(
+                                        "Stocks: ${_product?.inStock}",
+                                        style: const TextStyle(
+                                          color: AppColors.notification,
+                                          fontSize: 16,
+                                        ),
+                                      ),
                                     ),
-                                    Text(
-                                      "  ${_product?.raiting}",
-                                      style: const TextStyle(
-                                          color: Colors.amber, fontSize: 16),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 12,
-                                ),
-                              ]),
+
+                                  ]),
                             ),
                             Expanded(
                               child: SingleChildScrollView(
@@ -189,6 +211,9 @@ class _ProductPageState extends State<ProductPage> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    SizedBox(
+                                      height: 12,
+                                    ),
                                     build_desc("Description",
                                         _product?.description ?? ""),
                                     //Text(_product?.description ?? ""),
@@ -227,11 +252,11 @@ class _ProductPageState extends State<ProductPage> {
                                         Container(
                                           width: size.width / 2 - 44,
                                           child: OutlinedButton(
-                                            onPressed: () {
-                                              Navigator.of(context).push(MaterialPageRoute(
-                                                  builder: (context) => reviews(
-
-                                                  )));
+                                            onPressed: () async{
+                                             await Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          reviews()));
                                             },
                                             child: Text("Read Reviews"),
                                           ),
@@ -240,12 +265,12 @@ class _ProductPageState extends State<ProductPage> {
                                           width: size.width / 2 - 44,
                                           child: OutlinedButton(
                                               onPressed: () {
-                                                Navigator.of(context).push(MaterialPageRoute(
-                                                    builder: (context) => AddReview(
-                                                     prod: widget.productID
-
-
-                                                    )));
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            AddReview(
+                                                                prod: widget
+                                                                    .productID)));
                                               },
                                               child: Text("Add a Review")),
                                         ),
@@ -313,7 +338,7 @@ class _ProductPageState extends State<ProductPage> {
                         SizedBox(
                           width: size.width / 2 - 50,
                           child: OutlinedButton(
-                            onPressed: () async{
+                            onPressed: () async {
                               //print(stocks);
                               if (stocks > (_product?.inStock ?? 0)) {
                                 showDialog(
@@ -337,19 +362,18 @@ class _ProductPageState extends State<ProductPage> {
                                 await showDialog(
                                     context: context,
                                     builder: (_) => AlertDialog(
-                                      title: const Text("Success"),
-                                      content: const Text(
-                                          "Added to Basket."),
-                                      actions: [
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(_);
-                                            },
-                                            child: const Text("Ok"))
-                                      ],
-                                    ));
+                                          title: const Text("Success"),
+                                          content:
+                                              const Text("Added to Basket."),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(_);
+                                                },
+                                                child: const Text("Ok"))
+                                          ],
+                                        ));
                                 Navigator.pop(context);
-
                               }
                             },
                             child: Text("Buy"),

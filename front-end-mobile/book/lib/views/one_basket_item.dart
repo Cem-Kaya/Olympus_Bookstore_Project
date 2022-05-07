@@ -26,7 +26,7 @@ class _one_basket_itemState extends State<one_basket_item> {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-      height: 125,
+      height: 100,
       width: size.width,
       child: ListTile(
           onTap: () {},
@@ -84,7 +84,7 @@ class _one_basket_itemState extends State<one_basket_item> {
                 sum = sumPrice;
               });*/
             },
-            icon: Icon(Icons.delete_forever),
+            icon: Icon(Icons.delete_forever, color: AppColors.notification,),
           )
           //Icon(Icons.delete,color: Colors.red,) ,
           ),

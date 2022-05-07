@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:bookstore/pages/old_prchases.dart';
+import 'package:bookstore/pages/old_purchases.dart';
 import 'package:bookstore/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

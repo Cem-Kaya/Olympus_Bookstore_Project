@@ -57,7 +57,7 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'SIGN UP',
+          'Sign Up',
           style: kAppBarTitleTextStyle,
         ),
         backgroundColor: AppColors.primary,
