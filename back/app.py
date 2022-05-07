@@ -453,15 +453,15 @@ def get_all_purchsubmit():
 
   alldlist=db.session.query(Buy_Dlist)\
        .filter( )
-  retjs={}
+  retjslist=[]
   #TODO  
   for k , j in  enumerate( alldlist):
-    retjs[k]= { "pid" : j.product_pid , "date":str(j.date ), "quantity": j.quantity , "purcid": j.purchased_purcid , 
+    retjslist.append( { "pid" : j.product_pid , "date":str(j.date ), "quantity": j.quantity , "purcid": j.purchased_purcid , 
       "sale": (b:=db.session.query(Purchased).filter(Purchased.purcid == j.purchased_purcid ).first()).sale, "price":b.price,
       "shipment":b.shipment,
       "email":j.customer_email
-     }
-  return json.dumps(retjs )
+     })
+  return json.dumps(retjslist )
 
 
 
@@ -1054,14 +1054,14 @@ def get_all_approved_commentsno_input():
   #appcoms= [i.cid if i.Pid ==Pid  and i.approved  else ""  for i in allapprovedcomments  ]
   
 
-  retjs={}
+  retjs=[]
   print(allapprovedcomments)
   for i,j in enumerate(allapprovedcomments): 
-    print(j)
-    retjs[i]={"Pid":  db.session.query(Comments).filter(Comments.comment_id == j.cid).first().product_pid, 
+    
+    retjs.append( {"Pid":  db.session.query(Comments).filter(Comments.comment_id == j.cid).first().product_pid, 
     "text": (b:= db.session.query(Comment).filter(Comment.cid == j.cid ).first()).text,  
     "uid":  db.session.query(Comments).filter(Comments.comment_id == j.cid).first().customer_email ,
-    "stars": b.stars}
+    "stars": b.stars} ) 
   return json.dumps(retjs)
        
 
