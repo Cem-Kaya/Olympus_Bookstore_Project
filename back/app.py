@@ -85,9 +85,9 @@ def alltables():
 
   allproducts=Products.query.filter_by().all()
   todata+=" <h3> Products </h3> " # <h1>A heading here</h1>
-  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> </tr> '
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> <th>quantity</th> <th>amount_sold</th> </tr> '
   for i in allproducts:
-    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale) 
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td><td> {} </td><td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale,i.quantity,i.amount_sold) 
   todata +="</table>"
 
   todata+="<h3> Product Category </h3> "
@@ -1384,6 +1384,34 @@ def gettingnextdid():
     didvalues.append(i.did)
   maxDid=max(didvalues)+1 #actually max+1
   return str(maxDid)
+
+@app.route('/decreasestock/submit_test')
+def decreasesstocks_test():  
+  url = 'http://127.0.0.1:5000/decreasestock/submit'
+  myobj = {"Pid":10 , "quantity":100 }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
+
+
+
+
+@app.route('/decreasestock/submit', methods=['POST'] , strict_slashes=False)
+def decreasesstocks():
+  data2 = json.loads(request.get_data())#request.get_json()
+  #, strict_slashes=False 
+  quantity=int (data2['quantity'] )
+  Pid=int ( data2['Pid'] )
+  retjs ={}
+  
+  if (Products.query.filter_by(Pid=Pid).first().quantity<quantity):
+    retjs["status"] = False
+  else:    
+    retjs["status"] = True
+    db.session.query(Products)\
+      .filter(Products.Pid == Pid)\
+      .update( {Products.quantity: Products.quantity-quantity , Products.amount_sold: Products.amount_sold+quantity } )
+
+    db.session.commit() 
+  return json.dumps(retjs)   
   
 @app.route('/to_purchase/submit_test', methods=['POST'] , strict_slashes=False )
 def to_purchase_sub_test():

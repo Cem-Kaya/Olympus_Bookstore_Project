@@ -14,7 +14,7 @@ def make_pdf(text ):
     pdf.multi_cell(150 , 10, txt = text ,border = 1, align = 'C'  )
     pdf_name ="./pdfs/"+ str(time.time())+ ".pdf" #buraya date ile verecegiz isim
     pdf.output(pdf_name )   
-    time.sleep(0.1)
+    time.sleep(0.02)
     return pdf_name
   
 def send_email(receiver, text):
