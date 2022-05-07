@@ -446,6 +446,27 @@ def get_ones_purchsubmit():
      }
   return json.dumps(retjs )
   
+
+
+@app.route('/get_all_purch_hist', strict_slashes=False)
+def get_all_purchsubmit():  
+
+  alldlist=db.session.query(Buy_Dlist)\
+       .filter( )
+  retjs={}
+  #TODO  
+  for k , j in  enumerate( alldlist):
+    retjs[k]= { "pid" : j.product_pid , "date":str(j.date ), "quantity": j.quantity , "purcid": j.purchased_purcid , 
+      "sale": (b:=db.session.query(Purchased).filter(Purchased.purcid == j.purchased_purcid ).first()).sale, "price":b.price,
+      "shipment":b.shipment,
+      "email":j.customer_email
+     }
+  return json.dumps(retjs )
+
+
+
+
+
 @app.route('/get_ones_purch_hist/submit_test' ,strict_slashes=False)
 def get_ones_purchsubmit_test():  
   url = 'http://127.0.0.1:5000/get_ones_purch_hist/submit'
@@ -979,8 +1000,7 @@ def get_all_approved_commentshtml():
 @app.route('/get_all_approved_comments/submit_test' , methods=['POST'], strict_slashes=False  )
 def get_all_approved_commentstest():
   url = 'http://127.0.0.1:5000/get_all_approved_comments/submit' 
-  myobj = {'Pid': request.form['Pid']
-    }
+  myobj = {'Pid': request.form['Pid']}
   return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
   
          
@@ -1015,6 +1035,36 @@ def get_all_approved_comments():
     "stars": b.stars}
   return json.dumps(retjs)
        
+
+
+
+@app.route('/get_all_approved_comments_no_input',  strict_slashes=False  )
+def get_all_approved_commentsno_input():
+  allCustomers=Comment.query.filter_by().all()
+
+#burada o pid altindaki all commentslerin comments relationsihpinde eristim
+  allcomments = db.session.query(Comments).filter()
+
+  allapprovedcomments = []
+  for i in allcomments:
+    if (a:= db.session.query(approval)\
+        .filter(approval.c.cid== i.comment_id ,approval.c.approved ==True ).first()) != None:
+      allapprovedcomments.append(a)
+
+  #appcoms= [i.cid if i.Pid ==Pid  and i.approved  else ""  for i in allapprovedcomments  ]
+  
+
+  retjs={}
+  print(allapprovedcomments)
+  for i,j in enumerate(allapprovedcomments): 
+    print(j)
+    retjs[i]={"Pid":  db.session.query(Comments).filter(Comments.comment_id == j.cid).first().product_pid, 
+    "text": (b:= db.session.query(Comment).filter(Comment.cid == j.cid ).first()).text,  
+    "uid":  db.session.query(Comments).filter(Comments.comment_id == j.cid).first().customer_email ,
+    "stars": b.stars}
+  return json.dumps(retjs)
+       
+
 
 
 
@@ -1585,6 +1635,8 @@ def get_users_purchases():
   for i in ll: # DO left JOIN !!!!!!!!!!!!!!!!!!!!!!
     pass#retjs[]
   return ""
+
+  
 
 
 @app.route('/bank')
