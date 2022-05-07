@@ -1,5 +1,5 @@
 #from crypt import methods
-import enum
+
 import json
 from unittest import skip
 import requests as req
@@ -11,7 +11,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import sessionmaker
 
 from DB_init_SQL import * 
-
+from test_email import *
  
 app = Flask(__name__)
 CORS(app)
@@ -1414,11 +1414,7 @@ def to_purchase_sub():
   db.session.add(PC__)
   db.session.commit() 
 
-  allpurchased = db.session.query(Purchased).all()
-  pucidvalues = []
-  for i in allpurchased:
-    pucidvalues.append(int(i.purcid))
-  maxPurcid=max(pucidvalues)
+  maxPurcid=PC__.purcid
 
   email=data2['email']
   Pid=int(data2['Pid'])
@@ -1427,6 +1423,22 @@ def to_purchase_sub():
   assoc = Buy_Dlist(did = did, customer_email=email, product_pid=Pid, purchased_purcid=purcid, quantity=quantity)
   db.session.add(assoc)
   db.session.commit()
+
+  #myCustomer = Customers.query.filter_by(email=email).first()
+  mycustomer=Customers.query.filter_by(email = email).first() 
+  myproduct=Products.query.filter_by(Pid = Pid).first() 
+
+  text= "Thank you for your purchase " + str(mycustomer.name) + "! \n" + "Your order has been proccessed successfully. \n"
+  text+= "Your delivery id: " + str(did) +"\n"
+  text+= "Purchase id of product: " + str(purcid) +"\n"
+  text+= "Product name: " + str(myproduct.name) + "\n"
+  text+= "You bougth: " + str(quantity) +" many of this item \n"
+  text+= "It cost: " + str(price) +"\n"
+  text+= "You had discount of: " + "%" + str(100*(1-sale)) +"\n"
+  text+= "Shipping: " + str(shipment) +"\n"
+  
+
+  send_email(email, text )
   return render_template('success.html',data ="" ) 
 
 @app.route('/delivery_process')
