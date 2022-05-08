@@ -101,7 +101,7 @@ const Account = () => {
             <h4>Account Info</h4><br></br>
             <h5>Name: {info.name}</h5><br></br>
             <h5>E-mail: {info.uid}</h5><br></br>
-            {/*<h5>Address: {info.homeaddress}</h5><br></br>*/}
+            <h5>Address: {info.homeaddress}</h5><br></br>
           </RightContainer>
           : ""
         }
