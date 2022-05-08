@@ -4,6 +4,7 @@ import 'package:bookstore/pages/profile.dart';
 import 'package:bookstore/pages/sign_in.dart';
 import 'package:bookstore/root.dart';
 import 'package:bookstore/services/basket_data.dart';
+import 'package:bookstore/services/istaken.dart';
 import 'package:bookstore/services/root_index.dart';
 import 'package:bookstore/services/user_logged_data.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,11 @@ class _BaseAppState extends State<BaseApp> {
           ListenableProvider<Basket>(
             create: (BuildContext context) {
               return Basket();
+            },
+          ),
+          ListenableProvider<taken>(
+            create: (BuildContext context) {
+              return taken();
             },
           ),
           ListenableProvider<logged_in_user>(

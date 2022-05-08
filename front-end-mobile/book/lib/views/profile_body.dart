@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../services/user_logged_data.dart';
 import '../utils/styles.dart';
 import 'package:http/http.dart' as http;
+
 class ProfileBody extends StatefulWidget {
   const ProfileBody({Key? key}) : super(key: key);
 
@@ -16,8 +17,11 @@ class ProfileBody extends StatefulWidget {
 
 class _ProfileBodyState extends State<ProfileBody> {
   var response;
- // late Map<String, dynamic>
+
+  // late Map<String, dynamic>
   var temp;
+
+  /*
    purchases()  async{
     try {
       print("user $user");
@@ -41,14 +45,12 @@ class _ProfileBodyState extends State<ProfileBody> {
 
     }
   }
+  */
 
   @override
   Widget build(BuildContext context) {
     Function login = Provider.of<logged_in_user>(context).getUser;
-    String use= login();
-    print(use);
-      var x= purchases();
-
+    String user = login();
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
@@ -68,7 +70,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all(AppColors.primary),
+                    MaterialStateProperty.all(AppColors.primary),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,8 +80,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                       Icon(Icons.arrow_forward)
                     ],
                   ),
-                  onPressed: () {
-                  },
+                  onPressed: () {},
                 ),
               )),
           Padding(
@@ -100,10 +101,8 @@ class _ProfileBodyState extends State<ProfileBody> {
                   ],
                 ),
                 onPressed: () {
-                  Future(() {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> old_purchases(user: x)));
-                  });
-
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => old_purchases(user: user)));
                 }, //
               ),
             ),

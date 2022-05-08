@@ -21,7 +21,6 @@ class reviews extends StatefulWidget {
 }
 
 class _reviewsState extends State<reviews> {
-  var response;
   int? counter;
   var temp;
   Map<String, dynamic>? _reviewList;
@@ -126,54 +125,54 @@ class _reviewsState extends State<reviews> {
             itemCount: reviewsList?.length, //_reviewList?.length
             itemBuilder: (context, index) {
               return Padding(
-                  padding: Dimen.smallPadding,
-                  child: Card(
-                    color: Colors.white70,
-                    child: ExpandablePanel(
-                      header: Column(children: [
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              RatingBarIndicator(
-                                rating:
-                                (reviewsList![index].stars!).toDouble(),
-                                //(_reviewList![index.toString()]["rating"].toDouble()),
-                                itemBuilder: (context, index) =>
-                                const Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                                itemCount: 5,
-                                itemSize: 25.0,
-                                unratedColor: Colors.amber.withAlpha(50),
-                                direction: Axis.horizontal,
+                padding: Dimen.smallPadding,
+                child: Card(
+                  color: Colors.white70,
+                  child: ExpandablePanel(
+                    header: Column(children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            RatingBarIndicator(
+                              rating:
+                              (reviewsList![index].stars!).toDouble(),
+                              //(_reviewList![index.toString()]["rating"].toDouble()),
+                              itemBuilder: (context, index) =>
+                              const Icon(
+                                Icons.star,
+                                color: Colors.amber,
                               ),
-                              Text((reviewsList![index].uid!),
-                                  //(_reviewList![index.toString()]["uid"])
-                                  style: kProfileNameText),
-                            ])
-                      ]),
-                      collapsed: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          reviewsList![index].text!, style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                        ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 3,
-                          softWrap: true,
-                        ),
+                              itemCount: 5,
+                              itemSize: 25.0,
+                              unratedColor: Colors.amber.withAlpha(50),
+                              direction: Axis.horizontal,
+                            ),
+                            Text((reviewsList![index].uid!),
+                                //(_reviewList![index.toString()]["uid"])
+                                style: kProfileNameText),
+                          ])
+                    ]),
+                    collapsed: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        reviewsList![index].text!, style: TextStyle(
+                        fontWeight: FontWeight.w300,
                       ),
-                      expanded: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(reviewsList![index].text!,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                          ),),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                        softWrap: true,
                       ),
                     ),
-
+                    expanded: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(reviewsList![index].text!,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),),
+                    ),
                   ),
+
+                ),
               );
             }));
   }

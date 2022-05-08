@@ -27,7 +27,14 @@ class _mockupState extends State<mockup> {
   String? card;
   String? name;
   var response;
-
+  @override
+  void initState() {
+    super.initState();
+    Nextid();
+    print("iii");
+    // obtain shared preferences
+  }
+  dynamic it=1;
   Checkout(String email, int pid, int quantity,num price,double sale,int did) async { //it will be handled
     try {
 
@@ -53,6 +60,25 @@ class _mockupState extends State<mockup> {
     }
   }
 
+
+  Future Nextid() async {
+    print("ddd");
+    final url = Uri.parse("http://10.0.2.2:5000/getnextdid");
+    try {
+      final response = await http.get(url);
+      if (response.statusCode >= 200 && response.statusCode < 400) {
+        final result = jsonDecode(response.body);
+        it=result;
+        print("ssssssssss");
+        print(it);
+        return result;
+      } else {
+        print(response.statusCode);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
   @override
   Widget build(BuildContext context) {
     Function a = Provider.of<Basket>(context).get;
@@ -268,7 +294,7 @@ class _mockupState extends State<mockup> {
                               if (name != null && card != null && CVV != null) {
 
                                 for (var i in temp_basket) {
-                                  Checkout(user_mail,i.product_id,i.stocks,i.price,1.0,3);
+                                  Checkout(user_mail,i.product_id,i.stocks,i.price,1.0,it);
                                 }
                                 clean();
                                 await showDialog(

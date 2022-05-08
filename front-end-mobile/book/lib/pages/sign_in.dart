@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:bookstore/services/basket_data.dart';
+import 'package:bookstore/views/one_basket_item.dart';
 import 'package:email_validator/email_validator.dart';
 import "package:http/http.dart" as http;
 import 'package:bookstore/utils/colors.dart';
@@ -17,15 +20,57 @@ class SignIn extends StatefulWidget {
   @override
   _SignInState createState() => _SignInState();
 }
-
 class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
+  var response_basket;
+  Send_to_basket(num pid,String email,  num quantity) async { //it will be handled
+    try {
+
+      response_basket = await http.post(
+        Uri.parse("http://10.0.2.2:5000/Shopping_Cart/submit"), //it will be handled
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          {
+            "Pid": pid,
+            "email": email,
+            "quantity": quantity,
+
+          },
+        ),
+      );
+    } catch (e) {
+      print("error is ${e.toString()}");
+    }
+  }
   String mail = "";
   String pass = "";
   var response;
   late Map<String, dynamic> temp;
+  var resonse_take;
+  var new_basket;
+  Future gettobasket(String email) async { //it will be handled
+    try {
 
-  AccountLogin(String email, String pass) async {
+      response_basket = await http.post(
+        Uri.parse("http://10.0.2.2:5000/get_shoping/submit"), //it will be handled
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          {
+            "uid": email,
+          },
+        ),
+      );
+    new_basket =jsonDecode(response_basket.body);
+    print("hahahahahahahaha");} catch (e) {
+      print("error is ${e.toString()}");
+    }
+  }
+
+  Future AccountLogin(String email, String pass) async {
     try {
       response = await http.post(
         Uri.parse("http://10.0.2.2:5000/login/submit"),
@@ -48,6 +93,9 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     Function login = Provider.of<logged_in_user>(context).log_user;
+    Function basketget = Provider.of<Basket>(context).get;
+    Function basketclean = Provider.of<Basket>(context).clean_basket;
+    Function basketadd = Provider.of<Basket>(context).add_basket;
     Function change_index = Provider.of<ClassRoot>(context).changeRoot;
     return Scaffold(
       appBar: AppBar(
@@ -160,9 +208,50 @@ class _SignInState extends State<SignIn> {
                             _formKey.currentState!.save();
                             await AccountLogin(mail, pass);
                             if (temp["status"]) {
-                              login(mail);
+                              List<Baske> bas=  await basketget();
+                              if(bas!=null){
+                                for(var i in bas){
+                                  await Send_to_basket(i.product_id!, mail, i.stocks);}
+                                }
+                                basketclean();
+                                await gettobasket(mail);
+                                if(new_basket!=null) {
+                                  int i =new_basket.length;
+                                  int y=0;
+                                  while(y<i){
+                                    print(new_basket[y.toString()]["Pid"].toString());
+                                    y=y+1;
+                                    /*
+                                    basketadd(new_basket[y.toString()]["Pid"],
+                                      new_basket[y.toString()]["quantity"],new_basket[y.toString()]["name"],
+                                        new_basket[y.toString()]["price"],
+                                        new_basket[y.toString()]["url"]);*/
+                                  }
+                                }
+                                login(mail);
                               change_index(0);
-                            } else {
+                                //basketclean();
+                              /*
+                                gettobasket(mail);
+                              //int x=new_basket.length;
+                              if(new_basket!=null){
+                                for(var i in new_basket){
+                                  print(i);
+                                }
+                                login(mail);
+                                change_index(0);}
+                              //await basketclean();
+                              //sleep(Duration(seconds:1));
+                              //await gettobasket(mail);
+                              //if(new_basket!=null){
+                                //for(var i in new_basket){
+                                  //print(i);
+                                //}
+                              //}*/
+
+
+                            }
+                            else {
                               await showDialog(
                                   context: context,
                                   builder: (_) => AlertDialog(
@@ -261,37 +350,7 @@ class _SignInState extends State<SignIn> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: OutlinedButton(
-                        onPressed: () {},
-                        child: Padding(
-                          padding: Dimen.smallPadding,
-                          child: Stack(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Image.network(
-                                  'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Facebook_icon.svg/1200px-Facebook_icon.svg.png',
-                                  height: 30,
-                                  width: 30,
-                                ),
-                              ),
-                              Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Continue with Facebook",
-                                    textAlign: TextAlign.center,
-                                    style: kButtonDarkTextStyle,
-                                  ))
-                            ],
-                          ),
-                        ),
-                        style: OutlinedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                        ),
-                      ),
-                    ),
+
                   ],
                 ),
               ],

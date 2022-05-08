@@ -15,19 +15,13 @@ import 'pages/favorites.dart';
 class Root extends StatefulWidget {
   const Root({Key? key}) : super(key: key);
 
+
   @override
   _RootState createState() => _RootState();
 }
 
 class _RootState extends State<Root> {
-  var routes = [
-    const HomePage(),
-    const BasketPage(),
-    const Favorites(),
-    const Suggestions(),
-    const SellProduct(),
-    const SignIn(),
-  ];
+
 
   Future<void> walk() async {
     final prefs = await SharedPreferences.getInstance();
@@ -66,12 +60,25 @@ class _RootState extends State<Root> {
     Function select_index = Provider.of<ClassRoot>(context).getRoot;
     Function change_index = Provider.of<ClassRoot>(context).changeRoot;
     _selectedBottomTabIndex = select_index();
+    String s="a";
+    if(login()!=null){
+      s=login();
+    }
+    var routes = [
+      const HomePage(),
+      const BasketPage(),
+      const Favorites(),
+      const Suggestions(),
+      const SellProduct(),
+      const SignIn(),
+    ];
 
     if (login() == "") {
       temp = false;
     } else {
       temp = true;
     }
+
     return Scaffold(
       body: routes[_selectedBottomTabIndex],
       bottomNavigationBar: BottomNavigationBar(

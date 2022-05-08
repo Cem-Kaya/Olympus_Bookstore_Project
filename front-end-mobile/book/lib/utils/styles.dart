@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:bookstore/utils/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -45,8 +44,8 @@ final kSmallText = GoogleFonts.montserrat(
 final kImportantText = GoogleFonts.montserrat(
   fontWeight: FontWeight.bold,
   color: AppColors.notification,
-  fontSize: 10.0,
-  letterSpacing: -0.7,
+  fontSize: 16.0,
+  letterSpacing: 0.0,
 );
 
 final kProfileNameText = GoogleFonts.montserrat(
