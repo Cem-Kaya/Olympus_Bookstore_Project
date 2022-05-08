@@ -27,7 +27,7 @@ import { useNavigate } from "react-router-dom";
     flex: 1;
     margin: 5px;
     min-width: 200px;
-    max-width: 240px;
+    max-width: 200px;
     height: 460px;
     display: flex;
     align-items: center;

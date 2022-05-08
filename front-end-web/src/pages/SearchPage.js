@@ -8,7 +8,7 @@ import '../components/ExtraStyles.css'
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCartItems'
-import { fetchBooks } from '../helperFunctions/helperGetProducts'
+import { fetchBooks, fetchBooksFromCategory } from '../helperFunctions/helperGetProducts'
 
 const UpperContainer = styled.div`
     width: 100%;
@@ -71,11 +71,25 @@ const SearchPage = () => {
 
     useEffect (() => {
         const getBooks = async () =>  {
-          const itemsFromServer = await fetchBooks()
-          setItems(itemsFromServer)
+            if(params.hasOwnProperty("category")){
+                const categories = await fetchCategories()
+                
+                let categoryList = []
+                for (var key of Object.keys(categories)) {
+                    if(categories[key] === params["category"]){
+                        categoryList.push(key)
+                    }
+                }
+                const itemsFromServer = await fetchBooksFromCategory(categoryList[0])
+                setItems(itemsFromServer)
+            }
+            else {
+                const itemsFromServer = await fetchBooks()
+                setItems(itemsFromServer)
+            }
         }
         getBooks()
-      }, [])
+      }, [params])
 
     useEffect (() => {
         const filterCategories = ["author", "publisher", "raiting"]
@@ -84,6 +98,18 @@ const SearchPage = () => {
         })
         console.log(params)
     }, [params])
+
+    const fetchCategories = async () => {
+        const res = await fetch(`/all_category`     , {headers : { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+         }}
+         )
+        const data = await res.json()
+    
+        console.log(data)
+        return data
+      }
   
     const [cartItemsChanged, setCartItemsChanged] = useState(false);
     

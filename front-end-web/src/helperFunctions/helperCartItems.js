@@ -145,7 +145,7 @@ export const add1Item = (item) => {
                   'Accept' : 'application/json',
                   'Content-Type' : 'application/json'
                   },
-                  body: JSON.stringify({Pid : item.id, email: email, quantity: /*item.quantity +*/ 1})
+                  body: JSON.stringify({Pid : item.id, email: email, quantity: item.quantity + 1})
               })
               const data = await res.json()
               return data
@@ -219,7 +219,7 @@ export const remove1Item = (item) => {
                   'Accept' : 'application/json',
                   'Content-Type' : 'application/json'
                   },
-                  body: JSON.stringify({Pid : item.id, email: email, quantity: /*item.quantity -*/ 1})
+                  body: JSON.stringify({Pid : item.id, email: email, quantity: item.quantity - 1})
               })
               const data = await res.json()
               return data
@@ -280,7 +280,7 @@ export const removeAllItem = (item) => {
                   'Accept' : 'application/json',
                   'Content-Type' : 'application/json'
                   },
-                  body: JSON.stringify({Pid : item.id, email: email, quantity: /*0*/ item.quantity})
+                  body: JSON.stringify({Pid : item.id, email: email, quantity: 0 })
               })
               const data = await res.json()
               return data

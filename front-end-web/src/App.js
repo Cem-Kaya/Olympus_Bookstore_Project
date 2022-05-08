@@ -13,6 +13,7 @@ import OrderHistory from './pages/OrderHistory';
 import StoreLogin from './pages/StoreLogin';
 import Checkout from './pages/Checkout';
 import SingleProduct from './pages/SingleProduct';
+import Invoice from './pages/Invoice';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path='/Account' element={<Account/>}/>
         <Route path='/OrderHistory' element={<OrderHistory/>}/>
         <Route path='/StoreLogin' element={<StoreLogin/>}/>
+        <Route path='/invoice' element={<Invoice/>}/>
         <Route path='/SingleProduct=:pid' element={<SingleProduct/>}/>
         <Route path="/Search/category=:category" element={<SearchPage/>}/>
         <Route path="/Search/title=:title/&author=:author/&publisher=:publisher/&pr_lower=:pr_lower/&pr_upper=:pr_upper/&raiting=:raiting" element={<SearchPage/>}/>

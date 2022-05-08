@@ -2,7 +2,6 @@ import React from 'react'
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Body from '../components/MainPageBody';
-import { popularProducts } from "../data"
 import { useState, useEffect } from 'react';
 import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCartItems';
 import { fetchBooks } from '../helperFunctions/helperGetProducts';

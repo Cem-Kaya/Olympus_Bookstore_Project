@@ -2,9 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import Header from "../components/Header"
 import Footer from "../components/Footer"
-//import { useState } from 'react'
-import { getCartItems } from '../helperFunctions/helperCartItems'
+import { useState, useEffect } from 'react'
+import { getCartItems, removeAllItem } from '../helperFunctions/helperCartItems'
 import { getUserID } from "../helperFunctions/helperLogin";
+import { useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
     padding-bottom: 50px;
@@ -12,6 +13,11 @@ const Container = styled.div`
 `;
 
 const Checkout = () => {
+
+  const [did, setDid] = useState("")
+  const [removeStatus, setRemoveStatus] = useState("")
+  let navigate = useNavigate()
+
     const costOfItems = () => {
         let sum = 0;
         getCartItems().forEach(element => {
@@ -69,21 +75,46 @@ const Checkout = () => {
       return new Promise(resolve => setTimeout(resolve, milliseconds))
     }
 
-    const PurchaseAll = async (did) =>  {
+    const GetDid = async () => {
+      const itemFromServer = await getDidVal()
+      window.localStorage.setItem('did', JSON.stringify(itemFromServer))
+      setDid(itemFromServer)
+    }
+
+    const RemoveFromStock = async (item) => {
+      const isRemovedFromStock = await removeFromStock(item)
+      setRemoveStatus(isRemovedFromStock["status"])
+    }
+
+    const PurchaseAll = () => {
+      purchaseAll()
+      navigate("/invoice")
+    }
+
+    const purchaseAll = async () =>  {
         try{
-            let did = await getDidVal()
+            await GetDid()
             let email = getUserID()
 
             const cartItems = getCartItems()
             for (let item of cartItems) {
-              console.log(item)
-                const contents = await purchase(email, item, did)
+                await RemoveFromStock(email, item)
+                if(removeStatus === true){
+                  removeAllItem(item)
+                  await BuyAll()
+                }
                 await sleep(500)
             }
+            return 0
         }
         catch(e){
           console.log(e)
         }
+    }
+
+    const BuyAll = async (email, item) => {
+      const contents = await purchase(email, item)
+      return contents
     }
 
     const getDidVal = async () => {
@@ -102,8 +133,27 @@ const Checkout = () => {
             console.log(e)
         }
     }
+
+    const removeFromStock = async (item) => {
+      try{
+          const res = await fetch('/decreasestock/submit', {
+          method: "POST",
+          headers: {
+              'Accept' : 'application/json',
+              'Content-Type' : 'application/json'
+              },
+          body: JSON.stringify({"Pid": item.id, "quantity" : item.quantity})
+          })
+          const data = await res.json()
+
+          return data
+      }
+      catch(e){
+          console.log(e)
+      }
+  }
     
-    const purchase = async (email, item, did) => {
+    const purchase = async (email, item) => {
         try{
             console.log(email)
             const res = await fetch('/to_purchase/submit', {
@@ -112,7 +162,7 @@ const Checkout = () => {
                 'Accept' : 'application/json',
                 'Content-Type' : 'application/json'
                 },
-            body: JSON.stringify({email: email, Pid: item.id, quantity: item.quantity, price: item.price , sale: parseFloat(item.discount), did: did })
+            body: JSON.stringify({"email": email, "Pid": item.id, "quantity": item.quantity, "price": item.price , "sale": parseFloat(item.discount), "did": did })
             })
             const data = await res.json()
             console.log(data)
