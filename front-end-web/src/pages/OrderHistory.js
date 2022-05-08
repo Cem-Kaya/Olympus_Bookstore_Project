@@ -3,6 +3,7 @@ import Footer from '../components/Footer'
 import Header from '../components/Header'
 import { useState, useEffect } from 'react'
 import { getUserID } from "../helperFunctions/helperLogin";
+import { fetchBooks } from '../helperFunctions/helperGetProducts';
 
 const OrderHistory = () => {
 
@@ -29,18 +30,6 @@ useEffect (() => {
   }
   getOrders()
 }, [])
-
-const fetchBooks = async () => {
-  const res = await fetch(`/all_books`     , {headers : { 
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-      }}
-      )
-  const data = await res.json()
-
-  console.log(data)
-  return data
-}
 
 const fetchOrders = async () => {
   const res = await fetch('/get_ones_purch_hist/submit', {
@@ -92,7 +81,7 @@ const fetchOrders = async () => {
             : 
             elems().map((element, index) => (
               <tr key={index}>
-                <th scope="col">{getName(element)}</th>
+                <th scope="col"><a href={`/SingleProduct=${element.pid}`}>{getName(element)}</a></th>
                 <th scope="col">{element.quantity}</th>
                 <th scope="col">{element.date}</th>
                 <th scope="col">{element.shipment}</th>

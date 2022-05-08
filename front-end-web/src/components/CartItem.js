@@ -7,20 +7,20 @@ const CartItem = ({item, onAddToCart, onRemoveFromCart, onRemoveAll}) => {
           <figure className="itemside">
               <div className="aside"><img src={item.img} alt="item-img" className="img-sm"/></div>
               <figcaption className="info">
-                  <a href="#" className="title text-dark">{item.title}</a>
+                  <a href={`/SingleProduct=${item.id}`} className="title text-dark">{item.title}</a>
                   <p className="text-muted small">Author: {item.author}, 
                   <br /> Publisher: {item.publisher}</p>
               </figcaption>
           </figure>
       </td>
       <td>
-        <button href="" className="btn btn-light" onClick={() => {onRemoveFromCart(item)}}>-</button>
+        <button className="btn btn-light" onClick={() => {onRemoveFromCart(item)}}>-</button>
       </td>
       <td>
         <h3>{item.quantity}</h3>
       </td>
       <td>
-        <button href="" className="btn btn-light" onClick={() => {onAddToCart(item)}}>+</button> 
+        <button className="btn btn-light" onClick={() => {onAddToCart(item)}}>+</button> 
       </td>
       <td> 
           <div className="price-wrap"> 

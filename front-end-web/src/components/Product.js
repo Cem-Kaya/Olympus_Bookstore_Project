@@ -26,9 +26,9 @@ import { useNavigate } from "react-router-dom";
   const Container = styled.div`
     flex: 1;
     margin: 5px;
-    min-width: 180px;
-    max-width: 220px;
-    height: 360px;
+    min-width: 200px;
+    max-width: 240px;
+    height: 460px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -59,11 +59,11 @@ const TextBoxTitle = styled.div`
 `;
 
 const TextBoxAuthor = styled.div`
-    font-size:14px;
+    font-size:12px;
     font-style: italic;
 `;
 const TextBoxPublisher = styled.div`
-    font-size:12px;
+    font-size:10px;
     font-style: italic;
 `;
 
@@ -110,12 +110,16 @@ const TextBoxPrize = styled.div`
     return (
       <Container>
         <InnerContainer>
+          {/*style={{marginBottom: "8px"}}*/}
             <Image src={item.img} />
             <TextBoxContainer>  
-                <TextBoxAuthor>{item.in_stock === 0 ? <h5 className="text-danger">Sold Out</h5> : item.in_stock <= 5 ? <h6 className="text-warning">Only {item.in_stock} remained in stock</h6> : <h6 className="text-primary">{item.in_stock} remained in stock</h6>}</TextBoxAuthor>
+                <TextBoxAuthor>{item.in_stock === 0 ? <h6 className="text-danger">Sold Out</h6> : item.in_stock <= 5 ? <h6 className="text-warning">Only {item.in_stock} remained in stock</h6> : <h6 className="text-primary">{item.in_stock} remained in stock</h6>}</TextBoxAuthor>
+                <TextBoxAuthor><h6 className="text-muted">{item.amount_sold} of the item sold</h6></TextBoxAuthor>
                 <TextBoxTitle>{item.title}</TextBoxTitle>
-                <TextBoxAuthor style={{marginTop: "8px"}}>{"Author: " + item.author}</TextBoxAuthor>
-                <TextBoxPublisher style={{marginBottom: "8px"}}>{"Publisher: " + item.publisher}</TextBoxPublisher>
+                <TextBoxAuthor className="text-muted float-left">Raiting: {item.raiting} stars</TextBoxAuthor>
+                <TextBoxAuthor>{"Author: " + item.author}</TextBoxAuthor>
+                <TextBoxPublisher>{"Publisher: " + item.publisher}</TextBoxPublisher>
+                <TextBoxAuthor>{item.discount} discount</TextBoxAuthor>
                 <TextBoxPrize>{item.price.toFixed(2) + " TL"}</TextBoxPrize>
             </TextBoxContainer>
         </InnerContainer>

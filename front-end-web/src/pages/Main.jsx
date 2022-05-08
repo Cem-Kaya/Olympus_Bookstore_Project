@@ -5,6 +5,7 @@ import Body from '../components/MainPageBody';
 import { popularProducts } from "../data"
 import { useState, useEffect } from 'react';
 import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCartItems';
+import { fetchBooks } from '../helperFunctions/helperGetProducts';
 
 const Main = () => {
   
@@ -19,18 +20,6 @@ const Main = () => {
     }
     getBooks()
   }, [])
-
-  const fetchBooks = async () => {
-    const res = await fetch(`/all_books`     , {headers : { 
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-     }}
-     )
-    const data = await res.json()
-
-    console.log(data)
-    return data
-  }
 
   const AddToCart = (item) => {
     addNewItem(item)

@@ -120,30 +120,6 @@ const Header = ({itemsInCartChanged, onAddToCart, onRemoveFromCart, addToCartAll
     setLoginStatus(false)
     history("/")
   }
-/*
-  const GetCartItems = async (email) =>  {
-    const serverAnswer = await tryGetCart(email)
-    console.log("Server answer: " , serverAnswer)
-  }
-
-  const tryGetCart = async ( email ) => {    
-    try{
-      const res = await fetch('/Shopping_Cart', {
-        method: "GET",
-        headers: {
-          'Accept' : 'application/json',
-          'Content-Type' : 'application/json'
-          },
-
-      })
-      const data = await res.json()
-      console.log(data)
-      return data
-    }
-    catch(e){
-      console.log(e)
-    }
-  }*/
 
   return (
     <HeaderDark>
@@ -214,6 +190,7 @@ const Header = ({itemsInCartChanged, onAddToCart, onRemoveFromCart, addToCartAll
                         <li key={item.id}>
                           <DropDownItem>  
                             <p>{item.title}</p>
+                            <small>{item.in_stock + " in stock"}</small>
                             <DropDownItemCount>
                               <button className="btn-primary" onClick={() =>{itemsInCartChanged === undefined ? HeaderRemoveFromCart(item) : onRemoveFromCart(item)}}>-</button>
                               <p>{" " + item.quantity + " "}</p>

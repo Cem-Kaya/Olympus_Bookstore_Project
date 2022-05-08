@@ -7,8 +7,8 @@ import Filters from '../components/Filters'
 import '../components/ExtraStyles.css'
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { popularProducts } from "../data"
 import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCartItems'
+import { fetchBooks } from '../helperFunctions/helperGetProducts'
 
 const UpperContainer = styled.div`
     width: 100%;
@@ -84,18 +84,6 @@ const SearchPage = () => {
         })
         console.log(params)
     }, [params])
-    
-    const fetchBooks = async () => {
-        const res = await fetch(`/all_books`     , {headers : { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-            }}
-            )
-        const data = await res.json()
-
-        console.log(data)
-        return data
-    }
   
     const [cartItemsChanged, setCartItemsChanged] = useState(false);
     

@@ -65,6 +65,10 @@ const Checkout = () => {
         year = val
     }
 
+    const sleep = (milliseconds) => {
+      return new Promise(resolve => setTimeout(resolve, milliseconds))
+    }
+
     const PurchaseAll = async (did) =>  {
         try{
             let did = await getDidVal()
@@ -72,8 +76,9 @@ const Checkout = () => {
 
             const cartItems = getCartItems()
             for (let item of cartItems) {
+              console.log(item)
                 const contents = await purchase(email, item, did)
-                setTimeout(() => {  console.log("World!"); }, 2000)
+                await sleep(500)
             }
         }
         catch(e){
@@ -320,7 +325,7 @@ const Checkout = () => {
               </div>
               <div className="col-md-6 mb-3">
                 <label htmlFor="cc-number">Credit card number</label>
-                <input type="text" className="form-control" id="cc-number" onChange={event => changecardNumber(event.target.value)} placeholder="" required=""/>
+                <input type="number" className="form-control" id="cc-number" onChange={event => changecardNumber(event.target.value)} placeholder="" required=""/>
                 <div className="invalid-feedback">
                   Credit card number is required
                 </div>
@@ -328,10 +333,10 @@ const Checkout = () => {
             </div>
             <div className="row">
 
-              <div class="col-md-3 mb-3">
+              <div className="col-md-3 mb-3">
                 <label htmlFor="cc-expiration">Expiration Month</label>
-                    <div class="form-group">
-                        <select class="form-control" onChange={event => changemonth(event.target.value)}>
+                    <div className="form-group">
+                        <select className="form-control" onChange={event => changemonth(event.target.value)}>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -347,10 +352,10 @@ const Checkout = () => {
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3 mb-3">
+                <div className="col-md-3 mb-3">
                     <label htmlFor="cc-expiration">Expiration Year</label>
-                    <div class="form-group">
-                        <select class="form-control" onChange={event => changeyear(event.target.value)}>
+                    <div className="form-group">
+                        <select className="form-control" onChange={event => changeyear(event.target.value)}>
                             <option value="2022">2022</option>
                             <option value="2023">2023</option>
                             <option value="2024">2024</option>
@@ -366,7 +371,7 @@ const Checkout = () => {
                 </div>
               <div className="col-md-3 mb-3">
                 <label htmlFor="cc-expiration">CVV</label>
-                <input type="text" className="form-control" id="cc-cvv" onChange={event => changecvv(event.target.value)} placeholder="" required=""/>
+                <input className="form-control" type="number" id="cc-cvv" onChange={event => changecvv(event.target.value)} placeholder="" required=""/>
                 <div className="invalid-feedback">
                   Security code required
                 </div>

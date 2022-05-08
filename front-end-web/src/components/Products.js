@@ -23,7 +23,7 @@ const Products = ({onAddToCart, products, sortBy, highToLow}) => {
       return "price"
     }
     else if(sortBy === "Newest" || sortBy === "New Books"){
-      return "model"
+      return "date"
     }
     else if(sortBy === "Top Rated"){
       return "raiting"

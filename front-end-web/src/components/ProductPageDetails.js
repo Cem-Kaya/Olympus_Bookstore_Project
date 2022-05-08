@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { getUserID } from '../helperFunctions/helperLogin';
 import './ExtraStyles.css'
 
 const Line = styled.div`
@@ -9,7 +10,14 @@ const Line = styled.div`
     margin-top: 10px;
 `;
 
-const ProductPageDetails = ({item}) => {
+const Description = styled.div`
+    max-width: 300px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    margin: 0 auto;
+`;
+
+const ProductPageDetails = ({item, onAddToCart, reviews, onSendComment}) => {
     console.log(item)
     let comment = ""
     let raiting = "1"
@@ -19,6 +27,15 @@ const ProductPageDetails = ({item}) => {
     }
     const onRaitingChange = (val) => {
         raiting = val
+        console.log(raiting)
+    }
+
+    const stars = (element) => {
+        let arr = []
+        for(var i = 0; i < element.stars; i++){
+            arr.push(<i className="fa fa-star text-light"></i>)
+        }
+        return arr
     }
     
   return (
@@ -49,7 +66,12 @@ const ProductPageDetails = ({item}) => {
                             <span className="text-uppercase text-warning brand float-left">{item.discount + " discount. " + item.price + " TL is the new price"}</span><br></br>
                             </div>
                             
-                            <div className="cart mt-4 align-items-center"> <button className="btn btn-danger text-uppercase mr-2 px-4">Add to cart</button> <button data-original-title="Save to Wishlist" title="" className="btn btn-light mr-2" data-toggle="tooltip"> <i className="fa fa-heart"></i></button></div>
+                            <div className="cart mt-4 align-items-center">
+                                {item.in_stock === 0 ? <button className="btn btn-danger text-uppercase mr-2 px-4" disabled={true}>SOLD OUT</button>
+                                 :<button className="btn btn-danger text-uppercase mr-2 px-4" onClick={() => {onAddToCart(item)}}>Add to cart</button>} 
+                              
+                                <button data-original-title="Save to Wishlist" title="" className="btn btn-light mr-2" data-toggle="tooltip"> <i className="fa fa-heart"></i></button>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -60,7 +82,7 @@ const ProductPageDetails = ({item}) => {
     
     <div className="container mt-5 mb-5 text-light">
         <div className="row row-underline">
-            <div className="col-md-6"> <span className=" deal-text float-left "><h4>Description</h4></span> </div><br></br>
+            <div className="col-md-6"> <span className=" deal-text float-left "><Description><p>Description</p></Description></span> </div><br></br>
             <p>{item.description}</p>
         </div>
         <Line/>
@@ -113,8 +135,12 @@ const ProductPageDetails = ({item}) => {
                 	<h3 className="pull-left float-left text-light">New Comment</h3><br></br><br></br>
                     <div className="rating float-left"> <input type="radio" name="rating" value="5" onChange={event => onRaitingChange(event.target.value)} id="5"/><label htmlFor="5">☆</label> <input type="radio" name="rating" value="4" onChange={event => onRaitingChange(event.target.value)} id="4"/><label htmlFor="4">☆</label> <input type="radio" name="rating" value="3" onChange={event => onRaitingChange(event.target.value)} id="3"/><label htmlFor="3">☆</label> <input type="radio" name="rating" value="2" onChange={event => onRaitingChange(event.target.value)} id="2"/><label htmlFor="2">☆</label> <input type="radio" name="rating" value="1" onChange={event => onRaitingChange(event.target.value)} id="1"/><label htmlFor="1">☆</label>
                     </div>
-                	<button type="submit" className="btn btn-normal pull-right btn-danger">Submit</button>
-                    
+                    {
+                        getUserID() === undefined || getUserID() === null || getUserID() === "" ?
+                        <button type="submit" className="btn btn-normal pull-right btn-danger" disabled={true}>Submit</button>
+                        :
+                        <button type="submit" className="btn btn-normal pull-right btn-danger" onClick={() => {onSendComment(comment, raiting)}}>Submit</button>
+                    }
                     <fieldset>
                     <br></br>
                         <div className="row">
@@ -124,30 +150,29 @@ const ProductPageDetails = ({item}) => {
                         </div>  	
                     </fieldset>
                 </form>
-
-                <h3 className='text-light'>4 Comments</h3>
-                <div className="media">
-                <div className="container mt-5 mb-5 border">
-                    <br></br>
-
-                    <div className="media-body text-light">
-                        <h4 className="media-heading float-left">John Doe</h4><br></br><br></br>
-                        <div className="d-flex justify-content-between align-items-center">
-                            <div className="ratings">
-                                <i className="fa fa-star text-light"></i>
-                                <i className="fa fa-star text-light"></i>
-                                <i className="fa fa-star text-light"></i>
-                                <i className="fa fa-star text-light"></i>
+                <h3 className='text-light'>{reviews.length + " Comments"}</h3>
+                <Line></Line>
+                    {console.log(reviews)}
+                    {reviews.map(element => (
+                        <div className="container mt-5 mb-5 border">
+                            <br></br>
+                            <div className="media-body text-light">
+                            <h4 className="media-heading float-left">{element.uid}</h4><br></br><br></br>
+                            <div className="d-flex justify-content-between align-items-center">
+                                <div className="ratings">
+                                    {stars(element)}
+                                </div>
                             </div>
+                            <br></br>
+                            <p className='float-left'>{element.text}</p>
+                            <br></br><br></br>
+                            {/*<ul className="list-unstyled list-inline media-detail pull-left">
+                                <li><i className="fa fa-calendar"></i>27/02/2014</li>
+                            </ul>*/}
                         </div>
-                        <br></br>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscinsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssg elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <ul className="list-unstyled list-inline media-detail pull-left">
-                            <li><i className="fa fa-calendar"></i>27/02/2014</li>
-                        </ul>
                     </div>
-                </div>
-                </div>
+                    ))
+                    }
             </div>
         </div>
     </div>

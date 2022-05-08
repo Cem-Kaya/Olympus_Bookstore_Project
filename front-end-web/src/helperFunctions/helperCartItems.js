@@ -1,10 +1,10 @@
 import { checkLogInStatus, getUserID } from "./helperLogin"
+import { fetchBooks } from "./helperGetProducts"
 //checkLogInStatus()
 export const getCartItems = () => {
     if(false)
     {
         let email = getUserID()
-        email = JSON.stringify(email)
         
         const GetAndSetCart = async (email) =>  {
             const serverAnswer = await tryGetCart(email)
@@ -14,8 +14,31 @@ export const getCartItems = () => {
               window.localStorage.setItem('cart_items', JSON.stringify([]))
             }
             else{
-              console.log(serverAnswer)
-              window.localStorage.setItem('cart_items', JSON.stringify(serverAnswer))
+              let itemArray = []
+              for (var key of Object.keys(serverAnswer)) {
+                itemArray.push(serverAnswer[key])
+              }
+              let books
+              const getProducts = async () => {
+                let products = await fetchBooks()
+                books = products
+              }
+              await getProducts()
+              console.log(books)
+
+              let items = []
+              itemArray.forEach(element => {
+                let ix
+                books.forEach(function (elem, index) {
+                  if(elem.id === element.Pid){
+                    ix = index
+                  }
+                });
+                let item = {...books[ix], quantity: element.quantity}
+                items.push(item)
+              });
+              console.log(items)
+              window.localStorage.setItem('cart_items', JSON.stringify(items))
             }
         }
         const tryGetCart = async ( email ) => {    
@@ -122,7 +145,7 @@ export const add1Item = (item) => {
                   'Accept' : 'application/json',
                   'Content-Type' : 'application/json'
                   },
-                  body: JSON.stringify({Pid : item.id, email: email, quantity: item.quantity + 1})
+                  body: JSON.stringify({Pid : item.id, email: email, quantity: /*item.quantity +*/ 1})
               })
               const data = await res.json()
               return data
@@ -196,7 +219,7 @@ export const remove1Item = (item) => {
                   'Accept' : 'application/json',
                   'Content-Type' : 'application/json'
                   },
-                  body: JSON.stringify({Pid : item.id, email: email, quantity: item.quantity - 1})
+                  body: JSON.stringify({Pid : item.id, email: email, quantity: /*item.quantity -*/ 1})
               })
               const data = await res.json()
               return data
@@ -257,7 +280,7 @@ export const removeAllItem = (item) => {
                   'Accept' : 'application/json',
                   'Content-Type' : 'application/json'
                   },
-                  body: JSON.stringify({Pid : item.id, email: email, quantity: 0})
+                  body: JSON.stringify({Pid : item.id, email: email, quantity: /*0*/ item.quantity})
               })
               const data = await res.json()
               return data
@@ -285,7 +308,7 @@ export const emptyCart = () => {
     {
       getCartItems().forEach(element => {
         removeAllItem(element)
-      });
+      })
       getCartItems()
     }
     else
