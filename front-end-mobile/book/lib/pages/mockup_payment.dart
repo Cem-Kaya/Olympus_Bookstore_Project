@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bookstore/utils/api.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,27 @@ class _mockupState extends State<mockup> {
       print("error is ${e.toString()}");
     }
   }
+
+  decreaseStock(int pid, int quantity) async { //it will be handled
+    try {
+
+      response = await http.post(
+        Uri.parse(API.decreaseStocks), //it will be handled
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          {
+            "Pid": pid,
+            "quantity": quantity,
+          },
+        ),
+      );
+    } catch (e) {
+      print("error is ${e.toString()}");
+    }
+  }
+
 
 
   Future Nextid() async {
@@ -296,13 +318,16 @@ class _mockupState extends State<mockup> {
                                 for (var i in temp_basket) {
                                   Checkout(user_mail,i.product_id,i.stocks,i.price,1.0,it);
                                 }
+                                for (var i in temp_basket) {
+                                  decreaseStock(i.product_id,i.stocks);
+                                }
                                 clean();
                                 await showDialog(
                                     context: context,
                                     builder: (_) => AlertDialog(
                                           title: const Text("Success"),
-                                          content: const Text(
-                                              "Transaction Complete"),
+                                          content: Text(
+                                              "Thank you for your purchases. \n Your order has been process successfully \n \n Your delivery id: ${it} \n Your delivery currently processing! \n Sum: ${widget.sum} \n For more details check your email!"),
                                           actions: [
                                             TextButton(
                                                 onPressed: () {

@@ -219,13 +219,11 @@ class _SignInState extends State<SignIn> {
                                   int i =new_basket.length;
                                   int y=0;
                                   while(y<i){
-                                    print(new_basket[y.toString()]["Pid"].toString());
-                                    y=y+1;
-                                    /*
                                     basketadd(new_basket[y.toString()]["Pid"],
                                       new_basket[y.toString()]["quantity"],new_basket[y.toString()]["name"],
                                         new_basket[y.toString()]["price"],
-                                        new_basket[y.toString()]["url"]);*/
+                                        new_basket[y.toString()]["url"]);
+                                    y=y+1;
                                   }
                                 }
                                 login(mail);

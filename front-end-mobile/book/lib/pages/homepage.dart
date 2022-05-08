@@ -23,10 +23,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   //Categories
   static final _categories = [
-    "Reccomerndations",
-    "Best Seller",
-    "SELLL OF",
-    "something bla bla"
+    "Best Seller     ",
+    "Top Rated       ",
+    "New Books       ",
+    "Promotions      ",
   ];
   static int _currentCategory = 0;
 
@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     allBooks();
+
     print("iii");
     // obtain shared preferences
   }
@@ -63,16 +64,43 @@ class _HomePageState extends State<HomePage> {
       print(e.toString());
     }
   }
+  var counter_cat = 0;
+  dynamic items_cat;
+  Future allCategories() async {
+    final url = Uri.parse("http://10.0.2.2:5000/all_category");
+    try {
+      final response = await http.get(url);
+      if (response.statusCode >= 200 && response.statusCode < 400) {
+        final result = previewBooksFromJson(response.body);
+
+        print(result);
+        setState(() {
+          counter_cat = result.length;
+          items_cat = result;
+        });
+        //print(counter);
+        return result;
+      }
+      else {
+        print(response.statusCode);
+      }
+
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
 
   @override
   String _search="";
   Widget build(BuildContext context) {
-    if (items == null) {
+    if (items == null ) {
       allBooks();
       return const Center(
         child: CircularProgressIndicator(),
       );
     }
+
     return Scaffold(
       drawer: nav_draw(),
       appBar: ActionBar(),
