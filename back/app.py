@@ -1,9 +1,8 @@
 #from crypt import methods
 
 import json
-from unittest import skip
-import requests as req
 
+import requests as req
 from flask_cors import CORS
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
@@ -420,6 +419,13 @@ def Sales_manager_regsubmit():
 @app.route('/Product_Catogary_reg')
 def Prc():
   return render_template('Product_Catogary_reg.html')  
+
+@app.route('/Product_Catogary/submit_test', methods=['POST'], strict_slashes=False  )
+def Prcsubmittest():
+  url = 'http://127.0.0.1:5000/Product_Catogary_reg/submit'
+  myobj = {'name': request.form['name'] 
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
             
 @app.route('/Product_Catogary_reg/submit', methods=['POST'], strict_slashes=False)
 def Prcsubmit():  
@@ -429,7 +435,11 @@ def Prcsubmit():
   PC__ = Product_Category(name)
   db.session.add(PC__)
   db.session.commit() 
-  return render_template('success.html', data= name)  
+  retjs={}
+  retjs["status"] = True
+  return json.dumps(retjs)
+
+  #return render_template('success.html', data= name)  
 
 @app.route('/purchased')
 def Purchasedd():
@@ -694,6 +704,13 @@ def Under():
   todata +="</table>   "
   return render_template('Under.html',data =todata )  #bunu degistirdim
 
+@app.route('/Under/submit_test', methods=['POST'], strict_slashes=False  )
+def undersubmit_test():
+  url = 'http://127.0.0.1:5000/Under/submit'
+  myobj = {'Pid': request.form['Pid'] , 
+           'Pcid': request.form['Pcid'] 
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )  
 
 @app.route('/Under/submit', methods=['POST'], strict_slashes=False)
 def Undersubmit():
@@ -705,7 +722,10 @@ def Undersubmit():
   statement = under.insert().values(Pid=Pid, Pcid=Pcid)
   db.session.execute(statement)
   db.session.commit()
-  return render_template('success.html', data= "")    
+  retjs = {}
+  retjs["status"] = True
+  return json.dumps(retjs)
+  #return render_template('success.html', data= "")    
 
 
 @app.route('/Manages_category')
@@ -840,6 +860,14 @@ def Wishes():
   todata +="</table>   "
   return render_template('Wishes.html',data =todata )  
 
+@app.route('/Wishes/submit_test', methods=['POST'], strict_slashes=False  )
+def wishessubmit_test():
+  url = 'http://127.0.0.1:5000/Wishes/submit'
+  myobj = {'Pid': request.form['Pid'] , 
+           'email': request.form['email'] 
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )  
+
 
 @app.route('/Wishes/submit', methods=['POST'], strict_slashes=False )
 def Wishessubmit():
@@ -851,7 +879,11 @@ def Wishessubmit():
   statement = wishes.insert().values(email=email, Pid=Pid)
   db.session.execute(statement)
   db.session.commit()
-  return render_template('success.html', data= "")    
+
+  retjs = {}
+  retjs["status"] = True
+  return json.dumps(retjs)
+  #return render_template('success.html', data= "")    
 
 #Shopping Car
 
@@ -1545,7 +1577,10 @@ def to_purchase_sub():
   
 
   send_email(email, text )
-  return render_template('success.html',data ="" ) 
+  retjs = {}
+  retjs["status"] = True
+  return json.dumps(retjs)
+  #return render_template('success.html',data ="" ) 
 
 @app.route('/delivery_process')
 def deliveryprocess():

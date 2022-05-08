@@ -1,7 +1,22 @@
-from sympy import satisfiable
+
+from os import lstat
 from app import * 
 import requests as req
 import json
+import os.path
+from test_email2 import *
+from test_email import *
+
+def deleteUser():
+    buyDlistDelete = db.session.query(Buy_Dlist)\
+        .filter(Buy_Dlist.did ==  int(89) )\
+        .delete()  
+
+    allUnders = db.session.query(Customers)\
+        .filter(Customers.email == "test@test.test")\
+            .delete()
+    db.session.commit()            
+
 
 def unit_test1():
     #build up 
@@ -465,20 +480,388 @@ def unit_test15():    #checks product manager registration function for pid s no
 
     return stat  
 
+def unit_test16():    #checks product category registration function for pid s not in store. rest is omitted first create a dummy product and decrease stock, if successful return true and tear it down 
+    
+    url = 'http://127.0.0.1:5000/Product_Catogary_reg/submit'
+    myobj = {'name': "reqfdsuest.form['name']" 
+    }
+    #req.post(url, data = json.dumps(myobj))
+    text = req.post(url, data = json.dumps(myobj)).text
+    allproductmanagers = db.session.query(Product_Category).all()
+    Pcidvalues = []
+    if(len(allproductmanagers) == 0):
+        Pcidvalues.append(int(1))
+    else:
+        for i in allproductmanagers:
+            Pcidvalues.append(i.Pcid)
+    maxPmid=max(Pcidvalues)
+        
+    stat =False
+    answer = "{" + '"status"' + ": true" + "}"
+    #print(answer)
+    #print(req.post(url, data = json.dumps(myobj)).text)
+    #if req.post(url, data = json.dumps(myobj)).text == '{"status": true}':
+    if text == answer:
+        stat =True    
+    #teardown 
+    #Customers.query.filter_by(email=email).all()
+    productsmdelete = db.session.query(Product_Category)\
+        .filter(Product_Category.Pcid == int(maxPmid))\
+            .delete()    
+    db.session.commit()         
+
+    return stat  
+    
+
+def unit_test17():    #checks to purchase function with a created user function for pid s not in store. rest is omitted first create a dummy product and decrease stock, if successful return true and tear it down 
+    
+    url = 'http://127.0.0.1:5000/signup/submit'
+    myobj = {'email': "test@test.test1" ,"name":"unit test","pass_hash": 123 , "homeadress":"SUN"   }
+    
+    #we create a user with this request
+    req.post(url, data = json.dumps(myobj))
+          
+    allbuy_dlists = db.session.query(Buy_Dlist).all()
+    didvalues = []
+    if(len(allbuy_dlists) == 0):
+        return "1"
+    for i in allbuy_dlists:
+        didvalues.append(i.did)
+    myDid=max(didvalues)+1 #actually max+1
+    #mydid = str(maxDid)
+  
+    url = 'http://127.0.0.1:5000/to_purchase/submit'
+    myobj = {'quantity': "5",
+            'price': "23",
+            'sale': "1",
+            'email': "test@test.test1",
+            'Pid': "1",
+            'did': str(myDid)
+            }
+    #we use to_purchase functionality with this request
+    text = req.post(url, data = json.dumps(myobj)).text       
+
+    all_purchased = db.session.query(Purchased).all()
+    purcidvalues = []
+
+    for i in all_purchased:
+        purcidvalues.append(i.purcid)
+    myPurcid=max(purcidvalues) #will be used to delete
+    #mydid = str(maxDid)
+
+        
+    stat =False
+    answer = "{" + '"status"' + ": true" + "}"
+    #print(answer)
+    #print(req.post(url, data = json.dumps(myobj)).text)
+    #if req.post(url, data = json.dumps(myobj)).text == '{"status": true}':
+    if text == answer:
+        stat =True    
+    #########TEARDOWN 
+    #Customers.query.filter_by(email=email).all()
+
+    buyDlistDelete = db.session.query(Buy_Dlist)\
+        .filter(Buy_Dlist.did ==  int(myDid) )\
+        .delete()  
+
+    productsmdelete = db.session.query(Purchased)\
+        .filter(Purchased.purcid == int(myPurcid))\
+            .delete()    
+
+    #Delete the user created
+    allUnders = db.session.query(Customers)\
+        .filter(Customers.email == "test@test.test1")\
+            .delete()
+    db.session.commit()                  
+            
+
+    return stat  
+
+def unit_test18():    #checks wishing functionality with a created user function for pid s not in store. rest is omitted first create a dummy product and decrease stock, if successful return true and tear it down 
+    
+    url = 'http://127.0.0.1:5000/signup/submit'
+    myobj = {'email': "test@test.test15" ,"name":"unit test","pass_hash": 123 , "homeadress":"SUN"   }
+    
+    #we create a user with this request
+    req.post(url, data = json.dumps(myobj))
+          
+  
+    url = 'http://127.0.0.1:5000/Wishes/submit'
+    myobj = {
+            'Pid': "1",
+            'email': "test@test.test15"
+            }
+    #we use to_purchase functionality with this request
+    text = req.post(url, data = json.dumps(myobj)).text       
+
+        
+    stat =False
+    answer = "{" + '"status"' + ": true" + "}"
+    #print(answer)
+    #print(req.post(url, data = json.dumps(myobj)).text)
+    #if req.post(url, data = json.dumps(myobj)).text == '{"status": true}':
+    if text == answer:
+        stat =True    
+    #########TEARDOWN 
+    #Customers.query.filter_by(email=email).all()
+
+    underDelete = db.session.query(wishes)\
+        .filter(wishes.c.email ==  "test@test.test15" )\
+          .delete()    
+
+
+    #Delete the user created
+    allUnders = db.session.query(Customers)\
+        .filter(Customers.email == "test@test.test15")\
+            .delete()
+    db.session.commit()                  
+            
+
+    return stat      
+
+def unit_test19():    #checks solely the under functionality, first creates a product then puts it under a category functionality with a created user function for pid s not in store. rest is omitted first create a dummy product and decrease stock, if successful return true and tear it down 
+    
+    url = 'http://127.0.0.1:5000/Products_reg/submit'
+    myobj = {'name': "nbfsfdsdfnbnb" , 
+           'model': "requefdssdfsst.form['model']",
+           'description': "requefdssfsdfsdt.form['description']",
+           'edition_number': "5",
+           'quantity': "1200",
+           'amount_sold': "185",
+           'price': "554",  
+           'raiting': "3", 
+           'author': "request.form['fdsfdsauthor']", 
+           'warranty': "request.formsdffds['warranty']", 
+           'distributor_Information': "requedsfdsfst.form['distributor_Information']",   
+           'sale': "0.7", 
+           'picture_url0': "request.forfdsfdsm['picture_url0']", 
+           'picture_url1': "request.fofsdfrfdsm['picture_url1']", 
+           'picture_url2': "request.fosdffdsrm['picture_url2']",
+           'Pcid': "1",
+           'Sid': "1",
+           'Pmid': "1"
+           
+    }    #test  pass_hash home
+    req.post(url, data = json.dumps(myobj))
+    allproducts=Products.query.filter_by().all()
+    pidvalues = []
+    for i in allproducts:
+        pidvalues.append(i.Pid)
+    maxPid=max(pidvalues) 
+
+    url = 'http://127.0.0.1:5000/Under/submit'
+    myobj = {'Pid': str(maxPid) ,"Pcid":"1"}
+    
+    #we create a under relationship with this request
+  
+
+        
+    stat =False
+
+    #print(answer)
+    #print(req.post(url, data = json.dumps(myobj)).text)
+    #if req.post(url, data = json.dumps(myobj)).text == '{"status": true}':
+    if req.post(url, data = json.dumps(myobj)):
+        stat =True    
+    #########TEARDOWN 
+    #Customers.query.filter_by(email=email).all()
+
+    underDelete = db.session.query(under)\
+        .filter(under.c.Pid ==  int(maxPid) )\
+          .delete()    
+
+    ###now delete product's relations
+   
+    managesDelete = db.session.query(manages)\
+        .filter(manages.c.Pid ==  int(maxPid) )\
+          .delete()     
+    changePrice = db.session.query(change_price)\
+        .filter(change_price.c.Pid ==  int(maxPid) )\
+          .delete()                           
+    productsdelete = db.session.query(Products)\
+        .filter(Products.Pid == int(maxPid))\
+            .delete()    
+
+    db.session.commit()                  
+            
+
+    return stat   
+
+def unit_test20():    #checks if next did functions correctly functionality, first creates a product then puts it under a category functionality with a created user function for pid s not in store. rest is omitted first create a dummy product and decrease stock, if successful return true and tear it down 
+    
+    url = 'http://127.0.0.1:5000/getnextdid'
+    myobj = { }    #test  pass_hash home
+    stat = False
+    # print(req.get(url, data = json.dumps(myobj)))
+    if req.get(url, data = json.dumps(myobj)):
+        stat = True
+   
+    return stat
+    
+def unit_test21():    #checks change_price functionality functions correctly functionality, first creates a product then puts it under a category functionality with a created user function for pid s not in store. rest is omitted first create a dummy product and decrease stock, if successful return true and tear it down 
+    url = 'http://127.0.0.1:5000/Products_reg/submit'
+    myobj = {'name': "nbfsfdsfdsdfnbnb" , 
+           'model': "requefdssdfdsfsst.form['model']",
+           'description': "requefdssfsfdsdfsdt.form['description']",
+           'edition_number': "5",
+           'quantity': "10",
+           'amount_sold': "185",
+           'price': "554",  
+           'raiting': "3", 
+           'author': "request.form['fdsfdsauthor']", 
+           'warranty': "request.formsdffds['warranty']", 
+           'distributor_Information': "requedsfdsfst.form['distributor_Information']",   
+           'sale': "0.7", 
+           'picture_url0': "request.forfdsfdsm['picture_url0']", 
+           'picture_url1': "request.fofsdfrfdsm['picture_url1']", 
+           'picture_url2': "request.fosdffdsrm['picture_url2']",
+           'Pcid': "1",
+           'Sid': "1",
+           'Pmid': "1"
+           
+    }    #test  pass_hash home
+    req.post(url, data = json.dumps(myobj))
+    allproducts=Products.query.filter_by().all()
+    pidvalues = []
+    for i in allproducts:
+        pidvalues.append(i.Pid)
+    maxPid=max(pidvalues) 
+
+    url = 'http://127.0.0.1:5000/Change_price/submit'
+    myobj = { 'Pid': str(maxPid) ,'Sid': "2"}    #test  pass_hash home
+    stat = False
+    # print(req.get(url, data = json.dumps(myobj)))
+    if req.post(url, data = json.dumps(myobj)):
+        stat = True
+
+    underDelete = db.session.query(under)\
+        .filter(under.c.Pid ==  int(maxPid) )\
+          .delete()    
+
+    ###now delete product's relations
+   
+    managesDelete = db.session.query(manages)\
+        .filter(manages.c.Pid ==  int(maxPid) )\
+          .delete()     
+    changePrice = db.session.query(change_price)\
+        .filter(change_price.c.Pid ==  int(maxPid) )\
+          .delete()                           
+    productsdelete = db.session.query(Products)\
+        .filter(Products.Pid == int(maxPid))\
+            .delete()    
+    
+    db.session.commit()          
+
+   
+    return stat
+
+def unit_test22():    #checks all books if next did functions correctly functionality, first creates a product then puts it under a category functionality with a created user function for pid s not in store. rest is omitted first create a dummy product and decrease stock, if successful return true and tear it down 
+    
+    url = 'http://127.0.0.1:5000/all_books'
+    myobj = { }    #test  pass_hash home
+    stat = False
+    # print(req.get(url, data = json.dumps(myobj)))
+    if req.get(url):
+        stat = True
+   
+    return stat
+    
+def unit_test23():    #checks all books if next did functions correctly functionality, first creates a product then puts it under a category functionality with a created user function for pid s not in store. rest is omitted first create a dummy product and decrease stock, if successful return true and tear it down 
+    
+    url = 'http://127.0.0.1:5000/all_books_category_ranged/submit'
+    myobj = {"min": "0",
+             "max": "100",
+             "Pcid": "1" }    #test  pass_hash home
+    stat = False
+    # print(req.get(url, data = json.dumps(myobj)))
+    if req.post(url, data = json.dumps(myobj)):
+        stat = True   
+    return stat
+    
+def unit_test24():    #checks all books if next did functions correctly functionality, first creates a product then puts it under a category functionality with a created user function for pid s not in store. rest is omitted first create a dummy product and decrease stock, if successful return true and tear it down 
+    
+    url = 'http://127.0.0.1:5000/all_books_ranged/submit'
+    myobj = {"min": "0",
+             "max": "100"}    #test  pass_hash home
+    stat = False
+    # print(req.get(url, data = json.dumps(myobj)))
+    if req.post(url, data = json.dumps(myobj)):
+        stat = True   
+    return stat
+    
+def unit_test25():    #checks all books if next did functions correctly functionality, first creates a product then puts it under a category functionality with a created user function for pid s not in store. rest is omitted first create a dummy product and decrease stock, if successful return true and tear it down 
+    
+    myPDF = make_pdf("denemetexti")
+    #print(myPDF)
+    
+    stat = os.path.exists(myPDF)
+    os.remove(myPDF)
+    
+
+    return stat
+    
+
+def unit_test26():
+    time.sleep(2)
+    first=read_email_from_gmail()
+    time.sleep(2)
+    send_email("CS.308.Group4@gmail.com","Unit test of email sevice this shell break it self in 30 days ")
+    time.sleep(2)
+
+    lstat=read_email_from_gmail()
+    #print(lstat)
+    #print(first)
+    if (lstat - first) == 1:
+        return True
+    return False
+    
+
+
+
+def nan_functional_req():
+    url = 'http://127.0.0.1:5000/all_books'
+    stat = True
+    tx1=req.get(url).text
+    for _ in range(1000):
+        if tx1 != req.get(url).text: #if gets error or not the original json it shell return false ! 
+            stat = False
+    return stat
 
 if __name__ == "__main__":
-    print("unit_test1" , unit_test1() )
-    print("unit_test2" , unit_test2() )
-    print("unit_test3" , unit_test3() )
-    print("unit_test4" , unit_test4() )
-    print("unit_test5" , unit_test5() )
-    print("unit_test6" , unit_test6() )
-    print("unit_test7" , unit_test7() )
-    print("unit_test8" , unit_test8() )
-    print("unit_test9" , unit_test9() )
-    print("unit_test10" , unit_test10() )
-    print("unit_test11" , unit_test11() )
-    print("unit_test12" , unit_test12() )
-    print("unit_test13" , unit_test13() )
-    print("unit_test14" , unit_test14() )
-    print("unit_test15" , unit_test15() )
+
+    debug = False
+    if(debug):
+        #deleteUser()
+        print("unit_test26" , unit_test26() )
+    else:    
+
+        print("unit_test1" , unit_test1() )
+        print("unit_test2" , unit_test2() )
+        print("unit_test3" , unit_test3() )
+        print("unit_test4" , unit_test4() )
+        print("unit_test5" , unit_test5() )
+        print("unit_test6" , unit_test6() )
+        print("unit_test7" , unit_test7() )
+        print("unit_test8" , unit_test8() )
+        print("unit_test9" , unit_test9() )
+        print("unit_test10" , unit_test10() )
+        print("unit_test11" , unit_test11() )
+        print("unit_test12" , unit_test12() )
+        print("unit_test13" , unit_test13() )
+        print("unit_test14" , unit_test14() )
+        print("unit_test15" , unit_test15() )
+        print("unit_test16" , unit_test16() )
+        print("unit_test17" , unit_test17() )
+        print("unit_test18" , unit_test18() )
+        print("unit_test19" , unit_test19() )
+        print("unit_test20" , unit_test20() )
+        print("unit_test21" , unit_test21() )
+        print("unit_test22" , unit_test22() )
+        print("unit_test23" , unit_test23() )
+        print("unit_test24" , unit_test24() )    
+        print("unit_test25" , unit_test25() )    
+        print("unit_test26" , unit_test26() ) 
+        print("None functional requirement test 1000 client connection test " ,nan_functional_req())
+
+
+    

@@ -1,7 +1,14 @@
 import yagmail
 from fpdf import FPDF
 import time
+import os.path
 
+
+#################
+import poplib
+import string, random
+#import StringIO, rfc822
+import logging
 
 
 #############################  pdf shenanigans  #########################
@@ -26,6 +33,8 @@ def send_email(receiver, text):
         contents="Also the invoince info is in the PDF ! \n"+text, 
         attachments= filename   
     )
+    time.sleep(0.2)
+    os.remove(filename)
   
 
 

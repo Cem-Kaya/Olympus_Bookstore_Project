@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 import requests as req
 from DB_init_SQL import * 
 
+
  
 app = Flask(__name__)
 
