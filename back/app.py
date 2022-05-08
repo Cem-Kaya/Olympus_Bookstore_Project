@@ -541,7 +541,11 @@ def get_shopingsubmit():
   allShoppingCarts = db.session.query(shopping_cart)\
        .filter(shopping_cart.c.email == uid  )  # db.session.query(followers).filter(...).all()
   for j,i in enumerate(allShoppingCarts):
-    retjs[j]={"Pid":i.Pid , "quantity":i.quantity  }    
+    retjs[j]={"Pid":i.Pid , "quantity":i.quantity  
+    ,"name": (q:=Products.query.filter_by(Pid=i.Pid ).first()).name ,
+      "url": q.picture_url0 , 
+       "price": q.price 
+    }    
   return json.dumps(retjs)
       
        
