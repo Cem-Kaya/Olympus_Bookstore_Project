@@ -252,11 +252,11 @@ class _ProductPageState extends State<ProductPage> {
                                         Container(
                                           width: size.width / 2 - 44,
                                           child: OutlinedButton(
-                                            onPressed: () async{
-                                             await Navigator.of(context).push(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          reviews()));
+                                                          reviews(prod: widget.productID,)));
                                             },
                                             child: Text("Read Reviews"),
                                           ),
