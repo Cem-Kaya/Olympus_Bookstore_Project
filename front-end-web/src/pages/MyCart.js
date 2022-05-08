@@ -138,6 +138,9 @@ const MyCart = ({params}) => {
                             <hr />
                             {
                               checkLogInStatus() ?
+                              items.length === 0 ?
+                              <a className="page-link" href="/">Your Cart is Empty, Add Some Items First</a>
+                              :
                               <button className="btn btn-primary float-md-right" onClick={() => history("/Checkout")}> Proceed to Checkout <i className="fa fa-chevron-right"></i> </button>
                               :
                               <a className="page-link" href="/Login">Not Logged In Yet! Please Log In First</a>

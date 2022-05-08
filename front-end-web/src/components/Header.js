@@ -189,7 +189,7 @@ const Header = ({itemsInCartChanged, onAddToCart, onRemoveFromCart, addToCartAll
                     {cartItems.map((item) => (
                         <li key={item.id}>
                           <DropDownItem>  
-                            <p>{item.title}</p>
+                            <a href={`SingleProduct=${item.id}`}><p className="text-white">{item.title}</p></a>
                             <small>{item.in_stock + " in stock"}</small>
                             <DropDownItemCount>
                               <button className="btn-primary" onClick={() =>{itemsInCartChanged === undefined ? HeaderRemoveFromCart(item) : onRemoveFromCart(item)}}>-</button>
