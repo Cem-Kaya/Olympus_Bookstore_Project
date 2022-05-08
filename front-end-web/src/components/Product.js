@@ -116,7 +116,7 @@ const TextBoxPrize = styled.div`
                 <TextBoxAuthor>{item.in_stock === 0 ? <h6 className="text-danger">Sold Out</h6> : item.in_stock <= 5 ? <h6 className="text-warning">Only {item.in_stock} remained in stock</h6> : <h6 className="text-primary">{item.in_stock} remained in stock</h6>}</TextBoxAuthor>
                 <TextBoxAuthor><h6 className="text-muted">{item.amount_sold} of the item sold</h6></TextBoxAuthor>
                 <TextBoxTitle>{item.title}</TextBoxTitle>
-                <TextBoxAuthor className="text-muted float-left">Raiting: {item.raiting} stars</TextBoxAuthor>
+                <TextBoxAuthor className="text-warning float-left">Raiting: {item.raiting} stars</TextBoxAuthor>
                 <TextBoxAuthor>{"Author: " + item.author}</TextBoxAuthor>
                 <TextBoxPublisher>{"Publisher: " + item.publisher}</TextBoxPublisher>
                 <TextBoxAuthor>{item.discount} discount</TextBoxAuthor>

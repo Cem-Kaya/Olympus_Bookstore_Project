@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import { getCartItems, removeAllItem } from '../helperFunctions/helperCartItems'
 import { getUserID } from "../helperFunctions/helperLogin";
 import { useNavigate } from 'react-router-dom'
+import { checkLogInStatus } from '../helperFunctions/helperLogin'
 
 const Container = styled.div`
     padding-bottom: 50px;
@@ -14,9 +15,16 @@ const Container = styled.div`
 
 const Checkout = () => {
 
-  const [did, setDid] = useState("")
-  const [removeStatus, setRemoveStatus] = useState("")
+  const [itemsBought, setItemsBought] = useState([])
+  const [itemsNotBought, setItemsNotBought] = useState([])
+
   let navigate = useNavigate()
+
+  useEffect(() => {
+    if(checkLogInStatus() === false){
+      navigate("/")
+    }
+  }, [navigate]);
 
     const costOfItems = () => {
         let sum = 0;
@@ -34,8 +42,8 @@ const Checkout = () => {
     let cardNumber = ""
     let cvv = ""
     let country = ""
-    let month = ""
-    let year = ""
+    let month = "1"
+    let year = "2022"
 
     const changesfName = (val) => {
         sfName = val
@@ -69,52 +77,6 @@ const Checkout = () => {
     }
     const changeyear = (val) => {
         year = val
-    }
-
-    const sleep = (milliseconds) => {
-      return new Promise(resolve => setTimeout(resolve, milliseconds))
-    }
-
-    const GetDid = async () => {
-      const itemFromServer = await getDidVal()
-      window.localStorage.setItem('did', JSON.stringify(itemFromServer))
-      setDid(itemFromServer)
-    }
-
-    const RemoveFromStock = async (item) => {
-      const isRemovedFromStock = await removeFromStock(item)
-      setRemoveStatus(isRemovedFromStock["status"])
-    }
-
-    const PurchaseAll = () => {
-      purchaseAll()
-      navigate("/invoice")
-    }
-
-    const purchaseAll = async () =>  {
-        try{
-            await GetDid()
-            let email = getUserID()
-
-            const cartItems = getCartItems()
-            for (let item of cartItems) {
-                await RemoveFromStock(email, item)
-                if(removeStatus === true){
-                  removeAllItem(item)
-                  await BuyAll()
-                }
-                await sleep(500)
-            }
-            return 0
-        }
-        catch(e){
-          console.log(e)
-        }
-    }
-
-    const BuyAll = async (email, item) => {
-      const contents = await purchase(email, item)
-      return contents
     }
 
     const getDidVal = async () => {
@@ -153,7 +115,7 @@ const Checkout = () => {
       }
   }
     
-    const purchase = async (email, item) => {
+    const purchase = async (email, item, didVal) => {
         try{
             console.log(email)
             const res = await fetch('/to_purchase/submit', {
@@ -162,7 +124,7 @@ const Checkout = () => {
                 'Accept' : 'application/json',
                 'Content-Type' : 'application/json'
                 },
-            body: JSON.stringify({"email": email, "Pid": item.id, "quantity": item.quantity, "price": item.price , "sale": parseFloat(item.discount), "did": did })
+            body: JSON.stringify({"email": email, "Pid": item.id, "quantity": item.quantity, "price": item.price , "sale": parseFloat(item.discount), "did": didVal })
             })
             const data = await res.json()
             console.log(data)
@@ -173,6 +135,69 @@ const Checkout = () => {
             console.log(e)
         }
     }
+
+    const sendBankInfo = async () => {
+      try{
+        console.log(email)
+        const res = await fetch('/bank/submit', {
+        method: "POST",
+        headers: {
+            'Accept' : 'application/json',
+            'Content-Type' : 'application/json'
+            },
+        body: JSON.stringify({"creddit_card_number": cardNumber, "date": year, "cvc": cvv, "total_price": costOfItems() })
+        })
+        const data = await res.json()
+        console.log(data)
+
+        return data
+    }
+    catch(e){
+        console.log(e)
+    }
+    }
+
+    const purchaseAll = async () =>  {
+      
+      try{
+        window.localStorage.setItem('old_cart', JSON.stringify(JSON.parse(window.localStorage.getItem('cart_items'))))
+        await sendBankInfo()
+
+        let did = await getDidVal()
+
+        let email = getUserID()
+        const cartItems = getCartItems()
+  
+        for (let item of cartItems) {
+          let serverAnswer = await removeFromStock(item)
+          if(serverAnswer["status"] === true){
+            removeAllItem(item)
+            let answer = await purchase(email, item, did)
+            setItemsBought([...itemsBought, item])
+          }
+          else{
+            setItemsNotBought([...itemsNotBought, item])
+          }
+        }
+        window.localStorage.setItem('items_bought', JSON.stringify(itemsBought))
+        window.localStorage.setItem('items_not_bought', JSON.stringify(itemsNotBought))
+
+        return 0
+      }
+      catch(e){
+        console.log(e)
+      }
+  }
+
+  const PurchaseAllHelper = async () => {
+    await purchaseAll()
+  }
+
+  const PurchaseAll = () => {
+    PurchaseAllHelper()
+    console.log(itemsBought)
+    navigate(`/invoice`)
+  }
 
   return (
       <div>
@@ -187,8 +212,8 @@ const Checkout = () => {
             <span className="badge badge-secondary badge-pill">{getCartItems().length}</span>
           </h4>
           <ul className="list-group mb-3">
-            {getCartItems().map(element => 
-                <li className="list-group-item d-flex justify-content-between lh-condensed">
+            {getCartItems().map((element,index) => 
+                <li className="list-group-item d-flex justify-content-between lh-condensed" key={index}>
                     <div className="aside"><img src={element.img} alt="item-img" className="img-sm"/></div>
                     <div>
                         <h6 className="my-0">{element.title}</h6>

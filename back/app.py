@@ -1514,6 +1514,7 @@ def decreasesstocks_test():
 def decreasesstocks():
   data2 = json.loads(request.get_data())#request.get_json()
   #, strict_slashes=False 
+  print(data2)
   quantity=int (data2['quantity'] )
   Pid=int ( data2['Pid'] )
   retjs ={}
