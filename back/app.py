@@ -1116,7 +1116,10 @@ def Commentsssubmit():
   assoc = Comments(customer_email=email, product_pid=Pid, comment_id=cid)
   db.session.add(assoc)
   db.session.commit()
-  return render_template('success.html', data= "")    
+  retjs = {}
+  retjs["status"] = True
+  return json.dumps(retjs)
+  #return render_template('success.html', data= "")    
 
 
 @app.route('/buy_dlist')
