@@ -485,9 +485,11 @@ def get_all_purchsubmit():
   #TODO  
   for k , j in  enumerate( alldlist):
     retjslist.append( { "pid" : j.product_pid , "date":str(j.date ), "quantity": j.quantity , "purcid": j.purchased_purcid , 
-      "sale": (b:=db.session.query(Purchased).filter(Purchased.purcid == j.purchased_purcid ).first()).sale, "price":b.price,
+      "sale": (b:=db.session.query(Purchased).filter(Purchased.purcid == (t:=j.purchased_purcid) ).first()).sale, "price":b.price,
       "shipment":b.shipment,
-      "email":j.customer_email
+      "email":j.customer_email, 
+      "name": (q:=Products.query.filter_by(Pid=j.product_pid  ).first()).name,
+      "url": q.picture_url0
      })
   return json.dumps(retjslist )
 
