@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+</head>
+<body>
+    <py-env>
+        - numpy
+        - requests
+        - paths:
+                - /request.py
+    </py-env>
+
+    <py-script> 
+import asyncio 
+import json
+from request import request
+
+
+for i in range(10):
+    print('Hello, World!')
+
+
+baseurl = "http://127.0.0.1:5000/"
+
+# GET
+
+response = await request(baseurl+"all_books", method="GET" )
+print(f"GET request=> status:{response.status}, json:{await response.json()}")
+
+    </py-script>
+</body>
+</html>
