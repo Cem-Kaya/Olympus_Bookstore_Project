@@ -6,6 +6,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import "package:http/http.dart" as http;
 import 'package:provider/provider.dart';
 import '../services/user_logged_data.dart';
+import '../utils/api.dart';
 import '../views/action_bar.dart';
 
 class AddReview extends StatefulWidget {
@@ -22,7 +23,7 @@ class _AddReviewState extends State<AddReview> {
   var response;
   var temp;
   postlog(num pid,String email,String text,num stars) async{
-    try{ response =await http.post(Uri.parse("http://10.0.2.2:5000/Comment_all_/submit"),
+    try{ response =await http.post(Uri.parse(API.send_comments),
       headers:<String, String>{'Content-Type': 'application/json; charset=UTF-8' ,},
       body:jsonEncode({ "Pid":pid, "email":email, "text":text, "stars":stars, }, ), );
     print(response.body); temp=json.decode(response.body);}

@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:bookstore/pages/category_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/api.dart';
+import '../utils/jsonParse/previewBooks.dart';
+import 'package:http/http.dart' as http;
 class nav_draw extends StatelessWidget {
-  const nav_draw({Key? key}) : super(key: key);
+   nav_draw({Key? key,required this.categories}) : super(key: key);
+   final List<String> categories;
   static final _categories = [
     "Novel",
     "Non-fiction",
@@ -12,15 +18,49 @@ class nav_draw extends StatelessWidget {
     "Light Novel",
     "Drama",
   ];
-
   @override
+
+  var counter_cat = 0;
+  dynamic items_cat;
+  Future allCategories() async {
+    final url = Uri.parse(API.all_catogary);
+    try {
+      final response = await http.get(url);
+      if (response.statusCode >= 200 && response.statusCode < 400) {
+        final result = jsonDecode(response.body);
+        counter_cat = result.length;
+        items_cat = result;
+        int c=0;
+        print(result.runtimeType);
+        print(counter_cat);
+        while(c<counter_cat){
+          print(counter_cat);
+          _categories.add(items_cat[c.toString()]);
+          c++;
+        }
+
+        print(result);
+        return result;
+      }
+      else {
+        print(response.statusCode);
+      }
+
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   Widget build(BuildContext context) {
+    print("zzzzzzzzzzzzzzzzzzzzzzzzzzz");
+    //allCategories();
+
     return Drawer(
       backgroundColor: Colors.amber,
       elevation: 2.0,
       child: ListView(
         scrollDirection: Axis.vertical,
-        children: List.generate(_categories.length, (int index) {
+        children: List.generate(categories.length, (int index) {
           return OutlinedButton(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
@@ -38,7 +78,7 @@ class nav_draw extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    _categories[index],
+                    categories[index],
                     style: TextStyle(color: Colors.black),
                   ),
                 ],

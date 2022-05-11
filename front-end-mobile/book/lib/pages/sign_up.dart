@@ -10,6 +10,7 @@ import "package:http/http.dart" as http;
 import 'package:provider/provider.dart';
 
 import '../services/root_index.dart';
+import '../utils/api.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class _SignUpState extends State<SignUp> {
   postlog(String name, String email, String pass, String add) async {
     try {
       response = await http.post(
-        Uri.parse("http://10.0.2.2:5000/signup/submit"),
+        Uri.parse(API.signup),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -261,7 +262,7 @@ class _SignUpState extends State<SignUp> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                            print("$name, $mail, $pass, $adress");
+                           // print("$name, $mail, $pass, $adress");
                             await postlog(name, mail, pass, adress);
                             if (temp["status"]) {
                               Navigator.pop(context);

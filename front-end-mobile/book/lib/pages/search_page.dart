@@ -89,7 +89,7 @@ class _search_pageState extends State<search_page> {
     //var intersection = search_title?.intersect(search_des!); // [3, 4]
     //var union = search_title?.union(search_des!);
     list = search_title;
-    print(list);
+    //print(list);
     for (var i in list!) {
       print(i.title);
     }

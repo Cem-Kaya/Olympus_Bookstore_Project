@@ -32,7 +32,7 @@ class _mockupState extends State<mockup> {
   void initState() {
     super.initState();
     Nextid();
-    print("iii");
+
     // obtain shared preferences
   }
   dynamic it=1;
@@ -40,7 +40,7 @@ class _mockupState extends State<mockup> {
     try {
 
       response = await http.post(
-        Uri.parse("http://10.0.2.2:5000/to_purchase/submit"), //it will be handled
+        Uri.parse(API.to_purchase), //it will be handled
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -84,15 +84,15 @@ class _mockupState extends State<mockup> {
 
 
   Future Nextid() async {
-    print("ddd");
-    final url = Uri.parse("http://10.0.2.2:5000/getnextdid");
+
+    final url = Uri.parse(API.next_did);
     try {
       final response = await http.get(url);
       if (response.statusCode >= 200 && response.statusCode < 400) {
         final result = jsonDecode(response.body);
         it=result;
-        print("ssssssssss");
-        print(it);
+
+
         return result;
       } else {
         print(response.statusCode);

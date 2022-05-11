@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bookstore/pages/category_page.dart';
 import 'package:bookstore/pages/search_page.dart';
 import 'package:bookstore/utils/api.dart';
 import 'package:bookstore/utils/colors.dart';
@@ -30,15 +31,24 @@ class _HomePageState extends State<HomePage> {
   ];
   static int _currentCategory = 0;
 
-
+  List<String> cat=[];
+  /*
   @override
   void initState() {
     super.initState();
+    ()async{
+    await allCategories();};
+    setState(() {
+
+    });
+    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+
+    print(cat_books);
     allBooks();
 
-    print("iii");
+
     // obtain shared preferences
-  }
+  }*/
   var counter = 0;
   dynamic items;
 
@@ -66,18 +76,30 @@ class _HomePageState extends State<HomePage> {
   }
   var counter_cat = 0;
   dynamic items_cat;
+
   Future allCategories() async {
-    final url = Uri.parse("http://10.0.2.2:5000/all_category");
+    final url = Uri.parse(API.all_catogary);
     try {
       final response = await http.get(url);
       if (response.statusCode >= 200 && response.statusCode < 400) {
-        final result = previewBooksFromJson(response.body);
+        final result = jsonDecode(response.body);
 
-        print(result);
+        print("aaaaaaaaaaaaa");
         setState(() {
           counter_cat = result.length;
           items_cat = result;
         });
+        print("ppppppppppppp");
+        print(result);
+        int c=1;
+        while(c<=counter_cat){
+          //print(items_cat[c.toString()]);
+          cat.add(items_cat[c.toString()]);
+          //print(cat);
+          c++;
+        }
+        print("bbbbbbbbbbb");
+        print(cat);
         //print(counter);
         return result;
       }
@@ -94,15 +116,22 @@ class _HomePageState extends State<HomePage> {
   @override
   String _search="";
   Widget build(BuildContext context) {
-    if (items == null ) {
+    //allCategories();
+    if (items == null || cat==null) {
       allBooks();
+      allCategories();
       return const Center(
         child: CircularProgressIndicator(),
       );
     }
+    print("tttttttttttttt");
+    print(cat);
+
+
+
 
     return Scaffold(
-      drawer: nav_draw(),
+      drawer: nav_draw(categories: cat),
       appBar: ActionBar(),
       body: SingleChildScrollView(
         child: Column(

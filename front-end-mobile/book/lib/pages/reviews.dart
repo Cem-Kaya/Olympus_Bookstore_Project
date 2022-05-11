@@ -67,7 +67,7 @@ class _reviewsState extends State<reviews> {
   List<ReviewBooks>? items;
 
   Future allReviews() async {
-    print("ddd");
+    //print("ddd");
     final url = Uri.parse(API.allReviews);
     try {
       final response = await http.get(url);
@@ -88,7 +88,7 @@ class _reviewsState extends State<reviews> {
   Future<void> getReviews() async {
     List<ReviewBooks>? search_reviews =
     await items?.where((element) => element.pid! == my_pid).toList();
-    print(search_reviews);
+    //print(search_reviews);
     reviewsList = search_reviews;
   }
 

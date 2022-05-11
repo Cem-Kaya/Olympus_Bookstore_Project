@@ -3,6 +3,7 @@ import 'package:bookstore/views/action_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../utils/api.dart';
 import '../utils/jsonParse/previewBooks.dart';
 import '../views/product_preview.dart';
 
@@ -28,7 +29,7 @@ List<PreviewBooks>? cat_books;
 getCategories(num pcid) async { //it will be handled
   try {
     response = await http.post(
-      Uri.parse("http://10.0.2.2:5000/all_books_category_ranged/submit"), //it will be handled
+      Uri.parse(API.get_catogary_books), //it will be handled
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -59,7 +60,7 @@ class _CategoryState extends State<Category> {
     }();
 
 
-    print("iii");
+
     // obtain shared preferences
   }
 

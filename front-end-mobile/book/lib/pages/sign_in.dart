@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 import '../services/root_index.dart';
 import '../services/user_logged_data.dart';
+import '../utils/api.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class _SignInState extends State<SignIn> {
     try {
 
       response_basket = await http.post(
-        Uri.parse("http://10.0.2.2:5000/Shopping_Cart/submit"), //it will be handled
+        Uri.parse(API.send_to_basket), //it will be handled
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -54,7 +55,7 @@ class _SignInState extends State<SignIn> {
     try {
 
       response_basket = await http.post(
-        Uri.parse("http://10.0.2.2:5000/get_shoping/submit"), //it will be handled
+        Uri.parse(API.get_shopping), //it will be handled
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -65,7 +66,7 @@ class _SignInState extends State<SignIn> {
         ),
       );
     new_basket =jsonDecode(response_basket.body);
-    print("hahahahahahahaha");} catch (e) {
+    } catch (e) {
       print("error is ${e.toString()}");
     }
   }
@@ -73,7 +74,7 @@ class _SignInState extends State<SignIn> {
   Future AccountLogin(String email, String pass) async {
     try {
       response = await http.post(
-        Uri.parse("http://10.0.2.2:5000/login/submit"),
+        Uri.parse(API.sign_in),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

@@ -25,7 +25,7 @@ class _RootState extends State<Root> {
 
   Future<void> walk() async {
     final prefs = await SharedPreferences.getInstance();
-    print(prefs.getBool('walked'));
+    //print(prefs.getBool('walked'));
     // set value
     if (prefs.getBool('walked') == false || prefs.getBool('walked') == null) {
       prefs.setBool('walked', true);

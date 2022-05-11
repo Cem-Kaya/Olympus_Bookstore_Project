@@ -70,7 +70,7 @@ class _old_purchasesState extends State<old_purchases> {
 
   Widget build(BuildContext context) {
     //Function login = Provider.of<logged_in_user>(context).getUser;
-    print(my_user);
+
     if (my_user == "" || purchaseList == null) {
       allPurchases();
       return const Center(

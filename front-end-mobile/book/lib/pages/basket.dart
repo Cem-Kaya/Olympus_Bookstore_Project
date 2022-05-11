@@ -40,15 +40,14 @@ class _BasketPageState extends State<BasketPage> {
     ()async{
     await gettobasket("a@a.com");};
    // await gettobasket(login());
-    print("4");
-    print("qqqqqqqqqqqqqqqq");
+
     // obtain shared preferences
   }
   Future gettobasket(String email) async { //it will be handled
     try {
 
       response_basket = await http.post(
-        Uri.parse("http://10.0.2.2:5000/get_shoping/submit"), //it will be handled
+        Uri.parse(API.get_shopping), //it will be handled
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -59,18 +58,18 @@ class _BasketPageState extends State<BasketPage> {
         ),
       );
       new_basket =jsonDecode(response_basket.body);
-      print("tttttttttttttttt");} catch (e) {
+      } catch (e) {
       print("error is ${e.toString()}");
     }
   }
   @override
 
   Widget build(BuildContext context) {
-    print("1");
+
     if(new_basket==null){
       gettobasket("a@a.com");
     }
-    print("0");
+
     Function a = Provider.of<Basket>(context).get;
     Function clean = Provider.of<Basket>(context).clean_basket;
     Function take = Provider.of<taken>(context).get;
@@ -209,7 +208,8 @@ class _BasketPageState extends State<BasketPage> {
                             ));
                   }
                 },
-                child: Text("Your sum is $s \n   Pay in here")),
+                child: Text("Your sum is $s \n
+                 in here")),
             */
           ],
         ),

@@ -304,10 +304,10 @@ class _ProductPageState extends State<ProductPage> {
                         IconButton(
                             onPressed: () {
                               setState(() {
-                                print(stocks);
+
                                 if (stocks > 0) {
                                   stocks = stocks - 1;
-                                  print(stocks);
+                                  //print(stocks);
                                 }
                               });
                             },
@@ -329,7 +329,7 @@ class _ProductPageState extends State<ProductPage> {
                         IconButton(
                             onPressed: () {
                               setState(() {
-                                print(stocks);
+                                //print(stocks);
 
                                 stocks = stocks + 1;
                               });
