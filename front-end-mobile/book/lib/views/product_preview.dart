@@ -151,9 +151,9 @@ class _ProductPreviewState extends State<ProductPreview> {
                           Icons.favorite,
                           color: AppColors.notification)),
                 ),
-                /*Visibility(
-                  visible: widget.product.oldPrice >
-                      widget.product.price,
+                Visibility(
+                  visible: double.parse(widget.product.discount!.substring(0,2)) >
+                      0,
                   child: Positioned(
                     top: 0,
                     left: 0,
@@ -168,16 +168,15 @@ class _ProductPreviewState extends State<ProductPreview> {
                             color: AppColors.background,
                           ),
                           Text(
-                              "${(((widget.product.oldPrice -
-                                  widget.product.price) /
-                                  widget.product.oldPrice) * 100)
+                              "${(
+                                 double.parse( widget.product.discount!.substring(0,3)))
                                   .toStringAsFixed(0)}%",
                               style: TextStyle(color: Colors.white))
                         ],
                       ),
                     ),
                   ),
-                )*/
+                )
               ]
           ),
         ],

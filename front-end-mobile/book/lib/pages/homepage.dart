@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
     // obtain shared preferences
   }*/
   var counter = 0;
-  dynamic items;
+  List<PreviewBooks>? items;
 
   Future allBooks() async {
     final url = Uri.parse(API.allBooks);
@@ -154,7 +154,38 @@ class _HomePageState extends State<HomePage> {
                 scrollDirection: Axis.horizontal,
                 children: List.generate(_categories.length, (int index) {
                   return OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {if(index==0){
+                        setState(() {
+                        items!.sort(
+                        (b, a) => a.amountSold!.compareTo(b.amountSold!));
+                        }
+                        );
+                        }
+                      else if(index==1){
+                        //print("index 1");
+                        setState(() {
+                          items!.sort(
+                                  (b, a) => a.raiting!.compareTo(b.raiting!));
+                        }
+                        );
+
+
+                    }
+                      else if(index==2){
+                        setState(() {
+                          items!.sort(
+                              (a,b)=> a.releaseDate!.compareTo(b.releaseDate!)
+                          );
+                        });
+                    }
+                      else if(index==3){
+                        setState(() {
+                          items!.sort(
+                              (b,a)=> a.discount!.compareTo(b.discount!)
+                          );
+                        });
+                    }
+    },
                     child: Container(
                       height: 50.0,
                       child: Text(_categories[index]),
@@ -174,7 +205,7 @@ class _HomePageState extends State<HomePage> {
                       counter,
                       (index) => Row(children: [
                             ProductPreview(
-                              product: items[index],
+                              product: items![index],
                             ),
                             SizedBox(width: 8),
                           ])),
@@ -193,7 +224,7 @@ class _HomePageState extends State<HomePage> {
                   children: List.generate(
                       counter,
                       (index) => Row(children: [
-                            ProductPreview(product: items[index]),
+                            ProductPreview(product: items![index]),
                             SizedBox(width: 8)
                           ])),
                 ),
