@@ -842,6 +842,61 @@ def changespricesubmit():
   db.session.commit()
   return render_template('success.html', data= "")        
 
+
+@app.route('/Wishes_get_all')
+def Wishes_get_all():
+  allUnders = db.session.query(wishes).all()  # db.session.query(followers).filter(...).all()
+  ret_js=[]
+  for i in allUnders:
+    ret_js.append(
+      { "email": i.email  ,"Pid":i.Pid  , "date":str(i.date ) }
+    )
+  return json.dumps(ret_js)
+
+@app.route('/Wishes_get_email')
+def Wishes_get_email():
+  allproducts=Products.query.filter_by().all()
+  todata=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> </tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale) 
+  todata +="</table>"
+  
+  todata+="<h3>Customers </h3> "
+  allCustomers=Customers.query.filter_by().all()
+  todata+= "<table> <tr> <th>email </th> <th>name </th> </tr> "
+  for i in allCustomers:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.email,i.name) 
+  todata +="</table>   "
+
+  todata+= "<h3> Wishes </h3>"
+  todata+= "<table> <tr> <th> email </th> <th> Pid </th><th> Date </th></tr> "
+  allUnders = db.session.query(wishes).all()  # db.session.query(followers).filter(...).all()
+  for i in allUnders:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.email,i.Pid, i.date) 
+  todata +="</table>   "
+  return render_template('Wishes_get_email.html',data =todata )  
+
+@app.route('/Wishes_get_email/submit_test', methods=['POST'], strict_slashes=False  )
+def Wishes_get_email_test():
+  url = 'http://127.0.0.1:5000/Wishes_get_email/submit'
+  myobj = {"email": request.form['email']   }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
+
+@app.route('/Wishes_get_email/submit', methods=['POST'] , strict_slashes=False)
+def Wishes_get_email_submit():
+  data2 = json.loads(request.get_data())
+  email = str( data2['email'])
+  allUnders = db.session.query(wishes).filter(wishes.c.email == email ).all()  # db.session.query(followers).filter(...).all()
+  ret_js=[]
+  for i in allUnders:
+    ret_js.append(
+      { "email": i.email  ,"Pid":i.Pid  , "date":str(i.date ) }
+    )
+  return json.dumps(ret_js)
+
+
+
 @app.route('/Wishes')
 def Wishes():
   allproducts=Products.query.filter_by().all()
@@ -869,9 +924,7 @@ def Wishes():
 @app.route('/Wishes/submit_test', methods=['POST'], strict_slashes=False  )
 def wishessubmit_test():
   url = 'http://127.0.0.1:5000/Wishes/submit'
-  myobj = {'Pid': request.form['Pid'] , 
-           'email': request.form['email'] 
-    }
+  myobj = {'email': request.form['email'] ,  'PId': request.form['Pid']     }
   return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )  
 
 
@@ -1406,6 +1459,8 @@ def all_books_category_ranged_sub():
     }
     jsonprd.append(tmp)  
   return json.dumps(jsonprd)
+
+
     
 
 @app.route('/remove_from_cart')
