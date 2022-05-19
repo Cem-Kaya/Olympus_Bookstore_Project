@@ -5,6 +5,7 @@ import Body from '../components/MainPageBody';
 import { useState, useEffect } from 'react';
 import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCartItems';
 import { fetchBooks } from '../helperFunctions/helperGetProducts';
+import { addToWishList } from '../helperFunctions/helperWishList';
 
 const Main = () => {
   
@@ -39,11 +40,15 @@ const Main = () => {
     setTag(val)
   }
 
+  const AddToWishList = async (item) => {
+    const answer = await addToWishList(item.id)
+  }
+
   return (
     <div>
       
         <Header itemsInCartChanged={cartItemsChanged} onAddToCart={HeaderAddToCart} onRemoveFromCart={HeaderRemoveFromCart}></Header>
-        <Body products={items} onAddToCart={AddToCart} onChangeTag={changeTag} sortBy={tag} highToLow={true}></Body>
+        <Body products={items} onAddToCart={AddToCart} onChangeTag={changeTag} sortBy={tag} highToLow={true} onAddToWishList={AddToWishList}></Body>
         <Footer></Footer>
     </div>
   )

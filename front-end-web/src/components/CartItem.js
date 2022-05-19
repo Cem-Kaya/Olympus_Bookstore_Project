@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CartItem = ({item, onAddToCart, onRemoveFromCart, onRemoveAll}) => {
+const CartItem = ({item, onAddToCart, onRemoveFromCart, onRemoveAll, onAddToWishList}) => {
   return (
     <tr>              
       <td>
@@ -29,7 +29,7 @@ const CartItem = ({item, onAddToCart, onRemoveFromCart, onRemoveAll}) => {
           </div> 
       </td>
       <td className="text-right"> 
-        <button data-original-title="Save to Wishlist" title="" className="btn btn-light mr-2" data-toggle="tooltip"> <i className="fa fa-heart"></i></button>      
+        <button data-original-title="Save to Wishlist" title="" className="btn btn-light mr-2" data-toggle="tooltip" onClick={() => {onAddToWishList(item)}}> <i className="fa fa-heart"></i></button>      
         <button className="btn btn-light" onClick={() => {onRemoveAll(item)}}> Remove All</button>
       </td>
   </tr>

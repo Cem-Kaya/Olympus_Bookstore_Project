@@ -50,21 +50,43 @@ import { useNavigate } from "react-router-dom";
     background-color: rgba(0, 0, 0, 0.2); 
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     text-align: center;
+    padding: 3px 3px 3px 3px;
   `;
 
 const TextBoxTitle = styled.div`
     font-size:20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
+    text-transform: uppercase;
 `;
 
 const TextBoxAuthor = styled.div`
     font-size:12px;
     font-style: italic;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* number of lines to show */
+    -webkit-box-orient: vertical;
 `;
+
+const TextBoxOther = styled.div`
+    font-size:12px;
+`;
+
 const TextBoxPublisher = styled.div`
     font-size:10px;
     font-style: italic;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* number of lines to show */
+    -webkit-box-orient: vertical;
 `;
 
 const TextBoxPrize = styled.div`
@@ -83,7 +105,7 @@ const TextBoxPrize = styled.div`
   `;
 
   const Image = styled.img`
-    padding-top:10px;
+    padding-top:8px;
     height: 50%;
     max-width: inherit;
   `;
@@ -105,7 +127,7 @@ const TextBoxPrize = styled.div`
   `;
 
 
-  const Product = ({ item, onAddToCart }) => {
+  const Product = ({ item, onAddToCart, onAddToWishList }) => {
     let navigate = useNavigate()
     return (
       <Container>
@@ -113,13 +135,14 @@ const TextBoxPrize = styled.div`
           {/*style={{marginBottom: "8px"}}*/}
             <Image src={item.img} />
             <TextBoxContainer>  
-                <TextBoxAuthor>{item.in_stock === 0 ? <h6 className="text-danger">Sold Out</h6> : item.in_stock <= 5 ? <h6 className="text-warning">Only {item.in_stock} remained in stock</h6> : <h6 className="text-primary">{item.in_stock} remained in stock</h6>}</TextBoxAuthor>
-                <TextBoxAuthor><h6 className="text-muted">{item.amount_sold} of the item sold</h6></TextBoxAuthor>
+              
+                <TextBoxOther>{item.in_stock === 0 ? <h6 className="text-danger">Sold Out</h6> : item.in_stock <= 5 ? <h6 className="text-warning">Only {item.in_stock} remained in stock</h6> : <h6 className="text-primary">{item.in_stock} remained in stock</h6>}</TextBoxOther>
+                <TextBoxOther><h6 className="text-muted">{item.amount_sold} of the item sold</h6></TextBoxOther>
                 <TextBoxTitle>{item.title}</TextBoxTitle>
-                <TextBoxAuthor className="text-warning float-left">Raiting: {item.raiting} stars</TextBoxAuthor>
+                <TextBoxOther className="text-warning float-left">Raiting: {item.raiting} stars</TextBoxOther>
                 <TextBoxAuthor>{"Author: " + item.author}</TextBoxAuthor>
                 <TextBoxPublisher>{"Publisher: " + item.publisher}</TextBoxPublisher>
-                <TextBoxAuthor>{item.discount} discount</TextBoxAuthor>
+                <TextBoxOther>{item.discount} discount</TextBoxOther>
                 <TextBoxPrize>{item.price.toFixed(2) + " TL"}</TextBoxPrize>
             </TextBoxContainer>
         </InnerContainer>
@@ -137,7 +160,7 @@ const TextBoxPrize = styled.div`
             
           </Icon>
           <Icon>
-            <FavoriteBorderOutlined />
+            <FavoriteBorderOutlined onClick={() => {onAddToWishList(item)}} />
           </Icon>
         </Info>
       </Container>

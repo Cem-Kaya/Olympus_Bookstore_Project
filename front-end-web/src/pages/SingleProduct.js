@@ -8,6 +8,7 @@ import ProductPageDetails from '../components/ProductPageDetails';
 import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCartItems';
 import { getUserID } from '../helperFunctions/helperLogin';
 import { fetchBooks } from '../helperFunctions/helperGetProducts';
+import { addToWishList } from '../helperFunctions/helperWishList';
 
 const Container = styled.div`
     text-align: center;
@@ -89,11 +90,15 @@ const SingleProduct = () => {
         setCartItemsChanged(!cartItemsChanged)
       }
 
+      const AddToWishList = async (item) => {
+        const answer = await addToWishList(item.id)
+      }
+
   return (
       <div>
             <Header itemsInCartChanged={cartItemsChanged} onAddToCart={HeaderAddToCart} onRemoveFromCart={HeaderRemoveFromCart}></Header>
             <Container className='bg-dark'>
-                <ProductPageDetails item={item} reviews={comments} onAddToCart={AddToCart} onSendComment={onSendComment}></ProductPageDetails>
+                <ProductPageDetails item={item} reviews={comments} onAddToCart={AddToCart} onSendComment={onSendComment} onAddToWishList={AddToWishList}></ProductPageDetails>
             </Container>
             <Footer></Footer>
     </div>

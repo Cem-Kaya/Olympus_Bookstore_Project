@@ -3,6 +3,7 @@ import {
   ShoppingCartOutlined,
   FavoriteBorderOutlined,
   ShoppingCart,
+  Favorite,
 } from "@material-ui/icons";
 
 import logo from '../assets/OlympusLogo.png';
@@ -13,6 +14,7 @@ import '../App.css';
 import { useState, useEffect } from 'react';
 import { checkLogInStatus, logOut, getUserID } from "../helperFunctions/helperLogin";
 import { add1Item, remove1Item, getCartItems } from '../helperFunctions/helperCartItems';
+import { fetchWishList } from "../helperFunctions/helperWishList";
 
 const HeaderDark = styled.div`
   padding: 10px;
@@ -71,6 +73,7 @@ const Header = ({itemsInCartChanged, onAddToCart, onRemoveFromCart, addToCartAll
   const [loginStatus, setLoginStatus] = useState(false)
   const [title, setTitle] = useState("");
   const [selection, setSelection] = useState("");
+  //const [wishListLen, setWishListLen] = useState(0);
 
   useEffect(() => {
     setCartItems(getCartItems())
@@ -80,6 +83,14 @@ const Header = ({itemsInCartChanged, onAddToCart, onRemoveFromCart, addToCartAll
     console.log(checkLogInStatus())
     setLoginStatus(checkLogInStatus())
   }, []);
+
+  // useEffect(() => {
+  //   const getWishListLength = async () => {
+  //     const wishList = await fetchWishList()
+  //     setWishListLen(wishList.length())
+  //   }
+  //   getWishListLength()
+  // }, []);
 
   const handleDropdownOpen = () => {
     setdropDownOpen(!dropDownOpen);
@@ -119,6 +130,11 @@ const Header = ({itemsInCartChanged, onAddToCart, onRemoveFromCart, addToCartAll
     logOut()
     setLoginStatus(false)
     history("/")
+  }
+
+  const getWishListLength = async () => {
+    const wishList = await fetchWishList()
+    return wishList.length()
   }
 
   return (
@@ -172,7 +188,13 @@ const Header = ({itemsInCartChanged, onAddToCart, onRemoveFromCart, addToCartAll
               }
               <button className='buttonStyle' onClick={() =>{history('/WishList')}}>
                 Wish List
-                <FavoriteBorderOutlined/>
+                <div className="widget-header">    
+                  <Favorite/>
+                    {/* {wishListLen === 0 ? <FavoriteBorderOutlined/> : 
+                    <><Favorite/>
+                    <span className="badge badge-pill badge-danger notify">{cartItems.length}</span></>} */}
+                </div>
+                
               </button>
               <Dropdown>
                 <button className='buttonStyle'

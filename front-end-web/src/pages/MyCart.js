@@ -6,6 +6,7 @@ import { Delete } from "@material-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { checkLogInStatus } from '../helperFunctions/helperLogin';
 import { add1Item, remove1Item, emptyCart, removeAllItem, getCartItems } from '../helperFunctions/helperCartItems'
+import { addToWishList } from '../helperFunctions/helperWishList';
 
 const MyCart = ({params}) => {
 
@@ -42,6 +43,10 @@ const MyCart = ({params}) => {
   const EmptyCart = () => {
     emptyCart()
     setItems(getCartItems())
+  }
+
+  const AddToWishList = async (item) => {
+    const answer = await addToWishList(item.id)
   }
 
   return (
@@ -81,6 +86,7 @@ const MyCart = ({params}) => {
               onAddToCart={AddToCart}
               onRemoveFromCart={RemoveFromCart}
               onRemoveAll={RemoveAllFromCart}
+              onAddToWishList={AddToWishList}
             />))}
           </tbody>
           

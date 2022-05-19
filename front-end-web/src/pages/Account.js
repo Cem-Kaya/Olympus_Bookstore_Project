@@ -19,7 +19,7 @@ const Container = styled.div`
   height: 500px;
   display:flex;
   flex-direction: row;
-  background-color: #330033;
+  background-color: #660033;
   color: white;
 `;
 
@@ -43,8 +43,8 @@ const RightContainer = styled.div`
 
 const Account = () => {
   let navigate = useNavigate();
-  const categories = ["My Store", "Order History"]
-  const links = ["/StoreLogin", "/OrderHistory"]
+  const categories = ["Account" ,"Order History", "My Store", "Product Management"]
+  const links = ["/Account", "/OrderHistory", "/StoreLogin", "/ProductManagement"]
   const [info, setInfo] = useState({name: "", pass_hash: "", status: false, uid: "", homeaddress: ""})
 
   useEffect(() => {

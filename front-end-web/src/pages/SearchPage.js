@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCartItems'
 import { fetchBooks, fetchBooksFromCategory } from '../helperFunctions/helperGetProducts'
+import { addToWishList } from '../helperFunctions/helperWishList'
 
 const UpperContainer = styled.div`
     width: 100%;
@@ -110,6 +111,10 @@ const SearchPage = () => {
         console.log(data)
         return data
       }
+
+      const AddToWishList = async (item) => {
+        const answer = await addToWishList(item.id)
+      }
   
     const [cartItemsChanged, setCartItemsChanged] = useState(false);
     
@@ -203,7 +208,7 @@ const SearchPage = () => {
                 <Filters products={filteredItems} params={params}/>
             </LeftContainer>
             <RightContainer>
-                <Products products={filteredItems} onAddToCart={AddToCart} sortBy={sortBy} highToLow={sortBy !== "Price low to high"}></Products>
+                <Products products={filteredItems} onAddToCart={AddToCart} sortBy={sortBy} highToLow={sortBy !== "Price low to high"} onAddToWishList={AddToWishList}></Products>
                 <nav className="mt-4" aria-label="Page navigation sample">
                     <ul className="pagination">
                         <li className="page-item disabled"><a className="page-link" href="#">Previous</a></li>

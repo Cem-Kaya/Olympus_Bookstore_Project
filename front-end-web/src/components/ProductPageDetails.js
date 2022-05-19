@@ -11,13 +11,14 @@ const Line = styled.div`
 `;
 
 const Description = styled.div`
-    max-width: 300px;
+    max-width: 1000px;
     overflow-wrap: break-word;
     word-wrap: break-word;
     margin: 0 auto;
+    text-align: left;
 `;
 
-const ProductPageDetails = ({item, onAddToCart, reviews, onSendComment}) => {
+const ProductPageDetails = ({item, onAddToCart, reviews, onSendComment, onAddToWishList}) => {
     console.log(item)
     let comment = ""
     let raiting = "1"
@@ -44,8 +45,8 @@ const ProductPageDetails = ({item, onAddToCart, reviews, onSendComment}) => {
     <div>    
         <div className="container mt-5 mb-5 bg-dark">
     <div className="row d-flex justify-content-center">
-        <div className="col-md-10">
-            <div className="card">
+        <div className="col-md-12">
+            <div className="card bg-light">
                 <div className="row">
                     <div className="col-md-6">
                         <div className="images p-3">
@@ -70,21 +71,21 @@ const ProductPageDetails = ({item, onAddToCart, reviews, onSendComment}) => {
                                 {item.in_stock === 0 ? <button className="btn btn-danger text-uppercase mr-2 px-4" disabled={true}>SOLD OUT</button>
                                  :<button className="btn btn-danger text-uppercase mr-2 px-4" onClick={() => {onAddToCart(item)}}>Add to cart</button>} 
                               
-                                <button data-original-title="Save to Wishlist" title="" className="btn btn-light mr-2" data-toggle="tooltip"> <i className="fa fa-heart"></i></button>
+                                <button data-original-title="Save to Wishlist" title="" className="btn btn-light mr-2" data-toggle="tooltip" onClick={() => {onAddToWishList(item)}}> <i className="fa fa-heart"></i></button>
                             </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <br></br><br></br>
     <Line/>
     </div>
     
     <div className="container mt-5 mb-5 text-light">
-        <div className="row row-underline">
-            <div className="col-md-6"> <span className=" deal-text float-left "><Description><p>Description</p></Description></span> </div><br></br>
-            <p>{item.description}</p>
-        </div>
+        <div className="row row-underline"><span className=" deal-text float-left "><h4>Description</h4></span> </div>
+        <br></br>
+        <div className="row row-underline"><Description><p>{item.description}</p></Description></div>
         <Line/>
     </div>
     <div className="container mt-5 mb-5">
