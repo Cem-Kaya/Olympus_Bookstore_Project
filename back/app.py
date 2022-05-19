@@ -830,6 +830,12 @@ def changesprice():
   todata +="</table>   "
   return render_template('Change_price.html',data =todata )  #bunu degistirdim
 
+@app.route('/Change_price/submit_test', methods=['POST'], strict_slashes=False  )
+def change_price_test():
+  url = 'http://127.0.0.1:5000/Change_price/submit'
+  myobj = {"Pid": request.form['Pid'],
+    "Sid": request.form['Sid'] }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
 
 @app.route('/Change_price/submit', methods=['POST'], strict_slashes=False )
 def changespricesubmit():
@@ -840,6 +846,9 @@ def changespricesubmit():
   statement = change_price.insert().values(Sid=Sid, Pid=Pid)
   db.session.execute(statement)
   db.session.commit()
+  retjs = {}
+  retjs["status"] = True
+  return json.dumps(retjs)
   return render_template('success.html', data= "")        
 
 
@@ -924,7 +933,7 @@ def Wishes():
 @app.route('/Wishes/submit_test', methods=['POST'], strict_slashes=False  )
 def wishessubmit_test():
   url = 'http://127.0.0.1:5000/Wishes/submit'
-  myobj = {'email': request.form['email'] ,  'PId': request.form['Pid']     }
+  myobj = {'email': request.form['email'] ,  'Pid': request.form['Pid']     }
   return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )  
 
 
@@ -935,14 +944,80 @@ def Wishessubmit():
   
   Pid=data2['Pid']
   email=data2['email']
-  statement = wishes.insert().values(email=email, Pid=Pid)
-  db.session.execute(statement)
-  db.session.commit()
+  my_wishes = db.session.query(wishes).filter(wishes.c.email == email, wishes.c.Pid == Pid ).all()  # db.session.query(followers).filter(...).all()
+  if (len(my_wishes)>0):
+    retjs = {}
+    retjs["status"] = False
+    return json.dumps(retjs)
+
+  try:
+    statement = wishes.insert().values(email=email, Pid=Pid)
+    db.session.execute(statement)
+    db.session.commit()
+  except:
+    retjs = {}    
+    retjs["status"] = False
+    return json.dumps(retjs)
 
   retjs = {}
   retjs["status"] = True
   return json.dumps(retjs)
   #return render_template('success.html', data= "")    
+
+
+###################################
+
+@app.route('/Wishes_rm')
+def Wishes_rm():
+  allproducts=Products.query.filter_by().all()
+  todata=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> </tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale) 
+  todata +="</table>"
+  
+  todata+="<h3>Customers </h3> "
+  allCustomers=Customers.query.filter_by().all()
+  todata+= "<table> <tr> <th>email </th> <th>name </th> </tr> "
+  for i in allCustomers:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.email,i.name) 
+  todata +="</table>   "
+
+  todata+= "<h3> Wishes </h3>"
+  todata+= "<table> <tr> <th> email </th> <th> Pid </th><th> Date </th></tr> "
+  allUnders = db.session.query(wishes).all()  # db.session.query(followers).filter(...).all()
+  for i in allUnders:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.email,i.Pid, i.date) 
+  todata +="</table>   "
+  return render_template('Wishes_rm.html',data =todata )  
+
+
+
+@app.route('/Wishes_rm/submit_test', methods=['POST'], strict_slashes=False  )
+def wishessubmit_test_rm():
+  url = 'http://127.0.0.1:5000/Wishes_rm/submit'
+  myobj = {'email': request.form['email'] ,  'Pid': request.form['Pid']     }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )  
+
+
+@app.route('/Wishes_rm/submit', methods=['POST'], strict_slashes=False )
+def Wishes_rmsubmit():
+  data2 = json.loads(request.get_data())
+  print(request.get_data()) 
+  
+  Pid=data2['Pid']
+  email=data2['email']
+  db.session.query(wishes)\
+            .filter(wishes.c.email ==email , wishes.c.Pid ==Pid  )\
+            .delete()
+  #statement = wishes.insert().values(email=email, Pid=Pid)
+
+  db.session.commit()
+
+  retjs = {}
+  retjs["status"] = True
+  return json.dumps(retjs)
+
 
 #Shopping Car
 
@@ -1291,6 +1366,14 @@ def refunds():
   for i in allCustomers:
     todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.email,i.name) 
   todata +="</table>   "
+  
+  
+  todata+="<h3>Change Price </h3> "
+  allchange_prince=db.session.query(change_price).all()
+  todata+= "<table> <tr> <th>Sid </th> <th>Pid </th> </tr> "
+  for i in allchange_prince:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Sid,i.Pid) 
+  todata +="</table>   "
 
   todata+= "<h3> Purchased </h3>"
   todata+= "<table> <tr> <th> purcid </th> <th> price </th><th> sale </th><th> quantity </th><th> shipment </th></tr> "
@@ -1304,26 +1387,74 @@ def refunds():
   allrefunds = db.session.query(Refunds).all()  # db.session.query(followers).filter(...).all()
   for i in allrefunds:
     todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></td><td>{}</td><td>{}</td></tr>".format(i.id, i.customer_email, i.purchased_purcid, i.sales_manager_id, i.refund_state, i.date) 
-  todata +="</table>   "
+  todata +="</table> "
   return render_template('refunds.html',data =todata )  
+
+@app.route('/refunds/submit_test' , methods=['POST'], strict_slashes=False  )
+def refundssubmittest():
+  url = 'http://127.0.0.1:5000/refunds/submit'
+  myobj = {
+          'uid':request.form['uid'],
+          'purcid':request.form['purcid']          
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )  
 
 
 @app.route('/refunds/submit', methods=['POST'] , strict_slashes=False )
 def refundssubmit():
-  data2 = json.loads(request.get_data())#request.get_json()
-  #, strict_slashes=False 
-
+  try:
+    data2 = json.loads(request.get_data())#request.get_json()
+    #, strict_slashes=False 
   
-  customer_email= data2['uid']
-  sales_manager_id= int(data2['sid'])
-  purchased_purcid= int(rdata2['purcid'])
-  refund_state= data2['refund']
+    customer_email= data2['uid']
+    #sales_manager_id= int(data2['sid'])
+    purchased_purcid= int(data2['purcid'])
+    refund_state= "Requested"
+    #getting pid
+    allDlist = db.session.query(Buy_Dlist).all()
+    my_pid = -1
+    for i in allDlist:
+      if(i.purchased_purcid==purchased_purcid):
+        my_pid = i.product_pid
+    
+    #getting sid
+    allsids = db.session.query(change_price).filter_by(Pid = my_pid).first()
+    sales_manager_id = int(allsids.Sid)
+    if(len(allsids)==0):
+      retjs = {}
+      retjs["status"] = False
+      return json.dumps(retjs)
 
-  #statement = shopping_cart.insert().values(customer_email=email, product_id=Pid, comment_id=cid)
-  assoc = Refunds(customer_email=customer_email, sales_manager_id=sales_manager_id, purchased_purcid=purchased_purcid, refund_state=refund_state)
-  db.session.add(assoc)
-  db.session.commit()
-  return render_template('success.html', data= "")    
+    
+    #statement = shopping_cart.insert().values(customer_email=email, product_id=Pid, comment_id=cid)
+    assoc = Refunds(customer_email=customer_email, sales_manager_id=sales_manager_id, purchased_purcid=purchased_purcid, refund_state=refund_state)
+    db.session.add(assoc)
+    
+    db.session.commit()
+    
+
+    retjs = {}
+    retjs["status"] = True
+    return json.dumps(retjs)
+  except:
+      retjs = {}
+      retjs["status"] = False
+      return json.dumps(retjs)
+
+
+@app.route('/refunds_get_all' )
+def refunds_get_all():
+  allrefunds = db.session.query(Refunds).all()  # db.session.query(followers).filter(...).all()
+  retjs=[]
+  for i in allrefunds:
+    retjs.append(
+      { "email": i.customer_email    ,
+        "purcid": i.purchased_purcid    ,
+        "sid": i.sales_manager_id    ,
+        "refund_state": i.refund_state     
+                  }
+    )
+  return json.dumps(retjs )
 
 
 @app.route('/check_stock/submit', methods=['POST'] , strict_slashes=False  )
@@ -1628,20 +1759,24 @@ def to_purchase_sub():
   mycustomer=Customers.query.filter_by(email = email).first() 
   myproduct=Products.query.filter_by(Pid = Pid).first() 
 
-  text= "Thank you for your purchase " + str(mycustomer.name) + "! \n" + "Your order has been proccessed successfully. \n"
-  text+= "Your delivery id: " + str(did) +"\n"
-  text+= "Purchase id of product: " + str(purcid) +"\n"
-  text+= "Product name: " + str(myproduct.name) + "\n"
-  text+= "You bougth: " + str(quantity) +" many of this item \n"
-  text+= "It cost: " + str(price) +"\n"
-  text+= "You had discount of: " + "%" + str(100*(1-sale)) +"\n"
-  text+= "Shipping: " + str(shipment) +"\n"
-  
+  try:
+    text= "Thank you for your purchase " + str(mycustomer.name) + "! \n" + "Your order has been proccessed successfully. \n"
+    text+= "Your delivery id: " + str(did) +"\n"
+    text+= "Purchase id of product: " + str(purcid) +"\n"
+    text+= "Product name: " + str(myproduct.name) + "\n"
+    text+= "You bougth: " + str(quantity) +" many of this item \n"
+    text+= "It cost: " + str(price) +"\n"
+    text+= "You had discount of: " + "%" + str(100*(1-sale)) +"\n"
+    text+= "Shipping: " + str(shipment) +"\n"
+    
 
-  send_email(email, text )
-  retjs = {}
-  retjs["status"] = True
-  return json.dumps(retjs)
+    send_email(email, text )
+    retjs = {}
+    retjs["status"] = True
+    return json.dumps(retjs)
+
+  except:
+    print("Email error")
   #return render_template('success.html',data ="" ) 
 
 @app.route('/delivery_process')

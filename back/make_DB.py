@@ -300,6 +300,55 @@ if __name__ =="__main__":
     db.session.commit() 
     statement = manages.insert().values(Pmid=2, Pid=13)
     db.session.execute(statement)
+    db.session.commit()       
+
+    statement = change_price.insert().values(Sid=1, Pid=8)
+    db.session.execute(statement)
+    db.session.commit() 
+    statement = change_price.insert().values(Sid=1, Pid=9)
+    db.session.execute(statement)
+    db.session.commit()     
+    statement = change_price.insert().values(Sid=1, Pid=2)
+    db.session.execute(statement)
+    db.session.commit()       
+    statement = change_price.insert().values(Sid=1, Pid=12)
+    db.session.execute(statement)
+    db.session.commit()  
+    statement = change_price.insert().values(Sid=1, Pid=4)
+    db.session.execute(statement)
+    db.session.commit()      
+    statement = change_price.insert().values(Sid=1, Pid=1)
+    db.session.execute(statement)
+    db.session.commit()  
+    statement = change_price.insert().values(Sid=1, Pid=5)
+    db.session.execute(statement)
+    db.session.commit()      
+    statement = change_price.insert().values(Sid=1, Pid=6)
+    db.session.execute(statement)
+    db.session.commit()  
+    statement = change_price.insert().values(Sid=1, Pid=7)
+    db.session.execute(statement)
+    db.session.commit() 
+    statement = change_price.insert().values(Sid=1, Pid=14)
+    db.session.execute(statement)
+    db.session.commit()          
+    statement = change_price.insert().values(Sid=1, Pid=15)
+    db.session.execute(statement)
+    db.session.commit()    
+    statement = change_price.insert().values(Sid=1, Pid=16)
+    db.session.execute(statement)
+    db.session.commit()            
+    statement = change_price.insert().values(Sid=1, Pid=10)
+    db.session.execute(statement)
+    db.session.commit() 
+    statement = change_price.insert().values(Sid=1, Pid=11)
+    db.session.execute(statement)
+    db.session.commit()     
+    statement = change_price.insert().values(Sid=2, Pid=3)
+    db.session.execute(statement)
+    db.session.commit() 
+    statement = change_price.insert().values(Sid=2, Pid=13)
+    db.session.execute(statement)
     db.session.commit()  
 
 
@@ -348,3 +397,13 @@ if __name__ =="__main__":
        
   
     data= req.post(url, data = json.dumps(myobj))
+
+#################################
+    url = 'http://127.0.0.1:5000/refunds/submit'
+    myobj = {'uid':'a@a.com',
+          'purcid':1  
+            
+    }
+       
+  
+    data= req.post(url, data = json.dumps(myobj))    
