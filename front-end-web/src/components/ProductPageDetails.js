@@ -61,10 +61,18 @@ const ProductPageDetails = ({item, onAddToCart, reviews, onSendComment, onAddToW
                             </div>
                             
                             <hr/>
-                            <span className="text-uppercase text-muted brand float-left">{"Author: " + item.author}</span><br></br>
-                            <span className="text-muted brand float-left">{"Publisher: " + item.publisher}</span><br></br>
-                            <span className="text-uppercase text-warning brand float-left">{item.amount_sold + " sold. " + item.in_stock + " remained in stock"}</span><br></br>
+                            <div className='row-md-12 mt-12 mb-3'>
+                            <span className="text-uppercase text-dark brand float-left">{"Author: " + item.author}</span><br></br>
+                            </div>
+                            <div className='row-md-12 mt-12 mb-3'>
+                            <span className="text-dark brand float-left">{"Publisher: " + item.publisher}</span><br></br>
+                            </div>
+                            <div className='row-md-12 mt-12 mb-3'>
+                            <span className="text-uppercase text-danger brand float-left">{item.amount_sold + " sold. " + item.in_stock + " remained in stock"}</span><br></br>
+                            </div>
+                            <div className='row-md-12 mt-12 mb-3'>
                             <span className="text-uppercase text-warning brand float-left">{item.discount + " discount. " + item.price + " TL is the new price"}</span><br></br>
+                            </div>
                             </div>
                             
                             <div className="cart mt-4 align-items-center">

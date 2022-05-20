@@ -14,6 +14,7 @@ import StoreLogin from './pages/StoreLogin';
 import Checkout from './pages/Checkout';
 import SingleProduct from './pages/SingleProduct';
 import Invoice from './pages/Invoice';
+import ProductManagement from './pages/ProductManagement';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path='/Account' element={<Account/>}/>
         <Route path='/OrderHistory' element={<OrderHistory/>}/>
         <Route path='/StoreLogin' element={<StoreLogin/>}/>
+        <Route path='/ProductManagement' element={<ProductManagement/>}/>
         <Route path='/invoice' element={<Invoice/>}/>
         <Route path='/SingleProduct=:pid' element={<SingleProduct/>}/>
         <Route path="/Search/category=:category" element={<SearchPage/>}/>

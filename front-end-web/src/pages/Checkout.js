@@ -11,12 +11,15 @@ import { checkLogInStatus } from '../helperFunctions/helperLogin'
 const Container = styled.div`
     padding-bottom: 50px;
     padding-top: 50px;
+    min-height: 800px;
 `;
 
 const Checkout = () => {
 
   const [itemsBought, setItemsBought] = useState([])
   const [itemsNotBought, setItemsNotBought] = useState([])
+  const [items, setItems] = useState([])
+  const [loaded, setLoaded] = useState(false)
 
   let navigate = useNavigate()
 
@@ -24,11 +27,15 @@ const Checkout = () => {
     if(checkLogInStatus() === false){
       navigate("/")
     }
+    else{
+      setItems(getCartItems())
+      setLoaded(true)
+    }
   }, [navigate]);
 
     const costOfItems = () => {
         let sum = 0;
-        getCartItems().forEach(element => {
+        items.forEach(element => {
           sum += (element.price * element.quantity);
         });
         return sum;
@@ -203,16 +210,24 @@ const Checkout = () => {
       <div>
         <Header addToCartAllowed={false}></Header>
       <Container className='bg-light'>
+      {
+          !loaded ? 
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border text-light" role="status">
+                <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            :
       <div className='container'>
     <body className='bg-light'>
         <div className="row">
         <div className="col-md-4 order-md-2 mb-4">
           <h4 className="d-flex justify-content-between align-items-center mb-3">
             <span className="text-muted">Your cart</span>
-            <span className="badge badge-secondary badge-pill">{getCartItems().length}</span>
+            <span className="badge badge-secondary badge-pill">{items.length}</span>
           </h4>
           <ul className="list-group mb-3">
-            {getCartItems().map((element,index) => 
+            {items.map((element,index) => 
                 <li className="list-group-item d-flex justify-content-between lh-condensed" key={index}>
                     <div className="aside"><img src={element.img} alt="item-img" className="img-sm"/></div>
                     <div>
@@ -459,6 +474,7 @@ const Checkout = () => {
         </div>
     </body>
     </div>
+    }
     </Container>
     <Footer></Footer>
     </div>

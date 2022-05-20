@@ -168,3 +168,61 @@ li:hover {
   background-color: rgba(0, 0, 0, 0.14);
   cursor: pointer;
 }
+
+.container_exp {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%);
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 20px;
+  width: 1200px;
+  height: 200px;
+  background: linear-gradient(to right bottom, #323941, #061018);
+  color: white;
+  transition: all 300ms ease-in-out;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+
+.container_exp p {
+  opacity: 0.6;
+}
+
+.container_exp h3 {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.upper {
+  height: 200px;
+  width: 100%;
+  padding: 40px;
+  background: linear-gradient(to right bottom, #2999f5, #1859d1);
+}
+
+.upper h3 svg {
+  height: 16px;
+  width: 16px;
+  fill: white;
+  margin-left: 10px;
+  padding-top: 4px;
+}
+
+.lower {
+  padding: 40px;
+}
+
+.lower h4 {
+  margin-top: 40px;
+  font-size: 14px;
+  color: #2999f5;
+}
+
+.lower p:not(:first-child) {
+  margin-top: 40px;
+}
+
+div.expand {
+  height: 997px;
+}

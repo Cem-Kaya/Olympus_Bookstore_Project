@@ -24,6 +24,7 @@ const OrderHistory = () => {
   
 const [orders, setOrders] = useState([])
 const [books, setBooks] = useState([])
+const [loaded, setLoaded] = useState(false)
 
 useEffect (() => {
   const getOrders = async () =>  {
@@ -41,6 +42,7 @@ useEffect (() => {
     }
     const serverbooks = await fetchBooks()
     setBooks(serverbooks)
+    setLoaded(true)
   }
   getOrders()
 }, [])
@@ -112,6 +114,16 @@ const fetchOrders = async () => {
     <div>
       <Header></Header>
       <Body className='bg-secondary'>
+      {
+          !loaded ? 
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border text-light" role="status">
+                <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            :
+            orders.length === 0 ? <tr><p className='text-light'>No Orders Yet</p></tr>
+            : 
       <table className="table table-striped table-dark table-bordered" >
         <thead>
           <tr>
@@ -124,8 +136,7 @@ const fetchOrders = async () => {
           </tr>
         </thead>
         <tbody>
-          {orders.length === 0 ? <tr><p>No Orders Yet</p></tr>
-            : 
+          {
              elems().map((element, index) => (
               <tr key={index}>
                 <tr className='container'>
@@ -160,6 +171,7 @@ const fetchOrders = async () => {
 
         </tbody>
       </table>
+      }
       <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
       </Body>
       <Footer></Footer>

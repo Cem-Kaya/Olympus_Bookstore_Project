@@ -26,3 +26,16 @@ export const addToWishList = async ( pid ) => {
     return data
 }
 
+export const removeFromWishList = async ( pid ) => {
+  const res = await fetch(`/Wishes_rm/submit`     , {headers : { 
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+      },
+      method: "POST" ,
+      body: JSON.stringify({Pid: pid, email: getUserID() })
+    }
+      )
+  const data = await res.json()
+  return data
+}
+

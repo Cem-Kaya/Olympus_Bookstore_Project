@@ -13,35 +13,18 @@ const TextStyle = styled.div`
     justify-content: space-between;
 `;
 
-const Categories = () => {
+const Categories = ({categories}) => {
 
     let navigate = useNavigate();
 
-    const categories = ["Classics", "History", "Fiction", "Science", "Foreign Language", "Comics",
+    const categoryList = ["Classics", "History", "Fiction", "Science", "Foreign Language", "Comics",
     "Philosophy", "Self-Development", "Children", "Religious", "Textbook"]
 
     const [items, setItems] = useState([])
   
     useEffect (() => {
-      const getCategories = async () =>  {
-        const itemsFromServer = await fetchCategories()
-        console.log(itemsFromServer.type)
-        setItems(itemsFromServer)
-      }
-      getCategories()
-    }, [])
-  
-    const fetchCategories = async () => {
-      const res = await fetch(`/all_category`     , {headers : { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-       }}
-       )
-      const data = await res.json()
-  
-      console.log(data)
-      return data
-    }
+        setItems(categories)
+    }, [categories])
 
     const getCategories = () => {
         let categoryList = []

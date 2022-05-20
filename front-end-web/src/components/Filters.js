@@ -141,27 +141,27 @@ const Filters = ({ products, params }) => {
 				<div className="filter-content collapse show" id="collapse_4" >
 					<div className="card-body">
 					<label className="checkbox-btn" onClick={() => {}}>
-						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", "1*")}}/>
+						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", "1")}}/>
 						<span className="btn btn-light"> 1* </span>
 					</label>
 
 					<label className="checkbox-btn">
-						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", "2*")}}/>
+						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", "2")}}/>
 						<span className="btn btn-light"> 2* </span>
 					</label>
 
 					<label className="checkbox-btn">
-						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", "3*")}}/>
+						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", "3")}}/>
 						<span className="btn btn-light"> 3* </span>
 					</label>
 
 					<label className="checkbox-btn">
-						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", "4*")}} />
+						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", "4")}} />
 						<span className="btn btn-light"> 4* </span>
 					</label>
 
 					<label className="checkbox-btn">
-						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", "5*")}} />
+						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", "5")}} />
 						<span className="btn btn-light"> 5* </span>
 					</label>
 					</div>				

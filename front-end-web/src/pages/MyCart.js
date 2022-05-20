@@ -12,9 +12,11 @@ const MyCart = ({params}) => {
 
   const history= useNavigate();
   const [items, setItems] = useState([]);
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
     setItems(getCartItems())
+    setLoaded(true)
   }, []);
 
   const costOfItems = () => {
@@ -52,8 +54,17 @@ const MyCart = ({params}) => {
   return (
 
     <div className="App">
-      <Header itemsInCartChanged={items} addToCartAllowed={false} />
-        <section className="section-pagetop bg">
+      <Header itemsInCartChanged={items} addToCartAllowed={false} />        
+        {
+          !loaded ? 
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border text-light" role="status">
+                <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            :
+            <>
+            <section className="section-pagetop bg">
         <div className="container">
             <h2 className="title-page">Shopping cart</h2>
         </div> 
@@ -176,6 +187,9 @@ const MyCart = ({params}) => {
           proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         </div>
         </section>
+        </>
+        }
+       
         
     </div>
   );

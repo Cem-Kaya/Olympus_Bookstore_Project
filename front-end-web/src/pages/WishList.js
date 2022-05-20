@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 import '../components/ExtraStyles.css'
 import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCartItems'
 import { Delete } from "@material-ui/icons"
-import { fetchWishList } from "../helperFunctions/helperWishList"
+import { fetchWishList, removeFromWishList } from "../helperFunctions/helperWishList"
 import { checkLogInStatus } from '../helperFunctions/helperLogin'
 
 const Body = styled.div`
@@ -19,9 +19,11 @@ const Body = styled.div`
 `;
 
 
-function WishList() {
+const WishList = () => {
 
+  const [loaded, setLoaded] = useState(false)
   const [cartItemsChanged, setCartItemsChanged] = useState(false)
+  const [wishlistChanged, setWishlistChanged] = useState(false)
   const [items, setItems] = useState([])
   
   useEffect (() => {
@@ -34,11 +36,16 @@ function WishList() {
       let wishListedItems = itemsFromServer.filter(item => wishListedIds.includes(item.id) ? item : "")
 
       setItems(wishListedItems)
+      setLoaded(true)
     }
     if(checkLogInStatus()){
       getBooks()
     }
-  }, [])
+    else{
+      setLoaded(true)
+    }
+    
+  }, [wishlistChanged])
 
   const AddToCart = (item) => {
     addNewItem(item)
@@ -55,13 +62,29 @@ function WishList() {
     setCartItemsChanged(!cartItemsChanged)
   }
 
+  const RemoveFromWishList = async (item) => {
+    await removeFromWishList(item.id)
+    setWishlistChanged(!wishlistChanged
+      )
+  }
+
   return (
     <div>
       <Header itemsInCartChanged={cartItemsChanged} onAddToCart={HeaderAddToCart} onRemoveFromCart={HeaderRemoveFromCart}></Header>
       <Body>
       {
+        !loaded ? 
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border text-light" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        :
         !checkLogInStatus() ?
         <h3 className='text-light'>Please Log In First</h3>
+        :
+        items.length === 0 ?
+        <h3 className='text-light'>Your Wishlist is Empty</h3>
         :
         <div className="cart-wrap">
           <div className="container">
@@ -107,7 +130,7 @@ function WishList() {
                               <td width="15%">
                                 <button className="btn btn-info text-uppercase mr-2 px-4" onClick={() => {AddToCart(elem)}} disabled={elem.in_stock === 0}>Add to Cart</button>
                               </td>
-                              <td width="10%" className="text-center"><button className="btn btn-warning"> <Delete/> </button></td>
+                              <td width="10%" className="text-center"><button className="btn btn-warning" onClick={() => {RemoveFromWishList(elem)}}> <Delete/> </button></td>
                             </tr>
                             
                           ) )}

@@ -11,9 +11,13 @@ import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCart
 import { fetchBooks, fetchBooksFromCategory } from '../helperFunctions/helperGetProducts'
 import { addToWishList } from '../helperFunctions/helperWishList'
 
+const Body = styled.div`
+    background-color: #282c34;
+    min-height: 1000px;
+`;
+
 const UpperContainer = styled.div`
     width: 100%;
-    height: 100px;
     padding-top: 60px;
     position:relative;
     background-color: #282c34;
@@ -68,25 +72,28 @@ const SearchPage = () => {
     let params = useParams();
     const [sortBy, setSortBy] = useState("Popular");
     const [items, setItems] = useState([]);
-    const [onlyInStock, setOnlyInStock] = useState("false")
+    const [onlyInStock, setOnlyInStock] = useState(false)
+    const [loaded, setLoaded] = useState(false)
 
     useEffect (() => {
         const getBooks = async () =>  {
             if(params.hasOwnProperty("category")){
                 const categories = await fetchCategories()
                 
-                let categoryList = []
+                let categoryId = ""
                 for (var key of Object.keys(categories)) {
                     if(categories[key] === params["category"]){
-                        categoryList.push(key)
+                        categoryId = key
                     }
                 }
-                const itemsFromServer = await fetchBooksFromCategory(categoryList[0])
+                const itemsFromServer = await fetchBooksFromCategory(categoryId)
                 setItems(itemsFromServer)
+                setLoaded(true)
             }
             else {
                 const itemsFromServer = await fetchBooks()
                 setItems(itemsFromServer)
+                setLoaded(true)
             }
         }
         getBooks()
@@ -184,6 +191,16 @@ const SearchPage = () => {
     return (
       <div>
         <Header itemsInCartChanged={cartItemsChanged} onAddToCart={HeaderAddToCart} onRemoveFromCart={HeaderRemoveFromCart}></Header>  
+        <Body>
+        {
+          !loaded ? 
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border text-light" role="status">
+                <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            :
+            <>
         <UpperContainer>  
             <TopButtons>
             <div className="custom-control custom-switch">
@@ -211,13 +228,16 @@ const SearchPage = () => {
                 <Products products={filteredItems} onAddToCart={AddToCart} sortBy={sortBy} highToLow={sortBy !== "Price low to high"} onAddToWishList={AddToWishList}></Products>
                 <nav className="mt-4" aria-label="Page navigation sample">
                     <ul className="pagination">
-                        <li className="page-item disabled"><a className="page-link" href="#">Previous</a></li>
+                        <li className="page-item"><a className="page-link" href="#">Previous</a></li>
                         <li className="page-item active"><a className="page-link" href="#">1</a></li>
                         <li className="page-item"><a className="page-link" href="#">Next</a></li>
                     </ul>
                 </nav>
             </RightContainer>
         </BodyContainer>
+        </>
+        }
+        </Body>
         <Footer/>
     </div>
   )

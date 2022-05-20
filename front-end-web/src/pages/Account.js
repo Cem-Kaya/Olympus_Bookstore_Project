@@ -16,11 +16,14 @@ const TextStyle = styled.div`
 `;
 
 const Container = styled.div`
-  height: 500px;
   display:flex;
   flex-direction: row;
-  background-color: #660033;
   color: white;
+`;
+
+const Body = styled.div`
+  height: 500px;
+  background-color: #660033;
 `;
 
 const LeftContainer = styled.div`
@@ -46,6 +49,7 @@ const Account = () => {
   const categories = ["Account" ,"Order History", "My Store", "Product Management"]
   const links = ["/Account", "/OrderHistory", "/StoreLogin", "/ProductManagement"]
   const [info, setInfo] = useState({name: "", pass_hash: "", status: false, uid: "", homeaddress: ""})
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
     if(checkLogInStatus() === false){
@@ -58,6 +62,7 @@ const Account = () => {
       const itemsFromServer = await fetchInfo()
       console.log(itemsFromServer)
       setInfo(itemsFromServer)
+      setLoaded(true)
     }
     getInfo()
   }, [])
@@ -81,7 +86,16 @@ const Account = () => {
 
     <div>
       <Header></Header>
-      <Container>
+      <Body>
+      {
+        !loaded ? 
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border text-light" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        :
+        <Container>
         <LeftContainer>
         <div className="button-group-vertical">
             {categories.map((element, index) => (
@@ -105,7 +119,9 @@ const Account = () => {
           </RightContainer>
           : ""
         }
-      </Container>
+        </Container>
+      }
+      </Body>
       <Footer></Footer>
     </div>
   )

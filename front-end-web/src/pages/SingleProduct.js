@@ -14,6 +14,7 @@ const Container = styled.div`
     text-align: center;
     padding-bottom: 50px;
     padding-top: 50px;
+    min-height: 1000px;
 `;
 
 const SingleProduct = () => {
@@ -21,6 +22,7 @@ const SingleProduct = () => {
     const [item, setItem] = useState()
     const [cartItemsChanged, setCartItemsChanged] = useState(false)
     const [comments, setComments] = useState([])
+    const [loaded, setLoaded] = useState(false)
 
     useEffect (() => {
         const getAndSetVars = async () =>  {
@@ -33,6 +35,7 @@ const SingleProduct = () => {
             commentList.push(comments[key])
           }
           setComments(commentList)
+          setLoaded(true)
           console.log(commentList)
         }
         getAndSetVars()
@@ -98,7 +101,16 @@ const SingleProduct = () => {
       <div>
             <Header itemsInCartChanged={cartItemsChanged} onAddToCart={HeaderAddToCart} onRemoveFromCart={HeaderRemoveFromCart}></Header>
             <Container className='bg-dark'>
-                <ProductPageDetails item={item} reviews={comments} onAddToCart={AddToCart} onSendComment={onSendComment} onAddToWishList={AddToWishList}></ProductPageDetails>
+            {
+              !loaded ? 
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            :
+                <ProductPageDetails item={item} reviews={comments} onAddToCart={AddToCart} onSendComment={onSendComment} onAddToWishList={AddToWishList}></ProductPageDetails>         
+            }
             </Container>
             <Footer></Footer>
     </div>
