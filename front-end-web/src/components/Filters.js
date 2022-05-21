@@ -141,32 +141,40 @@ const Filters = ({ products, params }) => {
 				<div className="filter-content collapse show" id="collapse_4" >
 					<div className="card-body">
 					<label className="checkbox-btn" onClick={() => {}}>
-						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", "1")}}/>
+						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", 1)}}/>
 						<span className="btn btn-light"> 1* </span>
 					</label>
 
 					<label className="checkbox-btn">
-						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", "2")}}/>
+						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", 2)}}/>
 						<span className="btn btn-light"> 2* </span>
 					</label>
 
 					<label className="checkbox-btn">
-						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", "3")}}/>
+						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", 3)}}/>
 						<span className="btn btn-light"> 3* </span>
 					</label>
 
 					<label className="checkbox-btn">
-						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", "4")}} />
+						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", 4)}} />
 						<span className="btn btn-light"> 4* </span>
 					</label>
 
 					<label className="checkbox-btn">
-						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", "5")}} />
+						<input type="checkbox" onChange={() => {onCheckStateChangedArray("raiting", 5)}} />
 						<span className="btn btn-light"> 5* </span>
 					</label>
 					</div>				
 				</div>
-				<button className="btn btn-block btn-primary" onClick={() =>{navigate(`/Search/category=${params.category}/&author=${params.author.length === 0 ? "*" : params.author}/&publisher=${params.publisher.length === 0 ? "*" : params.publisher}/&pr_lower=${pr_lower}/&pr_upper=${pr_upper}/&raiting=${params.raiting.length === 0 ? "*" : params.raiting}`)}}>Apply All</button>
+				{
+					params.hasOwnProperty("description") ? 
+					<button className="btn btn-block btn-primary" onClick={() =>{navigate(`/Search/page=1/&description=${params.description}/&author=${params.author.length === 0 ? "*" : params.author}/&publisher=${params.publisher.length === 0 ? "*" : params.publisher}/&pr_lower=${pr_lower}/&pr_upper=${pr_upper}/&raiting=${params.raiting.length === 0 ? "*" : params.raiting}`)}}>Apply All</button>
+					:
+					params.hasOwnProperty("title") ? 
+					<button className="btn btn-block btn-primary" onClick={() =>{navigate(`/Search/page=1/&title=${params.title}/&author=${params.author.length === 0 ? "*" : params.author}/&publisher=${params.publisher.length === 0 ? "*" : params.publisher}/&pr_lower=${pr_lower}/&pr_upper=${pr_upper}/&raiting=${params.raiting.length === 0 ? "*" : params.raiting}`)}}>Apply All</button>
+					:
+					<button className="btn btn-block btn-primary" onClick={() =>{navigate(`/Search/page=1/&category=${params.category}/&author=${params.author.length === 0 ? "*" : params.author}/&publisher=${params.publisher.length === 0 ? "*" : params.publisher}/&pr_lower=${pr_lower}/&pr_upper=${pr_upper}/&raiting=${params.raiting.length === 0 ? "*" : params.raiting}`)}}>Apply All</button>
+				}
 			</article>
 		</div> 
 	</div>

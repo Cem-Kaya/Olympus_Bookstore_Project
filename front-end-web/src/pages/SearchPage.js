@@ -168,7 +168,7 @@ const SearchPage = () => {
         }
         
         for (var key of Object.keys(params)) {
-            if(key !== "category" && key !== "description" && key !== "title" && key !== "pr_lower" && key !== "pr_upper" && params[key] !== "*" && params[key].length !== 0){
+            if(key !== "page" && key !== "category" && key !== "description" && key !== "title" && key !== "pr_lower" && key !== "pr_upper" && params[key] !== "*" && params[key].length !== 0){
                 nonEmptyElements.push(key)
             }
         }
@@ -186,7 +186,30 @@ const SearchPage = () => {
         return itemsCopy
     }
     let filteredItems = FilterItems()
-    let pageNum = items.length / 16
+
+    const pages = () => {
+        let pageSize = 16
+        let arr = []
+
+        for(var i = 0; i < filteredItems.length; i += pageSize){
+            arr.push(<li className={"page-link " + parseInt(params["page"]) === (i / pageSize) ? "active" : "" }><a className="page-link" href={getPageLink(i/pageSize + 1)}>{i/pageSize + 1}</a></li>)
+        }
+        return arr
+    }
+
+    const getPageLink = (pageNum) => {
+        let link = ""
+        if(params.hasOwnProperty("title")){
+            link = `/Search/page=${pageNum}/&title=${params["title"]}/&author=${params["author"].length === 0 ? "*" : params["author"]}/&publisher=${params["publisher"].length === 0 ? "*" : params["publisher"]}/&pr_lower=${params["pr_lower"]}/&pr_upper=${params["pr_upper"]}/&raiting=${params["raiting"].length === 0 ? "*" : params["raiting"]}`
+        }
+        else if(params.hasOwnProperty("description")){
+            link = `/Search/page=${pageNum}/&description=${params["description"]}/&author=${params["author"].length === 0 ? "*" : params["author"]}/&publisher=${params["publisher"].length === 0 ? "*" : params["publisher"]}/&pr_lower=${params["pr_lower"]}/&pr_upper=${params["pr_upper"]}/&raiting=${params["raiting"].length === 0 ? "*" : params["raiting"]}`
+        }
+        else{
+            link = `/Search/page=${pageNum}/&category=${params["category"]}/&author=${params["author"].length === 0 ? "*" : params["author"]}/&publisher=${params["publisher"].length === 0 ? "*" : params["publisher"]}/&pr_lower=${params["pr_lower"]}/&pr_upper=${params["pr_upper"]}/&raiting=${params["raiting"].length === 0 ? "*" : params["raiting"]}`
+        }
+        return link
+    }
 
     return (
       <div>
@@ -228,9 +251,7 @@ const SearchPage = () => {
                 <Products products={filteredItems} onAddToCart={AddToCart} sortBy={sortBy} highToLow={sortBy !== "Price low to high"} onAddToWishList={AddToWishList}></Products>
                 <nav className="mt-4" aria-label="Page navigation sample">
                     <ul className="pagination">
-                        <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-                        <li className="page-item active"><a className="page-link" href="#">1</a></li>
-                        <li className="page-item"><a className="page-link" href="#">Next</a></li>
+                        {pages()}
                     </ul>
                 </nav>
             </RightContainer>

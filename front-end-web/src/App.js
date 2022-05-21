@@ -31,10 +31,10 @@ function App() {
         <Route path='/ProductManagement' element={<ProductManagement/>}/>
         <Route path='/invoice' element={<Invoice/>}/>
         <Route path='/SingleProduct=:pid' element={<SingleProduct/>}/>
-        <Route path="/Search/category=:category" element={<SearchPage/>}/>
-        <Route path="/Search/title=:title/&author=:author/&publisher=:publisher/&pr_lower=:pr_lower/&pr_upper=:pr_upper/&raiting=:raiting" element={<SearchPage/>}/>
-        <Route path="/Search/description=:description/&author=:author/&publisher=:publisher/&pr_lower=:pr_lower/&pr_upper=:pr_upper/&raiting=:raiting" element={<SearchPage/>}/>
-        <Route path="/Search/category=:category/&author=:author/&publisher=:publisher/&pr_lower=:pr_lower/&pr_upper=:pr_upper/&raiting=:raiting" element={<SearchPage/>}/>
+        <Route path="/Search/page=:page/&category=:category" element={<SearchPage/>}/>
+        <Route path="/Search/page=:page/&title=:title/&author=:author/&publisher=:publisher/&pr_lower=:pr_lower/&pr_upper=:pr_upper/&raiting=:raiting" element={<SearchPage/>}/>
+        <Route path="/Search/page=:page/&description=:description/&author=:author/&publisher=:publisher/&pr_lower=:pr_lower/&pr_upper=:pr_upper/&raiting=:raiting" element={<SearchPage/>}/>
+        <Route path="/Search/page=:page/&category=:category/&author=:author/&publisher=:publisher/&pr_lower=:pr_lower/&pr_upper=:pr_upper/&raiting=:raiting" element={<SearchPage/>}/>
         <Route path='*' element={<ErrorPage/>}/>
       </Routes>
     </div>

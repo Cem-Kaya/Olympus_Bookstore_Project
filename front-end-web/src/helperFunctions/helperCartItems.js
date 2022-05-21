@@ -98,7 +98,6 @@ export const addNewItem = (item) => {
             }
         }
         AddNewItemToCart(email, item)
-        getCartItems()
     }
     else
     {
@@ -145,7 +144,7 @@ export const add1Item = (item) => {
                   'Accept' : 'application/json',
                   'Content-Type' : 'application/json'
                   },
-                  body: JSON.stringify({Pid : item.id, email: email, quantity: item.quantity + 1})
+                  body: JSON.stringify({Pid : item.id, email: email, quantity: 1})
               })
               const data = await res.json()
               return data
@@ -155,7 +154,6 @@ export const add1Item = (item) => {
             }
         }
         AddItemToCart(email, item)
-        getCartItems()
     }
     else
     {
@@ -229,7 +227,6 @@ export const remove1Item = (item) => {
             }
         }
         RemoveItemFromCart(email, item)
-        getCartItems()
     }
     else
     {
@@ -290,7 +287,6 @@ export const removeAllItem = (item) => {
             }
         }
         RemoveAllFromCart(email, item)
-        getCartItems()
     }
     else
     {
@@ -309,7 +305,6 @@ export const emptyCart = () => {
       getCartItems().forEach(element => {
         removeAllItem(element)
       })
-      getCartItems()
     }
     else
     {

@@ -127,20 +127,19 @@ const fetchOrders = async () => {
       <table className="table table-striped table-dark table-bordered" >
         <thead>
           <tr>
-            <th scope="col">Product</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Order Date</th>
-            <th scope="col">Status</th>
-            <th scope="col">Refundability</th>
-            <th scope="col">Return the Product</th>
+            <th scope="col" width="25%">Product</th>
+            <th scope="col" width="5%">Quantity</th>
+            <th scope="col" width="10%">Order Date</th>
+            <th scope="col" width="20%">Status</th>
+            <th scope="col" width="20%">Refundability</th>
+            <th scope="col" width="20%">Return the Product</th>
           </tr>
         </thead>
         <tbody>
           {
              elems().map((element, index) => (
               <tr key={index}>
-                <tr className='container'>
-                <td width="30%">
+                <td width="25%">
                   <a href={`/SingleProduct=${element.pid}`}>
                     <div className="display-flex justify-content-around align-center">
                         <div className="img-product">
@@ -152,15 +151,14 @@ const fetchOrders = async () => {
                     </div>
                   </a>
                 </td>
-                </tr>
                 {/* <th scope="col"><a href={`/SingleProduct=${element.pid}`}><img alt="" src={getImage(element)}></img></a></th> */}
                 <th scope="col" className='text-center'>{element.quantity}</th>
                 <th scope="col">{element.date}</th>
-                <th scope="col">{element.shipment}</th>
-                <th scope="col" width="20%">Refundable until {getLastRefundableDate(element).toString()}</th>
+                <th scope="col" className='display-flex flex-column'>{element.shipment}<button className='btn-warning'>Cancel Order</button></th>
+                <th scope="col">Refundable until {getLastRefundableDate(element).toString()}</th>
                 {
                   isRefundableNow(getLastRefundableDate(element)) ?
-                  <th scope="col" className='display-flex flex-column'>Refund date has not expired yet<button className='btn-warning'>Refund</button></th>
+                  <th scope="col" className='d-flex flex-column'>Refund date has not expired yet<button className='btn-warning'>Refund</button></th>
                   :
                   <th scope="col">Refund date has expired</th>
                 }

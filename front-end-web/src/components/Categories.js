@@ -39,7 +39,7 @@ const Categories = ({categories}) => {
             {getCategories().map((element, index) => (
                 <button className='button' key={index}
                     onClick={() => {
-                        navigate(`/Search/category=${element}/&author=*/&publisher=*/&pr_lower=*/&pr_upper=*/&raiting=*`)
+                        navigate(`/Search/page=1/&category=${element}/&author=*/&publisher=*/&pr_lower=*/&pr_upper=*/&raiting=*`)
                     }}>
                     <TextStyle>{element}
                         <DoubleArrow/>

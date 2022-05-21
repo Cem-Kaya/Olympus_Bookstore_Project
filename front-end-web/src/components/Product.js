@@ -1,11 +1,14 @@
 import {
     FavoriteBorderOutlined,
+    FavoriteOutlined,
     SearchOutlined,
     AddShoppingCart,
+    ShoppingCart,
   } from "@material-ui/icons";
   import styled from "styled-components";
   import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useState } from 'react'
   
   const Info = styled.div`
     opacity: 0;
@@ -127,8 +130,11 @@ const TextBoxPrize = styled.div`
   `;
 
 
-  const Product = ({ item, onAddToCart, onAddToWishList }) => {
+  const Product = ({ item, onAddToCart, onAddToWishList, onRemoveFromWishList }) => {
     let navigate = useNavigate()
+    const [favorited, setFavorited] = useState(false)
+    const [addedToCart, setAddedToCart] = useState(false)
+
     return (
       <Container>
         <InnerContainer>
@@ -152,15 +158,22 @@ const TextBoxPrize = styled.div`
           </Icon>
           <Icon>
             {
+              addedToCart ?
+              <ShoppingCart color="disabled" disabled={true}></ShoppingCart>
+              :
               item.in_stock === 0 ? 
               <AddShoppingCart color="disabled" disabled={true} onClick={() => {onAddToCart(item)}}/>
               :
-              <AddShoppingCart onClick={() => {onAddToCart(item)}}/>
-            }
-            
+              <AddShoppingCart onClick={() => {onAddToCart(item); setAddedToCart(true)}}/>
+            }  
           </Icon>
           <Icon>
-            <FavoriteBorderOutlined onClick={() => {onAddToWishList(item)}} />
+            {
+              favorited ?
+              <FavoriteOutlined onClick={() => {onRemoveFromWishList(item); setFavorited(false)}} />
+              :
+              <FavoriteBorderOutlined onClick={() => {onAddToWishList(item); setFavorited(true)}} />
+            }
           </Icon>
         </Info>
       </Container>

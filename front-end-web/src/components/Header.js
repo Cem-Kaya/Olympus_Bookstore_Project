@@ -105,13 +105,13 @@ const Header = ({itemsInCartChanged, onAddToCart, onRemoveFromCart, addToCartAll
     if(selected.trim() === '')  {selected = "Title"}
     selected = selected.toLowerCase()
     if(selected === "title"){
-      history(`/Search/${selected}=${title}/&author=*/&publisher=*/&pr_lower=*/&pr_upper=*/&raiting=*`)
+      history(`/Search/page=1/&${selected}=${title}/&author=*/&publisher=*/&pr_lower=*/&pr_upper=*/&raiting=*`)
     }
     else if(selected === "description"){
-      history(`/Search/${selected}=${title}/&author=*/&publisher=*/&pr_lower=*/&pr_upper=*/&raiting=*`)
+      history(`/Search/page=1/&${selected}=${title}/&author=*/&publisher=*/&pr_lower=*/&pr_upper=*/&raiting=*`)
     }
     else{
-      history(`/Search/category=*/&${selected}=${title}/&publisher=*/&pr_lower=*/&pr_upper=*/&raiting=*`)
+      history(`/Search/page=1/&category=*/&${selected}=${title}/&publisher=*/&pr_lower=*/&pr_upper=*/&raiting=*`)
     }
   }
 
@@ -212,7 +212,6 @@ const Header = ({itemsInCartChanged, onAddToCart, onRemoveFromCart, addToCartAll
                         <li key={item.id}>
                           <DropDownItem>  
                             <a href={`SingleProduct=${item.id}`}><p className="text-white">{item.title}</p></a>
-                            <small>{item.in_stock + " in stock"}</small>
                             <DropDownItemCount>
                               <button className="btn-primary" onClick={() =>{itemsInCartChanged === undefined ? HeaderRemoveFromCart(item) : onRemoveFromCart(item)}}>-</button>
                               <p>{" " + item.quantity + " "}</p>

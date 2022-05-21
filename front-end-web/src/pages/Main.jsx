@@ -8,14 +8,14 @@ import Slider from '../components/Slider'
 import { useState, useEffect } from 'react';
 import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCartItems';
 import { fetchBooks } from '../helperFunctions/helperGetProducts';
-import { addToWishList } from '../helperFunctions/helperWishList';
+import { addToWishList, removeFromWishList } from '../helperFunctions/helperWishList';
 import styled from 'styled-components';
 import { fetchCategories } from '../helperFunctions/helperCategories';
 
 
 const Body = styled.div`
-background-color: #282c34;
-min-height: 1000px;
+  background-color: #282c34;
+  min-height: 1000px;
 `;
 
 {/*background-color: #282c34*/}
@@ -96,6 +96,10 @@ const Main = () => {
     const answer = await addToWishList(item.id)
   }
 
+  const RemoveFromWishList = async (item) => {
+    await removeFromWishList(item.id)
+  }
+
   return (
     <div>
       
@@ -118,7 +122,7 @@ const Main = () => {
                   <Slider></Slider>
                 </VisualPart>
                 <MainPageFilterButtons onChangeTag={changeTag}/>
-                <Products onAddToCart={AddToCart} products={items} sortBy={tag} highToLow={true} onAddToWishList={AddToWishList}/>
+                <Products onAddToCart={AddToCart} products={items} sortBy={tag} highToLow={true} onAddToWishList={AddToWishList} onRemoveFromWishList={RemoveFromWishList}/>
               </RightContainer>
             </BodyContainer>
         }
