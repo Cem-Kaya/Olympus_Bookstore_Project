@@ -15,6 +15,8 @@ import Checkout from './pages/Checkout';
 import SingleProduct from './pages/SingleProduct';
 import Invoice from './pages/Invoice';
 import ProductManagement from './pages/ProductManagement';
+import ProductManagementLogin from './pages/ProductManagementLogin';
+import MyStore from './pages/MyStore';
 
 function App() {
   return (
@@ -27,8 +29,10 @@ function App() {
         <Route path='/WishList' element={<WishList/>}/>
         <Route path='/Account' element={<Account/>}/>
         <Route path='/OrderHistory' element={<OrderHistory/>}/>
+        <Route path='/Store' element={<MyStore/>}/>
         <Route path='/StoreLogin' element={<StoreLogin/>}/>
         <Route path='/ProductManagement' element={<ProductManagement/>}/>
+        <Route path='/ProductManagementLogin' element={<ProductManagementLogin/>}/>
         <Route path='/invoice' element={<Invoice/>}/>
         <Route path='/SingleProduct=:pid' element={<SingleProduct/>}/>
         <Route path="/Search/page=:page/&category=:category" element={<SearchPage/>}/>

@@ -65,6 +65,7 @@ const Main = () => {
   useEffect (() => {
     const getBooks = async () =>  {
       const itemsFromServer = await fetchBooks()
+      console.log(itemsFromServer)
       const categoriesFromServer = await fetchCategories()
       setCategories(categoriesFromServer)
       setItems(itemsFromServer)

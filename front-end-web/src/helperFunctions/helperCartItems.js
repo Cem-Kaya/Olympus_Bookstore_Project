@@ -180,17 +180,13 @@ export const add1Item = (item) => {
         else
         {
           console.log(getItemAsList[0].quantity)
-          if(item.in_stock > getItemAsList[0].quantity)
-          {
-              let filteredItems = cartItems.map(
-                (elem) => elem.id === item.id ? { ...elem, quantity: elem.quantity + 1} : elem
-              )
-              window.localStorage.setItem('cart_items', JSON.stringify([...filteredItems]))
-              return true
-          }
-          else{
-            return false
-          }
+
+          let filteredItems = cartItems.map(
+            (elem) => elem.id === item.id ? { ...elem, quantity: elem.quantity + 1} : elem
+          )
+          window.localStorage.setItem('cart_items', JSON.stringify([...filteredItems]))
+          return true
+
         }
       }
   return true

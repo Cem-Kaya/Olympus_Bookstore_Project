@@ -44,18 +44,20 @@ const RightContainer = styled.div`
   justify-content: center;
 `;
 
+const TextBox = styled.div`
+    max-width: 1000px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    margin: 0 0;
+    text-align: left;
+`;
+
 const Account = () => {
   let navigate = useNavigate();
-  const categories = ["Account" ,"Order History", "My Store", "Product Management"]
-  const links = ["/Account", "/OrderHistory", "/StoreLogin", "/ProductManagement"]
+  const categories = ["Account" ,"Order History", "My Store Login", "My Store", "Product Management Login", "Product Management"]
+  const links = ["/Account", "/OrderHistory", "/StoreLogin", "/Store", "/ProductManagementLogin", "/ProductManagement"]
   const [info, setInfo] = useState({name: "", pass_hash: "", status: false, uid: "", homeaddress: ""})
   const [loaded, setLoaded] = useState(false)
-
-  useEffect(() => {
-    if(checkLogInStatus() === false){
-      navigate("/")
-    }
-  }, [navigate]);
 
   useEffect (() => {
     const getInfo = async () =>  {
@@ -64,7 +66,12 @@ const Account = () => {
       setInfo(itemsFromServer)
       setLoaded(true)
     }
-    getInfo()
+    if(checkLogInStatus() === true){
+      getInfo()
+    }
+    else{
+      setLoaded(true)
+    }
   }, [])
 
   const fetchInfo = async () => {
@@ -112,12 +119,25 @@ const Account = () => {
         </LeftContainer>
         { info.status === true ?
           <RightContainer>
-            <h4>Account Info</h4><br></br>
-            <h5>Name: {info.name}</h5><br></br>
-            <h5>E-mail: {info.uid}</h5><br></br>
-            <h5>Address: {info.homeaddress}</h5><br></br>
+            <div className="col-md-8 mb-3">
+              <div className='row'>  
+                  <TextBox><h4>Account Info</h4><br></br></TextBox>
+              </div>   
+              <div className='row'>  
+                  <TextBox><h5>Name: {info.name}</h5><br></br></TextBox>
+              </div> 
+              <div className='row'>  
+                  <TextBox><h5>E-mail: {info.uid}</h5><br></br></TextBox>
+              </div> 
+              <div className='row'>  
+                  <TextBox><h5>Address: {info.homeaddress}</h5><br></br></TextBox>
+              </div> 
+            </div>
           </RightContainer>
-          : ""
+          : 
+          <RightContainer>
+            <TextBox><h4>You Are Not Logged In</h4></TextBox>
+          </RightContainer>
         }
         </Container>
       }

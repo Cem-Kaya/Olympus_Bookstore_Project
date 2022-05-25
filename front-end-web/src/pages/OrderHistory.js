@@ -2,9 +2,10 @@ import React from 'react'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
 import { useState, useEffect } from 'react'
-import { getUserID } from "../helperFunctions/helperLogin";
+import { getUserID, checkLogInStatus } from "../helperFunctions/helperLogin";
 import { fetchBooks } from '../helperFunctions/helperGetProducts';
 import styled from "styled-components"
+import { useNavigate } from "react-router-dom"
 
 const Body = styled.div`
   min-height: 500px;
@@ -20,11 +21,18 @@ const ImageContainer = styled.div`
 
 
 const OrderHistory = () => {
+  let navigate = useNavigate();
 
   
 const [orders, setOrders] = useState([])
 const [books, setBooks] = useState([])
 const [loaded, setLoaded] = useState(false)
+
+useEffect (() => {
+  if(checkLogInStatus() === false){
+    navigate("/Account")
+  }
+}, [navigate])
 
 useEffect (() => {
   const getOrders = async () =>  {
