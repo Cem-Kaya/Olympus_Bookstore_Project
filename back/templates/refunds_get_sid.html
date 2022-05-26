@@ -1,0 +1,26 @@
+<!doctype html>
+
+<head>
+    <title>Under</title>
+    <meta charset=utf-8>
+    <style>
+        table, th, td {
+           border: 1px solid black;
+        }
+     </style>
+</head>
+<body>
+{{data |safe }}
+
+<form action="/refunds_get_sid/submit_test" method="POST">
+    
+    <label for="Sid"> Sid </label><br>
+    <input type="text"  id="Sid" name="Sid" value="-1"><br><br>
+
+
+
+    <br><br>
+        <button><a>Send</a></button><br>
+</form>
+
+</body>

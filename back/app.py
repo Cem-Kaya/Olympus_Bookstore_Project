@@ -1,13 +1,14 @@
-#from crypt import methods
+
 
 import json
-
 import requests as req
 from flask_cors import CORS
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import null
 
 from sqlalchemy.orm import sessionmaker
+from urllib3 import Retry
 
 from DB_init_SQL import * 
 from test_email import *
@@ -255,6 +256,16 @@ def Product_manager_regsubmit():
   name= data2['name']
   pass_hash=data2['pass_hash']
 
+  PM_ex_check = db.session.query(Product_Manager)\
+       .filter(Product_Manager.name == name ).all()
+  if len(PM_ex_check) >=1:
+    retjs={}
+    retjs["status"] = False
+    retjs["Pmid"] = None
+    return json.dumps(retjs)
+
+
+
   PM__= Product_Manager(name=name,pass_hash=pass_hash)
   db.session.add(PM__)
   db.session.commit()
@@ -406,11 +417,21 @@ def Sales_manager_regsubmit():
   name= data2['name']
   pass_hash=data2['pass_hash']
 
+  
+  sm_ex_check = db.session.query(Sales_Manager)\
+       .filter(Sales_Manager.name == name ).all()
+  if len(sm_ex_check) >=1:
+    retjs={}
+    retjs["status"] = False
+    retjs["sid"] = None
+    return json.dumps(retjs)
+
   Sales_manager__ = Sales_Manager(name,pass_hash)
   db.session.add(Sales_manager__)
   db.session.commit()
   retjs = {}  
   retjs["status"] = True
+  retjs["sid"] = Sales_manager__.Sid
   return json.dumps(retjs)
 
 
@@ -580,7 +601,117 @@ def get_all_books():
     }
     jsonprd.append(tmp)  
   return json.dumps(jsonprd)
-    
+
+@app.route('/all_salesmanagers')
+def get_all_salesmanagers():
+  allproducts=Sales_Manager.query.filter_by().all()
+  jsonprd = []
+
+  for pr in allproducts:
+    tmp={
+      "Sid": pr.Sid,
+      "name": pr.name
+     
+    }
+    jsonprd.append(tmp)  
+  return json.dumps(jsonprd)  
+  
+@app.route('/pmid_deliverylist')
+def pmid_deliverylist():
+  todata="<h3> Product Manager </h3> "
+  allproductmanags=Product_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Pcid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allproductmanags:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Pmid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  allproducts=Products.query.filter_by().all()
+  todata+=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> </tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale) 
+  todata +="</table>"
+  
+  todata+="<h3>Customers </h3> "
+  allCustomers=Customers.query.filter_by().all()
+  todata+= "<table> <tr> <th>email </th> <th>name </th> </tr> "
+  for i in allCustomers:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.email,i.name) 
+  todata +="</table>   "
+
+  todata+= "<h3> Purchased </h3>"
+  todata+= "<table> <tr> <th> purcid </th> <th> price </th><th> sale </th><th> quantity </th><th> shipment </th></tr> "
+  allPurchased = db.session.query(Purchased).all()  # db.session.query(followers).filter(...).all()
+  for i in allPurchased:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.purcid, i.price ,i.sale, i.quantity, i.shipment ) 
+  todata +="</table>   "
+
+  todata+= "<h3> buy_dlist </h3>"
+  todata+= "<table> <tr> <th> did </th> <th> customer_email </th><th> product_pid </th><th> purchased_purcid </th><th> quantity </th><th> date </th></tr> "
+  allbuydlist = db.session.query(Buy_Dlist).all()  # db.session.query(followers).filter(...).all()
+  for i in allbuydlist:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></td><td>{}</td><td>{}</td></tr>".format(i.did, i.customer_email, i.product_pid, i.purchased_purcid, i.quantity, i.date) 
+  todata +="</table>   "
+  return render_template('pmid_deliverylist.html',data =todata )  
+  
+@app.route('/pmid_deliverylist/submit_test',methods=['POST'] ,strict_slashes=False)
+def pmid_deliverylistsubmittest():  
+  url = 'http://127.0.0.1:5000/pmid_deliverylist/submit'
+  myobj = {'Pmid': request.form['Pmid'] }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )   
+
+@app.route('/pmid_deliverylist/submit', methods=['POST'] , strict_slashes=False )
+def pmid_deliverylistsubmit():
+ 
+  data2 = json.loads(request.get_data())#request.get_json()
+  #, strict_slashes=False 
+
+  Pmid= int(data2['Pmid'])
+  #sales_manager_id= int(data2['sid'])
+  jsonprd = []
+  #getting pid
+  allManages = db.session.query(manages).all()
+  allDlist = db.session.query(Buy_Dlist).all()
+  for i in allDlist:
+    for j in allManages:
+      if(j.Pid == i.product_pid): #when the pid of the item in delivery list is in manages relationship
+        if(j.Pmid == Pmid): #and our product manager is responsible for it.
+          pr =  db.session.query(Products).filter(Products.Pid == i.product_pid ).first()
+          tmp={
+            "did": i.did,
+            "Pid": i.product_pid,
+            "email": i.customer_email,
+            "purcid": i.purchased_purcid,
+            "img": pr.picture_url0,
+            "title": pr.name ,
+            "author": pr.author,
+            "raiting": pr.raiting,      
+            "publisher": pr.distributor_Information,
+            "price":  pr.price ,    
+            "amount_sold": pr.amount_sold ,
+            "release_date": str(pr.date),
+            "model": pr.model,
+            "edition_number": pr.edition_number,
+            "description": pr.description,
+            "in_stock": pr.quantity,
+            "warranty": pr.warranty,
+            "discount": str((1-pr.sale)*100)+"%",
+            "date": pr.date
+          }
+          jsonprd.append(tmp)  
+  if(len(jsonprd) == 0):
+    retjs={}
+    retjs["status"] = False
+    return json.dumps(retjs)
+
+  return json.dumps(jsonprd)
+
+
+    #retjs = {}
+    #retjs["status"] = False
+    #return json.dumps(retjs)
+
+
 
 @app.route('/all_books_ranged')
 def all_books_rangedd():
@@ -632,6 +763,83 @@ def get_all_books_ranged_sub():
     jsonprd.append(tmp)  
   return json.dumps(jsonprd)
     
+
+@app.route('/update_book')
+def update_book():   
+  todata=""  
+  allproducts=Products.query.filter_by().all()
+  todata+=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> <th>quantity</th> <th>amount_sold</th> </tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td><td> {} </td><td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale,i.quantity,i.amount_sold) 
+  todata +="</table>"
+  return render_template('update_book.html',data=todata) 
+    
+@app.route('/update_book/submit' ,methods=['POST'], strict_slashes=False )
+def update_book_submit(): 
+  retjs={}
+  data2 = json.loads(request.get_data())
+  print(request.get_data()) 
+  Pid= data2['Pid']
+  name= data2['name']
+  description=data2['description']
+  quantity= data2['quantity']
+  amount_sold=data2['amount_sold']
+  price=data2['price']
+  sale=data2['sale']
+  
+  old_sale =  db.session.query(Products)\
+       .filter(Products.Pid == Pid ).sale
+
+  old_price=  db.session.query(Products)\
+       .filter(Products.Pid == Pid ).price
+
+  db.session.query(Products)\
+       .filter(Products.Pid == Pid )\
+       .update({Products.name:name , 
+       Products.description  : description  , 
+       Products.quantity  : quantity  , 
+       Products.amount_sold  :amount_sold   , 
+       Products.price  :price   , 
+       Products.sale  :sale   })
+  try:
+    db.session.commit()
+  except:
+    retjs["status"]=False
+    return json.dumps(retjs)
+  retjs["status"]=True
+
+  new_sale =  db.session.query(Products)\
+       .filter(Products.Pid == Pid ).sale
+  new_price=  db.session.query(Products)\
+       .filter(Products.Pid == Pid ).price
+
+  if (new_sale != old_sale) or (new_price != old_price):
+    allUnders = db.session.query(wishes).all()
+    for w in allUnders:
+      if w.Pid == Pid:
+        #send email ! 
+        try:
+          send_email(w.email,"An item in your whish list has been updated take a  look. It has pid  {}".format(Pid))
+        except:
+          print("email error ")
+  
+  return json.dumps(retjs)
+
+@app.route('/update_book/submit_test', methods=['POST'], strict_slashes=False  )
+def update_booksubmit_test():
+  url = 'http://127.0.0.1:5000/update_book/submit'
+  myobj = {'Pid': request.form['Pid'] , 
+           'name': request.form['name'], 
+           'description': request.form['description'] , 
+           'quantity': request.form['quantity'], 
+           'amount_sold': request.form['amount_sold'] , 
+           'price': request.form['price'], 
+           'sale': request.form['sale'] 
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )  
+
+
 @app.route('/templates/script.js')
 def scriptjs():    
   return render_template("script.js")
@@ -677,6 +885,83 @@ def loginsubmit():
       reterned["uid"] = ret[0].email
 
   return json.dumps(reterned)
+
+@app.route('/login_productmanager')
+def login_productmanager():
+  return render_template('login_productmanager.html')  
+
+
+@app.route('/login_productmanager/submit_test', methods=['POST'], strict_slashes=False  )
+def login_productmanager_submit_test():
+  url = 'http://127.0.0.1:5000/login_productmanager/submit'
+  myobj = {'name': request.form['name'] , 
+           'pass_hash': request.form['pass_hash'] 
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )
+
+
+
+@app.route('/login_productmanager/submit', methods=['POST'] , strict_slashes=False )
+def login_productmanager_submit():
+  data2 = json.loads(request.get_data())#request.get_json()
+  print(request.get_data())
+  #in_email=request.form['email']
+  in_name=data2['name']
+  in_pass_hash=data2['pass_hash']
+  #in_pass_hash=request.form['pass_hash']
+  ret=Product_Manager.query.filter_by(name=in_name).all()
+  reterned= {}
+  if len(ret)!=1:
+    reterned["status"] = False
+    reterned["Pmid"] = False
+  else :
+    if ret[0].pass_hash != in_pass_hash:
+      reterned["status"] = False
+      reterned["Pmid"] = False
+    else: 
+      reterned["status"] = True
+      reterned["Pmid"] = ret[0].Pmid
+
+  return json.dumps(reterned)  
+
+@app.route('/login_salesmanager')
+def login_salesmanager():
+  return render_template('login_salesmanager.html')  
+
+
+@app.route('/login_salesmanager/submit_test', methods=['POST'], strict_slashes=False  )
+def login_salesmanager_submit_test():
+  url = 'http://127.0.0.1:5000/login_salesmanager/submit'
+  myobj = {'name': request.form['name'] , 
+           'pass_hash': request.form['pass_hash'] 
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )
+
+
+
+@app.route('/login_salesmanager/submit', methods=['POST'] , strict_slashes=False )
+def login_salesmanager_submit():
+  data2 = json.loads(request.get_data())#request.get_json()
+  print(request.get_data())
+  #in_email=request.form['email']
+  in_name=data2['name']
+  in_pass_hash=data2['pass_hash']
+  #in_pass_hash=request.form['pass_hash']
+  ret=Sales_Manager.query.filter_by(name=in_name).all()
+  reterned= {}
+  if len(ret)!=1:
+    reterned["status"] = False
+    reterned["Sid"] = False
+  else :
+    if ret[0].pass_hash != in_pass_hash:
+      reterned["status"] = False
+      reterned["Sid"] = False
+    else: 
+      reterned["status"] = True
+      reterned["Sid"] = ret[0].Sid
+
+  return json.dumps(reterned)  
+
 
 @app.route('/deneme')
 def deneme():  
@@ -1018,6 +1303,92 @@ def Wishes_rmsubmit():
   retjs["status"] = True
   return json.dumps(retjs)
 
+
+#getting product for pmid
+@app.route('/products_pmid')
+def products_pmid():
+  allproducts=Products.query.filter_by().all()
+  todata=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> </tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale) 
+  todata +="</table>"
+  
+  todata+="<h3> Product Manager </h3> "
+  allproductmanags=Product_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Pcid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allproductmanags:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Pmid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  todata+= "<h3> Manages  </h3>"
+  todata+= "<table> <tr> <th> Pid </th> <th> Pmid </th> </tr> "
+  allUnders = db.session.query(manages).all()  # db.session.query(followers).filter(...).all()
+  for i in allUnders:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Pid,i.Pmid) 
+  todata +="</table>   "
+  return render_template('products_pmid.html',data =todata )  
+
+@app.route('/products_pmid/submit_test', methods=['POST'], strict_slashes=False  )
+def products_pmid_submit_test():
+  url = 'http://127.0.0.1:5000/products_pmid/submit'
+  myobj = {"Pmid": request.form['Pmid']   }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
+
+@app.route('/products_pmid/submit', methods=['POST'] , strict_slashes=False)
+def products_pmid_submit():
+  data2 = json.loads(request.get_data())
+  Pmid = data2['Pmid']
+  allUnders = db.session.query(manages).filter(manages.c.Pmid == Pmid ).all()  # db.session.query(followers).filter(...).all()
+  ret_js=[]
+  for i in allUnders:
+    ret_js.append(
+      { "Pmid": i.Pmid  ,"Pid":i.Pid }
+    )
+  return json.dumps(ret_js)
+  
+#products_sid
+@app.route('/products_sid')
+def products_sid():
+  allproducts=Products.query.filter_by().all()
+  todata=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> </tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale) 
+  todata +="</table>"
+  
+  todata+= "<h3> Sales Manager </h3> "
+  allsalesmanag=Sales_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Sid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allsalesmanag:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Sid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  todata+="<h3>Change Price </h3> "
+  allchange_prince=db.session.query(change_price).all()
+  todata+= "<table> <tr> <th>Sid </th> <th>Pid </th> </tr> "
+  for i in allchange_prince:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Sid,i.Pid) 
+  todata +="</table>   "
+  return render_template('products_sid.html',data =todata )  
+
+@app.route('/products_sid/submit_test', methods=['POST'], strict_slashes=False  )
+def products_sid_submit_test():
+  url = 'http://127.0.0.1:5000/products_sid/submit'
+  myobj = {"Sid": request.form['Sid']   }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
+
+@app.route('/products_sid/submit', methods=['POST'] , strict_slashes=False)
+def products_sid_submit():
+  data2 = json.loads(request.get_data())
+  Sid = data2['Sid']
+  allUnders = db.session.query(change_price).filter(change_price.c.Sid == Sid ).all()  # db.session.query(followers).filter(...).all()
+  ret_js=[]
+  for i in allUnders:
+    ret_js.append(
+      { "Sid": i.Sid  ,"Pid":i.Pid }
+    )
+  return json.dumps(ret_js)  
 
 #Shopping Car
 
@@ -1455,6 +1826,70 @@ def refunds_get_all():
                   }
     )
   return json.dumps(retjs )
+
+@app.route('/refunds_get_sid')
+def refunds_get_sid():
+  todata= "<h3> Sales Manager </h3> "
+  allsalesmanag=Sales_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Sid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allsalesmanag:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Sid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  
+  todata+="<h3>Customers </h3> "
+  allCustomers=Customers.query.filter_by().all()
+  todata+= "<table> <tr> <th>email </th> <th>name </th> </tr> "
+  for i in allCustomers:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.email,i.name) 
+  todata +="</table>   "
+  
+  
+  todata+="<h3>Change Price </h3> "
+  allchange_prince=db.session.query(change_price).all()
+  todata+= "<table> <tr> <th>Sid </th> <th>Pid </th> </tr> "
+  for i in allchange_prince:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Sid,i.Pid) 
+  todata +="</table>   "
+
+  todata+= "<h3> Purchased </h3>"
+  todata+= "<table> <tr> <th> purcid </th> <th> price </th><th> sale </th><th> quantity </th><th> shipment </th></tr> "
+  allPurchased = db.session.query(Purchased).all()  # db.session.query(followers).filter(...).all()
+  for i in allPurchased:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.purcid, i.price ,i.sale, i.quantity, i.shipment ) 
+  todata +="</table>   "
+
+  todata+= "<h3> Refunds </h3>"
+  todata+= "<table> <tr> <th> id </th> <th> customer_email </th><th> purchased_purcid </th><th> sales_manager_id </th><th> refund_state </th><th> date </th></tr> "
+  allrefunds = db.session.query(Refunds).all()  # db.session.query(followers).filter(...).all()
+  for i in allrefunds:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></td><td>{}</td><td>{}</td></tr>".format(i.id, i.customer_email, i.purchased_purcid, i.sales_manager_id, i.refund_state, i.date) 
+  todata +="</table> "
+  return render_template('refunds_get_sid.html',data =todata )    
+
+@app.route('/refunds_get_sid/submit_test',methods=['POST'] ,strict_slashes=False)
+def refunds_get_sid_submit_test():  
+  url = 'http://127.0.0.1:5000/refunds_get_sid/submit'
+  myobj = {'Sid': request.form['Sid'] }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )   
+
+@app.route('/refunds_get_sid/submit' , methods=['POST'] , strict_slashes=False  )
+def refunds_get_sid_submit():
+  data2 = json.loads(request.get_data())
+  Sid = int(data2["Sid"])
+  allrefunds = db.session.query(Refunds).all()  # db.session.query(followers).filter(...).all()
+  retjs=[]
+  for i in allrefunds:
+    if i.sales_manager_id == Sid:
+      retjs.append(
+        { "email": i.customer_email    ,
+          "purcid": i.purchased_purcid    ,
+          "sid": i.sales_manager_id    ,
+          "refund_state": i.refund_state     
+                    }
+      )
+  return json.dumps(retjs )
+
 
 
 @app.route('/check_stock/submit', methods=['POST'] , strict_slashes=False  )

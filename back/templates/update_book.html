@@ -1,0 +1,47 @@
+<!doctype html>
+
+<head>
+    <title>login</title>
+    <meta charset=utf-8>
+
+    <style>
+        table, th, td {
+           border: 1px solid black;
+        }
+     </style>
+</head>
+<body>
+    {{data |safe }}
+
+<form action="/update_book/submit_test" method="POST">
+
+    <label for="Pid">Pid </label><br>
+    <input type="number"  min="0" id="Pid" name="Pid" value = "-1"><br><br>
+
+
+    <label for="name">name:</label><br>
+    <input type="text" id="name" name="name" value="null"><br><br>
+
+    <label for="description">description </label><br>
+    <input type="text" id="description" name="description" value = null><br><br>
+
+    <label for="quantity">quantity </label><br>
+    <input type="number"  min="0" id="quantity" name="quantity" value = "-1"><br><br>
+
+    <label for="amount_sold">amount_sold </label><br>
+    <input type="number"  min="0" id="amount_sold" name="amount_sold" value = "-1"><br><br>    
+
+    <label for="price">price </label><br>
+    <input type="number" step="0.01" min="0" id="price" name="price" value = "-1"><br><br>
+
+    <label for="sale">sale </label><br>
+    <input type="number" step="0.01" min="0" max="1" id="sale" name="sale" value = "-1" ><br><br>
+
+
+
+
+    <br><br>
+        <button><a>Send</a></button><br>
+</form>
+
+</body>
