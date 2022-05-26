@@ -26,7 +26,6 @@ class old_purchases extends StatefulWidget {
 
 class _old_purchasesState extends State<old_purchases> {
   @override
-  @override
   void initState() {
     super.initState();
         () async {
@@ -40,6 +39,7 @@ class _old_purchasesState extends State<old_purchases> {
   }
 
   String my_user = "";
+  final todayDate = DateTime.now();
 
   List<PurchaseHistory>? items;
 
@@ -105,7 +105,9 @@ class _old_purchasesState extends State<old_purchases> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(width: 50, child: Image.network(purchaseList![index].url!)),
+                        SizedBox(
+                            width: 50,
+                            child: Image.network(purchaseList![index].url!)),
                         Text(
                           purchaseList![index].name!,
                           style: const TextStyle(
@@ -115,8 +117,12 @@ class _old_purchasesState extends State<old_purchases> {
                           maxLines: 3,
                           softWrap: true,
                         ),
-                        Text(purchaseList![index].shipment!,
-                          style: TextStyle(color: AppColors.LightTextColor, fontWeight: FontWeight.bold, fontSize: 16),
+                        Text(
+                          purchaseList![index].shipment!,
+                          style: TextStyle(
+                              color: AppColors.LightTextColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
                         ),
                       ],
                     ),
@@ -127,8 +133,17 @@ class _old_purchasesState extends State<old_purchases> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Quantity: ${purchaseList![index].quantity.toString()}", style: TextStyle(color: AppColors.LightTextColor, fontWeight: FontWeight.bold, fontSize: 16),),
-                        Text("Receipt Sent!", style: kImportantText,),
+                        Text(
+                          "Quantity: ${purchaseList![index].quantity.toString()}",
+                          style: TextStyle(
+                              color: AppColors.LightTextColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
+                        Text(
+                          "Receipt Sent!",
+                          style: kImportantText,
+                        ),
                       ],
                     ),
                   ),
@@ -138,9 +153,53 @@ class _old_purchasesState extends State<old_purchases> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Sum: ${(purchaseList![index].price!*purchaseList![index].quantity!)} \$", style: TextStyle(color: AppColors.LightTextColor, fontWeight: FontWeight.bold, fontSize: 16),),
-                        Text("Date: ${purchaseList![index].date!.substring(0, 10)} ", style: TextStyle(color: AppColors.LightTextColor, fontWeight: FontWeight.bold, fontSize: 16),),
-                        SizedBox(height: 24,child: OutlinedButton(onPressed: () {}, child: Text("Refund",style: TextStyle(color: AppColors.notification, fontWeight: FontWeight.bold, fontSize: 16), )))
+                        Text(
+                          "Sum: ${(purchaseList![index].price! * purchaseList![index].quantity!)} \$",
+                          style: TextStyle(
+                              color: AppColors.LightTextColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
+                        Text(
+                          "Date: ${(purchaseList![index].date.toString()).substring(0, 10)} ",
+                          style: TextStyle(
+                              color: AppColors.LightTextColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
+                        SizedBox(
+                            height: 24,
+                            child: OutlinedButton(
+                                onPressed: () async {
+                                  final dateDiff = todayDate
+                                      .difference(purchaseList![index].date!)
+                                      .inDays;
+                                  if (dateDiff > 30) {
+                                    await showDialog(
+                                        context: context,
+                                        builder: (_) => AlertDialog(
+                                          title: const Text("Error"),
+                                          content: const Text(
+                                              "Your purchased product bought more than 30 days ago. Hence, you cannot refund this product"),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(_);
+                                                },
+                                                child: const Text("Ok"))
+                                          ],
+                                        ));
+                                  } else {
+                                    print("yey");
+                                  }
+                                },
+                                child: Text(
+                                  "Refund",
+                                  style: TextStyle(
+                                      color: AppColors.notification,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                )))
                       ],
                     ),
                   ),
@@ -167,6 +226,3 @@ class _old_purchasesState extends State<old_purchases> {
     );
   }
 }
-
-
-

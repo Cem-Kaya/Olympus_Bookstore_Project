@@ -24,7 +24,7 @@ class PurchaseHistory {
   });
 
   num? pid;
-  String? date;
+  DateTime? date;
   num? quantity;
   num? purcid;
   num? sale;
@@ -36,7 +36,7 @@ class PurchaseHistory {
 
   factory PurchaseHistory.fromJson(Map<String, dynamic> json) => PurchaseHistory(
     pid: json["pid"],
-    date: json["date"],
+    date: DateTime.parse(json["date"]),
     quantity: json["quantity"],
     purcid: json["purcid"],
     sale: json["sale"],

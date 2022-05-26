@@ -4,12 +4,15 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:bookstore/utils/colors.dart';
 import 'package:bookstore/utils/dimensions.dart';
 import 'package:bookstore/utils/styles.dart';
+import 'package:provider/provider.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../pages/product_page.dart';
+import '../services/user_logged_data.dart';
 
 class ProductPreview extends StatefulWidget {
+
   const ProductPreview({
     Key? key,
     required this.product,
@@ -35,6 +38,9 @@ class _ProductPreviewState extends State<ProductPreview> {
 
   @override
   Widget build(BuildContext context) {
+    Function login = Provider.of<logged_in_user>(context).getUser;
+    var user =login();
+
     return OutlinedButton(
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith(
@@ -50,6 +56,7 @@ class _ProductPreviewState extends State<ProductPreview> {
 
               productID: widget.product.id as int,
               refreshFunc: childRefreshFunc,
+              isuser: user,
             )));
 
       },
@@ -139,17 +146,6 @@ class _ProductPreviewState extends State<ProductPreview> {
                       ),
                     )
                   ],
-                ),
-
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: IconButton(
-                      onPressed: () {},
-
-                      icon: Icon(
-                          Icons.favorite,
-                          color: AppColors.notification)),
                 ),
                 Visibility(
                   visible: double.parse(widget.product.discount!.substring(0,2)) >

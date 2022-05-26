@@ -13,6 +13,8 @@ class API {
   static const to_purchase="http://127.0.0.1:5000/to_purchase/submit";
   static const next_did="http://127.0.0.1:5000/getnextdid";
   static const sign_in="http://127.0.0.1:5000/login/submit";
+  static const wishes_submit="http://127.0.0.1:5000/Wishes/submit";
+  static const allwishes="http://127.0.0.1:5000/Wishes_get_email/submit";
 }
 class API2 {
   static const allBooks = "http://10.0.2.2:5000/all_books";
@@ -28,4 +30,6 @@ class API2 {
   static const to_purchase="http://10.0.2.2:5000/to_purchase/submit";
   static const next_did="http://10.0.2.2:5000/getnextdid";
   static const sign_in="http://10.0.2.2:5000/login/submit";
+  static const wishes_submit="http://10.0.2.2:5000/Wishes/submit";
+  static const allwishes="http://10.0.2.2:5000/Wishes_get_email/submit";
 }

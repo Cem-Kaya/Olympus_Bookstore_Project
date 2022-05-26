@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:bookstore/pages/reviews.dart';
 import 'package:bookstore/pages/send_comment.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '../services/basket_data.dart';
+import '../services/user_logged_data.dart';
 import '../utils/api.dart';
 import '../utils/colors.dart';
 import '../utils/dimensions.dart';
@@ -18,9 +20,10 @@ import '../views/product_preview.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage(
-      {Key? key, required this.productID, required this.refreshFunc})
+      {Key? key, required this.productID, required this.refreshFunc,required this.isuser})
       : super(key: key);
   final int productID;
+  final String isuser;
   final Function? refreshFunc;
 
   @override
@@ -31,6 +34,7 @@ class _ProductPageState extends State<ProductPage> {
   late String id;
   @override
   late String x;
+  bool is_wished=false;
 
   @override
   void initState() {
@@ -41,7 +45,17 @@ class _ProductPageState extends State<ProductPage> {
         // Update your UI with the desired changes.
       });
       getProduct();
+      if(widget.isuser!="") {
+
+        await ALLwishes(widget.isuser);
+        print("ssssssssssss");
+        print(wishes[0]);
+
+
+      }
     }();
+
+
 
     // obtain shared preferences
   }
@@ -64,6 +78,42 @@ class _ProductPageState extends State<ProductPage> {
       print(e.toString());
     }
   }
+  var wishes;
+  ALLwishes(String email,) async { //it will be handled
+    try {
+
+      wishes = await http.post(
+        Uri.parse(API.allwishes), //it will be handled
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          {
+            "email": email,
+          },
+        ),
+      );
+
+      wishes =jsonDecode(wishes.body);
+      print("aaaaaaaaaaaaa");
+      print(wishes);
+      int i= 0;
+      while(i<wishes.length){
+        if(wishes[i]["Pid"]==widget.productID){
+          setState(() {
+            is_wished=true;
+          });
+
+
+          print(is_wished);
+          print(wishes[i]["Pid"]);
+        }
+        i=i+1;
+      }
+    } catch (e) {
+      print("error is ${e.toString()}");
+    }
+  }
 
   PreviewBooks? _product;
 
@@ -78,10 +128,14 @@ class _ProductPageState extends State<ProductPage> {
   num stocks = 1;
 
   Widget build(BuildContext context) {
+    Function login = Provider.of<logged_in_user>(context).getUser;
+    var user =login();
+    print(is_wished);
+
     Function addBasket = Provider.of<Basket>(context).add_basket;
     Size size = MediaQuery.of(context).size;
     //sleep(Duration(milliseconds:50)); // it is for debugging
-    if (_product == null) {
+    if (_product == null ) {
       allBooks();
       return const Center(
         child: CircularProgressIndicator(),
@@ -188,19 +242,44 @@ class _ProductPageState extends State<ProductPage> {
                                         ),
                                       ],
                                     ),
-                                    Container(
-                                      margin: const EdgeInsets.all(3.0),
-                                      padding: const EdgeInsets.all(3.0),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(color: AppColors.notification)
-                                      ),
-                                      child: Text(
-                                        "Stocks: ${_product?.inStock}",
-                                        style: const TextStyle(
-                                          color: AppColors.notification,
-                                          fontSize: 16,
+                                    Column(
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.all(3.0),
+                                          padding: const EdgeInsets.all(3.0),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(color: AppColors.notification)
+                                          ),
+                                          child: Text(
+                                            "Stocks: ${_product?.inStock}",
+                                            style: const TextStyle(
+                                              color: AppColors.notification,
+                                              fontSize: 16,
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                        Visibility(
+                                          visible: user!='',
+                                          child: Container(
+                                            margin: const EdgeInsets.all(3.0),
+                                            padding: const EdgeInsets.all(3.0),
+                                            decoration: BoxDecoration(
+                                                border: Border.all(color: AppColors.notification)
+                                            ),
+                                            child:is_wished ?TextButton(onPressed: (){}, child: Text(
+                                                "Remove from wishlist",
+                                                style: const TextStyle(
+                                                  color: AppColors.notification,
+                                                  fontSize: 16,
+                                                )) ,):TextButton(onPressed: (){}, child: Text(
+                                                "Add to wishlist",
+                                                style: const TextStyle(
+                                                  color: AppColors.notification,
+                                                  fontSize: 16,
+                                                )) ,),
+                                          ),
+                                        ),
+                                      ],
                                     ),
 
                                   ]),
