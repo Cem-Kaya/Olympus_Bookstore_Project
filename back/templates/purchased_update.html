@@ -1,0 +1,26 @@
+<!doctype html>
+
+<head>
+    <title>purchased</title>
+    <meta charset=utf-8>
+    <style>
+        table, th, td {
+           border: 1px solid black;
+        }
+     </style>
+</head>
+<body>
+{{data |safe }}
+
+<form action="/purchased_update/submit_test" method="POST">
+    <label for="shipment">shipment </label><br>
+    <input type="text" id="shipment" name="shipment" value="null"><br><br>
+
+    <label for="purcid">purcid </label><br>
+    <input type="number"  min="0" id="purcid" name="purcid" value = "-1"><br><br>
+
+    <br><br>
+        <button><a>Send</a></button><br>
+</form>
+
+</body>

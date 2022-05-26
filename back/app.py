@@ -1761,6 +1761,8 @@ def refunds():
   todata +="</table> "
   return render_template('refunds.html',data =todata )  
 
+
+
 @app.route('/refunds/submit_test' , methods=['POST'], strict_slashes=False  )
 def refundssubmittest():
   url = 'http://127.0.0.1:5000/refunds/submit'
@@ -1771,17 +1773,24 @@ def refundssubmittest():
   return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )  
 
 
+
+
+   
+
+
 @app.route('/refunds/submit', methods=['POST'] , strict_slashes=False )
 def refundssubmit():
   try:
     data2 = json.loads(request.get_data())#request.get_json()
     #, strict_slashes=False 
-  
+
     customer_email= data2['uid']
     #sales_manager_id= int(data2['sid'])
     purchased_purcid= int(data2['purcid'])
     refund_state= "Requested"
     #getting pid
+    
+
     allDlist = db.session.query(Buy_Dlist).all()
     my_pid = -1
     for i in allDlist:
@@ -1796,21 +1805,170 @@ def refundssubmit():
       retjs["status"] = False
       return json.dumps(retjs)
 
-    
-    #statement = shopping_cart.insert().values(customer_email=email, product_id=Pid, comment_id=cid)
+    my_purchased=Purchased.query.filter_by(purcid=purchased_purcid).first()
+    if my_purchased.shipment == "Processing":
+      refund_state= "Refunded"
+      db.session.query(Purchased)\
+          .filter(Purchased.purcid == purchased_purcid)\
+          .update({Purchased.shipment: "Cancelled"})
+      db.session.commit()
+    else:
+      db.session.query(Purchased)\
+        .filter(Purchased.purcid == purchased_purcid)\
+        .update({Purchased.shipment: "Refund in Progress"})
+      db.session.commit()
+      #statement = shopping_cart.insert().values(customer_email=email, product_id=Pid, comment_id=cid)
+
     assoc = Refunds(customer_email=customer_email, sales_manager_id=sales_manager_id, purchased_purcid=purchased_purcid, refund_state=refund_state)
     db.session.add(assoc)
-    
+      
     db.session.commit()
-    
+      
 
     retjs = {}
     retjs["status"] = True
     return json.dumps(retjs)
   except:
-      retjs = {}
-      retjs["status"] = False
-      return json.dumps(retjs)
+    retjs = {}
+    retjs["status"] = False
+    return json.dumps(retjs)
+
+@app.route('/refunds_update')
+def refunds_updatesssss():
+  todata= "<h3> Sales Manager </h3> "
+  allsalesmanag=Sales_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Sid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allsalesmanag:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Sid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  
+  todata+="<h3>Customers </h3> "
+  allCustomers=Customers.query.filter_by().all()
+  todata+= "<table> <tr> <th>email </th> <th>name </th> </tr> "
+  for i in allCustomers:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.email,i.name) 
+  todata +="</table>   "
+  
+  
+  todata+="<h3>Change Price </h3> "
+  allchange_prince=db.session.query(change_price).all()
+  todata+= "<table> <tr> <th>Sid </th> <th>Pid </th> </tr> "
+  for i in allchange_prince:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Sid,i.Pid) 
+  todata +="</table>   "
+
+  todata+= "<h3> Purchased </h3>"
+  todata+= "<table> <tr> <th> purcid </th> <th> price </th><th> sale </th><th> quantity </th><th> shipment </th></tr> "
+  allPurchased = db.session.query(Purchased).all()  # db.session.query(followers).filter(...).all()
+  for i in allPurchased:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.purcid, i.price ,i.sale, i.quantity, i.shipment ) 
+  todata +="</table>   "
+
+  todata+= "<h3> Refunds </h3>"
+  todata+= "<table> <tr> <th> id </th> <th> customer_email </th><th> purchased_purcid </th><th> sales_manager_id </th><th> refund_state </th><th> date </th></tr> "
+  allrefunds = db.session.query(Refunds).all()  # db.session.query(followers).filter(...).all()
+  for i in allrefunds:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></td><td>{}</td><td>{}</td></tr>".format(i.id, i.customer_email, i.purchased_purcid, i.sales_manager_id, i.refund_state, i.date) 
+  todata +="</table> "
+  return render_template('refunds_update.html',data =todata )  
+
+
+
+@app.route('/refunds_update/submit_test' , methods=['POST'], strict_slashes=False  )
+def refundsupdatesssubmittest():
+  url = 'http://127.0.0.1:5000/refunds_update/submit'
+  myobj = {
+          'status':request.form['status'],
+          'id':request.form['id']          
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )      
+
+@app.route('/refunds_update/submit', methods=['POST'] , strict_slashes=False )
+def refundssubmit_update():
+  #rejected accepted 
+  data2 = json.loads(request.get_data())#request.get_json()
+  status= str(data2['status'])
+  id= int(data2['id'])
+  db.session.query(Refunds)\
+          .filter(Refunds.id == id)\
+          .update({Refunds.refund_state:status })
+
+  my_refund= db.session.query(Refunds).filter(Refunds.id == id).first()
+  db.session.query(Purchased)\
+          .filter(Purchased.purcid == my_refund.purchased_purcid )\
+          .update({Purchased.shipment:  "Refunded" if (status=="Refunded") else "Refund Rejected"  })
+  db.session.commit()
+  retjs = {}
+  retjs["status"] = True
+  return json.dumps(retjs)
+
+@app.route('/purchased_update')
+def purchased_updatesssss():
+  todata= "<h3> Sales Manager </h3> "
+  allsalesmanag=Sales_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Sid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allsalesmanag:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Sid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  
+  todata+="<h3>Customers </h3> "
+  allCustomers=Customers.query.filter_by().all()
+  todata+= "<table> <tr> <th>email </th> <th>name </th> </tr> "
+  for i in allCustomers:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.email,i.name) 
+  todata +="</table>   "
+  
+  
+  todata+="<h3>Change Price </h3> "
+  allchange_prince=db.session.query(change_price).all()
+  todata+= "<table> <tr> <th>Sid </th> <th>Pid </th> </tr> "
+  for i in allchange_prince:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Sid,i.Pid) 
+  todata +="</table>   "
+
+  todata+= "<h3> Purchased </h3>"
+  todata+= "<table> <tr> <th> purcid </th> <th> price </th><th> sale </th><th> quantity </th><th> shipment </th></tr> "
+  allPurchased = db.session.query(Purchased).all()  # db.session.query(followers).filter(...).all()
+  for i in allPurchased:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.purcid, i.price ,i.sale, i.quantity, i.shipment ) 
+  todata +="</table>   "
+
+  todata+= "<h3> Refunds </h3>"
+  todata+= "<table> <tr> <th> id </th> <th> customer_email </th><th> purchased_purcid </th><th> sales_manager_id </th><th> refund_state </th><th> date </th></tr> "
+  allrefunds = db.session.query(Refunds).all()  # db.session.query(followers).filter(...).all()
+  for i in allrefunds:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></td><td>{}</td><td>{}</td></tr>".format(i.id, i.customer_email, i.purchased_purcid, i.sales_manager_id, i.refund_state, i.date) 
+  todata +="</table> "
+  return render_template('purchased_update.html',data =todata )  
+
+
+
+@app.route('/purchased_update/submit_test' , methods=['POST'], strict_slashes=False  )
+def purchasedupdatesssubmittest():
+  url = 'http://127.0.0.1:5000/purchased_update/submit'
+  myobj = {
+          'purcid':request.form['purcid'],
+          'shipment':request.form['shipment']          
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
+
+@app.route('/purchased_update/submit', methods=['POST'] , strict_slashes=False )
+def purchesdddssubmit_update():
+  #rejected accepted 
+  data2 = json.loads(request.get_data())#request.get_json()
+  shipment= str(data2['shipment'])
+  purcid = int(data2['purcid'])
+  
+  db.session.query(Purchased)\
+          .filter(Purchased.purcid ==purcid )\
+          .update({Purchased.shipment: shipment  })
+  db.session.commit()
+  retjs = {}
+  retjs["status"] = True
+  return json.dumps(retjs)
+
 
 
 @app.route('/refunds_get_all' )
@@ -1819,7 +1977,8 @@ def refunds_get_all():
   retjs=[]
   for i in allrefunds:
     retjs.append(
-      { "email": i.customer_email    ,
+      { "id" : i.id,
+        "email": i.customer_email    ,
         "purcid": i.purchased_purcid    ,
         "sid": i.sales_manager_id    ,
         "refund_state": i.refund_state     
@@ -1882,13 +2041,77 @@ def refunds_get_sid_submit():
   for i in allrefunds:
     if i.sales_manager_id == Sid:
       retjs.append(
-        { "email": i.customer_email    ,
+        { "id": i.id,
+          "email": i.customer_email    ,
           "purcid": i.purchased_purcid    ,
           "sid": i.sales_manager_id    ,
           "refund_state": i.refund_state     
                     }
       )
   return json.dumps(retjs )
+
+@app.route('/refunds_get_uid')
+def refunds_get_uid():
+  todata= "<h3> Sales Manager </h3> "
+  allsalesmanag=Sales_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Sid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allsalesmanag:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Sid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  
+  todata+="<h3>Customers </h3> "
+  allCustomers=Customers.query.filter_by().all()
+  todata+= "<table> <tr> <th>email </th> <th>name </th> </tr> "
+  for i in allCustomers:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.email,i.name) 
+  todata +="</table>   "
+  
+  
+  todata+="<h3>Change Price </h3> "
+  allchange_prince=db.session.query(change_price).all()
+  todata+= "<table> <tr> <th>Sid </th> <th>Pid </th> </tr> "
+  for i in allchange_prince:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Sid,i.Pid) 
+  todata +="</table>   "
+
+  todata+= "<h3> Purchased </h3>"
+  todata+= "<table> <tr> <th> purcid </th> <th> price </th><th> sale </th><th> quantity </th><th> shipment </th></tr> "
+  allPurchased = db.session.query(Purchased).all()  # db.session.query(followers).filter(...).all()
+  for i in allPurchased:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.purcid, i.price ,i.sale, i.quantity, i.shipment ) 
+  todata +="</table>   "
+
+  todata+= "<h3> Refunds </h3>"
+  todata+= "<table> <tr> <th> id </th> <th> customer_email </th><th> purchased_purcid </th><th> sales_manager_id </th><th> refund_state </th><th> date </th></tr> "
+  allrefunds = db.session.query(Refunds).all()  # db.session.query(followers).filter(...).all()
+  for i in allrefunds:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></td><td>{}</td><td>{}</td></tr>".format(i.id, i.customer_email, i.purchased_purcid, i.sales_manager_id, i.refund_state, i.date) 
+  todata +="</table> "
+  return render_template('refunds_get_uid.html',data =todata )    
+
+@app.route('/refunds_get_uid/submit_test',methods=['POST'] ,strict_slashes=False)
+def refunds_get_uid_submit_test():  
+  url = 'http://127.0.0.1:5000/refunds_get_uid/submit'
+  myobj = {'email': request.form['email'] }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )   
+
+@app.route('/refunds_get_uid/submit' , methods=['POST'] , strict_slashes=False  )
+def refunds_get_uid_submit():
+  data2 = json.loads(request.get_data())
+  email = str(data2["email"])
+  allrefunds = db.session.query(Refunds).all()  # db.session.query(followers).filter(...).all()
+  retjs=[]
+  for i in allrefunds:
+    if (i.customer_email == email):
+      retjs.append(
+        { "email": i.customer_email    ,
+          "purcid": i.purchased_purcid    ,
+          "refund_state": i.refund_state     
+        }
+      )
+  return json.dumps(retjs )
+
 
 
 
@@ -2310,6 +2533,8 @@ def ask_bank(creddit_card_number,cvc,exp_date):
   return True
 def execute_transaction(creddit_card_number,cvc,exp_date, total_price):
   return True
+
+
 
 @app.route('/get_users_purchases/submit' , methods=["POST"] , strict_slashes=False )
 def get_users_purchases():
