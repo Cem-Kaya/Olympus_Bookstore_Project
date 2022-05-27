@@ -59,6 +59,50 @@ class _ProductPageState extends State<ProductPage> {
 
     // obtain shared preferences
   }
+  var remove;
+  Removewishes(String email,num pid) async { //it will be handled
+    try {
+
+      remove = await http.post(
+        Uri.parse(API.remove_wished), //it will be handled
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          {
+            "email": email,
+            "Pid":pid,
+          },
+        ),
+      );
+
+      //remove =jsonDecode(remove.body);
+    } catch (e) {
+      print("error is ${e.toString()}");
+    }
+  }
+  var add;
+  ADDwishes(String email,num pid) async { //it will be handled
+    try {
+
+      add = await http.post(
+        Uri.parse(API.wishes_submit), //it will be handled
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          {
+            "email": email,
+            "Pid":pid,
+          },
+        ),
+      );
+
+      //add =jsonDecode(add.body);
+    } catch (e) {
+      print("error is ${e.toString()}");
+    }
+  }
 
   dynamic items;
 
@@ -79,7 +123,7 @@ class _ProductPageState extends State<ProductPage> {
     }
   }
   var wishes;
-  ALLwishes(String email,) async { //it will be handled
+  ALLwishes(String email,) async {//it will be handled
     try {
 
       wishes = await http.post(
@@ -98,18 +142,28 @@ class _ProductPageState extends State<ProductPage> {
       print("aaaaaaaaaaaaa");
       print(wishes);
       int i= 0;
+      bool ished=false;
       while(i<wishes.length){
         if(wishes[i]["Pid"]==widget.productID){
-          setState(() {
-            is_wished=true;
-          });
 
+            ished=true;
 
-          print(is_wished);
-          print(wishes[i]["Pid"]);
+         // print(is_wished);
+          //print(wishes[i]["Pid"]);
         }
         i=i+1;
       }
+      if(ished){
+        setState(() {
+          is_wished=true;
+        });
+      }
+      else{
+        setState(() {
+          is_wished=false;
+        });
+      }
+
     } catch (e) {
       print("error is ${e.toString()}");
     }
@@ -266,12 +320,20 @@ class _ProductPageState extends State<ProductPage> {
                                             decoration: BoxDecoration(
                                                 border: Border.all(color: AppColors.notification)
                                             ),
-                                            child:is_wished ?TextButton(onPressed: (){}, child: Text(
+                                            child:is_wished ?TextButton(onPressed: ()async
+                                            {
+                                              await Removewishes(widget.isuser, widget.productID);
+                                              await ALLwishes(widget.isuser);
+                                            }, child: Text(
                                                 "Remove from wishlist",
                                                 style: const TextStyle(
                                                   color: AppColors.notification,
                                                   fontSize: 16,
-                                                )) ,):TextButton(onPressed: (){}, child: Text(
+                                                )) ,):TextButton(onPressed: ()async
+                                            {
+                                                await ADDwishes(widget.isuser,widget.productID);
+                                                await ALLwishes(widget.isuser);
+                                            }, child: Text(
                                                 "Add to wishlist",
                                                 style: const TextStyle(
                                                   color: AppColors.notification,
