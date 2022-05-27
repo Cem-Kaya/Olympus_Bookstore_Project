@@ -5,6 +5,7 @@ import StoreSignin from '../components/StoreSignin'
 import StoreSignup from '../components/StoreSignup'
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
+import { checkStoreLogInStatus, getStoreManagerID, storeLogIn, storeSignUp } from "../helperFunctions/helperLogin";
 
 const Container = styled.div`
   width: 100%;
@@ -33,6 +34,43 @@ const Form = styled.form`
 `;
 
 const StoreLogin = () => {
+
+  let loginStatus = false
+  const navigate = useNavigate()
+
+  const LogIn = async (username, passHash) =>  {
+    try{
+      const serverAnswer = await storeLogIn(username, passHash)
+      console.log("Server answer: " , serverAnswer)
+      setValues(serverAnswer)
+    }
+    catch (e){
+      console.log(e)
+    }
+    if(checkStoreLogInStatus()){
+      navigate(`/Store=${getStoreManagerID()}`)
+    }
+  }
+  
+  const SignUp = async (username, passHash) =>  {
+    try{
+      const serverAnswer = await storeSignUp(username, passHash)
+      setValues(serverAnswer)
+    }
+    catch(e){
+      console.log(e)
+    }
+
+    if(checkStoreLogInStatus()){
+      navigate(`/Store=${getStoreManagerID()}`)
+    }
+  }
+
+  const setValues = (serverAnswer) => {
+    loginStatus = serverAnswer["status"]
+    console.log(loginStatus)
+  }
+  
     const types= ['LOGIN', 'SIGNUP'];
     const [type,setType]= useState();
       
@@ -52,7 +90,7 @@ const StoreLogin = () => {
               </Button>
             ))}
           </Form>
-          {istype ? (<StoreSignin></StoreSignin>) : (<StoreSignup></StoreSignup>)      
+          {istype ? (<StoreSignin onLogin={LogIn}></StoreSignin>) : (<StoreSignup onSignUp={SignUp}></StoreSignup>)      
           }
           </Container>
         );

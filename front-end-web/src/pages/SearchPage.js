@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCartItems'
 import { fetchBooks, fetchBooksFromCategory } from '../helperFunctions/helperGetProducts'
-import { addToWishList } from '../helperFunctions/helperWishList'
+import { addToWishList, removeFromWishList } from '../helperFunctions/helperWishList'
 
 const Body = styled.div`
     background-color: #282c34;
@@ -121,9 +121,16 @@ const SearchPage = () => {
 
       const AddToWishList = async (item) => {
         const answer = await addToWishList(item.id)
+        setWishListChanged(!wishListChanged)
+      }
+    
+      const RemoveFromWishList = async (item) => {
+        await removeFromWishList(item.id)
+        setWishListChanged(!wishListChanged)
       }
   
     const [cartItemsChanged, setCartItemsChanged] = useState(false);
+    const [wishListChanged, setWishListChanged] = useState(false)
     
     const AddToCart = (item) => {
       addNewItem(item)
@@ -187,33 +194,33 @@ const SearchPage = () => {
     }
     let filteredItems = FilterItems()
 
-    const pages = () => {
-        let pageSize = 16
-        let arr = []
+    // const pages = () => {
+    //     let pageSize = 16
+    //     let arr = []
 
-        for(var i = 0; i < filteredItems.length; i += pageSize){
-            arr.push(<li className={"page-link " + parseInt(params["page"]) === (i / pageSize) ? "active" : "" }><a className="page-link" href={getPageLink(i/pageSize + 1)}>{i/pageSize + 1}</a></li>)
-        }
-        return arr
-    }
+    //     for(var i = 0; i < filteredItems.length; i += pageSize){
+    //         arr.push(<li className={"page-link " + parseInt(params["page"]) === (i / pageSize) ? "active" : "" }><a className="page-link" href={getPageLink(i/pageSize + 1)}>{i/pageSize + 1}</a></li>)
+    //     }
+    //     return arr
+    // }
 
-    const getPageLink = (pageNum) => {
-        let link = ""
-        if(params.hasOwnProperty("title")){
-            link = `/Search/page=${pageNum}/&title=${params["title"]}/&author=${params["author"].length === 0 ? "*" : params["author"]}/&publisher=${params["publisher"].length === 0 ? "*" : params["publisher"]}/&pr_lower=${params["pr_lower"]}/&pr_upper=${params["pr_upper"]}/&raiting=${params["raiting"].length === 0 ? "*" : params["raiting"]}`
-        }
-        else if(params.hasOwnProperty("description")){
-            link = `/Search/page=${pageNum}/&description=${params["description"]}/&author=${params["author"].length === 0 ? "*" : params["author"]}/&publisher=${params["publisher"].length === 0 ? "*" : params["publisher"]}/&pr_lower=${params["pr_lower"]}/&pr_upper=${params["pr_upper"]}/&raiting=${params["raiting"].length === 0 ? "*" : params["raiting"]}`
-        }
-        else{
-            link = `/Search/page=${pageNum}/&category=${params["category"]}/&author=${params["author"].length === 0 ? "*" : params["author"]}/&publisher=${params["publisher"].length === 0 ? "*" : params["publisher"]}/&pr_lower=${params["pr_lower"]}/&pr_upper=${params["pr_upper"]}/&raiting=${params["raiting"].length === 0 ? "*" : params["raiting"]}`
-        }
-        return link
-    }
+    // const getPageLink = (pageNum) => {
+    //     let link = ""
+    //     if(params.hasOwnProperty("title")){
+    //         link = `/Search/page=${pageNum}/&title=${params["title"]}/&author=${params["author"].length === 0 ? "*" : params["author"]}/&publisher=${params["publisher"].length === 0 ? "*" : params["publisher"]}/&pr_lower=${params["pr_lower"]}/&pr_upper=${params["pr_upper"]}/&raiting=${params["raiting"].length === 0 ? "*" : params["raiting"]}`
+    //     }
+    //     else if(params.hasOwnProperty("description")){
+    //         link = `/Search/page=${pageNum}/&description=${params["description"]}/&author=${params["author"].length === 0 ? "*" : params["author"]}/&publisher=${params["publisher"].length === 0 ? "*" : params["publisher"]}/&pr_lower=${params["pr_lower"]}/&pr_upper=${params["pr_upper"]}/&raiting=${params["raiting"].length === 0 ? "*" : params["raiting"]}`
+    //     }
+    //     else{
+    //         link = `/Search/page=${pageNum}/&category=${params["category"]}/&author=${params["author"].length === 0 ? "*" : params["author"]}/&publisher=${params["publisher"].length === 0 ? "*" : params["publisher"]}/&pr_lower=${params["pr_lower"]}/&pr_upper=${params["pr_upper"]}/&raiting=${params["raiting"].length === 0 ? "*" : params["raiting"]}`
+    //     }
+    //     return link
+    // }
 
     return (
       <div>
-        <Header itemsInCartChanged={cartItemsChanged} onAddToCart={HeaderAddToCart} onRemoveFromCart={HeaderRemoveFromCart}></Header>  
+        <Header itemsInCartChanged={cartItemsChanged} wishListChanged={wishListChanged} onAddToCart={HeaderAddToCart} onRemoveFromCart={HeaderRemoveFromCart}></Header>  
         <Body>
         {
           !loaded ? 
@@ -248,11 +255,11 @@ const SearchPage = () => {
                 <Filters products={filteredItems} params={params}/>
             </LeftContainer>
             <RightContainer>
-                <Products products={filteredItems} onAddToCart={AddToCart} sortBy={sortBy} highToLow={sortBy !== "Price low to high"} onAddToWishList={AddToWishList}></Products>
+                <Products products={filteredItems} onAddToCart={AddToCart} sortBy={sortBy} highToLow={sortBy !== "Price low to high"} onAddToWishList={AddToWishList} onRemoveFromWishList={RemoveFromWishList}></Products>
                 <nav className="mt-4" aria-label="Page navigation sample">
-                    <ul className="pagination">
+                    {/* <ul className="pagination">
                         {pages()}
-                    </ul>
+                    </ul> */}
                 </nav>
             </RightContainer>
         </BodyContainer>

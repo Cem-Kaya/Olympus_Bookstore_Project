@@ -29,9 +29,9 @@ function App() {
         <Route path='/WishList' element={<WishList/>}/>
         <Route path='/Account' element={<Account/>}/>
         <Route path='/OrderHistory' element={<OrderHistory/>}/>
-        <Route path='/Store' element={<MyStore/>}/>
+        <Route path='/Store=:sid' element={<MyStore/>}/>
         <Route path='/StoreLogin' element={<StoreLogin/>}/>
-        <Route path='/ProductManagement' element={<ProductManagement/>}/>
+        <Route path='/ProductManagement=:pmid' element={<ProductManagement/>}/>
         <Route path='/ProductManagementLogin' element={<ProductManagementLogin/>}/>
         <Route path='/invoice' element={<Invoice/>}/>
         <Route path='/SingleProduct=:pid' element={<SingleProduct/>}/>

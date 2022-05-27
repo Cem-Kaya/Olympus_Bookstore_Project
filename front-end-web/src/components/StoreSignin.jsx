@@ -65,28 +65,25 @@ const Link = styled.a`
 `;
 
 const StoreSignin = ({ onLogin }) => {
-  let email = ""
+  let name = ""
   let password = ""
 
-  const setEmail = (val) => {
-		email = val
+  const setName = (val) => {
+		name = val
 	}
   const setPassword = (val) => {
 		password = val
 	}
   const checkAndSubmit = () => {
-    if(email === "" || password === ""){
+    if(name === "" || password === ""){
       console.log("empty string")
     }
-    else if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
+    else
     {
       const sha2_256 = require('simple-js-sha2-256')
       password = sha2_256(password)
-      console.log(email, password)
-      onLogin(email, password)
-    }
-    else{
-      console.log("not an email address")
+      console.log(name, password)
+      onLogin(name, password)
     }
   }
   
@@ -94,7 +91,7 @@ const StoreSignin = ({ onLogin }) => {
       <Wrapper>
         <Title>LOG IN TO YOUR STORE</Title>
         <UserInfo>
-          <Input placeholder="email" onChange={event => setEmail(event.target.value)}/>
+          <Input placeholder="name" onChange={event => setName(event.target.value)}/>
           <Input placeholder="password" onChange={event => setPassword(event.target.value)}/>
           <Button onClick={() => {checkAndSubmit()}}>LOGIN</Button>
         </UserInfo>

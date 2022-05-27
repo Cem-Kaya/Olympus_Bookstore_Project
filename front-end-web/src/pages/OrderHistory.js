@@ -23,7 +23,6 @@ const ImageContainer = styled.div`
 const OrderHistory = () => {
   let navigate = useNavigate();
 
-  
 const [orders, setOrders] = useState([])
 const [books, setBooks] = useState([])
 const [loaded, setLoaded] = useState(false)
@@ -37,6 +36,8 @@ useEffect (() => {
 useEffect (() => {
   const getOrders = async () =>  {
     const itemsFromServer = await fetchOrders()
+    const refundedProducts = await fetchRefundedProducts()
+    console.log(refundedProducts)
     console.log(itemsFromServer)
     if(Object.keys(itemsFromServer).length === 0){
       setOrders([])
@@ -46,14 +47,35 @@ useEffect (() => {
       for (var key of Object.keys(itemsFromServer)) {
         itemArray.push(itemsFromServer[key])
       }
-      setOrders(itemArray)
+      let itemArray2 = refundedProducts
+      console.log(itemArray2)
+      
+      let refundedIDs = []
+      itemArray2.forEach(element => {
+          refundedIDs.push(element["purcid"])
+      })
+      console.log(refundedIDs)
+      
+      let nonRefundedArray = itemArray.filter(elem => !refundedIDs.includes(elem.purcid))
+      console.log(nonRefundedArray)
+
+      itemArray2.forEach(element => {
+        itemArray.forEach(item => {
+          if(item["purcid"] === element["purcid"]) {nonRefundedArray.push({...item, refund_state: element.refund_state})}
+        })
+      })
+      console.log(nonRefundedArray)
+      setOrders(nonRefundedArray) 
     }
+
     const serverbooks = await fetchBooks()
     setBooks(serverbooks)
     setLoaded(true)
   }
+
   getOrders()
-}, [])
+  
+}, [loaded])
 
 const fetchOrders = async () => {
   const res = await fetch('/get_ones_purch_hist/submit', {
@@ -70,6 +92,36 @@ const fetchOrders = async () => {
     return data
   }
 
+  const fetchRefundedProducts = async () => {
+    const res = await fetch('/refunds_get_uid/submit', {
+      method: "POST",
+      headers: {
+        'Accept' : 'application/json',
+        'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify({"email" : getUserID()})
+    })
+      const data = await res.json()
+  
+      console.log(data)
+      return data
+    }
+
+  const returnAProduct = async (purcid) => {
+    const res = await fetch('/refunds/submit', {
+      method: "POST",
+      headers: {
+        'Accept' : 'application/json',
+        'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify({"uid" : getUserID(), "purcid": purcid})
+    })
+      const data = await res.json()
+  
+      console.log(data)
+      return data
+    }
+    
   const elems = () => {
     let orderArray = []
     for (var key of Object.keys(orders)) {
@@ -132,13 +184,16 @@ const fetchOrders = async () => {
             :
             orders.length === 0 ? <tr><p className='text-light'>No Orders Yet</p></tr>
             : 
+            <>
+            <h3 className='text-light'>Order History</h3>
+            <br></br>
       <table className="table table-striped table-dark table-bordered" >
         <thead>
           <tr>
             <th scope="col" width="25%">Product</th>
             <th scope="col" width="5%">Quantity</th>
             <th scope="col" width="10%">Order Date</th>
-            <th scope="col" width="20%">Status</th>
+            <th scope="col" width="20%">Order Status</th>
             <th scope="col" width="20%">Refundability</th>
             <th scope="col" width="20%">Return the Product</th>
           </tr>
@@ -162,11 +217,22 @@ const fetchOrders = async () => {
                 {/* <th scope="col"><a href={`/SingleProduct=${element.pid}`}><img alt="" src={getImage(element)}></img></a></th> */}
                 <th scope="col" className='text-center'>{element.quantity}</th>
                 <th scope="col">{element.date}</th>
-                <th scope="col" className='display-flex flex-column'>{element.shipment}<button className='btn-warning'>Cancel Order</button></th>
-                <th scope="col">Refundable until {getLastRefundableDate(element).toString()}</th>
+                <th scope="col" className='text-center'>{element.shipment}</th>
                 {
+                  element.hasOwnProperty("refund_state") ? 
+                  <th scope="col">Refund Request Has Already Been Sent</th>
+                  :
+                  <th scope="col">Refundable until {getLastRefundableDate(element).toString()}</th>
+                }
+                {
+                  element.hasOwnProperty("refund_state") ? 
+                  <th scope="col">Refund status: {element.refund_state}</th>
+                  :
                   isRefundableNow(getLastRefundableDate(element)) ?
-                  <th scope="col" className='d-flex flex-column'>Refund date has not expired yet<button className='btn-warning'>Refund</button></th>
+                  element.shipment === "Processing" ? 
+                  <th scope="col" className='d-flex flex-column'>Refund date has not expired yet<button type="submit" onClick={() => {returnAProduct(element.purcid); setLoaded(false)}} className='btn-warning'>Cancel Order</button></th>
+                  :
+                  <th scope="col" className='d-flex flex-column'>Refund date has not expired yet<button type="submit" onClick={() => {returnAProduct(element.purcid); setLoaded(false)}} className='btn-warning'>Ask for a Refund</button></th>
                   :
                   <th scope="col">Refund date has expired</th>
                 }
@@ -177,6 +243,7 @@ const fetchOrders = async () => {
 
         </tbody>
       </table>
+      </>
       }
       <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
       </Body>

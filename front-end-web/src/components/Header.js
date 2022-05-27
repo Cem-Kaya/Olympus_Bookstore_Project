@@ -64,10 +64,11 @@ const DropDownItemCount = styled.div`
 `;
 
 
-const Header = ({itemsInCartChanged, onAddToCart, onRemoveFromCart, addToCartAllowed}) => {
+const Header = ({itemsInCartChanged, wishListChanged, onAddToCart, onRemoveFromCart, addToCartAllowed}) => {
   const history= useNavigate();
 
   const [cartItems, setCartItems] = useState([]);
+  const [wishListItems, setWishListItems] = useState([]);
   const [dropDownOpen, setdropDownOpen] = useState(false);
   const [dropDownOpenAccount, setDropDownOpenAccount] = useState(false)
   const [loginStatus, setLoginStatus] = useState(false)
@@ -78,6 +79,14 @@ const Header = ({itemsInCartChanged, onAddToCart, onRemoveFromCart, addToCartAll
   useEffect(() => {
     setCartItems(getCartItems())
   }, [itemsInCartChanged]);
+
+  useEffect(() => {
+    const getWishList = async () => {
+      const wishlist = await fetchWishList()
+      setWishListItems(wishlist)
+    }
+    getWishList()
+  }, [wishListChanged]);
 
   useEffect(() => {
     console.log(checkLogInStatus())
@@ -132,11 +141,6 @@ const Header = ({itemsInCartChanged, onAddToCart, onRemoveFromCart, addToCartAll
     history("/")
   }
 
-  const getWishListLength = async () => {
-    const wishList = await fetchWishList()
-    return wishList.length()
-  }
-
   return (
     <HeaderDark>
         <Container>
@@ -188,11 +192,11 @@ const Header = ({itemsInCartChanged, onAddToCart, onRemoveFromCart, addToCartAll
               }
               <button className='buttonStyle' onClick={() =>{history('/WishList')}}>
                 Wish List
-                <div className="widget-header">    
-                  <Favorite/>
-                    {/* {wishListLen === 0 ? <FavoriteBorderOutlined/> : 
+                <div className="widget-header">  
+                    {console.log(wishListItems.length)}  
+                    {wishListItems.length === 0 ? <FavoriteBorderOutlined/> : 
                     <><Favorite/>
-                    <span className="badge badge-pill badge-danger notify">{cartItems.length}</span></>} */}
+                    <span className="badge badge-pill badge-danger notify">{wishListItems.length}</span></>}
                 </div>
                 
               </button>

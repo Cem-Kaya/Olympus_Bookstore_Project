@@ -8,7 +8,7 @@ import ProductPageDetails from '../components/ProductPageDetails';
 import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCartItems';
 import { getUserID } from '../helperFunctions/helperLogin';
 import { fetchBooks } from '../helperFunctions/helperGetProducts';
-import { addToWishList } from '../helperFunctions/helperWishList';
+import { addToWishList, removeFromWishList } from '../helperFunctions/helperWishList';
 
 const Container = styled.div`
     text-align: center;
@@ -21,6 +21,7 @@ const SingleProduct = () => {
     let {pid} = useParams();
     const [item, setItem] = useState()
     const [cartItemsChanged, setCartItemsChanged] = useState(false)
+    const [wishListChanged, setWishListChanged] = useState(false)
     const [comments, setComments] = useState([])
     const [loaded, setLoaded] = useState(false)
 
@@ -95,11 +96,17 @@ const SingleProduct = () => {
 
       const AddToWishList = async (item) => {
         const answer = await addToWishList(item.id)
+        setWishListChanged(!wishListChanged)
+      }
+    
+      const RemoveFromWishList = async (item) => {
+        await removeFromWishList(item.id)
+        setWishListChanged(!wishListChanged)
       }
 
   return (
       <div>
-            <Header itemsInCartChanged={cartItemsChanged} onAddToCart={HeaderAddToCart} onRemoveFromCart={HeaderRemoveFromCart}></Header>
+            <Header itemsInCartChanged={cartItemsChanged} wishListChanged={wishListChanged} onAddToCart={HeaderAddToCart} onRemoveFromCart={HeaderRemoveFromCart}></Header>
             <Container className='bg-dark'>
             {
               !loaded ? 

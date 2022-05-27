@@ -64,13 +64,12 @@ const WishList = () => {
 
   const RemoveFromWishList = async (item) => {
     await removeFromWishList(item.id)
-    setWishlistChanged(!wishlistChanged
-      )
+    setWishlistChanged(!wishlistChanged)
   }
 
   return (
     <div>
-      <Header itemsInCartChanged={cartItemsChanged} onAddToCart={HeaderAddToCart} onRemoveFromCart={HeaderRemoveFromCart}></Header>
+      <Header itemsInCartChanged={cartItemsChanged} wishListChanged={wishlistChanged} onAddToCart={HeaderAddToCart} onRemoveFromCart={HeaderRemoveFromCart}></Header>
       <Body>
       {
         !loaded ? 

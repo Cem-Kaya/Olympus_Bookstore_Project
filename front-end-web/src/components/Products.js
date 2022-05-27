@@ -9,7 +9,7 @@ const Container = styled.div`
     margin-right: 60px;
 `;
 
-const Products = ({onAddToCart, products, sortBy, highToLow, onAddToWishList, onRemoveFromWishList}) => {
+const Products = ({onAddToCart, wishList, products, sortBy, highToLow, onAddToWishList, onRemoveFromWishList}) => {
 
   const GetSortByParameter = () => {
     if(sortBy === "Popular" || sortBy === "Best Seller"){
@@ -39,7 +39,10 @@ const Products = ({onAddToCart, products, sortBy, highToLow, onAddToWishList, on
       { 
         products.length > 0 ? products.sort((a, b) => highToLow ? ((parseFloat(a[sbValue]) > parseFloat(b[sbValue])) ? -1 : 1) : 
         (parseFloat((a[sbValue]) > parseFloat(b[sbValue])) ? 1 : -1)).map((item) => (
-        <Product item={item} onAddToCart={onAddToCart} key={item.id} onAddToWishList={onAddToWishList} onRemoveFromWishList={onRemoveFromWishList}/>
+          wishList !== undefined && wishList.filter(elem => elem["id"] === item.id).length !== 0 ?
+          <Product item={item} wishList={true} onAddToCart={onAddToCart} key={item.id} onAddToWishList={onAddToWishList} onRemoveFromWishList={onRemoveFromWishList}/>
+          :
+          <Product item={item} wishList={false} onAddToCart={onAddToCart} key={item.id} onAddToWishList={onAddToWishList} onRemoveFromWishList={onRemoveFromWishList}/>
       )) : ""}
     </Container>
   );

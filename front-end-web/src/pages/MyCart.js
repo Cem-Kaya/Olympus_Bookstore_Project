@@ -6,12 +6,13 @@ import { Delete } from "@material-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { checkLogInStatus } from '../helperFunctions/helperLogin';
 import { add1Item, remove1Item, emptyCart, removeAllItem, getCartItems } from '../helperFunctions/helperCartItems'
-import { addToWishList } from '../helperFunctions/helperWishList';
+import { addToWishList, removeFromWishList } from '../helperFunctions/helperWishList';
 
 const MyCart = ({params}) => {
 
   const history= useNavigate();
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState([])
+  const [wishListChanged, setWishListChanged] = useState(false)
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
@@ -49,12 +50,18 @@ const MyCart = ({params}) => {
 
   const AddToWishList = async (item) => {
     const answer = await addToWishList(item.id)
+    setWishListChanged(!wishListChanged)
+  }
+
+  const RemoveFromWishList = async (item) => {
+    await removeFromWishList(item.id)
+    setWishListChanged(!wishListChanged)
   }
 
   return (
 
     <div className="App">
-      <Header itemsInCartChanged={items} addToCartAllowed={false} />        
+      <Header itemsInCartChanged={items} wishListChanged={wishListChanged} addToCartAllowed={false} />        
         {
           !loaded ? 
             <div class="d-flex justify-content-center">

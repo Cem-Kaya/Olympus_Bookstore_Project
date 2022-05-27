@@ -9,6 +9,7 @@ import {
   import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react'
+import { checkLogInStatus } from "../helperFunctions/helperLogin";
   
   const Info = styled.div`
     opacity: 0;
@@ -130,9 +131,9 @@ const TextBoxPrize = styled.div`
   `;
 
 
-  const Product = ({ item, onAddToCart, onAddToWishList, onRemoveFromWishList }) => {
+  const Product = ({ item, wishList, onAddToCart, onAddToWishList, onRemoveFromWishList }) => {
     let navigate = useNavigate()
-    const [favorited, setFavorited] = useState(false)
+    const [favorited, setFavorited] = useState(wishList === true)
     const [addedToCart, setAddedToCart] = useState(false)
 
     return (
@@ -170,9 +171,9 @@ const TextBoxPrize = styled.div`
           <Icon>
             {
               favorited ?
-              <FavoriteOutlined onClick={() => {onRemoveFromWishList(item); setFavorited(false)}} />
+              <FavoriteOutlined disabled={checkLogInStatus()} onClick={() => {onRemoveFromWishList(item); setFavorited(false)}} />
               :
-              <FavoriteBorderOutlined onClick={() => {onAddToWishList(item); setFavorited(true)}} />
+              <FavoriteBorderOutlined disabled={checkLogInStatus()} onClick={() => {onAddToWishList(item); setFavorited(true)}} />
             }
           </Icon>
         </Info>

@@ -5,6 +5,8 @@ import "../App.css"
 import { fetchBooks } from '../helperFunctions/helperGetProducts'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import { getProductManagerID } from '../helperFunctions/helperLogin'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 
 const Body  = styled.div`
     padding-bottom: 20px;
@@ -29,34 +31,101 @@ const Card = styled.div`
 `;
 
 const TextBox = styled.div`
-    max-width: 1000px;
+    max-width: 1200px;
     overflow-wrap: break-word;
     word-wrap: break-word;
-    margin: 0 0;
+    margin: 0 5px;
     text-align: left;
 `;
 
+const Bold = styled.div`
+  font-weight: bold;
+`;
+
 const ProductManagement = () => {
+    let params = useParams()
+    let navigate = useNavigate()
+
+    useEffect (() => {
+      console.log(params["pmid"])
+      console.log(getProductManagerID())
+      if(params["pmid"] !== getProductManagerID().toString()){
+       navigate("/Account")
+      }
+    }, [params, navigate])
+
     const [expandableOpen, setExpandableOpen] = useState(true)
     const [loaded, setLoaded] = useState(false)
     const [items, setItems] = useState([])
-    const [navItemSelected, setNavItemSelected] = useState(4)
+    const [deliveryList, setDeliveryList] = useState([])
+    const [salesManagers, setSalesManagers] = useState([])
+    const [navItemSelected, setNavItemSelected] = useState(0)
 
     const handleOpenExpandable = () => {
-        setExpandableOpen(!expandableOpen)
+      setExpandableOpen(!expandableOpen)
     }
+
+    const PrintValues = () => {
+      console.log(title)
+      console.log(salesManager)
+      console.log(author)
+      console.log(publisher)
+      console.log(edition_number)
+      console.log(model)
+      console.log(warranty)
+      console.log(initial_price)
+      console.log(amountInStock)
+      console.log(img1URL)
+      console.log(img2URL)
+      console.log(img3URL)
+      console.log(description)
+    }
+
+    let title = ""
+    let salesManager = ""
+    let author = ""
+    let publisher = ""
+    let edition_number = 0
+    let model = ""
+    let warranty = ""
+    let initial_price = 0
+    let amountInStock = 0
+    let img1URL = ""
+    let img2URL = ""
+    let img3URL = ""
+    let description = ""
 
     useEffect (() => {
       const getBooks = async () =>  {
         const itemsFromServer = await fetchBooks()
-        setItems(itemsFromServer)
+        const bookIds = await fetchProductIds()
+        console.log(itemsFromServer)
+        console.log(bookIds)
+        let commonBooks = []
+        bookIds.forEach(element => {
+          itemsFromServer.forEach(item => {
+            if(element.Pid === item.id)  {commonBooks.push(item)}
+          })
+        });
+        setItems(commonBooks)
+        setLoaded(true)
+      }
+      const getSalesManagers = async () =>  {
+        const itemsFromServer = await fetchSalesManagers()
+        setSalesManagers(itemsFromServer)
+        setLoaded(true)
+      }
+      const getDeliveryList = async () =>  {
+        const itemsFromServer = await fetchDeliveryList()
+        itemsFromServer.hasOwnProperty("status") ? setDeliveryList([]) : setDeliveryList(itemsFromServer)
+        console.log(itemsFromServer)
         setLoaded(true)
       }
       if(navItemSelected === 2){
         getBooks()
       }
       else if(navItemSelected === 1){
-        setLoaded(true)
+        getDeliveryList()
       }
       else if(navItemSelected === 0){
         getBooks()
@@ -65,9 +134,45 @@ const ProductManagement = () => {
         setLoaded(true)
       }
       else if(navItemSelected === 4){
-        setLoaded(true)
+        getSalesManagers()
       }
     }, [navItemSelected])
+
+    const fetchSalesManagers = async () => {
+      const res = await fetch(`/all_salesmanagers`     , {headers : { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+          }}
+          )
+      const data = await res.json()
+      return data
+    }
+    
+    const fetchDeliveryList = async () => {
+      const res = await fetch(`/pmid_deliverylist/submit`     , {headers : { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+          },
+          method: "POST",
+          body: JSON.stringify({Pmid: getProductManagerID()})
+          }
+          )
+      const data = await res.json()
+      return data
+  }
+  
+  const fetchProductIds = async () => {
+    const res = await fetch(`/products_pmid/submit`     , {headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify({Pmid: getProductManagerID()})
+        }
+        )
+    const data = await res.json()
+    return data
+  }
 
     const getPageBody = () => {
       switch(navItemSelected){
@@ -76,39 +181,82 @@ const ProductManagement = () => {
             <div className='container mt-5 mb-5 bg-secondary text-light' style={{padding:"40px"}}>
             <div className='row'>
                 <div className="col-md-4 mb-3">
-                <a href={`/SingleProduct=${item.id}`}><img src={item.img} alt="a" height="160px"></img></a>
+                  <label htmlFor="img0">Image 1</label>
+                  <br></br>
+                  <a href={`/SingleProduct=${item.id}`}><img src={item.img} alt="a" height="160px"></img></a>
                 </div>
                 <div className="col-md-4 mb-3">
-                <div className='row'>  
-                    <TextBox><p>Title: {item.title}</p></TextBox>
-                </div>   
-                <div className='row'>  
-                    <TextBox><p>Author: {item.author}</p></TextBox>
-                </div>  
-                <div className='row'>  
-                    <br></br>
-                </div> 
-                <div className='row'>  
-                    <p>Amount Sold: {item.amount_sold}</p>
-                </div>  
-                <div className='row'>  
-                    <p>Amount Remaining In Stock: {item.in_stock}</p>
-                </div>  
+                  <label htmlFor="img1">Image 2</label>
+                  <br></br>
+                  <a href={`/SingleProduct=${item.id}`}><img src={item.img1} alt="a" height="160px"></img></a>
                 </div>
                 <div className="col-md-4 mb-3">
-                <label htmlFor="lastName">Amount Remaining In Stock</label>
-                <input type="number" className="form-control" id="lastName" placeholder={`current base price: ${item.price / ((100 - parseFloat(item.discount)) / 100)} TL`} onChange={event => (event.target.value)} required=""/>
-                <div className="invalid-feedback">
-                    Valid last name is required.
+                  <label htmlFor="img2">Image 3</label>
+                  <br></br>
+                  <a href={`/SingleProduct=${item.id}`}><img src={item.img2} alt="a" height="160px"></img></a>
                 </div>
-                <br></br>
-                </div>
-            </div>
-            <div className='row'>
+
                 <div className="col-md-12 mb-3">
-                <button className='btn btn-primary btn-lg btn-block'>Update Stock</button>
+                  <hr className='bg-light'/>
+                </div>
+
+                <div className="col-md-12 mb-3">
+                  <label htmlFor="Description">General Information</label>    
+                </div>
+
+                <div className="col-md-4 mb-3">
+                  <div className='row'>  
+                      <TextBox><p>Title: {item.title}</p></TextBox>
+                  </div>   
+                  <div className='row'>  
+                      <TextBox><p>Author: {item.author}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                      <TextBox><p>Publisher: {item.publisher}</p></TextBox>
+                  </div> 
+                  <div className='row'>  
+                    <TextBox><p>Raiting: {item.raiting} stars</p></TextBox>
+                  </div> 
+                </div> 
+                <div className="col-md-4 mb-3">
+                  <div className='row'>  
+                    <TextBox><p>Amount Sold: {item.amount_sold}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Amount Remaining In Stock: {item.in_stock}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Discount: {item.discount}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Price: {item.price} TL</p></TextBox>
+                  </div>  
+                </div>
+                <div className="col-md-4 mb-3">
+                  <div className='row'>  
+                    <TextBox><p>Model: {item.model}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Warranty: {item.warranty}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Date: {item.date}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Edition Number: {item.edition_number}</p></TextBox>
+                  </div>  
+                </div>
+
+                <div className="col-md-12 mb-3">
+                  <hr className='bg-light'/>
+                </div>
+
+                <div className="col-md-12 mb-3">
+                  <label htmlFor="Description">Description</label>
+                  <TextBox><p>Description: {item.description}</p></TextBox>
                 </div>
             </div>
+            <br></br>
             </div>))
         case 1:
           return (      
@@ -117,7 +265,7 @@ const ProductManagement = () => {
           <thead>
             <tr>
               <th scope="col" width="10%">Delivery ID</th>
-              <th scope="col" width="10%">Customer ID</th>
+              <th scope="col" width="10%">Customer E-mail</th>
               <th scope="col" width="10%">Product ID</th>
               <th scope="col" width="6%">Quantity</th>
               <th scope="col" width="14%">Total Price</th>
@@ -126,13 +274,27 @@ const ProductManagement = () => {
             </tr>
           </thead>
           <tbody>
+          {
+             deliveryList.map((element, index) => (
+              <tr key={index}>
+                {/* <th scope="col"><a href={`/SingleProduct=${element.pid}`}><img alt="" src={getImage(element)}></img></a></th> */}
+                <th scope="col" className='text-center'>{element.did}</th>
+                <th scope="col">{element.email}</th>
+                <th scope="col"><a href={`/SingleProduct=${element.Pid}`} className="text-light">{element.Pid}</a></th>
+                <th scope="col">{element.date}</th>
+                <th scope="col">{element.date}</th>
+                <th scope="col">{element.date}</th>
+                <th scope="col">{element.date}</th>
+              </tr>
+            ))
             
+          }
           </tbody>
         </table>
         </TableBody>
         )
         case 2:
-          return items.map(item => (
+          return items.map((item, index) => (
             <div className='container mt-5 mb-5 bg-secondary text-light' style={{padding:"40px"}}>
             <div className='row'>
                 <div className="col-md-4 mb-3">
@@ -156,12 +318,13 @@ const ProductManagement = () => {
                 </div>  
                 </div>
                 <div className="col-md-4 mb-3">
-                <label htmlFor="lastName">Amount Remaining In Stock</label>
-                <input type="number" className="form-control" id="lastName" placeholder={`current base price: ${item.price / ((100 - parseFloat(item.discount)) / 100)} TL`} onChange={event => (event.target.value)} required=""/>
-                <div className="invalid-feedback">
-                    Valid last name is required.
-                </div>
-                <br></br>
+                  <br></br>
+                  <label htmlFor="lastName">Amount Remaining In Stock</label>
+                  <input type="number" className="form-control" id="lastName" placeholder={`current amount in stock: ${item.in_stock}`} onChange={event => (event.target.value)} required=""/>
+                  <div className="invalid-feedback">
+                      Valid last name is required.
+                  </div>
+                  <br></br>
                 </div>
             </div>
             <div className='row'>
@@ -206,24 +369,18 @@ const ProductManagement = () => {
               <div className="row">
                   <div className="col-md-9 mb-3">
                     <label htmlFor="text">Title  </label>
-                    <input type="text" className="form-control" id="title" onChange={event => (event.target.value)} placeholder="e.g. Attak on Titan"/>
+                    <input type="text" className="form-control" id="title" onChange={event => (title = event.target.value)} placeholder="e.g. Attak on Titan"/>
                     <div className="invalid-feedback">
                       Please enter a valid email address htmlFor shipping updates.
                     </div>
                   </div>
                   <div className="col-md-3 mb-3">
                     <label htmlFor="sm">Sales Manager</label>
-                    <select className="form-control" onChange={event => (event.target.value)}>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                        <option value="2026">2026</option>
-                        <option value="2027">2027</option>
-                        <option value="2028">2028</option>
-                        <option value="2029">2029</option>
-                        <option value="2030">2030</option>
-                        <option value="2031">2031</option>
+                    {salesManager = salesManagers[0]["Sid"]}
+                    <select className="form-control" onChange={event => (salesManager = event.target.value)}>
+                        {salesManagers.map(elem => (
+                          <option value={elem.Sid}>{elem.name}</option>
+                        ))}
                     </select>
                     <div className="invalid-feedback">
                       Please enter a valid email address htmlFor shipping updates.
@@ -233,14 +390,14 @@ const ProductManagement = () => {
                 <div className="row">
                   <div className="col-md-6 mb-3">
                     <label htmlFor="firstName">Author</label>
-                    <input type="text" className="form-control" id="firstName" placeholder="" onChange={event => (event.target.value)} required=""/>
+                    <input type="text" className="form-control" id="firstName" placeholder="" onChange={event => (author = event.target.value)} required=""/>
                     <div className="invalid-feedback">
                       Valid first name is required.
                     </div>
                   </div>
                   <div className="col-md-6 mb-3">
                     <label htmlFor="lastName">Publisher</label>
-                    <input type="text" className="form-control" id="lastName" placeholder="" onChange={event => (event.target.value)} required=""/>
+                    <input type="text" className="form-control" id="lastName" placeholder="" onChange={event => (publisher = event.target.value)} required=""/>
                     <div className="invalid-feedback">
                       Valid last name is required.
                     </div>
@@ -249,29 +406,29 @@ const ProductManagement = () => {
 
                 <div className="row">
                   <div className="col-md-2 mb-3">
-                    <label htmlFor="firstName">Edition</label>
-                    <input type="text" className="form-control" id="firstName" placeholder="" onChange={event => (event.target.value)} required=""/>
+                    <label htmlFor="firstName">Edition Number</label>
+                    <input type="number" className="form-control" id="firstName" placeholder="" onChange={event => (edition_number = event.target.value)} required=""/>
                     <div className="invalid-feedback">
                       Valid first name is required.
                     </div>
                   </div>
                   <div className="col-md-2 mb-3">
-                    <label htmlFor="lastName">Model Number</label>
-                    <input type="text" className="form-control" id="lastName" placeholder="" onChange={event => (event.target.value)} required=""/>
+                    <label htmlFor="lastName">Model</label>
+                    <input type="text" className="form-control" id="lastName" placeholder="" onChange={event => (model = event.target.value)} required=""/>
                     <div className="invalid-feedback">
                       Valid last name is required.
                     </div>
                   </div>
                   <div className="col-md-2 mb-3">
                     <label htmlFor="lastName">Warranty</label>
-                    <input type="text" className="form-control" id="lastName" placeholder="" onChange={event => (event.target.value)} required=""/>
+                    <input type="text" className="form-control" id="lastName" placeholder="" onChange={event => (warranty = event.target.value)} required=""/>
                     <div className="invalid-feedback">
                       Valid last name is required.
                     </div>
                   </div>
                   <div className="col-md-2 mb-3">
                     <label htmlFor="lastName">Initial Price</label>
-                    <input type="number" className="form-control" id="lastName" placeholder="" onChange={event => (event.target.value)} required=""/>
+                    <input type="number" className="form-control" id="lastName" placeholder="" onChange={event => (initial_price = event.target.value)} required=""/>
                     <div className="invalid-feedback">
                       Valid last name is required.
                     </div>
@@ -285,7 +442,7 @@ const ProductManagement = () => {
                   </div>
                   <div className="col-md-2 mb-3">
                     <label htmlFor="lastName">Amount In Stock</label>
-                    <input type="number" className="form-control" id="lastName" placeholder="" onChange={event => (event.target.value)} required=""/>
+                    <input type="number" className="form-control" id="lastName" placeholder="" onChange={event => (amountInStock = event.target.value)} required=""/>
                     <div className="invalid-feedback">
                       Valid last name is required.
                     </div>
@@ -294,7 +451,7 @@ const ProductManagement = () => {
 
                 <div className="mb-3">
                   <label htmlFor="email">Image 1 URL  </label>
-                  <input type="email" className="form-control" id="email" onChange={event => (event.target.value)} placeholder="http://..."/>
+                  <input type="url" className="form-control" id="url1" onChange={event => (img1URL = event.target.value)} placeholder="http://..."/>
                   <div className="invalid-feedback">
                     Please enter a valid email address htmlFor shipping updates.
                   </div>
@@ -302,7 +459,7 @@ const ProductManagement = () => {
 
                 <div className="mb-3">
                   <label htmlFor="email">Image 2 URL  </label>
-                  <input type="email" className="form-control" id="email" onChange={event => (event.target.value)} placeholder="http://..."/>
+                  <input type="url" className="form-control" id="url2" onChange={event => (img2URL = event.target.value)} placeholder="http://..."/>
                   <div className="invalid-feedback">
                     Please enter a valid email address htmlFor shipping updates.
                   </div>
@@ -310,7 +467,7 @@ const ProductManagement = () => {
 
                 <div className="mb-3">
                   <label htmlFor="email">Image 3 URL  </label>
-                  <input type="email" className="form-control" id="email" onChange={event => (event.target.value)} placeholder="http://..."/>
+                  <input type="url" className="form-control" id="url3" onChange={event => (img3URL = event.target.value)} placeholder="http://..."/>
                   <div className="invalid-feedback">
                     Please enter a valid email address htmlFor shipping updates.
                   </div>
@@ -318,7 +475,7 @@ const ProductManagement = () => {
 
                 <div className="mb-3">
                   <label htmlFor="address">Description</label>
-                  <textarea type="text" className="form-control" id="address" onChange={event => (event.target.value)} placeholder="e.g. This book tells the story of..." required=""/>
+                  <textarea type="text" className="form-control" id="address" onChange={event => (description = event.target.value)} placeholder="e.g. This book tells the story of..." required=""/>
                   <div className="invalid-feedback">
                     Please enter your shipping address.
                   </div>
@@ -326,7 +483,7 @@ const ProductManagement = () => {
                 <br></br>
                 <div className='row'>
                     <div className="col-md-12 mb-0">
-                    <button className='btn btn-warning btn-lg btn-block'>Save</button>
+                      <button type="button" className='btn btn-warning btn-lg btn-block' onClick={() => {PrintValues()}}>Add This Product</button>
                     </div>
                 </div>
             </form>

@@ -8,7 +8,7 @@ import Slider from '../components/Slider'
 import { useState, useEffect } from 'react';
 import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCartItems';
 import { fetchBooks } from '../helperFunctions/helperGetProducts';
-import { addToWishList, removeFromWishList } from '../helperFunctions/helperWishList';
+import { addToWishList, fetchWishList, removeFromWishList } from '../helperFunctions/helperWishList';
 import styled from 'styled-components';
 import { fetchCategories } from '../helperFunctions/helperCategories';
 
@@ -57,18 +57,21 @@ const VisualPart = styled.div`
 const Main = () => {
   
   const [cartItemsChanged, setCartItemsChanged] = useState(false)
+  const [wishListChanged, setWishListChanged] = useState(false)
   const [items, setItems] = useState([])
   const [categories, setCategories] = useState([])
+  const [wishListItems, setWishListItems] = useState([])
   const [tag, setTag] = useState("Best Seller")
   const [loaded, setLoaded] = useState(false)
   
   useEffect (() => {
     const getBooks = async () =>  {
       const itemsFromServer = await fetchBooks()
-      console.log(itemsFromServer)
       const categoriesFromServer = await fetchCategories()
+      const wishList = await fetchWishList()
       setCategories(categoriesFromServer)
       setItems(itemsFromServer)
+      setWishListItems(wishList)
       setLoaded(true)
     }
     getBooks()
@@ -95,16 +98,18 @@ const Main = () => {
 
   const AddToWishList = async (item) => {
     const answer = await addToWishList(item.id)
+    setWishListChanged(!wishListChanged)
   }
 
   const RemoveFromWishList = async (item) => {
     await removeFromWishList(item.id)
+    setWishListChanged(!wishListChanged)
   }
 
   return (
     <div>
       
-        <Header itemsInCartChanged={cartItemsChanged} onAddToCart={HeaderAddToCart} onRemoveFromCart={HeaderRemoveFromCart}></Header>
+        <Header itemsInCartChanged={cartItemsChanged} wishListChanged={wishListChanged} onAddToCart={HeaderAddToCart} onRemoveFromCart={HeaderRemoveFromCart}></Header>
         <Body>
         {
           !loaded ? 
@@ -123,7 +128,7 @@ const Main = () => {
                   <Slider></Slider>
                 </VisualPart>
                 <MainPageFilterButtons onChangeTag={changeTag}/>
-                <Products onAddToCart={AddToCart} products={items} sortBy={tag} highToLow={true} onAddToWishList={AddToWishList} onRemoveFromWishList={RemoveFromWishList}/>
+                <Products onAddToCart={AddToCart} products={items} wishList={wishListItems} sortBy={tag} highToLow={true} onAddToWishList={AddToWishList} onRemoveFromWishList={RemoveFromWishList}/>
               </RightContainer>
             </BodyContainer>
         }

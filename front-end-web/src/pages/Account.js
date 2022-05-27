@@ -54,8 +54,8 @@ const TextBox = styled.div`
 
 const Account = () => {
   let navigate = useNavigate();
-  const categories = ["Account" ,"Order History", "My Store Login", "My Store", "Product Management Login", "Product Management"]
-  const links = ["/Account", "/OrderHistory", "/StoreLogin", "/Store", "/ProductManagementLogin", "/ProductManagement"]
+  const categories = ["Account" ,"Order History", "My Store Login", "Product Management Login"]
+  const links = ["/Account", "/OrderHistory", "/StoreLogin", "/ProductManagementLogin"]
   const [info, setInfo] = useState({name: "", pass_hash: "", status: false, uid: "", homeaddress: ""})
   const [loaded, setLoaded] = useState(false)
 

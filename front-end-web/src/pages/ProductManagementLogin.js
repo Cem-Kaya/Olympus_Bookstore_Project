@@ -5,6 +5,7 @@ import ProductManSignin from '../components/ProductManSignin'
 import ProductManSignup from '../components/ProductManSignup'
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
+import { checkProductManagerLogInStatus, getProductManagerID, productManLogIn, productManSignUp } from "../helperFunctions/helperLogin";
 
 const Container = styled.div`
   width: 100%;
@@ -33,6 +34,43 @@ const Form = styled.form`
 `;
 
 const ProductManagementLogin = () => {
+
+  let loginStatus = false
+  const navigate = useNavigate()
+
+  const LogIn = async (username, passHash) =>  {
+    try{
+      const serverAnswer = await productManLogIn(username, passHash)
+      console.log("Server answer: " , serverAnswer)
+      setValues(serverAnswer)
+    }
+    catch (e){
+      console.log(e)
+    }
+    if(checkProductManagerLogInStatus()){
+      navigate(`/ProductManagement=${getProductManagerID()}`)
+    }
+  }
+  
+  const SignUp = async (username, passHash) =>  {
+    try{
+      const serverAnswer = await productManSignUp(username, passHash)
+      setValues(serverAnswer)
+    }
+    catch(e){
+      console.log(e)
+    }
+
+    if(checkProductManagerLogInStatus()){
+      navigate(`/ProductManagement=${getProductManagerID()}`)
+    }
+  }
+
+  const setValues = (serverAnswer) => {
+    loginStatus = serverAnswer["status"]
+    console.log(loginStatus)
+  }
+
     const types= ['LOGIN', 'SIGNUP'];
     const [type,setType]= useState();
       
@@ -52,7 +90,7 @@ const ProductManagementLogin = () => {
               </Button>
             ))}
           </Form>
-          {istype ? (<ProductManSignin></ProductManSignin>) : (<ProductManSignup></ProductManSignup>)      
+          {istype ? (<ProductManSignin onLogin={LogIn}></ProductManSignin>) : (<ProductManSignup onSignUp={SignUp}></ProductManSignup>)      
           }
           </Container>
         );
