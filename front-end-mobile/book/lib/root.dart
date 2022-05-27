@@ -67,7 +67,6 @@ class _RootState extends State<Root> {
     var routes = [
       const HomePage(),
       const BasketPage(),
-      const Favorites(),
       const Suggestions(),
       const SellProduct(),
       const SignIn(),
@@ -92,10 +91,6 @@ class _RootState extends State<Root> {
               label: 'Basket',
               backgroundColor: Colors.green),
           BottomNavigationBarItem(
-              icon: Icon(Icons.star),
-              label: 'Favorites',
-              backgroundColor: Colors.green),
-          BottomNavigationBarItem(
               icon: Icon(Icons.favorite),
               label: 'Suggestions',
               backgroundColor: Colors.green),
@@ -111,7 +106,7 @@ class _RootState extends State<Root> {
         currentIndex: _selectedBottomTabIndex,
         selectedItemColor: Colors.amber[800],
         onTap: (_selectedBottomTabIndex) {
-          if (temp && _selectedBottomTabIndex == 5) {
+          if (temp && _selectedBottomTabIndex ==4 ) {
             Navigator.pushNamed(context, '/profile');
           } else {
             change_index(_selectedBottomTabIndex);
