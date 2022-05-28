@@ -1,5 +1,5 @@
 
-
+import threading
 import json
 import requests as req
 from flask_cors import CORS
@@ -673,6 +673,8 @@ def pmid_deliverylistsubmit():
   allManages = db.session.query(manages).all()
   allDlist = db.session.query(Buy_Dlist).all()
   for i in allDlist:
+    my_user = Customers.query.filter_by(email=i.customer_email).first()
+    my_purchased = Purchased.query.filter_by(purcid=i.purchased_purcid).first()
     for j in allManages:
       if(j.Pid == i.product_pid): #when the pid of the item in delivery list is in manages relationship
         if(j.Pmid == Pmid): #and our product manager is responsible for it.
@@ -681,13 +683,17 @@ def pmid_deliverylistsubmit():
             "did": i.did,
             "Pid": i.product_pid,
             "email": i.customer_email,
+            "address": my_user.homeadress,
             "purcid": i.purchased_purcid,
             "img": pr.picture_url0,
             "title": pr.name ,
             "author": pr.author,
             "raiting": pr.raiting,      
             "publisher": pr.distributor_Information,
-            "price":  pr.price ,    
+            "item price":  pr.price ,    
+            "total price":  pr.price* my_purchased.quantity,    
+            "shipment": my_purchased.shipment,
+            "quantity": my_purchased.quantity,
             "amount_sold": pr.amount_sold ,
             "release_date": str(pr.date),
             "model": pr.model,
@@ -1572,7 +1578,7 @@ def get_all_approved_comments():
   data2 = json.loads(request.get_data())
   print(request.get_data())   
   Pid= int(data2['Pid'])
-  allCustomers=Comment.query.filter_by().all()
+  #allCustomers=Comment.query.filter_by().all()
 
 #burada o pid altindaki all commentslerin comments relationsihpinde eristim
   allcomments = db.session.query(Comments).filter(Comments.product_pid== Pid )
@@ -1596,6 +1602,52 @@ def get_all_approved_comments():
     "uid":  db.session.query(Comments).filter(Comments.comment_id == j.cid).first().customer_email ,
     "stars": b.stars}
   return json.dumps(retjs)
+
+
+@app.route('/get_comments_for_approval')
+def get_for_approved_commentshtml():
+  return render_template('get_comments_for_approval.html')    
+
+@app.route('/get_comments_for_approval/submit_test' , methods=['POST'], strict_slashes=False  )
+def get_for_approved_commentstest():
+  url = 'http://127.0.0.1:5000/get_comments_for_approval/submit' 
+  myobj = {'Pmid': request.form['Pmid']}
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
+  
+         
+
+@app.route('/get_comments_for_approval/submit' , methods=['POST'], strict_slashes=False  )
+def get_for_approved_comments():
+  data2 = json.loads(request.get_data())
+  print(request.get_data())   
+  Pmid= int(data2['Pmid'])
+  #get all pids from pmid 
+  all_manages_pid = db.session.query(manages).filter(manages.c.Pmid == Pmid ).all()
+  allcomments = db.session.query(Comments).filter()
+  managed_by_pmid=[]
+  for p in all_manages_pid:
+    for com in allcomments:
+      if p.Pid == com.product_pid: 
+        managed_by_pmid.append(com)
+        
+  waiting_for_aproval=[]
+  all_approved_comments = db.session.query(approval).filter().all()
+  all_approved_comments_cid =  [ i.cid for i in all_approved_comments  ]
+
+  for com in managed_by_pmid:
+    if not ( com.comment_id in all_approved_comments_cid ):
+      waiting_for_aproval.append(com)
+  print(len(waiting_for_aproval))
+
+  retjs=[]
+  for j in waiting_for_aproval:     
+    retjs.append( {
+    "text": (b:= db.session.query(Comment).filter(Comment.cid == j.comment_id ).first()).text,  
+    "uid": j.customer_email ,
+    "stars": b.stars
+    
+    })
+  return json.dumps(retjs)  
        
 
 
@@ -1832,6 +1884,11 @@ def refundssubmit():
     retjs = {}
     retjs["status"] = False
     return json.dumps(retjs)
+
+
+
+
+
 
 @app.route('/refunds_update')
 def refunds_updatesssss():
