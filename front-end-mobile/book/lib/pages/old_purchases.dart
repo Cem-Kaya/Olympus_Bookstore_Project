@@ -28,7 +28,7 @@ class _old_purchasesState extends State<old_purchases> {
   @override
   void initState() {
     super.initState();
-        () async {
+    () async {
       await allPurchases();
       setState(() {
         // Update your UI with the desired changes.
@@ -59,6 +59,30 @@ class _old_purchasesState extends State<old_purchases> {
     }
   }
 
+  var temp;
+
+  Future postRefund(String email_uid, num purc_id) async {
+    try {
+      var response = await http.post(
+        Uri.parse(API.send_refund),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          {
+            "uid": email_uid,
+            "purcid": purc_id,
+          },
+        ),
+      );
+      print(response.body);
+      temp = json.decode(response.body);
+
+    } catch (e) {
+      print("error is ${e.toString()}");
+    }
+  }
+
   List<PurchaseHistory>? purchaseList;
 
   Future<void> getHistory() async {
@@ -82,11 +106,10 @@ class _old_purchasesState extends State<old_purchases> {
           appBar: ActionBar(
             title: "Reviews",
           ),
-          body: Center(
+          body: const Center(
             child: Text("There is no purchase. Buy something!"),
           ));
     }
-
     return Scaffold(
       appBar: ActionBar(
         title: "Purchase History",
@@ -178,19 +201,37 @@ class _old_purchasesState extends State<old_purchases> {
                                     await showDialog(
                                         context: context,
                                         builder: (_) => AlertDialog(
-                                          title: const Text("Error"),
-                                          content: const Text(
-                                              "Your purchased product bought more than 30 days ago. Hence, you cannot refund this product"),
-                                          actions: [
-                                            TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(_);
-                                                },
-                                                child: const Text("Ok"))
-                                          ],
-                                        ));
+                                              title: const Text("Error"),
+                                              content: const Text(
+                                                  "Your purchased product bought more than 30 days ago. Hence, you cannot refund this product"),
+                                              actions: [
+                                                TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(_);
+                                                    },
+                                                    child: const Text("Ok"))
+                                              ],
+                                            ));
                                   } else {
-                                    print("yey");
+                                    postRefund(
+                                        my_user, purchaseList![index].purcid!);
+                                    await showDialog(
+                                      context: context,
+                                      builder: (_) => AlertDialog(
+                                        title: const Text(
+                                            "Refund Request Success"),
+                                        content: const Text(
+                                            "The seller will evaluate your refund request."),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(_);
+                                              },
+                                              child: const Text("Ok"))
+                                        ],
+                                      ),
+                                    );
+                                    Navigator.pop(context);
                                   }
                                 },
                                 child: Text(
