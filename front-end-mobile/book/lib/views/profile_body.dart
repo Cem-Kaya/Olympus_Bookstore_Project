@@ -20,10 +20,6 @@ class ProfileBody extends StatefulWidget {
 class _ProfileBodyState extends State<ProfileBody> {
   var response;
 
-    // obtain shared preferences
-
-
-  // late Map<String, dynamic>
   var temp;
   var wishes;
   List<num> wishid=[];
@@ -96,7 +92,7 @@ class _ProfileBodyState extends State<ProfileBody> {
             "Name",
             style: kProfileNameText,
           ),
-          Text("Email", style: kProfileMailText),
+          Text(user, style: kProfileMailText),
           const SizedBox(height: 10),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -157,8 +153,8 @@ class _ProfileBodyState extends State<ProfileBody> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
-                      Icon(Icons.favorite),
-                      Text("My wishes"),
+                      Icon(Icons.list_alt),
+                      Text("Wish List"),
                       Icon(Icons.arrow_forward)
                     ],
                   ),

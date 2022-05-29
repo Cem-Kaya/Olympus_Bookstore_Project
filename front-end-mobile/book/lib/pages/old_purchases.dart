@@ -39,6 +39,7 @@ class _old_purchasesState extends State<old_purchases> {
   }
 
   String my_user = "";
+  String button = "Refund";
   final todayDate = DateTime.now();
 
   List<PurchaseHistory>? items;
@@ -77,7 +78,6 @@ class _old_purchasesState extends State<old_purchases> {
       );
       print(response.body);
       temp = json.decode(response.body);
-
     } catch (e) {
       print("error is ${e.toString()}");
     }
@@ -90,6 +90,20 @@ class _old_purchasesState extends State<old_purchases> {
         ?.where((element) => element.email!.contains(my_user))
         .toList();
     purchaseList = search_purchase;
+  }
+
+  bool isRefund(String shipment) {
+    if (shipment == "Cancelled" ||
+        shipment == "Refunded" ||
+        shipment == "Refund in Progress" ||
+        shipment == "Refund Rejected") {
+      return true;
+    }
+    if (shipment == "Delivered") {
+      return false;
+    }
+    button = "Cancel";
+    return false;
   }
 
   Widget build(BuildContext context) {
@@ -131,21 +145,28 @@ class _old_purchasesState extends State<old_purchases> {
                         SizedBox(
                             width: 50,
                             child: Image.network(purchaseList![index].url!)),
-                        Text(
-                          purchaseList![index].name!,
-                          style: const TextStyle(
-                              color: AppColors.secondary,
-                              fontWeight: FontWeight.bold),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 3,
-                          softWrap: true,
+                        Flexible(
+                          child: Text(
+                            purchaseList![index].name!,
+                            style: const TextStyle(
+                                color: AppColors.secondary,
+                                fontWeight: FontWeight.bold),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            softWrap: false,
+                            textAlign: TextAlign.center,
+                          ),
                         ),
-                        Text(
-                          purchaseList![index].shipment!,
-                          style: TextStyle(
-                              color: AppColors.LightTextColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
+                        Flexible(
+                          child: Text(
+                            purchaseList![index].shipment!,
+                            style: TextStyle(
+                                color: AppColors.LightTextColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                            ),
+                            textAlign: TextAlign.end,
+                          ),
                         ),
                       ],
                     ),
@@ -156,17 +177,19 @@ class _old_purchasesState extends State<old_purchases> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        textRefund(
+                            isRefund(purchaseList![index].shipment!),
+                            purchaseList![index].shipment!,
+                            "Quantity: ${purchaseList![index].quantity!.toString()}"),
+                        /*Text(
                           "Quantity: ${purchaseList![index].quantity.toString()}",
                           style: TextStyle(
                               color: AppColors.LightTextColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 16),
-                        ),
-                        Text(
-                          "Receipt Sent!",
-                          style: kImportantText,
-                        ),
+                        ),*/
+                        textInfo(isRefund(purchaseList![index].shipment!),
+                            purchaseList![index].shipment!),
                       ],
                     ),
                   ),
@@ -176,13 +199,10 @@ class _old_purchasesState extends State<old_purchases> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Sum: ${(purchaseList![index].price! * purchaseList![index].quantity!)} \$",
-                          style: TextStyle(
-                              color: AppColors.LightTextColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
-                        ),
+                        textRefund(
+                            isRefund(purchaseList![index].shipment!),
+                            purchaseList![index].shipment!,
+                            "Sum: ${(purchaseList![index].price! * purchaseList![index].quantity!)} \$"),
                         Text(
                           "Date: ${(purchaseList![index].date.toString()).substring(0, 10)} ",
                           style: TextStyle(
@@ -193,17 +213,42 @@ class _old_purchasesState extends State<old_purchases> {
                         SizedBox(
                             height: 24,
                             child: OutlinedButton(
-                                onPressed: () async {
-                                  final dateDiff = todayDate
-                                      .difference(purchaseList![index].date!)
-                                      .inDays;
-                                  if (dateDiff > 30) {
-                                    await showDialog(
-                                        context: context,
-                                        builder: (_) => AlertDialog(
-                                              title: const Text("Error"),
+                                onPressed: isRefund(
+                                        purchaseList![index].shipment!)
+                                    ? null
+                                    : () async {
+                                        final dateDiff = todayDate
+                                            .difference(
+                                                purchaseList![index].date!)
+                                            .inDays;
+                                        if (dateDiff > 30) {
+                                          await showDialog(
+                                              context: context,
+                                              builder: (_) => AlertDialog(
+                                                    title: const Text("Error"),
+                                                    content: const Text(
+                                                        "Your purchased product bought more than 30 days ago. Hence, you cannot refund this product"),
+                                                    actions: [
+                                                      TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(_);
+                                                          },
+                                                          child:
+                                                              const Text("Ok"))
+                                                    ],
+                                                  ));
+                                        } else if (purchaseList![index]
+                                                .shipment ==
+                                            "Processing") {
+                                          postRefund(my_user,
+                                              purchaseList![index].purcid!);
+                                          await showDialog(
+                                            context: context,
+                                            builder: (_) => AlertDialog(
+                                              title: const Text(
+                                                  "Cancel Request Success"),
                                               content: const Text(
-                                                  "Your purchased product bought more than 30 days ago. Hence, you cannot refund this product"),
+                                                  "Your order is cancelled and refunded."),
                                               actions: [
                                                 TextButton(
                                                     onPressed: () {
@@ -211,36 +256,40 @@ class _old_purchasesState extends State<old_purchases> {
                                                     },
                                                     child: const Text("Ok"))
                                               ],
-                                            ));
-                                  } else {
-                                    postRefund(
-                                        my_user, purchaseList![index].purcid!);
-                                    await showDialog(
-                                      context: context,
-                                      builder: (_) => AlertDialog(
-                                        title: const Text(
-                                            "Refund Request Success"),
-                                        content: const Text(
-                                            "The seller will evaluate your refund request."),
-                                        actions: [
-                                          TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(_);
-                                              },
-                                              child: const Text("Ok"))
-                                        ],
-                                      ),
-                                    );
-                                    Navigator.pop(context);
-                                  }
-                                },
-                                child: Text(
-                                  "Refund",
-                                  style: TextStyle(
-                                      color: AppColors.notification,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                )))
+                                            ),
+                                          );
+                                          Navigator.pop(context);
+                                        } else {
+                                          postRefund(my_user,
+                                              purchaseList![index].purcid!);
+                                          await showDialog(
+                                            context: context,
+                                            builder: (_) => AlertDialog(
+                                              title: const Text(
+                                                  "Refund Request Success"),
+                                              content: const Text(
+                                                  "The seller will evaluate your refund request."),
+                                              actions: [
+                                                TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(_);
+                                                    },
+                                                    child: const Text("Ok"))
+                                              ],
+                                            ),
+                                          );
+                                          Navigator.pop(context);
+                                        }
+                                      },
+                                child: isRefund(purchaseList![index].shipment!)
+                                    ? Text(button)
+                                    : Text(
+                                        button,
+                                        style: TextStyle(
+                                            color: AppColors.notification,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      )))
                       ],
                     ),
                   ),
@@ -248,22 +297,59 @@ class _old_purchasesState extends State<old_purchases> {
               ),
             );
           }),
+    );
+  }
 
-      /*Flexible(
-        fit: FlexFit.loose,
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: widget.user.length,
-          itemBuilder: (context, index) {
-            if (widget.user.isNotEmpty) {
-              return Text("${widget.user[index.toString()]["price"]}");
-            } else {
-              return const Center(
-                  child: Text("This user have not sold anything yet!"));
-            }
-          },
+  Widget textInfo(bool isRefund, String shipment) {
+    if (!isRefund) {
+      return Text(
+        "Receipt Sent!",
+        style: kImportantText,
+      );
+    }
+    if (shipment == "Cancelled") {
+      return Text(
+        "Order Cancelled!",
+        style: kImportantTextCancel,
+      );
+    }
+    if (shipment == "Refunded") {
+      return Text(
+        "Refund Request Accepted!",
+        style: kImportantText,
+      );
+    }
+    if (shipment == "Refund in Progress") {
+      return Text(
+        "Refund Request Sent!",
+        style: kImportantText,
+      );
+    }
+    return Text(
+      "Refund Request Rejected!",
+      style: kImportantTextRefused,
+    );
+  }
+
+  Widget textRefund(bool isRefund, String shipment, String text) {
+    if (isRefund && (shipment == "Refunded" || shipment == "Cancelled")) {
+      return Text(
+        text,
+        style: TextStyle(
+          color: const Color(0x94535353),
+          fontSize: 16,
+          decoration: TextDecoration.lineThrough,
+          decorationColor: Colors.black,
         ),
-      ),*/
+      );
+    }
+    return Text(
+      text,
+      style: TextStyle(
+        color: AppColors.LightTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+      ),
     );
   }
 }

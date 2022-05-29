@@ -60,9 +60,31 @@ final kProfileMailText = GoogleFonts.montserrat(
   fontSize: 15.0,
   letterSpacing: -0.7,
 );
+
 final kPurchaseTextStyle = GoogleFonts.montserrat(
   color: AppColors.secondary,
   fontSize: 24.0,
   fontWeight: FontWeight.w600,
   letterSpacing: -0.7,
 );
+
+final kImportantTextCancel = GoogleFonts.montserrat(
+  fontWeight: FontWeight.bold,
+  color: AppColors.notification,
+  fontSize: 16.0,
+  letterSpacing: 0.0,
+  decoration: TextDecoration.underline,
+  decorationColor: Colors.black,
+);
+
+final kImportantTextRefused = GoogleFonts.montserrat(
+  fontWeight: FontWeight.bold,
+  color: AppColors.primary,
+  fontSize: 16.0,
+  letterSpacing: 0.0,
+  decoration: TextDecoration.lineThrough,
+  decorationColor: AppColors.notification,
+);
+
+
+

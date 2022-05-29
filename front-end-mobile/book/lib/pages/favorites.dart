@@ -60,13 +60,12 @@ class _FavoritesState extends State<Favorites> {
     print(widget.wishes);
     if(widget.wishes.length==0) {
       return Scaffold(
-        appBar: ActionBar(title:"MY WISHES",),
+        appBar: ActionBar(title:"My Wish List",),
       body:Center(
-        child: Text("Favorites"), //aaaaaaaaaaaaaaaaaa
+        child: Text("Wish List is empty. Add some products!"),
       ),
       );
     }
-
     else{
       if (items == null) {
         allBooks();
@@ -75,7 +74,7 @@ class _FavoritesState extends State<Favorites> {
         );
       }
       return Scaffold(
-        appBar: ActionBar(title:"MY WISHES",),
+        appBar: ActionBar(title:"My Wish List",),
         body: SingleChildScrollView(
           child: SizedBox(
             child: Padding(
