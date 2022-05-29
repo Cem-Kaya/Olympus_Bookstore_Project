@@ -795,10 +795,10 @@ def update_book_submit():
   sale=data2['sale']
   
   old_sale =  db.session.query(Products)\
-       .filter(Products.Pid == Pid ).sale
+       .filter(Products.Pid == Pid ).first().sale
 
   old_price=  db.session.query(Products)\
-       .filter(Products.Pid == Pid ).price
+       .filter(Products.Pid == Pid ).first().price
 
   db.session.query(Products)\
        .filter(Products.Pid == Pid )\
@@ -816,9 +816,9 @@ def update_book_submit():
   retjs["status"]=True
 
   new_sale =  db.session.query(Products)\
-       .filter(Products.Pid == Pid ).sale
+       .filter(Products.Pid == Pid ).first().sale
   new_price=  db.session.query(Products)\
-       .filter(Products.Pid == Pid ).price
+       .filter(Products.Pid == Pid ).first().price
 
   if (new_sale != old_sale) or (new_price != old_price):
     allUnders = db.session.query(wishes).all()
@@ -1644,7 +1644,8 @@ def get_for_approved_comments():
     retjs.append( {
     "text": (b:= db.session.query(Comment).filter(Comment.cid == j.comment_id ).first()).text,  
     "uid": j.customer_email ,
-    "stars": b.stars
+    "stars": b.stars,
+    "cid": b.cid
     
     })
   return json.dumps(retjs)  
