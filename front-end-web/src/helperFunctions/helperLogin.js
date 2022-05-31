@@ -89,20 +89,20 @@ export const getProductManagerID = () => {
   return JSON.parse(window.localStorage.getItem('pm_manager_id'))
 }
 
-export const storeLogIn = async (email, passHash) => {
+export const storeLogIn = async (name, passHash) => {
   try{
-      console.log(email)
+      console.log(name)
       const res = await fetch('/login_salesmanager/submit', {
         method: "POST",
         headers: {
           'Accept' : 'application/json',
           'Content-Type' : 'application/json'
           },
-        body: JSON.stringify({email: email, pass_hash: passHash})
+        body: JSON.stringify({name: name, pass_hash: passHash})
       })
       const data = await res.json()
       window.localStorage.setItem('store_logged_in', JSON.stringify(data["status"]))
-      window.localStorage.setItem('store_manager_id', JSON.stringify(data["sid"] === false ? null : data["sid"]))
+      window.localStorage.setItem('store_manager_id', JSON.stringify(data["Sid"] === false ? null : data["Sid"]))
       console.log(data)
 
       return data
@@ -127,7 +127,7 @@ export const storeSignUp = async (username, passHash) =>  {
       })
       const data = await res.json()
       window.localStorage.setItem('store_logged_in', JSON.stringify(data["status"]))
-      window.localStorage.setItem('store_manager_id', JSON.stringify(data["sid"]))
+      window.localStorage.setItem('store_manager_id', JSON.stringify(data["Sid"]))
       console.log(data)
 
       return data

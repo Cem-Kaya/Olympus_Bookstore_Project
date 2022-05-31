@@ -162,9 +162,19 @@ const Header = ({itemsInCartChanged, wishListChanged, onAddToCart, onRemoveFromC
             <RightContainer>
               {
                 loginStatus ? 
-                <Dropdown>
+                <button className='buttonStyle' disabled={true} onClick={() =>{history('/Login')}}>
+                  {getUserID()}
+                  <AccountCircle/>
+                </button>
+                :
+                <button className='buttonStyle' onClick={() =>{history('/Login')}}>
+                    Login/Signup
+                    <AccountCircle/>
+                </button>
+              }
+              <Dropdown>
                   <button className='buttonStyle' onClick={() =>{handleDropdownOpenAccount()}}>
-                    {getUserID()}
+                    Account
                     <AccountCircle/>
                   </button>
                   {dropDownOpenAccount && (<div className="dropdown">
@@ -184,12 +194,6 @@ const Header = ({itemsInCartChanged, wishListChanged, onAddToCart, onRemoveFromC
                       </ul>
                   </div>)}
               </Dropdown>
-                :
-                <button className='buttonStyle' onClick={() =>{history('/Login')}}>
-                  Log In/Sign Up
-                  <AccountCircle/>
-                </button>
-              }
               <button className='buttonStyle' onClick={() =>{history('/WishList')}}>
                 Wish List
                 <div className="widget-header">  
