@@ -7,6 +7,7 @@ import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
 import { logIn, signUp, checkLogInStatus } from "../helperFunctions/helperLogin";
+import Alert from 'react-bootstrap/Alert'
 
 const Container = styled.div`
   width: 100%;
@@ -59,6 +60,9 @@ const Login = () => {
     if(checkLogInStatus()){
       navigate("/")
     }
+    else{
+      setMessageFunction("Could Not Log In")
+    }
   }
   
   const SignUp = async (username, email, passHash, homeAddress) =>  {
@@ -73,6 +77,14 @@ const Login = () => {
     if(checkLogInStatus()){
       navigate("/")
     }
+    else{
+      setMessageFunction("Could Not Sign Up")
+    }
+  }
+
+  const setMessageFunction = (message) => {
+    setErrorMessage(message)
+    setAlertBoxOpen(true)
   }
 
   const setValues = (serverAnswer) => {
@@ -80,9 +92,11 @@ const Login = () => {
     console.log(loginStatus)
   }
 
-const types= ['LOGIN', 'SIGNUP'];
-const [type,setType]= useState();
-  
+const types= ['LOGIN', 'SIGNUP']
+const [type,setType]= useState()
+const [alertBoxOpen, setAlertBoxOpen] = useState(false)
+const [errorMessage, setErrorMessage] = useState(false)
+
 function ToogleGroup(){
 
   const isempty = type==='';
@@ -92,22 +106,26 @@ function ToogleGroup(){
   const istype = type==='LOGIN';
     return(
       <Container>
+        <Alert key={"danger"} show={alertBoxOpen} variant={"danger"}>
+          {errorMessage}
+        </Alert>
       <Form>
         {types.map((type, index) =>(
-          <Button  key={index} onClick={()=> setType(type)}>
+          <Button  key={index} onClick={()=> {setType(type); setAlertBoxOpen(false)}}>
             {type}
           </Button>
         ))}
       </Form>
-      {istype ? (<Signin onLogin={LogIn}></Signin>) : (<Signup onSignUp={SignUp}></Signup>)      
+      {istype ? (<Signin onLogin={LogIn} onWrongInput={setMessageFunction}></Signin>) : 
+                (<Signup onSignUp={SignUp} onWrongInput={setMessageFunction}></Signup>)      
       }
       </Container>
     );
   }
   return (
    <div>
-     <Header></Header>
-     <ToogleGroup/>
+      <Header></Header>
+      <ToogleGroup/>
       <Footer></Footer>
    </div>
   );

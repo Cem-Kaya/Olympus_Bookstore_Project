@@ -51,11 +51,13 @@ const MyCart = ({params}) => {
   const AddToWishList = async (item) => {
     const answer = await addToWishList(item.id)
     setWishListChanged(!wishListChanged)
+    window.scrollTo({top: 0, behavior: 'smooth'})
   }
 
   const RemoveFromWishList = async (item) => {
     await removeFromWishList(item.id)
     setWishListChanged(!wishListChanged)
+    window.scrollTo({top: 0, behavior: 'smooth'})
   }
 
   return (
@@ -86,28 +88,27 @@ const MyCart = ({params}) => {
         
         {items.length === 0 ? <h2>There are no products in your cart, start adding some!</h2>:
           <table className="table table-borderless table-shopping-cart">
-          <thead className="text-muted">
-          <tr className="small text-uppercase">
-          <th scope="col">Product</th>
-          <th scope="col"></th>
-          <th scope="col" width="120">Quantity</th>
-          <th scope="col"></th>
-          <th scope="col" width="120">Price</th>
-          <th scope="col" className="text-right" width="200"> </th>
-          </tr>
-          </thead>
-          <tbody>
-            {items.map((item, index) => (
-            <CartItem 
-              key={index}
-              item={item}
-              onAddToCart={AddToCart}
-              onRemoveFromCart={RemoveFromCart}
-              onRemoveAll={RemoveAllFromCart}
-              onAddToWishList={AddToWishList}
-            />))}
-          </tbody>
-          
+            <thead className="text-muted">
+              <tr className="small text-uppercase">
+                <th scope="col">Product</th>
+                <th scope="col"></th>
+                <th scope="col" width="50">Quantity</th>
+                <th scope="col"></th>
+                <th scope="col" width="120">Price</th>
+                <th scope="col" className="text-right" width="200"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item, index) => (
+              <CartItem 
+                key={index}
+                item={item}
+                onAddToCart={AddToCart}
+                onRemoveFromCart={RemoveFromCart}
+                onRemoveAll={RemoveAllFromCart}
+                onAddToWishList={AddToWishList}
+              />))}
+            </tbody>
           </table>
         }
         

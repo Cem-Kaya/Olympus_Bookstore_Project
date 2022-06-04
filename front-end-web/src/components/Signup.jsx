@@ -74,7 +74,7 @@ const Agreement = styled.span`
   margin: 20px 0px;
 `;
 
-export const Signup = ({ onSignUp }) => {
+export const Signup = ({ onSignUp, onWrongInput }) => {
   let email = ""
   let password = ""
   let firstName = ""
@@ -102,21 +102,20 @@ export const Signup = ({ onSignUp }) => {
 	}
   const checkAndSubmit = () => {
     if(email === "" || password === "" || firstName === "" || lastName === "" || homeAddress === ""){
-      console.log("empty string")
+      onWrongInput("None of the fields can be empty")
     }
     else if(confirmPassword !== password){
-      console.log("passwords do not change")
+      onWrongInput("Passwords do not match")
     }
     else if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
     {
       const sha2_256 = require('simple-js-sha2-256')
       //password = sha2_256(password)
       let name = firstName.trim() + " " + lastName.trim()
-      console.log(name, email, password, homeAddress)
       onSignUp(name, email, password, homeAddress)
     }
     else{
-      console.log("not an email address")
+      onWrongInput("Not a valid email address")
     }
   }
   return (

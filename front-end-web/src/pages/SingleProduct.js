@@ -6,9 +6,9 @@ import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import ProductPageDetails from '../components/ProductPageDetails';
 import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCartItems';
-import { getUserID } from '../helperFunctions/helperLogin';
+import { checkLogInStatus, getUserID } from '../helperFunctions/helperLogin';
 import { fetchBooks } from '../helperFunctions/helperGetProducts';
-import { addToWishList, removeFromWishList } from '../helperFunctions/helperWishList';
+import { addToWishList, fetchWishList, removeFromWishList } from '../helperFunctions/helperWishList';
 
 const Container = styled.div`
     text-align: center;
@@ -23,6 +23,7 @@ const SingleProduct = () => {
     const [cartItemsChanged, setCartItemsChanged] = useState(false)
     const [wishListChanged, setWishListChanged] = useState(false)
     const [comments, setComments] = useState([])
+    const [wishListed, setWishListed] = useState([])
     const [loaded, setLoaded] = useState(false)
 
     useEffect (() => {
@@ -34,6 +35,13 @@ const SingleProduct = () => {
           let commentList = []
           for (var key of Object.keys(comments)) {
             commentList.push(comments[key])
+          }
+          if(checkLogInStatus()){
+            const wishList = await fetchWishList()
+            wishList.filter(elem => elem.Pid === itemFromServer.id).length !== 0 ? setWishListed(true) : setWishListed(false)
+          }
+          else{
+            setWishListed(undefined)
           }
           setComments(commentList)
           setLoaded(true)
@@ -82,6 +90,7 @@ const SingleProduct = () => {
     const AddToCart = (item) => {
         addNewItem(item)
         setCartItemsChanged(!cartItemsChanged)
+        window.scrollTo({top: 0, behavior: 'smooth'})
       }
     
       const HeaderAddToCart = (item) => {
@@ -97,11 +106,13 @@ const SingleProduct = () => {
       const AddToWishList = async (item) => {
         const answer = await addToWishList(item.id)
         setWishListChanged(!wishListChanged)
+        window.scrollTo({top: 0, behavior: 'smooth'})
       }
     
       const RemoveFromWishList = async (item) => {
         await removeFromWishList(item.id)
         setWishListChanged(!wishListChanged)
+        window.scrollTo({top: 0, behavior: 'smooth'})
       }
 
   return (
@@ -116,7 +127,7 @@ const SingleProduct = () => {
                     </div>
                 </div>
             :
-                <ProductPageDetails item={item} reviews={comments} onAddToCart={AddToCart} onSendComment={onSendComment} onAddToWishList={AddToWishList}></ProductPageDetails>         
+                <ProductPageDetails wishListed={wishListed} item={item} reviews={comments} onAddToCart={AddToCart} onSendComment={onSendComment} onAddToWishList={AddToWishList} onRemoveFromWishList={RemoveFromWishList}></ProductPageDetails>         
             }
             </Container>
             <Footer></Footer>

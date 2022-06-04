@@ -64,7 +64,7 @@ const Link = styled.a`
   cursor: pointer;
 `;
 
-const Signin = ({ onLogin }) => {
+const Signin = ({ onLogin, onWrongInput }) => {
   let email = ""
   let password = ""
 
@@ -75,18 +75,18 @@ const Signin = ({ onLogin }) => {
 		password = val
 	}
   const checkAndSubmit = () => {
-    if(email === "" || password === ""){
-      console.log("empty string")
+    if(email === "" || password === "")
+    {
+      onWrongInput("Email and password cannot be empty")
     }
     else if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
     {
       const sha2_256 = require('simple-js-sha2-256')
       //password = sha2_256(password)
-      console.log(email, password)
       onLogin(email, password)
     }
     else{
-      console.log("not an email address")
+      onWrongInput("Not a valid email address")
     }
   }
   

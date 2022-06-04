@@ -11,6 +11,7 @@ import { fetchBooks } from '../helperFunctions/helperGetProducts';
 import { addToWishList, fetchWishList, removeFromWishList } from '../helperFunctions/helperWishList';
 import styled from 'styled-components';
 import { fetchCategories } from '../helperFunctions/helperCategories';
+import { checkLogInStatus } from '../helperFunctions/helperLogin';
 
 
 const Body = styled.div`
@@ -68,10 +69,15 @@ const Main = () => {
     const getBooks = async () =>  {
       const itemsFromServer = await fetchBooks()
       const categoriesFromServer = await fetchCategories()
-      const wishList = await fetchWishList()
+      if(checkLogInStatus()){
+        const wishList = await fetchWishList()
+        setWishListItems(wishList)
+      }
+      else{
+        setWishListItems(false)
+      }
       setCategories(categoriesFromServer)
       setItems(itemsFromServer)
-      setWishListItems(wishList)
       setLoaded(true)
     }
     getBooks()
@@ -80,6 +86,7 @@ const Main = () => {
   const AddToCart = (item) => {
     addNewItem(item)
     setCartItemsChanged(!cartItemsChanged)
+    window.scrollTo({top: 0, behavior: 'smooth'})
   }
 
   const HeaderAddToCart = (item) => {
@@ -99,11 +106,13 @@ const Main = () => {
   const AddToWishList = async (item) => {
     const answer = await addToWishList(item.id)
     setWishListChanged(!wishListChanged)
+    window.scrollTo({top: 0, behavior: 'smooth'})
   }
 
   const RemoveFromWishList = async (item) => {
     await removeFromWishList(item.id)
     setWishListChanged(!wishListChanged)
+    window.scrollTo({top: 0, behavior: 'smooth'})
   }
 
   return (

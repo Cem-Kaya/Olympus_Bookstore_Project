@@ -10,6 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react'
 import { checkLogInStatus } from "../helperFunctions/helperLogin";
+import { getCartItems } from "../helperFunctions/helperCartItems";
   
   const Info = styled.div`
     opacity: 0;
@@ -31,7 +32,7 @@ import { checkLogInStatus } from "../helperFunctions/helperLogin";
     flex: 1;
     margin: 5px;
     min-width: 200px;
-    max-width: 200px;
+    max-width: 220px;
     height: 460px;
     display: flex;
     align-items: center;
@@ -131,10 +132,10 @@ const TextBoxPrize = styled.div`
   `;
 
 
-  const Product = ({ item, wishList, onAddToCart, onAddToWishList, onRemoveFromWishList }) => {
+  const Product = ({ item, wishListed, onAddToCart, onAddToWishList, onRemoveFromWishList }) => {
     let navigate = useNavigate()
-    const [favorited, setFavorited] = useState(wishList === true)
-    const [addedToCart, setAddedToCart] = useState(false)
+    const [favorited, setFavorited] = useState(wishListed)
+    const [addedToCart, setAddedToCart] = useState(getCartItems().filter(elem => elem.id === item.id).length !== 0)
 
     return (
       <Container>
@@ -160,20 +161,23 @@ const TextBoxPrize = styled.div`
           <Icon>
             {
               addedToCart ?
-              <ShoppingCart color="disabled" disabled={true}></ShoppingCart>
+              <ShoppingCart color="disabled" disabled={true}/>
               :
               item.in_stock === 0 ? 
-              <AddShoppingCart color="disabled" disabled={true} onClick={() => {onAddToCart(item)}}/>
+              <AddShoppingCart color="disabled" disabled={true}/>
               :
               <AddShoppingCart onClick={() => {onAddToCart(item); setAddedToCart(true)}}/>
             }  
           </Icon>
           <Icon>
             {
-              favorited ?
-              <FavoriteOutlined disabled={checkLogInStatus()} onClick={() => {onRemoveFromWishList(item); setFavorited(false)}} />
+              !checkLogInStatus() ?
+              <FavoriteOutlined color="disabled"/>
               :
-              <FavoriteBorderOutlined disabled={checkLogInStatus()} onClick={() => {onAddToWishList(item); setFavorited(true)}} />
+              favorited ?
+              <FavoriteOutlined color="red" onClick={() => {onRemoveFromWishList(item); setFavorited(false)}} />
+              :
+              <FavoriteBorderOutlined onClick={() => {onAddToWishList(item); setFavorited(true)}} />
             }
           </Icon>
         </Info>

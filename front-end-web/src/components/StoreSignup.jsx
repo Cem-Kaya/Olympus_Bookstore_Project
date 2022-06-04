@@ -62,7 +62,7 @@ const Button = styled.button`
 `;
 
 
-export const StoreSignup = ({ onSignUp }) => {
+export const StoreSignup = ({ onSignUp, onWrongInput }) => {
   let password = ""
   let name = ""
   let confirmPassword = ""
@@ -79,16 +79,15 @@ export const StoreSignup = ({ onSignUp }) => {
 
   const checkAndSubmit = () => {
     if(password === "" || name === "" ){
-      console.log("empty string")
+      onWrongInput("Name and password can not be empty string")
     }
     else if(confirmPassword !== password){
-      console.log("passwords do not match")
+      onWrongInput("Passwords do not match")
     }
     else
     {
       const sha2_256 = require('simple-js-sha2-256')
       //password = sha2_256(password)
-      console.log(name, password)
       onSignUp(name, password)
     }
   }

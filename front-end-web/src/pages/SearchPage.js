@@ -9,7 +9,8 @@ import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCartItems'
 import { fetchBooks, fetchBooksFromCategory } from '../helperFunctions/helperGetProducts'
-import { addToWishList, removeFromWishList } from '../helperFunctions/helperWishList'
+import { addToWishList, fetchWishList, removeFromWishList } from '../helperFunctions/helperWishList'
+import { checkLogInStatus } from '../helperFunctions/helperLogin'
 
 const Body = styled.div`
     background-color: #282c34;
@@ -74,9 +75,17 @@ const SearchPage = () => {
     const [items, setItems] = useState([]);
     const [onlyInStock, setOnlyInStock] = useState(false)
     const [loaded, setLoaded] = useState(false)
+    const [wishListItems, setWishListItems] = useState([])
 
     useEffect (() => {
         const getBooks = async () =>  {
+            if(checkLogInStatus()){
+                const wishList = await fetchWishList()
+                setWishListItems(wishList)
+            }
+            else{
+                setWishListItems(false)
+            }
             if(params.hasOwnProperty("category")){
                 const categories = await fetchCategories()
                 
@@ -122,11 +131,13 @@ const SearchPage = () => {
       const AddToWishList = async (item) => {
         const answer = await addToWishList(item.id)
         setWishListChanged(!wishListChanged)
+        window.scrollTo({top: 0, behavior: 'smooth'})
       }
     
       const RemoveFromWishList = async (item) => {
         await removeFromWishList(item.id)
         setWishListChanged(!wishListChanged)
+        window.scrollTo({top: 0, behavior: 'smooth'})
       }
   
     const [cartItemsChanged, setCartItemsChanged] = useState(false);
@@ -135,6 +146,7 @@ const SearchPage = () => {
     const AddToCart = (item) => {
       addNewItem(item)
       setCartItemsChanged(!cartItemsChanged)
+      window.scrollTo({top: 0, behavior: 'smooth'})
     }
   
     const HeaderAddToCart = (item) => {
@@ -255,7 +267,7 @@ const SearchPage = () => {
                 <Filters products={filteredItems} params={params}/>
             </LeftContainer>
             <RightContainer>
-                <Products products={filteredItems} onAddToCart={AddToCart} sortBy={sortBy} highToLow={sortBy !== "Price low to high"} onAddToWishList={AddToWishList} onRemoveFromWishList={RemoveFromWishList}></Products>
+                <Products products={filteredItems} wishList={wishListItems} onAddToCart={AddToCart} sortBy={sortBy} highToLow={sortBy !== "Price low to high"} onAddToWishList={AddToWishList} onRemoveFromWishList={RemoveFromWishList}></Products>
                 <nav className="mt-4" aria-label="Page navigation sample">
                     {/* <ul className="pagination">
                         {pages()}

@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
+import { getCartItems } from '../helperFunctions/helperCartItems';
 import { getUserID } from '../helperFunctions/helperLogin';
 import './ExtraStyles.css'
 
@@ -18,8 +19,11 @@ const Description = styled.div`
     text-align: left;
 `;
 
-const ProductPageDetails = ({item, onAddToCart, reviews, onSendComment, onAddToWishList}) => {
+const ProductPageDetails = ({wishListed, item, onAddToCart, reviews, onSendComment, onAddToWishList, onRemoveFromWishList}) => {
     console.log(item)
+    const [itemWishlisted, setItemWishlisted] = useState(wishListed)
+    // const [imgArray, setImageArray] = useState([item.img, item.img1, item.img2])
+
     let comment = ""
     let raiting = "1"
 
@@ -58,31 +62,35 @@ const ProductPageDetails = ({item, onAddToCart, reviews, onSendComment, onAddToW
                 <div className="row">
                     <div className="col-md-6">
                         <div className="images p-3">
-                            <div className="text-center p-4">{console.log(item)} <img id="main-image" alt="img0" src={item.img} width="250" /> </div>
-                            <div className="thumbnail text-center"> <img src={item.img1} alt="img1" width="70"/> <img src={item.img2} alt="img2" width="70"/> </div>
+                            <div className="text-center p-4"><img id="main-image" alt="img0" src={item.img} width="250" /> </div>
+                            <div className="thumbnail text-center"> 
+                                <img src={item.img1} alt="img1" width="70"/>
+                                <img src={item.img2} alt="img2" width="70"/> 
+                            </div>
                         </div>
                     </div>
                     <div className="col-md-6">
                         <div className="product p-4">
                             <div className="mt-4 mb-3"> 
-                                <h5 className="text-uppercase float-md">{item.title}</h5>
+                                <h5 className="text-uppercase text-white float-md">{item.title}</h5>
                             </div>
                             
                             <hr className='bg-light'/>
                             <div className='row-md-12 mt-12 mb-3'>
-                            <span className="text-uppercase text-light brand float-left">{"Author: " + item.author}</span><br></br>
+                            <span className="text-uppercase text-white brand float-left">{"Author: " + item.author}</span><br></br>
                             </div>
                             <div className='row-md-12 mt-12 mb-3'>
-                            <span className="text-uppercase text-light brand float-left">{"Publisher: " + item.publisher}</span><br></br>
+                            <span className="text-uppercase text-white brand float-left">{"Publisher: " + item.publisher}</span><br></br>
                             </div>
+                            <br></br>
                             <div className='row-md-12 mt-12 mb-3'>
-                            <span className="text-uppercase text-danger brand float-left">{item.amount_sold + " sold. " + item.in_stock + " remained in stock"}</span><br></br>
+                            <span className="text-uppercase text-info brand float-left">{item.amount_sold + " sold. " + item.in_stock + " remained in stock"}</span><br></br>
                             </div>
                             <div className='row-md-12 mt-12 mb-3'>
                             <span className="text-uppercase text-warning brand float-left">{item.discount + " discount. " + item.price + " TL is the new price"}</span><br></br>
                             </div>
                             <div className='row-md-12 mt-12 mb-3'>
-                            <span className="text-uppercase text-white brand float-left">Raiting: {productRaiting(item)}</span><br></br>
+                            <span className="text-uppercase text-white brand float-left">{productRaiting(item)}</span><br></br>
                             </div>
                             <div className='row-md-12 mt-12 mb-3'>
                             <span className="text-uppercase text-white brand float-left"><p class="h4">{item.price} TL</p></span><br></br>
@@ -90,11 +98,25 @@ const ProductPageDetails = ({item, onAddToCart, reviews, onSendComment, onAddToW
                         </div>
                         <br></br>
                             <div className="cart mt-4 align-items-center">
-                                {item.in_stock === 0 ? <button className="btn btn-danger text-uppercase mr-2 px-4" disabled={true}>SOLD OUT</button>
-                                 :<button className="btn btn-danger text-uppercase mr-2 px-4" onClick={() => {onAddToCart(item)}}>Add to cart</button>} 
-                              
-                                <button data-original-title="Save to Wishlist" title="" className="btn btn-light mr-2" data-toggle="tooltip" onClick={() => {onAddToWishList(item)}}> <i className="fa fa-heart"></i></button>
+                                {item.in_stock === 0 ? 
+                                  <button className="btn btn-danger text-uppercase mr-2 px-4" disabled={true}>SOLD OUT</button>
+                                 :
+                                 getCartItems().filter(elem => elem.id === item.id).length !== 0 ?
+                                 <button className="btn btn-danger text-uppercase mr-2 px-4" disabled={true}>Already on the Cart</button>
+                                 :
+                                 <button className="btn btn-danger text-uppercase mr-2 px-4" onClick={() => {onAddToCart(item)}}>Add to cart</button>
+                                } 
+                                {
+                                    itemWishlisted === undefined ?
+                                    <button disabled={true} className="btn btn-light mr-2" data-toggle="tooltip"> <i className="fa fa-heart"></i></button>
+                                    :
+                                    itemWishlisted ?
+                                    <button className="btn btn-danger mr-2" data-toggle="tooltip" onClick={() => {setItemWishlisted(!itemWishlisted); onRemoveFromWishList(item)}}> <i className="fa fa-heart"></i></button>
+                                    :
+                                    <button className="btn btn-light mr-2" data-toggle="tooltip" onClick={() => {setItemWishlisted(!itemWishlisted); onAddToWishList(item)}}> <i className="fa fa-heart"></i></button>
+                                }
                             </div>
+                            <br></br>
                     </div>
                 </div>
             </div>

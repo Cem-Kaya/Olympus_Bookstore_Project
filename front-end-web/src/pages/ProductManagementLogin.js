@@ -6,6 +6,7 @@ import ProductManSignup from '../components/ProductManSignup'
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import { checkProductManagerLogInStatus, getProductManagerID, productManLogIn, productManSignUp } from "../helperFunctions/helperLogin";
+import Alert from 'react-bootstrap/Alert'
 
 const Container = styled.div`
   width: 100%;
@@ -50,6 +51,9 @@ const ProductManagementLogin = () => {
     if(checkProductManagerLogInStatus()){
       navigate(`/ProductManagement=${getProductManagerID()}`)
     }
+    else{
+      setMessageFunction("Could Not Log In")
+    }
   }
   
   const SignUp = async (username, passHash) =>  {
@@ -64,6 +68,14 @@ const ProductManagementLogin = () => {
     if(checkProductManagerLogInStatus()){
       navigate(`/ProductManagement=${getProductManagerID()}`)
     }
+    else{
+      setMessageFunction("Could Not Sign Up")
+    }
+  }
+
+  const setMessageFunction = (message) => {
+    setErrorMessage(message)
+    setAlertBoxOpen(true)
   }
 
   const setValues = (serverAnswer) => {
@@ -73,6 +85,8 @@ const ProductManagementLogin = () => {
 
     const types= ['LOGIN', 'SIGNUP'];
     const [type,setType]= useState();
+    const [alertBoxOpen, setAlertBoxOpen] = useState(false)
+    const [errorMessage, setErrorMessage] = useState(false)
       
     function ToogleGroup(){
     
@@ -83,14 +97,19 @@ const ProductManagementLogin = () => {
       const istype = type==='LOGIN';
         return(
           <Container>
+            <Alert key={"danger"} show={alertBoxOpen} variant={"danger"}>
+              {errorMessage}
+            </Alert>
           <Form>
             {types.map((type, index) =>(
-              <Button  key={index} onClick={()=> setType(type)}>
+              <Button  key={index} onClick={()=> {setType(type); setAlertBoxOpen(false)}}>
                 {type}
               </Button>
             ))}
           </Form>
-          {istype ? (<ProductManSignin onLogin={LogIn}></ProductManSignin>) : (<ProductManSignup onSignUp={SignUp}></ProductManSignup>)      
+          {istype ? (<ProductManSignin onLogin={LogIn} onWrongInput={setMessageFunction}></ProductManSignin>) 
+                    : 
+                    (<ProductManSignup onSignUp={SignUp} onWrongInput={setMessageFunction}></ProductManSignup>)      
           }
           </Container>
         );

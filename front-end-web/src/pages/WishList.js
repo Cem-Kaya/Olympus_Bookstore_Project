@@ -5,7 +5,7 @@ import styled from "styled-components"
 import { fetchBooks } from '../helperFunctions/helperGetProducts'
 import { useState, useEffect } from 'react'
 import '../components/ExtraStyles.css'
-import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCartItems'
+import { addNewItem, add1Item, remove1Item, getCartItems } from '../helperFunctions/helperCartItems'
 import { Delete } from "@material-ui/icons"
 import { fetchWishList, removeFromWishList } from "../helperFunctions/helperWishList"
 import { checkLogInStatus } from '../helperFunctions/helperLogin'
@@ -96,6 +96,7 @@ const WishList = () => {
                         <thead>
                           <tr>
                             <th width="45%" className='text-light'><h5>Product Name</h5></th>
+                            <th width="5%" className='text-light'></th>
                             <th width="15%" className='text-light'><h5>Unit Price</h5></th>
                             <th width="15%" className='text-light'><h5>Stock Status</h5></th>
                             <th width="15%" className='text-light'></th>
@@ -105,7 +106,7 @@ const WishList = () => {
                         <tbody>
                           {items.map(elem => (
                             <tr className='container'>
-                              <td width="45%">
+                              <td width="40%">
                                 <div className="display-flex align-center">
                                     <a href={`/SingleProduct=${elem.id}`}>
                                     <div className="img-product">
@@ -115,9 +116,12 @@ const WishList = () => {
                                     <div className="text-light">
                                         {elem.title}
                                     </div></a>
-                                  
                                 </div>
                               </td>
+
+                              <td width="5%">
+                              </td>
+
                               <td width="15%" className="price text-light">{elem.price.toFixed(2)} TL</td>
                               {elem.in_stock === 0?
                                 <td width="15%" className="text-danger">Not In Stock</td>
@@ -126,10 +130,15 @@ const WishList = () => {
                                :
                                 <td width="15%" className="text-info">{elem.in_stock} left in stock</td>
                               }
-                              <td width="15%">
-                                <button className="btn btn-info text-uppercase mr-2 px-4" onClick={() => {AddToCart(elem)}} disabled={elem.in_stock === 0}>Add to Cart</button>
+                              <td width="20%">
+                                {
+                                  getCartItems().filter(item => item.id === elem.id).length !== 0 ?
+                                  <button className="btn btn-info text-uppercase mr-2 px-4" disabled={true}>Already in the Cart</button>
+                                  :
+                                  <button className="btn btn-info text-uppercase mr-2 px-4" onClick={() => {AddToCart(elem)}} disabled={elem.in_stock === 0}>Add to Cart</button>
+                                }
                               </td>
-                              <td width="10%" className="text-center"><button className="btn btn-warning" onClick={() => {RemoveFromWishList(elem)}}> <Delete/> </button></td>
+                              <td width="5%" className="text-center"><button className="btn btn-warning" onClick={() => {RemoveFromWishList(elem)}}> <Delete/> </button></td>
                             </tr>
                             
                           ) )}

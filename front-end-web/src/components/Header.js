@@ -71,10 +71,10 @@ const Header = ({itemsInCartChanged, wishListChanged, onAddToCart, onRemoveFromC
   const [wishListItems, setWishListItems] = useState([]);
   const [dropDownOpen, setdropDownOpen] = useState(false);
   const [dropDownOpenAccount, setDropDownOpenAccount] = useState(false)
+  const [dropdownOpenManagerLogin, setDropdownOpenManagerLogin] = useState(false)
   const [loginStatus, setLoginStatus] = useState(false)
   const [title, setTitle] = useState("");
   const [selection, setSelection] = useState("");
-  //const [wishListLen, setWishListLen] = useState(0);
 
   useEffect(() => {
     setCartItems(getCartItems())
@@ -107,6 +107,10 @@ const Header = ({itemsInCartChanged, wishListChanged, onAddToCart, onRemoveFromC
 
   const handleDropdownOpenAccount = () => {
     setDropDownOpenAccount(!dropDownOpenAccount);
+  };
+
+  const handleDropdownOpenManagerLogin = () => {
+    setDropdownOpenManagerLogin(!dropdownOpenManagerLogin);
   };
 
   const searchButtonClicked = () => {
@@ -160,23 +164,38 @@ const Header = ({itemsInCartChanged, wishListChanged, onAddToCart, onRemoveFromC
               <input type="text" className="form-control" placeholder="Search..." aria-label="Text input with dropdown button" onChange={event => setTitle(event.target.value)} onKeyDown={e => e.key === 'Enter' && searchButtonClicked()}/>
             </div>
             <RightContainer>
-              {
-                loginStatus ? 
-                <button className='buttonStyle' disabled={true} onClick={() =>{history('/Login')}}>
-                  {getUserID()}
-                  <AccountCircle/>
+            <Dropdown>
+                <button className='buttonStyle' onClick={() =>{handleDropdownOpenManagerLogin()}}>
+                  Manager Login
                 </button>
-                :
-                <button className='buttonStyle' onClick={() =>{history('/Login')}}>
-                    Login/Signup
-                    <AccountCircle/>
-                </button>
-              }
+                {dropdownOpenManagerLogin && (<div className="dropdown">
+                      <ul>
+                        <li>
+                          <DropDownItem>  
+                            <button className='buttonStyle' onClick={() =>{history('/StoreLogin')}}>
+                              Log In to your Store
+                            </button>
+                          </DropDownItem>
+                          <DropDownItem>  
+                            <button className='buttonStyle' onClick={() =>{history('/ProductManagementLogin')}}>
+                              Log In to your Product Management Page
+                            </button>
+                          </DropDownItem>
+                        </li>
+                      </ul>
+                  </div>)}
+              </Dropdown>
               <Dropdown>
-                  <button className='buttonStyle' onClick={() =>{handleDropdownOpenAccount()}}>
-                    Account
-                    <AccountCircle/>
-                  </button>
+                  {loginStatus ? 
+                    <button className='buttonStyle' onClick={() =>{handleDropdownOpenAccount()}}>
+                      {getUserID()}
+                      <AccountCircle/>
+                    </button>
+                    :
+                    <button className='buttonStyle' onClick={() =>{history('/Login')}}>
+                        Login/Signup
+                        <AccountCircle/>
+                    </button>}
                   {dropDownOpenAccount && (<div className="dropdown">
                       <ul>
                         <li>
@@ -186,7 +205,7 @@ const Header = ({itemsInCartChanged, wishListChanged, onAddToCart, onRemoveFromC
                             </button>
                           </DropDownItem>
                           <DropDownItem>  
-                            <button className='buttonStyle' onClick={() =>{LogOut()}}>
+                            <button className='buttonStyle' onClick={() =>{LogOut(); handleDropdownOpenAccount()}}>
                               Log Out
                             </button>
                           </DropDownItem>

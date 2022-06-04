@@ -51,7 +51,7 @@ const ProductManagement = () => {
       console.log(params["pmid"])
       console.log(getProductManagerID())
       if(params["pmid"] !== getProductManagerID().toString()){
-       navigate("/Account")
+       navigate("/")
       }
     }, [params, navigate])
 
@@ -800,7 +800,7 @@ const ProductManagement = () => {
                     <a className="nav-item nav-link" onClick={() => {setNavItemSelected(5); setLoaded(false)}} href="#">View Invoices</a>
                     </div>
                 </div>
-                <a className="nav-item nav-link" href="/Account">Go Back to the Account Page</a>
+                <a className="nav-item nav-link" href="/">Go Back to the Main Page</a>
             </nav>
             {
               !loaded ?

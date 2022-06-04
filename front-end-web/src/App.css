@@ -128,6 +128,19 @@
   width: 25%;
 }
 
+.button-group-horizontal .button-active {
+  background-color: #42516f;
+  border: 1px solid pink;
+  color: white;
+  height: 50px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  width: 25%;
+}
+
 .button-group-horizontal .button:not(:last-child) {
   border-right: none; /* Prevent double borders */
 }

@@ -6,6 +6,7 @@ import StoreSignup from '../components/StoreSignup'
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import { checkStoreLogInStatus, getStoreManagerID, storeLogIn, storeSignUp } from "../helperFunctions/helperLogin";
+import Alert from 'react-bootstrap/Alert'
 
 const Container = styled.div`
   width: 100%;
@@ -50,6 +51,9 @@ const StoreLogin = () => {
     if(checkStoreLogInStatus()){
       navigate(`/Store=${getStoreManagerID()}`)
     }
+    else{
+      setMessageFunction("Could Not Log In")
+    }
   }
   
   const SignUp = async (username, passHash) =>  {
@@ -64,6 +68,14 @@ const StoreLogin = () => {
     if(checkStoreLogInStatus()){
       navigate(`/Store=${getStoreManagerID()}`)
     }
+    else{
+      setMessageFunction("Could Not Sign Up")
+    }
+  }
+
+  const setMessageFunction = (message) => {
+    setErrorMessage(message)
+    setAlertBoxOpen(true)
   }
 
   const setValues = (serverAnswer) => {
@@ -73,6 +85,8 @@ const StoreLogin = () => {
   
     const types= ['LOGIN', 'SIGNUP'];
     const [type,setType]= useState();
+    const [alertBoxOpen, setAlertBoxOpen] = useState(false)
+    const [errorMessage, setErrorMessage] = useState(false)
       
     function ToogleGroup(){
     
@@ -83,22 +97,27 @@ const StoreLogin = () => {
       const istype = type==='LOGIN';
         return(
           <Container>
+            <Alert key={"danger"} show={alertBoxOpen} variant={"danger"}>
+              {errorMessage}
+            </Alert>
           <Form>
             {types.map((type, index) =>(
-              <Button  key={index} onClick={()=> setType(type)}>
+              <Button  key={index} onClick={()=> {setType(type); setAlertBoxOpen(false)}}>
                 {type}
               </Button>
             ))}
           </Form>
-          {istype ? (<StoreSignin onLogin={LogIn}></StoreSignin>) : (<StoreSignup onSignUp={SignUp}></StoreSignup>)      
+          {istype ? (<StoreSignin onLogin={LogIn} onWrongInput={setMessageFunction}></StoreSignin>) 
+            :
+                    (<StoreSignup onSignUp={SignUp} onWrongInput={setMessageFunction}></StoreSignup>)      
           }
           </Container>
         );
       }
       return (
        <div>
-         <Header></Header>
-         <ToogleGroup/>
+          <Header></Header>
+          <ToogleGroup/>
           <Footer></Footer>
        </div>
       );

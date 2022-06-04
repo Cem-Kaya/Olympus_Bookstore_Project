@@ -35,7 +35,7 @@ const MyStore = () => {
       console.log(params["sid"])
       console.log(getStoreManagerID())
       if(params["sid"] !== getStoreManagerID().toString()){
-       navigate("/Account")
+       navigate("/")
       }
     }, [params, navigate])
 
@@ -322,7 +322,7 @@ const MyStore = () => {
                     <a class="nav-item nav-link" onClick={() => {setNavItemSelected(3); setLoaded(false)}} href="#">View Refund/Return Requests</a>
                     </div>
                 </div>
-                <a class="nav-item nav-link" href="/Account">Go Back to the Account Page</a>
+                <a class="nav-item nav-link" href="/">Go Back to the Main Page</a>
             </nav>
         {
         !loaded ?
