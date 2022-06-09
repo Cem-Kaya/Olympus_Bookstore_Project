@@ -31,8 +31,8 @@ import { getCartItems } from "../helperFunctions/helperCartItems";
   const Container = styled.div`
     flex: 1;
     margin: 5px;
-    min-width: 200px;
-    max-width: 220px;
+    min-width: 205px;
+    max-width: 205px;
     height: 460px;
     display: flex;
     align-items: center;
