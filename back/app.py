@@ -236,7 +236,36 @@ def signupsubmit():
 
   return json.dumps(retjs)
 
+@app.route('/delete_product')
+def delete_product():
+  todata=""  
+  allproducts=Products.query.filter_by().all()
+  todata+=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> <th>quantity</th> <th>amount_sold</th> <th>deleted</th></tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td><td> {} </td><td> {} </td><td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale,i.quantity,i.amount_sold, i.deleted) 
+  todata +="</table>"
+  return render_template('delete_product.html',data=todata) 
 
+#submit test for delete product
+@app.route('/delete_product/submit_test', methods=['POST'], strict_slashes=False  )
+def delete_product_submittest():
+  url = 'http://127.0.0.1:5000/delete_product/submit'
+  myobj = {'Pid': request.form['Pid'] 
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text ) 
+  
+
+#change deleted attribute of a product with the given pid  false 
+@app.route('/delete_product/submit', methods=['POST'], strict_slashes=False )
+def delete_product_submit():
+  retjs={}
+  data2 = json.loads(request.get_data())
+  Pid = int(data2['Pid'])
+  db.session.query(Products).filter(Products.Pid == Pid).update({"deleted": True})
+  db.session.commit()
+  retjs["status"] = True
+  return json.dumps(retjs)
 
 
 @app.route('/Product_manager_reg')
