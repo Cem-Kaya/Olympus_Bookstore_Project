@@ -236,36 +236,7 @@ def signupsubmit():
 
   return json.dumps(retjs)
 
-@app.route('/delete_product')
-def delete_product():
-  todata=""  
-  allproducts=Products.query.filter_by().all()
-  todata+=" <h3> Products </h3> " # <h1>A heading here</h1>
-  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> <th>quantity</th> <th>amount_sold</th> <th>deleted</th></tr> '
-  for i in allproducts:
-    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td><td> {} </td><td> {} </td><td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale,i.quantity,i.amount_sold, i.deleted) 
-  todata +="</table>"
-  return render_template('delete_product.html',data=todata) 
 
-#submit test for delete product
-@app.route('/delete_product/submit_test', methods=['POST'], strict_slashes=False  )
-def delete_product_submittest():
-  url = 'http://127.0.0.1:5000/delete_product/submit'
-  myobj = {'Pid': request.form['Pid'] 
-    }
-  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text ) 
-  
-
-#change deleted attribute of a product with the given pid  false 
-@app.route('/delete_product/submit', methods=['POST'], strict_slashes=False )
-def delete_product_submit():
-  retjs={}
-  data2 = json.loads(request.get_data())
-  Pid = int(data2['Pid'])
-  db.session.query(Products).filter(Products.Pid == Pid).update({"deleted": True})
-  db.session.commit()
-  retjs["status"] = True
-  return json.dumps(retjs)
 
 
 @app.route('/Product_manager_reg')
@@ -763,13 +734,112 @@ def all_books_rangedd():
   return render_template('all_books_ranged.html',data =todata )  #bunu degistirdim
 
 
+@app.route('/all_books_ranged/submit', methods=['POST'], strict_slashes=False )
+def get_all_books_ranged_sub():
+  data2 = json.loads(request.get_data())
+  print(request.get_data()) 
+  min = int ( data2['min'] ) 
+  max = int ( data2['max'] ) 
+
+  allproducts=Products.query.filter_by().all()
+  jsonprd = []
+
+  for i,pr in enumerate(allproducts):
+    if i< min:
+      continue  
+    if i> max:
+      break
+    if (pr.deleted == False):
+      tmp={
+        "id": pr.Pid,
+        "img": pr.picture_url0,
+        "img1": pr.picture_url1,
+        "img2": pr.picture_url2,
+        "title": pr.name ,
+        "author": pr.author,
+        "raiting": pr.raiting,      
+        "publisher": pr.distributor_Information,
+        "price":  pr.price ,    
+        "amount_sold": pr.amount_sold ,
+        "release_date": str(pr.date),
+        "model": pr.model,
+        "edition_number": pr.edition_number,
+        "description": pr.description,
+        "in_stock": pr.quantity,
+        "warranty": pr.warranty,
+        "discount": str((1-pr.sale)*100)+"%",
+        "date": pr.date
+      }
+      jsonprd.append(tmp)  
+  return json.dumps(jsonprd)
 
 
 
 
 
 
+@app.route('/delete_product')
+def delete_product():
+  todata=""  
+  allproducts=Products.query.filter_by().all()
+  todata+=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> <th>quantity</th> <th>amount_sold</th> <th>deleted</th></tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td><td> {} </td><td> {} </td><td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale,i.quantity,i.amount_sold, i.deleted) 
+  todata +="</table>"
+  return render_template('delete_product.html',data=todata) 
 
+#submit test for delete product
+@app.route('/delete_product/submit_test', methods=['POST'], strict_slashes=False  )
+def delete_product_submittest():
+  url = 'http://127.0.0.1:5000/delete_product/submit'
+  myobj = {'Pid': request.form['Pid'] 
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text ) 
+  
+
+#change deleted attribute of a product with the given pid  false 
+@app.route('/delete_product/submit', methods=['POST'], strict_slashes=False )
+def delete_product_submit():
+  retjs={}
+  data2 = json.loads(request.get_data())
+  Pid = int(data2['Pid'])
+  db.session.query(Products).filter(Products.Pid == Pid).update({"deleted": True})
+  db.session.commit()
+  retjs["status"] = True
+  return json.dumps(retjs)
+
+@app.route('/undelete_product')
+def undelete_product():
+  todata=""  
+  allproducts=Products.query.filter_by().all()
+  todata+=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> <th>quantity</th> <th>amount_sold</th> <th>deleted</th></tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td><td> {} </td><td> {} </td><td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale,i.quantity,i.amount_sold, i.deleted) 
+  todata +="</table>"
+  return render_template('undelete_product.html',data=todata) 
+
+#submit test for delete product
+@app.route('/undelete_product/submit_test', methods=['POST'], strict_slashes=False  )
+def undelete_product_submittest():
+  url = 'http://127.0.0.1:5000/undelete_product/submit'
+  myobj = {'Pid': request.form['Pid'] 
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text ) 
+  
+
+#change deleted attribute of a product with the given pid  false 
+@app.route('/undelete_product/submit', methods=['POST'], strict_slashes=False )
+def undelete_product_submit():
+  retjs={}
+  data2 = json.loads(request.get_data())
+  Pid = int(data2['Pid'])
+  db.session.query(Products).filter(Products.Pid == Pid).update({"deleted": False})
+  db.session.commit()
+  retjs["status"] = True
+  return json.dumps(retjs)
+    
   
     
 
@@ -1951,7 +2021,36 @@ def refundsupdatesssubmittest():
     }
   return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )      
 
+@app.route('/refunds_update/submit', methods=['POST'] , strict_slashes=False )
+def refundssubmit_update():
+  #rejected accepted 
+  data2 = json.loads(request.get_data())#request.get_json()
+  status= str(data2['status'])
+  id= int(data2['id'])
+  db.session.query(Refunds)\
+          .filter(Refunds.id == id)\
+          .update({Refunds.refund_state:status })
 
+  my_refund= db.session.query(Refunds).filter(Refunds.id == id).first()
+  db.session.query(Purchased)\
+          .filter(Purchased.purcid == my_refund.purchased_purcid )\
+          .update({Purchased.shipment:  "Refunded" if (status=="Refunded") else "Refund Rejected"  })
+  db.session.commit()
+  
+  #get the product id by using my_refund.purchased_purcid using buy_dlist table
+  my_pid= db.session.query(Buy_Dlist).filter(Buy_Dlist.purchased_purcid == my_refund.purchased_purcid).first().product_pid
+  
+  my_purchased = db.session.query(Purchased).filter(Purchased.purcid == my_refund.purchased_purcid).first()
+  
+  #if status is "refunded" then increase the quantity of the product by 1
+  if (status=="Refunded"):
+    db.session.query(Products)\
+          .filter(Products.Pid == my_pid )\
+          .update({Products.quantity: Products.quantity + my_purchased.quantity })
+    db.session.commit()
+  retjs = {}
+  retjs["status"] = True
+  return json.dumps(retjs)
 
 @app.route('/purchased_update')
 def purchased_updatesssss():
