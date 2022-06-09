@@ -144,6 +144,7 @@ class Customers(db.Model):
   name=db.Column(db.String(100))
   pass_hash=db.Column(db.String(512))
   email=db.Column(db.String(100), primary_key=True)
+  tax_id=db.Column(db.String(100))
   homeadress=db.Column(db.String(100))
   wishes = db.relationship('Products', secondary = wishes, backref = 'wish')
   shopping_cart_= db.relationship('Products', secondary = shopping_cart, backref = 'carts')
@@ -152,11 +153,12 @@ class Customers(db.Model):
   Buy_Dlist = db.relationship("Buy_Dlist", back_populates="Customers")
   #bought_products = db.relationship('Products', secondary = customer_product, backref = 'owned')
 
-  def __init__(self,name,pass_hash,email,homeadress):
+  def __init__(self,name,pass_hash,email,homeadress, tax_id= "customer tax id not set "):
     self.name=name
     self.pass_hash=pass_hash
     self.email=email
     self.homeadress=homeadress
+    self.tax_id=tax_id
 
 class Products(db.Model):
   __tablename__='Products'
@@ -177,13 +179,14 @@ class Products(db.Model):
   picture_url1=db.Column(db.String(10000))
   picture_url2=db.Column(db.String(10000))
   date =  db.Column(db.String(1000))
+  deleted = db.Column(db.Boolean)
 
 
 
 
   def __init__(self,name,model,description,edition_number
               ,quantity, amount_sold, price, raiting, warranty, distributor_Information, author, sale,
-              picture_url0,picture_url1,picture_url2):
+              picture_url0,picture_url1,picture_url2, deleted = False):
     self.name=name
     self.model=model
     self.description=description
@@ -201,6 +204,7 @@ class Products(db.Model):
     self.picture_url2=picture_url2
     self.sale=sale
     self.date = str(datetime.now()) 
+    self.deleted = deleted
 
     
 

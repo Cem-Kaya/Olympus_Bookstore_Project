@@ -21,7 +21,7 @@ def deleteUser():
 def unit_test1():
     #build up 
     url = 'http://127.0.0.1:5000/signup/submit'
-    myobj = {'email': "test@test.test" ,"name":"unit test","pass_hash": 123 , "homeadress":"SUN"   }
+    myobj = {'email': "test@test.test" ,"name":"unit test","pass_hash": 123 , "homeadress":"SUN", "tax_id": "12321123"   }
     #test  pass_hash homeadress /signup/submit
     stat =False
     if req.post(url, data = json.dumps(myobj)).text == '{"status": true, "uid": "test@test.test"}':
@@ -37,7 +37,7 @@ def unit_test1():
 def unit_test2():
     #build up 
     url = 'http://127.0.0.1:5000/signup/submit'
-    myobj = {'email': "test@test.test" ,"name":"unit test","pass_hash": 123 , "homeadress":"SUN"   }
+    myobj = {'email': "test@test.test" ,"name":"unit test","pass_hash": 123 , "homeadress":"SUN", "tax_id": "12321123"    }
     #test  pass_hash homeadress /signup/submit
     req.post(url, data = json.dumps(myobj))
     stat =False
@@ -55,7 +55,7 @@ def unit_test2():
 def unit_test3():
     #build up 
     url = 'http://127.0.0.1:5000/signup/submit'
-    myobj = {'email': "test@test.test" ,"name":"unit test","pass_hash": "123" , "homeadress":"SUN"   }
+    myobj = {'email': "test@test.test" ,"name":"unit test","pass_hash": "123" , "homeadress":"SUN", "tax_id": "12321123"    }
     #test  pass_hash homeadress /signup/submit
     req.post(url, data = json.dumps(myobj)).text
 
@@ -99,7 +99,7 @@ def unit_test4():
 def unit_test5():
     #build up 
     url = 'http://127.0.0.1:5000/signup/submit'
-    myobj = {'email': "test@test.test" ,"name":"unit test","pass_hash": "123" , "homeadress":"SUN"   }
+    myobj = {'email': "test@test.test" ,"name":"unit test","pass_hash": "123" , "homeadress":"SUN", "tax_id": "12321123"    }
     #test  pass_hash homeadress /signup/submit
     req.post(url, data = json.dumps(myobj)).text
 
@@ -516,7 +516,7 @@ def unit_test16():    #checks product category registration function for pid s n
 def unit_test17():    #checks to purchase function with a created user function for pid s not in store. rest is omitted first create a dummy product and decrease stock, if successful return true and tear it down 
     
     url = 'http://127.0.0.1:5000/signup/submit'
-    myobj = {'email': "test@test.test1" ,"name":"unit test","pass_hash": 123 , "homeadress":"SUN"   }
+    myobj = {'email': "test@test.test1" ,"name":"unit test","pass_hash": 123 , "homeadress":"SUN", "tax_id": "12321123" }
     
     #we create a user with this request
     req.post(url, data = json.dumps(myobj))
@@ -552,6 +552,9 @@ def unit_test17():    #checks to purchase function with a created user function 
         
     stat =False
     answer = "{" + '"status"' + ": true" + "}"
+    print(answer)
+    print(text)
+
     #print(answer)
     #print(req.post(url, data = json.dumps(myobj)).text)
     #if req.post(url, data = json.dumps(myobj)).text == '{"status": true}':
@@ -580,7 +583,7 @@ def unit_test17():    #checks to purchase function with a created user function 
 def unit_test18():    #checks wishing functionality with a created user function for pid s not in store. rest is omitted first create a dummy product and decrease stock, if successful return true and tear it down 
     
     url = 'http://127.0.0.1:5000/signup/submit'
-    myobj = {'email': "test@test.test15" ,"name":"unit test","pass_hash": 123 , "homeadress":"SUN"   }
+    myobj = {'email': "test@test.test15" ,"name":"unit test","pass_hash": 123 , "homeadress":"SUN", "tax_id": "12321123"}
     
     #we create a user with this request
     req.post(url, data = json.dumps(myobj))
@@ -802,18 +805,20 @@ def unit_test25():    #checks all books if next did functions correctly function
     
 
 def unit_test26():
-    time.sleep(2)
-    first=read_email_from_gmail()
-    time.sleep(2)
-    send_email("CS.308.Group4@gmail.com","Unit test of email sevice this shell break it self in 30 days ")
-    time.sleep(2)
+    try: 
+        time.sleep(2)
+        first=read_email_from_gmail()
+        time.sleep(2)
+        send_email("cs.308.group4.mail3@gmail.com","Unit test of email sevice this shell break it self in 30 days ")
+        time.sleep(2)
 
-    lstat=read_email_from_gmail()
-    #print(lstat)
-    #print(first)
-    if (lstat - first) == 1:
-        return True
-    return False
+        lstat=read_email_from_gmail()
+        #print(lstat)
+        #print(first)
+        if (lstat - first) == 1:
+            return True
+    except:
+        return False
     
 
 

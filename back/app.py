@@ -71,9 +71,9 @@ def alltables():
   todata = "<h2> ENTITIES</h2>"
   todata +="<h3>Customers </h3> "
   allCustomers=Customers.query.filter_by().all()
-  todata+= "<table> <tr> <th>email </th> <th>name </th> </tr> "
+  todata+= "<table> <tr> <th>email </th> <th>name </th> <th> tax_id </th> </tr> "
   for i in allCustomers:
-    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.email,i.name) 
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.email,i.name, i.tax_id) 
   todata +="</table>   "
 
   todata+="<h3> Product Manager </h3> "
@@ -85,9 +85,9 @@ def alltables():
 
   allproducts=Products.query.filter_by().all()
   todata+=" <h3> Products </h3> " # <h1>A heading here</h1>
-  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> <th>quantity</th> <th>amount_sold</th> </tr> '
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> <th>quantity</th> <th>amount_sold</th>  <th>deleted</th> </tr> '
   for i in allproducts:
-    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td><td> {} </td><td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale,i.quantity,i.amount_sold) 
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td><td> {} </td><td> {} </td> <td> {} </td></tr>".format(i.Pid,i.name,i.price,i.sale,i.quantity,i.amount_sold, i.deleted) 
   todata +="</table>"
 
   todata+="<h3> Product Category </h3> "
@@ -205,7 +205,8 @@ def signupsubmit_test():
   myobj = {'name': request.form['name'] , 
            'pass_hash': request.form['pass_hash'],
           'email': request.form['email'],
-          'homeadress': request.form['homeadress']
+          'homeadress': request.form['homeadress'],
+          'tax_id': request.form['tax_id']
     }
   return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )  
 
@@ -220,13 +221,14 @@ def signupsubmit():
   pass_hash=data2['pass_hash']
   email=data2['email']
   homeadress=data2['homeadress']
+  tax_id=data2['tax_id']
 
   retjs ={}
   if len(Customers.query.filter_by(email=email).all())!=0:
     retjs["status"] = False
     retjs["uid"] = None
   else:    
-    custumer__= Customers(name,pass_hash,email,homeadress)
+    custumer__= Customers(name,pass_hash,email,homeadress,tax_id)
     db.session.add(custumer__)
     db.session.commit()  
     retjs["status"] = True
@@ -579,27 +581,28 @@ def get_all_books():
   jsonprd = []
 
   for pr in allproducts:
-    tmp={
-      "id": pr.Pid,
-      "img": pr.picture_url0,
-      "img1": pr.picture_url1,
-      "img2": pr.picture_url2,
-      "title": pr.name ,
-      "author": pr.author,
-      "raiting": pr.raiting,      
-      "publisher": pr.distributor_Information,
-      "price":  pr.price ,    
-      "amount_sold": pr.amount_sold ,
-      "release_date": str(pr.date),
-      "model": pr.model,
-      "edition_number": pr.edition_number,
-      "description": pr.description,
-      "in_stock": pr.quantity,
-      "warranty": pr.warranty,
-      "discount": str((1-pr.sale)*100)+"%",
-      "date": pr.date
-    }
-    jsonprd.append(tmp)  
+    if (pr.deleted == False):
+      tmp={
+        "id": pr.Pid,
+        "img": pr.picture_url0,
+        "img1": pr.picture_url1,
+        "img2": pr.picture_url2,
+        "title": pr.name ,
+        "author": pr.author,
+        "raiting": pr.raiting,      
+        "publisher": pr.distributor_Information,
+        "price":  pr.price ,    
+        "amount_sold": pr.amount_sold ,
+        "release_date": str(pr.date),
+        "model": pr.model,
+        "edition_number": pr.edition_number,
+        "description": pr.description,
+        "in_stock": pr.quantity,
+        "warranty": pr.warranty,
+        "discount": str((1-pr.sale)*100)+"%",
+        "date": pr.date
+      }
+      jsonprd.append(tmp)  
   return json.dumps(jsonprd)
 
 @app.route('/all_salesmanagers')
@@ -731,43 +734,14 @@ def all_books_rangedd():
   return render_template('all_books_ranged.html',data =todata )  #bunu degistirdim
 
 
-@app.route('/all_books_ranged/submit', methods=['POST'], strict_slashes=False )
-def get_all_books_ranged_sub():
-  data2 = json.loads(request.get_data())
-  print(request.get_data()) 
-  min = int ( data2['min'] ) 
-  max = int ( data2['max'] ) 
 
-  allproducts=Products.query.filter_by().all()
-  jsonprd = []
 
-  for i,pr in enumerate(allproducts):
-    if i< min:
-      continue  
-    if i> max:
-      break
-    tmp={
-      "id": pr.Pid,
-      "img": pr.picture_url0,
-      "img1": pr.picture_url1,
-      "img2": pr.picture_url2,
-      "title": pr.name ,
-      "author": pr.author,
-      "raiting": pr.raiting,      
-      "publisher": pr.distributor_Information,
-      "price":  pr.price ,    
-      "amount_sold": pr.amount_sold ,
-      "release_date": str(pr.date),
-      "model": pr.model,
-      "edition_number": pr.edition_number,
-      "description": pr.description,
-      "in_stock": pr.quantity,
-      "warranty": pr.warranty,
-      "discount": str((1-pr.sale)*100)+"%",
-      "date": pr.date
-    }
-    jsonprd.append(tmp)  
-  return json.dumps(jsonprd)
+
+
+
+
+
+  
     
 
 @app.route('/update_book')
@@ -1194,6 +1168,7 @@ def Wishes_get_email_submit():
       { "email": i.email  ,"Pid":i.Pid  , "date":str(i.date ) }
     )
   return json.dumps(ret_js)
+
 
 
 
@@ -1836,7 +1811,7 @@ def refundssubmit():
   try:
     data2 = json.loads(request.get_data())#request.get_json()
     #, strict_slashes=False 
-
+    print(data2)
     customer_email= data2['uid']
     #sales_manager_id= int(data2['sid'])
     purchased_purcid= int(data2['purcid'])
@@ -1864,6 +1839,11 @@ def refundssubmit():
       db.session.query(Purchased)\
           .filter(Purchased.purcid == purchased_purcid)\
           .update({Purchased.shipment: "Cancelled"})
+      db.session.commit()
+      #increase the stock of the product
+      db.session.query(Products)\
+          .filter(Products.Pid == my_pid)\
+          .update({Products.quantity: Products.quantity + my_purchased.quantity})
       db.session.commit()
     else:
       db.session.query(Purchased)\
@@ -1942,24 +1922,7 @@ def refundsupdatesssubmittest():
     }
   return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )      
 
-@app.route('/refunds_update/submit', methods=['POST'] , strict_slashes=False )
-def refundssubmit_update():
-  #rejected accepted 
-  data2 = json.loads(request.get_data())#request.get_json()
-  status= str(data2['status'])
-  id= int(data2['id'])
-  db.session.query(Refunds)\
-          .filter(Refunds.id == id)\
-          .update({Refunds.refund_state:status })
 
-  my_refund= db.session.query(Refunds).filter(Refunds.id == id).first()
-  db.session.query(Purchased)\
-          .filter(Purchased.purcid == my_refund.purchased_purcid )\
-          .update({Purchased.shipment:  "Refunded" if (status=="Refunded") else "Refund Rejected"  })
-  db.session.commit()
-  retjs = {}
-  retjs["status"] = True
-  return json.dumps(retjs)
 
 @app.route('/purchased_update')
 def purchased_updatesssss():
@@ -2012,9 +1975,10 @@ def purchasedupdatesssubmittest():
     }
   return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
 
+
 @app.route('/purchased_update/submit', methods=['POST'] , strict_slashes=False )
 def purchesdddssubmit_update():
-  #rejected accepted 
+  #
   data2 = json.loads(request.get_data())#request.get_json()
   shipment= str(data2['shipment'])
   purcid = int(data2['purcid'])
@@ -2284,27 +2248,28 @@ def all_books_category_ranged_sub():
       continue  
     if i> max:
       break
-    tmp={
-      "id": pr.Pid,
-      "img": pr.picture_url0,
-      "img1": pr.picture_url1,
-      "img2": pr.picture_url2,
-      "title": pr.name ,
-      "author": pr.author,
-      "raiting": pr.raiting,      
-      "publisher": pr.distributor_Information,
-      "price":  pr.price ,    
-      "amount_sold": pr.amount_sold ,
-      "release_date": str(pr.date),
-      "model": pr.model,
-      "edition_number": pr.edition_number,
-      "description": pr.description,
-      "in_stock": pr.quantity,
-      "warranty": pr.warranty,
-      "discount": str((1-pr.sale)*100)+"%",
-      "date": pr.date
-    }
-    jsonprd.append(tmp)  
+    if(pr.deleted == False):
+      tmp={
+        "id": pr.Pid,
+        "img": pr.picture_url0,
+        "img1": pr.picture_url1,
+        "img2": pr.picture_url2,
+        "title": pr.name ,
+        "author": pr.author,
+        "raiting": pr.raiting,      
+        "publisher": pr.distributor_Information,
+        "price":  pr.price ,    
+        "amount_sold": pr.amount_sold ,
+        "release_date": str(pr.date),
+        "model": pr.model,
+        "edition_number": pr.edition_number,
+        "description": pr.description,
+        "in_stock": pr.quantity,
+        "warranty": pr.warranty,
+        "discount": str((1-pr.sale)*100)+"%",
+        "date": pr.date
+      }
+      jsonprd.append(tmp)  
   return json.dumps(jsonprd)
 
 
@@ -2493,7 +2458,10 @@ def to_purchase_sub():
 
   except:
     print("Email error")
-  #return render_template('success.html',data ="" ) 
+    retjs = {}
+    retjs["status"] = True
+    return json.dumps(retjs)
+    
 
 @app.route('/delivery_process')
 def deliveryprocess():
