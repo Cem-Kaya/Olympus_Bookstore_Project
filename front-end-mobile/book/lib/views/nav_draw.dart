@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:bookstore/pages/category_page.dart';
+import 'package:bookstore/utils/colors.dart';
+import 'package:bookstore/utils/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -56,14 +58,14 @@ class nav_draw extends StatelessWidget {
     //allCategories();
 
     return Drawer(
-      backgroundColor: Colors.amber,
+      backgroundColor: AppColors.primary,
       elevation: 2.0,
       child: ListView(
         scrollDirection: Axis.vertical,
         children: List.generate(categories.length, (int index) {
           return OutlinedButton(
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+              backgroundColor: MaterialStateProperty.all<Color>(AppColors.primaryBackground),
               padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
             ),
             onPressed: () {
@@ -72,14 +74,14 @@ class nav_draw extends StatelessWidget {
             },
             child: Container(
               width: 200,
-              color: Colors.blue,
+              color: AppColors.secondaryBackground,
               height: 50.0,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     categories[index],
-                    style: TextStyle(color: Colors.black),
+                    style: kButtonDarkTextStyle,
                   ),
                 ],
               ),

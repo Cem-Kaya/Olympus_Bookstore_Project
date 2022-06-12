@@ -10,15 +10,6 @@ class ActionBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      actions: [
-        IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.notifications,
-              color: AppColors.primary,
-              size: 40,
-            ))
-      ],
       title: Text(
         title,
       ),

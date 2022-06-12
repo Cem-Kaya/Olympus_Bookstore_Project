@@ -10,7 +10,6 @@ class Favorites extends StatefulWidget {
   const Favorites({Key? key, required this.wishes}) : super(key: key);
   final List<num> wishes;
 
-
   @override
   State<Favorites> createState() => _FavoritesState();
 }
@@ -19,10 +18,11 @@ class _FavoritesState extends State<Favorites> {
   @override
   var counter = 0;
   List<PreviewBooks>? items;
+
   @override
   void initState() {
     super.initState();
-        () async {
+    () async {
       await allBooks();
       setState(() {
         // Update your UI with the desired changes.
@@ -39,34 +39,36 @@ class _FavoritesState extends State<Favorites> {
         //print(result[0].id);
         setState(() {
           counter = result.length;
-          
+
           items = result;
-          items=items?.where((element) => widget.wishes.contains(element.id)).toList();
+          items = items
+              ?.where((element) => widget.wishes.contains(element.id))
+              .toList();
           print(items);
           print("inside all books");
         });
         //print(counter);
         return result;
-      }
-      else {
+      } else {
         print(response.statusCode);
       }
-
     } catch (e) {
       print(e.toString());
     }
   }
+
   Widget build(BuildContext context) {
     print(widget.wishes);
-    if(widget.wishes.length==0) {
+    if (widget.wishes.length == 0) {
       return Scaffold(
-        appBar: ActionBar(title:"My Wish List",),
-      body:Center(
-        child: Text("Wish List is empty. Add some products!"),
-      ),
+        appBar: ActionBar(
+          title: "My Wish List",
+        ),
+        body: Center(
+          child: Text("Wish List is empty. Add some products!"),
+        ),
       );
-    }
-    else{
+    } else {
       if (items == null) {
         allBooks();
         return const Center(
@@ -74,7 +76,9 @@ class _FavoritesState extends State<Favorites> {
         );
       }
       return Scaffold(
-        appBar: ActionBar(title:"My Wish List",),
+        appBar: ActionBar(
+          title: "My Wish List",
+        ),
         body: SingleChildScrollView(
           child: SizedBox(
             child: Padding(
@@ -91,8 +95,8 @@ class _FavoritesState extends State<Favorites> {
                             for (var i in items!)
                               Padding(
                                 padding:
-                                const EdgeInsets.symmetric(vertical: 8.0),
-                                child: ProductPreview(product: i ),
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: ProductPreview(product: i),
                               ),
                           ]),
                     ),

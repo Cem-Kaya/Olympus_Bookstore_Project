@@ -20,7 +20,10 @@ import '../views/product_preview.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage(
-      {Key? key, required this.productID, required this.refreshFunc,required this.isuser})
+      {Key? key,
+      required this.productID,
+      required this.refreshFunc,
+      required this.isuser})
       : super(key: key);
   final int productID;
   final String isuser;
@@ -34,7 +37,7 @@ class _ProductPageState extends State<ProductPage> {
   late String id;
   @override
   late String x;
-  bool is_wished=false;
+  bool is_wished = false;
 
   @override
   void initState() {
@@ -45,24 +48,21 @@ class _ProductPageState extends State<ProductPage> {
         // Update your UI with the desired changes.
       });
       getProduct();
-      if(widget.isuser!="") {
-
+      if (widget.isuser != "") {
         await ALLwishes(widget.isuser);
         print("ssssssssssss");
         print(wishes[0]);
-
-
       }
     }();
 
-
-
     // obtain shared preferences
   }
-  var remove;
-  Removewishes(String email,num pid) async { //it will be handled
-    try {
 
+  var remove;
+
+  Removewishes(String email, num pid) async {
+    //it will be handled
+    try {
       remove = await http.post(
         Uri.parse(API.remove_wished), //it will be handled
         headers: <String, String>{
@@ -71,7 +71,7 @@ class _ProductPageState extends State<ProductPage> {
         body: jsonEncode(
           {
             "email": email,
-            "Pid":pid,
+            "Pid": pid,
           },
         ),
       );
@@ -81,10 +81,12 @@ class _ProductPageState extends State<ProductPage> {
       print("error is ${e.toString()}");
     }
   }
-  var add;
-  ADDwishes(String email,num pid) async { //it will be handled
-    try {
 
+  var add;
+
+  ADDwishes(String email, num pid) async {
+    //it will be handled
+    try {
       add = await http.post(
         Uri.parse(API.wishes_submit), //it will be handled
         headers: <String, String>{
@@ -93,7 +95,7 @@ class _ProductPageState extends State<ProductPage> {
         body: jsonEncode(
           {
             "email": email,
-            "Pid":pid,
+            "Pid": pid,
           },
         ),
       );
@@ -122,10 +124,14 @@ class _ProductPageState extends State<ProductPage> {
       print(e.toString());
     }
   }
-  var wishes;
-  ALLwishes(String email,) async {//it will be handled
-    try {
 
+  var wishes;
+
+  ALLwishes(
+    String email,
+  ) async {
+    //it will be handled
+    try {
       wishes = await http.post(
         Uri.parse(API.allwishes), //it will be handled
         headers: <String, String>{
@@ -138,32 +144,29 @@ class _ProductPageState extends State<ProductPage> {
         ),
       );
 
-      wishes =jsonDecode(wishes.body);
+      wishes = jsonDecode(wishes.body);
       print("aaaaaaaaaaaaa");
       print(wishes);
-      int i= 0;
-      bool ished=false;
-      while(i<wishes.length){
-        if(wishes[i]["Pid"]==widget.productID){
+      int i = 0;
+      bool ished = false;
+      while (i < wishes.length) {
+        if (wishes[i]["Pid"] == widget.productID) {
+          ished = true;
 
-            ished=true;
-
-         // print(is_wished);
+          // print(is_wished);
           //print(wishes[i]["Pid"]);
         }
-        i=i+1;
+        i = i + 1;
       }
-      if(ished){
+      if (ished) {
         setState(() {
-          is_wished=true;
+          is_wished = true;
+        });
+      } else {
+        setState(() {
+          is_wished = false;
         });
       }
-      else{
-        setState(() {
-          is_wished=false;
-        });
-      }
-
     } catch (e) {
       print("error is ${e.toString()}");
     }
@@ -172,8 +175,8 @@ class _ProductPageState extends State<ProductPage> {
   PreviewBooks? _product;
 
   Future<void> getProduct() async {
-    PreviewBooks wanted =
-        await items[await items.indexWhere((element) => element.id == widget.productID)];
+    PreviewBooks wanted = await items[
+        await items.indexWhere((element) => element.id == widget.productID)];
 
     _product = wanted;
     //print(_product?.title);
@@ -183,13 +186,13 @@ class _ProductPageState extends State<ProductPage> {
 
   Widget build(BuildContext context) {
     Function login = Provider.of<logged_in_user>(context).getUser;
-    var user =login();
+    var user = login();
     print(is_wished);
 
     Function addBasket = Provider.of<Basket>(context).add_basket;
     Size size = MediaQuery.of(context).size;
     //sleep(Duration(milliseconds:50)); // it is for debugging
-    if (_product == null ) {
+    if (_product == null) {
       allBooks();
       return const Center(
         child: CircularProgressIndicator(),
@@ -205,6 +208,51 @@ class _ProductPageState extends State<ProductPage> {
                   _product?.img ??
                       "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg",
                   fit: BoxFit.fitWidth),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              top: 264,
+              right: 8,
+            ),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Visibility(
+                visible: user != '',
+                child: Container(
+                  child: is_wished
+                      ? ElevatedButton.icon(
+                          onPressed: () async {
+                            await Removewishes(widget.isuser, widget.productID);
+                            await ALLwishes(widget.isuser);
+                          },
+                          label: Text("Remove from wishlist",
+                              style: const TextStyle(
+                                fontSize: 16,
+                              )),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                AppColors.notification),
+                          ),
+                          icon: Icon(Icons.favorite),
+                        )
+                      : ElevatedButton.icon(
+                          onPressed: () async {
+                            await ADDwishes(widget.isuser, widget.productID);
+                            await ALLwishes(widget.isuser);
+                          },
+                          label: Text("Add to wishlist",
+                              style: const TextStyle(
+                                fontSize: 16,
+                              )),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                Colors.green),
+                          ),
+                          icon: Icon(Icons.favorite_border),
+                        ),
+                ),
+              ),
             ),
           ),
           Padding(
@@ -302,8 +350,9 @@ class _ProductPageState extends State<ProductPage> {
                                           margin: const EdgeInsets.all(3.0),
                                           padding: const EdgeInsets.all(3.0),
                                           decoration: BoxDecoration(
-                                              border: Border.all(color: AppColors.notification)
-                                          ),
+                                              border: Border.all(
+                                                  color:
+                                                      AppColors.notification)),
                                           child: Text(
                                             "Stocks: ${_product?.inStock}",
                                             style: const TextStyle(
@@ -312,38 +361,8 @@ class _ProductPageState extends State<ProductPage> {
                                             ),
                                           ),
                                         ),
-                                        Visibility(
-                                          visible: user!='',
-                                          child: Container(
-                                            margin: const EdgeInsets.all(3.0),
-                                            padding: const EdgeInsets.all(3.0),
-                                            decoration: BoxDecoration(
-                                                border: Border.all(color: AppColors.notification)
-                                            ),
-                                            child:is_wished ?TextButton(onPressed: ()async
-                                            {
-                                              await Removewishes(widget.isuser, widget.productID);
-                                              await ALLwishes(widget.isuser);
-                                            }, child: Text(
-                                                "Remove from wishlist",
-                                                style: const TextStyle(
-                                                  color: AppColors.notification,
-                                                  fontSize: 16,
-                                                )) ,):TextButton(onPressed: ()async
-                                            {
-                                                await ADDwishes(widget.isuser,widget.productID);
-                                                await ALLwishes(widget.isuser);
-                                            }, child: Text(
-                                                "Add to wishlist",
-                                                style: const TextStyle(
-                                                  color: AppColors.notification,
-                                                  fontSize: 16,
-                                                )) ,),
-                                          ),
-                                        ),
                                       ],
                                     ),
-
                                   ]),
                             ),
                             Expanded(
@@ -397,7 +416,10 @@ class _ProductPageState extends State<ProductPage> {
                                               Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          reviews(prod: widget.productID,)));
+                                                          reviews(
+                                                            prod: widget
+                                                                .productID,
+                                                          )));
                                             },
                                             child: Text("Read Reviews"),
                                           ),
@@ -406,29 +428,34 @@ class _ProductPageState extends State<ProductPage> {
                                           width: size.width / 2 - 44,
                                           child: OutlinedButton(
                                               onPressed: () async {
-                                                if (user !="") {
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            AddReview(
-                                                                prod: widget
-                                                                    .productID)));
-                                                }
-                                                else {
+                                                if (user != "") {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              AddReview(
+                                                                  prod: widget
+                                                                      .productID)));
+                                                } else {
                                                   await showDialog(
                                                       context: context,
-                                                      builder: (_) => AlertDialog(
-                                                        title: const Text("Error"),
-                                                        content: const Text(
-                                                            "For continue adding a review, you need to login"),
-                                                        actions: [
-                                                          TextButton(
-                                                              onPressed: () {
-                                                                Navigator.pop(_);
-                                                              },
-                                                              child: const Text("Ok"))
-                                                        ],
-                                                      ));
+                                                      builder: (_) =>
+                                                          AlertDialog(
+                                                            title: const Text(
+                                                                "Error"),
+                                                            content: const Text(
+                                                                "For continue adding a review, you need to login"),
+                                                            actions: [
+                                                              TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator
+                                                                        .pop(_);
+                                                                  },
+                                                                  child:
+                                                                      const Text(
+                                                                          "Ok"))
+                                                            ],
+                                                          ));
                                                 }
                                               },
                                               child: Text("Add a Review")),
@@ -463,7 +490,6 @@ class _ProductPageState extends State<ProductPage> {
                         IconButton(
                             onPressed: () {
                               setState(() {
-
                                 if (stocks > 0) {
                                   stocks = stocks - 1;
                                   //print(stocks);

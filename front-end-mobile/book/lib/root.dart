@@ -1,11 +1,10 @@
 import 'package:bookstore/services/root_index.dart';
 import 'package:bookstore/services/user_logged_data.dart';
+import 'package:bookstore/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:bookstore/pages/homepage.dart';
 import 'package:bookstore/pages/profile.dart';
-import 'package:bookstore/pages/sell_product.dart';
 import 'package:bookstore/pages/sign_in.dart';
-import 'package:bookstore/pages/suggestions.dart';
 import 'package:bookstore/pages/profile.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -67,8 +66,8 @@ class _RootState extends State<Root> {
     var routes = [
       const HomePage(),
       const BasketPage(),
-      const Suggestions(),
-      const SellProduct(),
+      //const Suggestions(),
+      //const SellProduct(),
       const SignIn(),
     ];
 
@@ -81,32 +80,33 @@ class _RootState extends State<Root> {
     return Scaffold(
       body: routes[_selectedBottomTabIndex],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.shifting,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
-              backgroundColor: Colors.green),
+              backgroundColor: AppColors.primaryBackground),
           BottomNavigationBarItem(
               icon: Icon(Icons.shopping_basket),
               label: 'Basket',
-              backgroundColor: Colors.green),
-          BottomNavigationBarItem(
+              backgroundColor: AppColors.primaryBackground),
+          /*BottomNavigationBarItem(
               icon: Icon(Icons.favorite),
               label: 'Suggestions',
               backgroundColor: Colors.green),
           BottomNavigationBarItem(
               icon: Icon(Icons.add_shopping_cart),
               label: 'Sell Product',
-              backgroundColor: Colors.green),
+              backgroundColor: Colors.green),*/
           BottomNavigationBarItem(
               icon: Icon(Icons.account_circle),
               label: 'Profile',
-              backgroundColor: Colors.green)
+              backgroundColor: AppColors.primaryBackground),
         ],
         currentIndex: _selectedBottomTabIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: AppColors.secondaryBackground,
         onTap: (_selectedBottomTabIndex) {
-          if (temp && _selectedBottomTabIndex ==4 ) {
+          if (temp && _selectedBottomTabIndex == 2) {
             Navigator.pushNamed(context, '/profile');
           } else {
             change_index(_selectedBottomTabIndex);

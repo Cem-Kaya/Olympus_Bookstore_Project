@@ -25,6 +25,7 @@ class _ProfileBodyState extends State<ProfileBody> {
   var temp_account;
   var wishes;
   List<num> wishid=[];
+
   ALLwishes(String email) async {//it will be handled
     try {
 
@@ -76,7 +77,6 @@ class _ProfileBodyState extends State<ProfileBody> {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
     Function login = Provider.of<logged_in_user>(context).getUser;
@@ -112,7 +112,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                     ],
                   ),
                   onPressed: () async {
-                    postAccount(user);
+                    await postAccount(user);
                     await showDialog(
                         context: context,
                         builder: (_) => AlertDialog(

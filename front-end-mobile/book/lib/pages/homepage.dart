@@ -205,9 +205,9 @@ class _HomePageState extends State<HomePage> {
                     style: ButtonStyle(backgroundColor:
                     MaterialStateProperty.resolveWith<Color?>((states) {
                       if (states.contains(MaterialState.pressed)) {
-                        return AppColors.background.withOpacity(.5);
+                        return AppColors.secondaryBackground.withOpacity(.5);
                       } else if (_currentCategory == index) {
-                        return AppColors.background;
+                        return AppColors.secondaryBackground;
                       } else {
                         return null;
                       }
