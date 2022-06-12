@@ -1,11 +1,9 @@
 import 'package:bookstore/views/action_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../utils/api.dart';
 import '../utils/dimensions.dart';
 import '../utils/jsonParse/previewBooks.dart';
-import 'package:darq/darq.dart';
 
 import '../views/product_preview.dart';
 
@@ -19,19 +17,14 @@ class search_page extends StatefulWidget {
 
 class _search_pageState extends State<search_page> {
   static final _categories = [
-    "Text Book   ",
-    "Novel Drama",
-    "Poerty     ",
-    "Drama      ",
-    "Classics   "
+    "Novel",
+    "Non-fiction",
+    "Manga",
+    "Woodworking",
+    "Light Novel",
+    "Drama",
   ];
-  List<String> _ordering = [
-    "All",
-    "Time",
-    "Name",
-    "Selling Amount",
-    "Stars",
-  ];
+
   String selected = "All";
 
   String my_search = "";
@@ -160,7 +153,7 @@ class _search_pageState extends State<search_page> {
                   },
                   icon: Icon(Icons.search))
             ]),
-            SizedBox(
+            /* SizedBox( // maybe it will be added in future.
               height: 60,
               child: ListView(
                 scrollDirection: Axis.horizontal,
@@ -169,12 +162,18 @@ class _search_pageState extends State<search_page> {
                     onPressed: () {},
                     child: Container(
                       height: 50.0,
-                      child: Text(_categories[index]),
+                      width: 100.0,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(_categories[index]),
+                        ],
+                      ),
                     ),
                   );
                 }),
               ),
-            ),
+            ), */
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -188,7 +187,6 @@ class _search_pageState extends State<search_page> {
                     color: Colors.deepPurpleAccent,
                   ),
                   onChanged: (String? newValue) {
-                    //ascending does not work, no update on products
                     setState(() {
                       //list = items as List<PreviewBooks>;
                       selected = newValue!;

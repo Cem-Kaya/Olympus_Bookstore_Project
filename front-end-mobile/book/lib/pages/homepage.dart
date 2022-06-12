@@ -24,10 +24,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   //Categories
   static final _categories = [
-    "Best Seller     ",
-    "Top Rated       ",
-    "New Books       ",
-    "Promotions      ",
+    "Best Seller",
+    "Top Rated",
+    "New Books",
+    "Promotions",
   ];
   static int _currentCategory = 0;
 
@@ -135,6 +135,9 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Row(children: [
+              SizedBox(
+                width: 5,
+              ),
               Expanded(child: TextFormField(
                 onChanged: (value) { setState(() { _search = value; }); },
               )),
@@ -156,7 +159,9 @@ class _HomePageState extends State<HomePage> {
                       setState(() {
                         items!.sort(
                                 (b, a) => a.amountSold!.compareTo(b.amountSold!));
+                        _currentCategory = index;
                       }
+
                       );
                     }
                     else if(index==1){
@@ -164,6 +169,7 @@ class _HomePageState extends State<HomePage> {
                       setState(() {
                         items!.sort(
                                 (b, a) => a.raiting!.compareTo(b.raiting!));
+                        _currentCategory = index;
                       }
                       );
 
@@ -174,6 +180,7 @@ class _HomePageState extends State<HomePage> {
                         items!.sort(
                                 (a,b)=> a.releaseDate!.compareTo(b.releaseDate!)
                         );
+                        _currentCategory = index;
                       });
                     }
                     else if(index==3){
@@ -181,13 +188,35 @@ class _HomePageState extends State<HomePage> {
                         items!.sort(
                                 (b,a)=> a.discount!.compareTo(b.discount!)
                         );
+                        _currentCategory = index;
                       });
                     }
                     },
                     child: Container(
                       height: 50.0,
-                      child: Text(_categories[index]),
+                      width: 100,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(_categories[index]),
+                        ],
+                      ),
                     ),
+                    style: ButtonStyle(backgroundColor:
+                    MaterialStateProperty.resolveWith<Color?>((states) {
+                      if (states.contains(MaterialState.pressed)) {
+                        return AppColors.background.withOpacity(.5);
+                      } else if (_currentCategory == index) {
+                        return AppColors.background;
+                      } else {
+                        return null;
+                      }
+                    }), foregroundColor:
+                    MaterialStateProperty.resolveWith<Color?>((states) {
+                      return (_currentCategory == index)
+                          ? AppColors.DarkTextColor
+                          : AppColors.LightTextColor;
+                    })),
                   );
                 }),
               ),

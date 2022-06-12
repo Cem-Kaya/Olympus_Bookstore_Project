@@ -116,6 +116,13 @@ class _SignInState extends State<SignIn> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                CircleAvatar(
+                  radius: 80,
+                  backgroundImage: AssetImage("assets/olympus bookstore icon.jpeg"),
+                ),
+                SizedBox(height: 15),
+                Text("Olympus Bookstore", style: kHeadingTextStyle,),
+                SizedBox(height: 25),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -306,50 +313,6 @@ class _SignInState extends State<SignIn> {
                         ),
                       ),
                     ),
-                  ],
-                ),
-                SizedBox(height: 120),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: OutlinedButton(
-                        onPressed: () {},
-                        child: Padding(
-                          padding: Dimen.smallPadding,
-                          child: Stack(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Image.network(
-                                  'https://yt3.ggpht.com/ytc/AKedOLSLGq_D1XWmzA-gln_lFj_lxnP2uLlahawMniDurg=s900-c-k-c0x00ffffff-no-rj',
-                                  height: 30,
-                                  width: 30,
-                                ),
-                              ),
-                              Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Continue with Google",
-                                    textAlign: TextAlign.center,
-                                    style: kButtonDarkTextStyle,
-                                  ))
-                            ],
-                          ),
-                        ),
-                        style: OutlinedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 40),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-
                   ],
                 ),
               ],

@@ -405,13 +405,31 @@ class _ProductPageState extends State<ProductPage> {
                                         Container(
                                           width: size.width / 2 - 44,
                                           child: OutlinedButton(
-                                              onPressed: () {
+                                              onPressed: () async {
+                                                if (user !="") {
                                                 Navigator.of(context).push(
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             AddReview(
                                                                 prod: widget
                                                                     .productID)));
+                                                }
+                                                else {
+                                                  await showDialog(
+                                                      context: context,
+                                                      builder: (_) => AlertDialog(
+                                                        title: const Text("Error"),
+                                                        content: const Text(
+                                                            "For continue adding a review, you need to login"),
+                                                        actions: [
+                                                          TextButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(_);
+                                                              },
+                                                              child: const Text("Ok"))
+                                                        ],
+                                                      ));
+                                                }
                                               },
                                               child: Text("Add a Review")),
                                         ),

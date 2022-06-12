@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bookstore/pages/old_purchases.dart';
 import 'package:bookstore/utils/colors.dart';
+import 'package:bookstore/utils/jsonParse/accountDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../pages/favorites.dart';
@@ -19,8 +20,9 @@ class ProfileBody extends StatefulWidget {
 
 class _ProfileBodyState extends State<ProfileBody> {
   var response;
-
+  var response_Account;
   var temp;
+  var temp_account;
   var wishes;
   List<num> wishid=[];
   ALLwishes(String email) async {//it will be handled
@@ -53,31 +55,27 @@ class _ProfileBodyState extends State<ProfileBody> {
     }
   }
 
-  /*
-   purchases()  async{
+  postAccount(String email) async {
     try {
-      print("user $user");
-      response = await http.post(
-        Uri.parse("http://10.0.2.2:5000/get_ones_purch_hist/submit"),
+      response_Account = await http.post(
+        Uri.parse(API.send_account_info),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(
-          {
-            "uid": "a@a.com",
-
+          <String, String>{
+            "email": email,
           },
         ),
       );
-      temp=response.body;
-      return temp;
-      print(temp.runtimeType);
+      //print(response_Account.body);
+      temp_account = accountDetailsFromJson(response_Account.body);
     } catch (e) {
       print("error is ${e.toString()}");
-
     }
   }
-  */
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -88,10 +86,11 @@ class _ProfileBodyState extends State<ProfileBody> {
       padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
       child: Column(
         children: [
-          Text(
-            "Name",
-            style: kProfileNameText,
+          CircleAvatar(
+            radius: 50,
+            backgroundImage: NetworkImage("https://m.media-amazon.com/images/M/MV5BN2EzM2JlMDMtMmUzNC00ZTY4LThhNzItZjIyNzBiYzYzOGZkXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_QL75_UY281_CR155,0,190,281_.jpg"),
           ),
+          const SizedBox(height: 20),
           Text(user, style: kProfileMailText),
           const SizedBox(height: 10),
           Padding(
@@ -108,11 +107,28 @@ class _ProfileBodyState extends State<ProfileBody> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
                       Icon(Icons.person),
-                      Text("Account Settings"),
+                      Text("Account Details"),
                       Icon(Icons.arrow_forward)
                     ],
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    postAccount(user);
+                    await showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                          title: const Text("Account Details"),
+                          content: Text(
+                              "Name: ${temp_account.name!} \n \nEmail: ${temp_account.uid!} \n \nTax ID: ${temp_account.tax_id!} \n \nHome Address:${temp_account.homeaddress!} \n"),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(_);
+                                },
+                                child: const Text("Ok"))
+                          ],
+                        ));
+
+                  },
                 ),
               )),
           Padding(

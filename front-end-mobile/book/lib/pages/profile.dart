@@ -32,7 +32,7 @@ class _ProfileState extends State<Profile> {
               ),
               onPressed: (){
                 sign_out();
-                Navigator.pop(context); //maybe t will change to home page
+                Navigator.pop(context);
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(AppColors.notification),

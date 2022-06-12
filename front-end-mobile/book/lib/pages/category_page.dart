@@ -35,7 +35,7 @@ getCategories(num pcid) async { //it will be handled
       },
       body: jsonEncode(
         {
-          "min": 1,
+          "min": 0,
           "max": 100,
           "Pcid":pcid,
         },

@@ -17,6 +17,7 @@ class API2 {
   static const allwishes="http://127.0.0.1:5000/Wishes_get_email/submit";
   static const remove_wished="http://127.0.0.1:5000/Wishes_rm/submit";
   static const send_refund="http://127.0.0.1:5000/refunds/submit";
+  static const send_account_info="http://127.0.0.1:5000/customer_info/submit";
 }
 class API {
   static const allBooks = "http://10.0.2.2:5000/all_books";
@@ -36,4 +37,5 @@ class API {
   static const allwishes="http://10.0.2.2:5000/Wishes_get_email/submit";
   static const remove_wished="http://10.0.2.2:5000/Wishes_rm/submit";
   static const send_refund="http://10.0.2.2:5000/refunds/submit";
+  static const send_account_info="http://10.0.2.2:5000/customer_info/submit";
 }
