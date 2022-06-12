@@ -2400,6 +2400,17 @@ def all_books_category_ranged_sub():
       jsonprd.append(tmp)  
   return json.dumps(jsonprd)
 
+#create all books category ranged submit_test function
+@app.route('/all_books_category_ranged/submit_test', methods=['POST'], strict_slashes=False  )
+def all_books_category_ranged_sub_test():
+  url = 'http://127.0.0.1:5000/all_books_category_ranged/submit'
+  myobj = {'min': request.form['min'],
+           'max': request.form['max'],
+           'Pcid': request.form['Pcid']
+           }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
+
+
 
     
 
