@@ -62,6 +62,7 @@ def customerinfosubmit():
     retjs["name"] = myCustomer.name
     retjs["pass_hash"] = myCustomer.pass_hash
     retjs["homeaddress"] = myCustomer.homeadress
+    retjs["tax_id"] = myCustomer.tax_id
 
   return json.dumps(retjs)
 
