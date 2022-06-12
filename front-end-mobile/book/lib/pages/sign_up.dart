@@ -24,11 +24,12 @@ class _SignUpState extends State<SignUp> {
   String name = "";
   String adress = "";
   String mail = "";
+  String TaxID = "";
   String pass = "";
   var response;
   late Map<String, dynamic> temp;
 
-  postlog(String name, String email, String pass, String add) async {
+  postlog(String name, String email, String pass, String add, String taxID) async {
     try {
       response = await http.post(
         Uri.parse(API.signup),
@@ -41,6 +42,7 @@ class _SignUpState extends State<SignUp> {
             "email": email,
             "pass_hash": pass,
             "homeadress": add,
+            "tax_id": taxID,
           },
         ),
       );
@@ -209,6 +211,52 @@ class _SignUpState extends State<SignUp> {
                     Expanded(
                       flex: 1,
                       child: TextFormField(
+                          decoration: InputDecoration(
+                            fillColor: AppColors.DarkTextColor,
+                            filled: true,
+                            hintText: "Tax ID",
+                            hintStyle: kButtonLightTextStyle,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppColors.primary,
+                              ),
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(30)),
+                            ),
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null) {
+                              return "Tax ID can not be empty";
+                            } else {
+                              String trimmedValue = value.trim();
+                              if (trimmedValue.isEmpty) {
+                                return "Tax ID can not be empty";
+                              }
+                              if (!EmailValidator.validate(trimmedValue)) {
+                                return "Tax ID is not valid";
+                              }
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            if (value != null) {
+                              TaxID = value;
+                            }
+                          }
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 35,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: TextFormField(
                         decoration: InputDecoration(
                           fillColor: AppColors.DarkTextColor,
                           filled: true,
@@ -263,7 +311,7 @@ class _SignUpState extends State<SignUp> {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
                            // print("$name, $mail, $pass, $adress");
-                            await postlog(name, mail, pass, adress);
+                            await postlog(name, mail, pass, adress, TaxID);
                             if (temp["status"]) {
                               Navigator.pop(context);
                               login(mail);

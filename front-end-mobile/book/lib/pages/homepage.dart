@@ -92,6 +92,8 @@ class _HomePageState extends State<HomePage> {
         print("ppppppppppppp");
         print(result);
         int c=1;
+        cat=[];
+
         while(c<=counter_cat){
           //print(items_cat[c.toString()]);
           cat.add(items_cat[c.toString()]);
@@ -112,7 +114,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-
   @override
   String _search="";
   Widget build(BuildContext context) {
@@ -126,9 +127,6 @@ class _HomePageState extends State<HomePage> {
     }
     print("tttttttttttttt");
     print(cat);
-
-
-
 
     return Scaffold(
       drawer: nav_draw(categories: cat),
@@ -155,37 +153,37 @@ class _HomePageState extends State<HomePage> {
                 children: List.generate(_categories.length, (int index) {
                   return OutlinedButton(
                     onPressed: () {if(index==0){
-                        setState(() {
+                      setState(() {
                         items!.sort(
-                        (b, a) => a.amountSold!.compareTo(b.amountSold!));
-                        }
-                        );
-                        }
-                      else if(index==1){
-                        //print("index 1");
-                        setState(() {
-                          items!.sort(
-                                  (b, a) => a.raiting!.compareTo(b.raiting!));
-                        }
-                        );
+                                (b, a) => a.amountSold!.compareTo(b.amountSold!));
+                      }
+                      );
+                    }
+                    else if(index==1){
+                      //print("index 1");
+                      setState(() {
+                        items!.sort(
+                                (b, a) => a.raiting!.compareTo(b.raiting!));
+                      }
+                      );
 
 
                     }
-                      else if(index==2){
-                        setState(() {
-                          items!.sort(
-                              (a,b)=> a.releaseDate!.compareTo(b.releaseDate!)
-                          );
-                        });
+                    else if(index==2){
+                      setState(() {
+                        items!.sort(
+                                (a,b)=> a.releaseDate!.compareTo(b.releaseDate!)
+                        );
+                      });
                     }
-                      else if(index==3){
-                        setState(() {
-                          items!.sort(
-                              (b,a)=> a.discount!.compareTo(b.discount!)
-                          );
-                        });
+                    else if(index==3){
+                      setState(() {
+                        items!.sort(
+                                (b,a)=> a.discount!.compareTo(b.discount!)
+                        );
+                      });
                     }
-    },
+                    },
                     child: Container(
                       height: 50.0,
                       child: Text(_categories[index]),
@@ -201,14 +199,14 @@ class _HomePageState extends State<HomePage> {
                 padding: Dimen.regularPadding,
                 child: Row(
                   children: List.generate(
-                      //productPreviewList.length,
+                    //productPreviewList.length,
                       counter,
-                      (index) => Row(children: [
-                            ProductPreview(
-                              product: items![index],
-                            ),
-                            SizedBox(width: 8),
-                          ])),
+                          (index) => Row(children: [
+                        ProductPreview(
+                          product: items![index],
+                        ),
+                        SizedBox(width: 8),
+                      ])),
                 ),
               ),
             ),
@@ -223,10 +221,10 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   children: List.generate(
                       counter,
-                      (index) => Row(children: [
-                            ProductPreview(product: items![index]),
-                            SizedBox(width: 8)
-                          ])),
+                          (index) => Row(children: [
+                        ProductPreview(product: items![index]),
+                        SizedBox(width: 8)
+                      ])),
                 ),
               ),
             ),
