@@ -566,7 +566,11 @@ def unit_test17():    #checks to purchase function with a created user function 
     buyDlistDelete = db.session.query(Buy_Dlist)\
         .filter(Buy_Dlist.did ==  int(myDid) )\
         .delete()  
-
+        
+    buyDlistDelete = db.session.query(Buy_Dlist)\
+        .filter(Buy_Dlist.customer_email ==  "test@test.test1" )\
+        .delete()  
+        
     productsmdelete = db.session.query(Purchased)\
         .filter(Purchased.purcid == int(myPurcid))\
             .delete()    
@@ -791,7 +795,8 @@ def unit_test24():    #checks all books if next did functions correctly function
     if req.post(url, data = json.dumps(myobj)):
         stat = True   
     return stat
-    
+
+
 def unit_test25():    #checks all books if next did functions correctly functionality, first creates a product then puts it under a category functionality with a created user function for pid s not in store. rest is omitted first create a dummy product and decrease stock, if successful return true and tear it down 
     
     myPDF = make_pdf("denemetexti")
@@ -820,7 +825,181 @@ def unit_test26():
     except:
         return False
     
+def unit_test27():
+    url = 'http://127.0.0.1:5000/get_all_approved_comments/submit'
+    myobj = {"Pid": "1"}    #test  pass_hash home
+    stat = False
+    # print(req.get(url, data = json.dumps(myobj)))
+    if req.post(url, data = json.dumps(myobj)):
+        stat = True   
+    return stat
 
+def unit_test28():
+    url = 'http://127.0.0.1:5000/get_comments_for_approval/submit'
+    myobj = {"Pmid": "1"}    #test  pass_hash home
+    stat = False
+    # print(req.get(url, data = json.dumps(myobj)))
+    if req.post(url, data = json.dumps(myobj)):
+        stat = True   
+    return stat
+
+def unit_test29():
+    #will check our cusotmer info getter function when it gets the right input
+    
+    #build up a customer
+    url = 'http://127.0.0.1:5000/signup/submit'
+    myobj = {'email': "test@test.test" ,"name":"unit test","pass_hash": 123 , "homeadress":"SUN", "tax_id": "12321123"   }
+    #test  pass_hash homeadress /signup/submit
+    req.post(url, data = json.dumps(myobj))
+    #test customer getter
+    url = 'http://127.0.0.1:5000/customer_info/submit'
+    myobj = {"email": "test@test.test"}    #test  pass_hash home
+    stat = False
+    # print(req.get(url, data = json.dumps(myobj)))
+    if req.post(url, data = json.dumps(myobj)):
+        stat = True   
+    #tear down
+    allUnders = db.session.query(Customers)\
+        .filter(Customers.email == "test@test.test")\
+            .delete()
+    db.session.commit()      
+    return stat            
+
+def unit_test30():
+    #will check our wish list for given cusotmer function 
+    
+    #build up a customer
+    url = 'http://127.0.0.1:5000/signup/submit'
+    myobj = {'email': "test@test.test" ,"name":"unit test","pass_hash": 123 , "homeadress":"SUN", "tax_id": "12321123"   }
+    #test  pass_hash homeadress /signup/submit
+    req.post(url, data = json.dumps(myobj))
+    #test customer getter
+    url = 'http://127.0.0.1:5000/Wishes_get_email/submit'
+    myobj = {"email": "test@test.test"}    #test  pass_hash home
+    stat = False
+    # print(req.get(url, data = json.dumps(myobj)))
+    if req.post(url, data = json.dumps(myobj)):
+        stat = True   
+    #tear down
+    allUnders = db.session.query(Customers)\
+        .filter(Customers.email == "test@test.test")\
+            .delete()
+    db.session.commit()      
+    return stat                    
+    
+def unit_test31():
+    #will check our delivery list getter function function when it gets the right input
+    
+    url = 'http://127.0.0.1:5000/pmid_deliverylist/submit'
+    myobj = {"Pmid": "1"}    #test  pass_hash home
+    stat = False
+    # print(req.get(url, data = json.dumps(myobj)))
+    if req.post(url, data = json.dumps(myobj)):
+        stat = True   
+    
+    return stat     
+
+def unit_test32():
+    #will check sales manager registration function
+     
+    
+    url = 'http://127.0.0.1:5000/Sales_manager_reg/submit'
+    myobj = {'name': "test2" ,"pass_hash":"123"}
+    stat = False
+    text = req.post(url, data = json.dumps(myobj)).text 
+    sm_ex_check = db.session.query(Sales_Manager)\
+        .filter(Sales_Manager.name == "test2" ).first()
+    # print(req.get(url, data = json.dumps(myobj)))
+    mySid = int(sm_ex_check.Sid)
+    
+    allUnders = db.session.query(Sales_Manager)\
+        .filter(Sales_Manager.Sid == sm_ex_check.Sid)\
+            .delete()
+    db.session.commit()         
+    answer = "{" + '"status"' + ": true, " + '"sid": ' + str(mySid) + "}"
+    if text == answer:
+        stat =True        
+    return stat            
+       
+def unit_test33():
+    #will check getter that lists refund objects a particular sales manager has is responsible for     
+    
+    url = 'http://127.0.0.1:5000/Sales_manager_reg/submit'
+    myobj = {'name': "test4" ,"pass_hash":"123"}
+    stat = False
+    text = req.post(url, data = json.dumps(myobj)).text 
+    sm_ex_check = db.session.query(Sales_Manager)\
+        .filter(Sales_Manager.name == "test4" ).first()
+    # print(req.get(url, data = json.dumps(myobj)))
+    mySid = int(sm_ex_check.Sid)
+    url = 'http://127.0.0.1:5000/refunds_get_sid/submit'
+    myobj = {"Sid": mySid}    
+    stat = False
+    # print(req.get(url, data = json.dumps(myobj)))
+    if req.post(url, data = json.dumps(myobj)):
+        stat = True   
+    
+    allUnders = db.session.query(Sales_Manager)\
+        .filter(Sales_Manager.Sid == sm_ex_check.Sid)\
+            .delete()
+    db.session.commit()         
+    
+    return stat     
+
+def unit_test34():
+    #will check what happens if i try to create sales manager with same name, it shouldn't allow it     
+    
+    url = 'http://127.0.0.1:5000/Sales_manager_reg/submit'
+    myobj = {'name': "test4" ,"pass_hash":"123"}
+    stat = False
+    text = req.post(url, data = json.dumps(myobj)).text 
+    sm_ex_check = db.session.query(Sales_Manager)\
+        .filter(Sales_Manager.name == "test4" ).first()
+    # print(req.get(url, data = json.dumps(myobj)))
+    mySid = int(sm_ex_check.Sid)
+    text = req.post(url, data = json.dumps(myobj)).text
+    allUnders = db.session.query(Sales_Manager)\
+        .filter(Sales_Manager.Sid == sm_ex_check.Sid)\
+            .delete()
+    db.session.commit()         
+    answer = "{" + '"status"' + ": false, " + '"sid": ' + "null" + "}"
+    
+    if text == answer:
+        stat =True        
+    return stat     
+
+def unit_test35():    #checks product manager refund getter function  
+    
+    url = 'http://127.0.0.1:5000/Product_manager_reg/submit'
+    myobj = {'name': "requefdsst.form['name']" , 
+           'pass_hash': "requesfsdt.form['pass_hash']",
+    }
+    #req.post(url, data = json.dumps(myobj))
+    text = req.post(url, data = json.dumps(myobj)).text
+    allproductmanagers = db.session.query(Product_Manager).all()
+    pidvalues = []
+    if(len(allproductmanagers) == 0):
+        pidvalues.append(int(1))
+    else:
+        for i in allproductmanagers:
+            pidvalues.append(i.Pmid)
+    maxPmid=max(pidvalues)
+        
+    stat =False
+    url = 'http://127.0.0.1:5000/products_pmid/submit'
+    myobj = {"Pmid": maxPmid}    
+    stat = False
+    # print(req.get(url, data = json.dumps(myobj)))
+    if req.post(url, data = json.dumps(myobj)):
+        stat = True    
+    #teardown 
+    #Customers.query.filter_by(email=email).all()
+    productsmdelete = db.session.query(Product_Manager)\
+        .filter(Product_Manager.Pmid == int(maxPmid))\
+            .delete()    
+    db.session.commit()         
+
+    return stat  
 
 
 def nan_functional_req():
@@ -837,7 +1016,7 @@ if __name__ == "__main__":
     debug = False
     if(debug):
         #deleteUser()
-        print("unit_test26" , unit_test26() )
+        print("unit_test35" , unit_test35() )
     else:    
 
         print("unit_test1" , unit_test1() )
@@ -866,6 +1045,19 @@ if __name__ == "__main__":
         print("unit_test24" , unit_test24() )    
         print("unit_test25" , unit_test25() )    
         print("unit_test26" , unit_test26() ) 
+        print("unit_test27" , unit_test27() )
+        print("unit_test28" , unit_test28() )
+        print("unit_test29" , unit_test29() )
+        print("unit_test30" , unit_test30() )
+        print("unit_test31" , unit_test31() ) 
+        print("unit_test32" , unit_test32() )
+        print("unit_test33" , unit_test33() )
+        print("unit_test34" , unit_test34() )
+        print("unit_test35" , unit_test35() )
+
+    
+    
+   
         print("None functional requirement test 1000 client connection test " ,nan_functional_req())
 
 
