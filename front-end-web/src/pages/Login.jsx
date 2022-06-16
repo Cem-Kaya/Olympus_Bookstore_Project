@@ -65,9 +65,9 @@ const Login = () => {
     }
   }
   
-  const SignUp = async (username, email, passHash, homeAddress) =>  {
+  const SignUp = async (username, email, passHash, homeAddress, taxID) =>  {
     try{
-      const serverAnswer = await signUp(username, email, passHash, homeAddress)
+      const serverAnswer = await signUp(username, email, passHash, homeAddress, taxID)
       setValues(serverAnswer)
     }
     catch(e){

@@ -27,7 +27,6 @@ const Body = styled.div`
 `;
 
 const LeftContainer = styled.div`
-  margin: auto;
   width: 40%;
   height: 100%;
   padding: 10px;
@@ -128,6 +127,9 @@ const Account = () => {
               </div> 
               <div className='row'>  
                   <TextBox><h5>E-mail: {info.uid}</h5><br></br></TextBox>
+              </div> 
+              <div className='row'>  
+                  <TextBox><h5>Tax ID: {info.tax_id}</h5><br></br></TextBox>
               </div> 
               <div className='row'>  
                   <TextBox><h5>Address: {info.homeaddress}</h5><br></br></TextBox>

@@ -18,7 +18,7 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   padding: 20px;
-  height:65%;
+  height:78vh;
   width: 60vh;
   display: flex;
   margin-top:5vh;
@@ -54,12 +54,13 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  width: 40%;
+  width: 100%;
   border: none;
   padding: 15px 20px;
   background-color: teal;
   color: white;
   cursor: pointer;
+  margin-top: 10px;
   margin-bottom: 10px;
 `;
 
@@ -81,6 +82,11 @@ export const Signup = ({ onSignUp, onWrongInput }) => {
   let lastName = ""
   let homeAddress = ""
   let confirmPassword = ""
+  let taxID = ""
+
+  const setTaxID = (val) => {
+    taxID = val;
+  }
 
   const setEmail = (val) => {
 		email = val
@@ -101,7 +107,7 @@ export const Signup = ({ onSignUp, onWrongInput }) => {
 		homeAddress = val
 	}
   const checkAndSubmit = () => {
-    if(email === "" || password === "" || firstName === "" || lastName === "" || homeAddress === ""){
+    if(email === "" || password === "" || firstName === "" || lastName === "" || homeAddress === "" || taxID === ""){
       onWrongInput("None of the fields can be empty")
     }
     else if(confirmPassword !== password){
@@ -110,9 +116,9 @@ export const Signup = ({ onSignUp, onWrongInput }) => {
     else if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
     {
       const sha2_256 = require('simple-js-sha2-256')
-      //password = sha2_256(password)
+      password = sha2_256(password)
       let name = firstName.trim() + " " + lastName.trim()
-      onSignUp(name, email, password, homeAddress)
+      onSignUp(name, email, password, homeAddress, taxID)
     }
     else{
       onWrongInput("Not a valid email address")
@@ -127,6 +133,7 @@ export const Signup = ({ onSignUp, onWrongInput }) => {
         <Input placeholder="last name" onChange={event => setLName(event.target.value)}/>
 
         </Formrow>
+        <Input placeholder="tax ID" onChange={event => setTaxID(event.target.value)}/>
         <Input placeholder="email" onChange={event => setEmail(event.target.value)}/>
         <Input placeholder="password" onChange={event => setPassword(event.target.value)}/>
         <Input placeholder="confirm password" onChange={event => setConfirmPassword(event.target.value)}/>

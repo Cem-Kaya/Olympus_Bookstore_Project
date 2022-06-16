@@ -15,6 +15,7 @@ import { useState, useEffect } from 'react';
 import { checkLogInStatus, logOut, getUserID } from "../helperFunctions/helperLogin";
 import { add1Item, remove1Item, getCartItems } from '../helperFunctions/helperCartItems';
 import { fetchWishList } from "../helperFunctions/helperWishList";
+import "./ExtraStylesHeader.css"
 
 const HeaderDark = styled.div`
   padding: 10px;
@@ -61,6 +62,17 @@ const DropDownItem = styled.div`
 const DropDownItemCount = styled.div`
   display:flex;
   justify-content: space-between;
+`;
+
+const TextBoxBookTitle = styled.div`
+    text-align:left;
+    font-size:16px;
+    font-style: italic;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
 `;
 
 
@@ -168,16 +180,16 @@ const Header = ({itemsInCartChanged, wishListChanged, onAddToCart, onRemoveFromC
                 <button className='buttonStyle' onClick={() =>{handleDropdownOpenManagerLogin()}}>
                   Manager Login
                 </button>
-                {dropdownOpenManagerLogin && (<div className="dropdown">
+                {dropdownOpenManagerLogin && (<div className="dropdown" style={{margin:"0px"}}>
                       <ul>
                         <li>
                           <DropDownItem>  
-                            <button className='buttonStyle' onClick={() =>{history('/StoreLogin')}}>
+                            <button className='buttonStyle2' onClick={() =>{history('/StoreLogin')}}>
                               Log In to your Store
                             </button>
                           </DropDownItem>
                           <DropDownItem>  
-                            <button className='buttonStyle' onClick={() =>{history('/ProductManagementLogin')}}>
+                            <button className='buttonStyle2' onClick={() =>{history('/ProductManagementLogin')}}>
                               Log In to your Product Management Page
                             </button>
                           </DropDownItem>
@@ -233,23 +245,28 @@ const Header = ({itemsInCartChanged, wishListChanged, onAddToCart, onRemoveFromC
                     <span className="badge badge-pill badge-danger notify">{cartItems.length}</span></>}
                   </div>
                 </button>
-                {dropDownOpen && addToCartAllowed !== false && (<div className="dropdown">
+                {dropDownOpen && addToCartAllowed !== false && (<div className="dropdown bg-dark">
                     <ul>
                     {cartItems.map((item) => (
-                        <li key={item.id}>
+                      <div key={item.id} data-testid={item.id}>
+                        <li>
                           <DropDownItem>  
-                            <a href={`SingleProduct=${item.id}`}><p className="text-white">{item.title}</p></a>
+                            <a href={`SingleProduct=${item.id}`}><TextBoxBookTitle className="text-white">{item.title}</TextBoxBookTitle></a>
                             <DropDownItemCount>
                               <button className="btn-primary" onClick={() =>{itemsInCartChanged === undefined ? HeaderRemoveFromCart(item) : onRemoveFromCart(item)}}>-</button>
-                              <p>{" " + item.quantity + " "}</p>
+                              <input type="number" id="number" value={item.quantity} />
                               <button className="btn-primary" onClick={() =>{itemsInCartChanged === undefined ? HeaderAddToCart(item) : onAddToCart(item)}}>+</button>
-                            </DropDownItemCount>  
+                            </DropDownItemCount>
                           </DropDownItem>
                         </li>
+                        <hr className="bg-light"></hr>
+                      </div>
                       ))}
-                        <button className="btn btn-primary" onClick={() => {history('/MyCart')}}>
+                      <li>
+                        <button className="btn-block btn-primary" style={{height:"50px"}} onClick={() => {history('/MyCart')}}>
                           Go to My Cart  
                         </button>
+                      </li>
                     </ul>
                   </div>)}
               </Dropdown>

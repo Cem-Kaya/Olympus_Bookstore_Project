@@ -87,7 +87,7 @@ export const StoreSignup = ({ onSignUp, onWrongInput }) => {
     else
     {
       const sha2_256 = require('simple-js-sha2-256')
-      //password = sha2_256(password)
+      password = sha2_256(password)
       onSignUp(name, password)
     }
   }

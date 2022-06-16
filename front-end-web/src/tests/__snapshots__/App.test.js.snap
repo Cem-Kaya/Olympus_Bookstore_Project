@@ -1,0 +1,2118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create snapshot for display of filters, check if it gets changed in the future 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="row"
+  >
+    <div
+      className="card text-light bg-secondary"
+      style={
+        Object {
+          "width": "32rem",
+        }
+      }
+    >
+      <article
+        className="filter-group"
+      >
+        <header
+          className="card-header bg-light rounded-0"
+        >
+          <a
+            aria-expanded="true"
+            className="text-dark"
+            data-target="#collapse_1"
+            data-toggle="collapse"
+            href=""
+          >
+            <i
+              className="icon-control fa fa-chevron-down"
+            />
+            <h6
+              className="title"
+            >
+              Author
+            </h6>
+          </a>
+        </header>
+        <div
+          className="filter-content collapse show"
+          id="collapse_1"
+        >
+          <div
+            className="card-body"
+          >
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Jojo Moyes
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  2
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Yuval Noah Harari
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Yılmaz Özdir
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Lester Kaufman, Jane Straus
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Matt Haig
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Daron Acemoğlu, James Robinson
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Kolektif
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Jose Saramango
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Zülfü Livaneli
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Peter Kuper
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                İskender Pala
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+          </div>
+        </div>
+      </article>
+      <article
+        className="filter-group"
+      >
+        <header
+          className="card-header bg-light rounded-0"
+        >
+          <a
+            aria-expanded="true"
+            className="text-dark"
+            data-target="#collapse_2"
+            data-toggle="collapse"
+            href=""
+          >
+            <i
+              className="icon-control fa fa-chevron-down"
+            />
+            <h6
+              className="title"
+            >
+              Publisher
+            </h6>
+          </a>
+        </header>
+        <div
+          className="filter-content collapse show"
+          id="collapse_2"
+        >
+          <div
+            className="card-body"
+          >
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Kolektif Kitap
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Sia
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Michael Joseph
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Cambridge
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                JOSSEY-BASS
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Domingo Yayınevi
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Doğan Kitap
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Fol Kitap
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Kırmızı Kedi
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                İnkılap Yayınevi
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Metis Yayıncılık
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+            <label
+              className="custom-control custom-checkbox"
+            >
+              <input
+                className="custom-control-input"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="custom-control-label"
+              >
+                Kapı Yayınları
+                <b
+                  className="badge badge-pill badge-light float-right"
+                >
+                  1
+                </b>
+                  
+              </div>
+            </label>
+          </div>
+        </div>
+      </article>
+      <article
+        className="filter-group"
+      >
+        <header
+          className="card-header bg-light rounded-0"
+        >
+          <a
+            aria-expanded="true"
+            className="text-dark"
+            data-target="#collapse_3"
+            data-toggle="collapse"
+            href=""
+          >
+            <i
+              className="icon-control fa fa-chevron-down"
+            />
+            <h6
+              className="title"
+            >
+              Price range 
+            </h6>
+          </a>
+        </header>
+        <div
+          className="filter-content collapse show"
+          id="collapse_3"
+        >
+          <div
+            className="card-body"
+          >
+            <div
+              className="form-row"
+            >
+              <div
+                className="form-group col-md-6"
+              >
+                <label>
+                  Min
+                </label>
+                <input
+                  className="form-control"
+                  onChange={[Function]}
+                  onKeyDown={[Function]}
+                  placeholder="0 TL"
+                  type="number"
+                />
+              </div>
+              <div
+                className="form-group text-right col-md-6"
+              >
+                <label>
+                  Max
+                </label>
+                <input
+                  className="form-control"
+                  onChange={[Function]}
+                  onKeyDown={[Function]}
+                  placeholder="1,0000 TL"
+                  type="number"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article
+        className="filter-group"
+      >
+        <header
+          className="card-header bg-light rounded-0"
+        >
+          <a
+            aria-expanded="true"
+            className="text-dark"
+            data-target="#collapse_4"
+            data-toggle="collapse"
+            href=""
+          >
+            <i
+              className="icon-control fa fa-chevron-down"
+            />
+            <h6
+              className="title"
+            >
+              Raiting 
+            </h6>
+          </a>
+        </header>
+        <div
+          className="filter-content collapse show"
+          id="collapse_4"
+        >
+          <div
+            className="card-body"
+          >
+            <label
+              className="checkbox-btn"
+              onClick={[Function]}
+            >
+              <input
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <span
+                className="btn btn-light"
+              >
+                 1* 
+              </span>
+            </label>
+            <label
+              className="checkbox-btn"
+            >
+              <input
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <span
+                className="btn btn-light"
+              >
+                 2* 
+              </span>
+            </label>
+            <label
+              className="checkbox-btn"
+            >
+              <input
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <span
+                className="btn btn-light"
+              >
+                 3* 
+              </span>
+            </label>
+            <label
+              className="checkbox-btn"
+            >
+              <input
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <span
+                className="btn btn-light"
+              >
+                 4* 
+              </span>
+            </label>
+            <label
+              className="checkbox-btn"
+            >
+              <input
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <span
+                className="btn btn-light"
+              >
+                 5* 
+              </span>
+            </label>
+          </div>
+        </div>
+        <button
+          className="btn btn-block btn-primary"
+          onClick={[Function]}
+        >
+          Apply All
+        </button>
+      </article>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`create snapshot for sorting operation, check if it gets changed in the future 1`] = `
+<div
+  className="sc-jIAOiI bMtEfy"
+>
+  <div
+    className="sc-hiMGwR jdWKzB"
+  >
+    <div
+      className="sc-fXynhf enPvKx"
+    >
+      <img
+        className="sc-dwLEzm elozXr"
+        src="https://i.idefix.com/cache/600x600-0/originals/0001969529001-1.jpg"
+      />
+      <div
+        className="sc-ehmTmK jCUvki"
+      >
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-primary"
+          >
+             remained in stock
+          </h6>
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-muted"
+          >
+            125
+             of the item sold
+          </h6>
+        </div>
+        <div
+          className="sc-lbOyJj kPJaIl"
+        >
+          Sapiens
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn text-warning float-left"
+        >
+          Raiting: 
+          5
+           stars
+        </div>
+        <div
+          className="sc-gFGZVQ eGwVml"
+        >
+          Author: Yuval Noah Harari
+        </div>
+        <div
+          className="sc-fbPSWO hHshCn"
+        >
+          Publisher: Kolektif Kitap
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          0%
+           discount
+        </div>
+        <div
+          className="sc-GVOUr cwOYKP"
+        >
+          117.00 TL
+        </div>
+      </div>
+    </div>
+    <div
+      className="sc-olbas jwyeQO"
+    >
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.13 0-.25-.11-.25-.25z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root MuiSvgIcon-colorDisabled"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div
+    className="sc-hiMGwR jdWKzB"
+  >
+    <div
+      className="sc-fXynhf enPvKx"
+    >
+      <img
+        className="sc-dwLEzm elozXr"
+        src="https://i.idefix.com/cache/600x600-0/originals/0001969835001-1.jpg"
+      />
+      <div
+        className="sc-ehmTmK jCUvki"
+      >
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-primary"
+          >
+             remained in stock
+          </h6>
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-muted"
+          >
+            125
+             of the item sold
+          </h6>
+        </div>
+        <div
+          className="sc-lbOyJj kPJaIl"
+        >
+          Anka Kuşu
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn text-warning float-left"
+        >
+          Raiting: 
+          1
+           stars
+        </div>
+        <div
+          className="sc-gFGZVQ eGwVml"
+        >
+          Author: Yılmaz Özdir
+        </div>
+        <div
+          className="sc-fbPSWO hHshCn"
+        >
+          Publisher: Sia
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          0%
+           discount
+        </div>
+        <div
+          className="sc-GVOUr cwOYKP"
+        >
+          48.10 TL
+        </div>
+      </div>
+    </div>
+    <div
+      className="sc-olbas jwyeQO"
+    >
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.13 0-.25-.11-.25-.25z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root MuiSvgIcon-colorDisabled"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div
+    className="sc-hiMGwR jdWKzB"
+  >
+    <div
+      className="sc-fXynhf enPvKx"
+    >
+      <img
+        className="sc-dwLEzm elozXr"
+        src="https://www.bookeditingservices.co.uk/uploads/1/0/2/8/102824878/editor/download-1.jpg?1575752539"
+      />
+      <div
+        className="sc-ehmTmK jCUvki"
+      >
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-primary"
+          >
+             remained in stock
+          </h6>
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-muted"
+          >
+            125
+             of the item sold
+          </h6>
+        </div>
+        <div
+          className="sc-lbOyJj kPJaIl"
+        >
+          Me Before You
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn text-warning float-left"
+        >
+          Raiting: 
+          5
+           stars
+        </div>
+        <div
+          className="sc-gFGZVQ eGwVml"
+        >
+          Author: Jojo Moyes
+        </div>
+        <div
+          className="sc-fbPSWO hHshCn"
+        >
+          Publisher: Michael Joseph
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          0%
+           discount
+        </div>
+        <div
+          className="sc-GVOUr cwOYKP"
+        >
+          45.00 TL
+        </div>
+      </div>
+    </div>
+    <div
+      className="sc-olbas jwyeQO"
+    >
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.13 0-.25-.11-.25-.25z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root MuiSvgIcon-colorDisabled"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div
+    className="sc-hiMGwR jdWKzB"
+  >
+    <div
+      className="sc-fXynhf enPvKx"
+    >
+      <img
+        className="sc-dwLEzm elozXr"
+        src="https://images-na.ssl-images-amazon.com/images/I/6177mRK8WuL.jpg"
+      />
+      <div
+        className="sc-ehmTmK jCUvki"
+      >
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-danger"
+          >
+            Sold Out
+          </h6>
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-muted"
+          >
+            125
+             of the item sold
+          </h6>
+        </div>
+        <div
+          className="sc-lbOyJj kPJaIl"
+        >
+          Lead by Example
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn text-warning float-left"
+        >
+          Raiting: 
+          5
+           stars
+        </div>
+        <div
+          className="sc-gFGZVQ eGwVml"
+        >
+          Author: Jojo Moyes
+        </div>
+        <div
+          className="sc-fbPSWO hHshCn"
+        >
+          Publisher: Cambridge
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          0%
+           discount
+        </div>
+        <div
+          className="sc-GVOUr cwOYKP"
+        >
+          45.00 TL
+        </div>
+      </div>
+    </div>
+    <div
+      className="sc-olbas jwyeQO"
+    >
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root MuiSvgIcon-colorDisabled"
+          disabled={true}
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.13 0-.25-.11-.25-.25z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root MuiSvgIcon-colorDisabled"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div
+    className="sc-hiMGwR jdWKzB"
+  >
+    <div
+      className="sc-fXynhf enPvKx"
+    >
+      <img
+        className="sc-dwLEzm elozXr"
+        src="https://www.ubuy.com.tr/productimg/?image=aHR0cHM6Ly9pbWFnZXMtbmEuc3NsLWltYWdlcy1hbWF6b24uY29tL2ltYWdlcy9JLzUxdnNXU2hZZnZMLl9TUzQwMF8uanBn.jpg"
+      />
+      <div
+        className="sc-ehmTmK jCUvki"
+      >
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-primary"
+          >
+             remained in stock
+          </h6>
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-muted"
+          >
+            125
+             of the item sold
+          </h6>
+        </div>
+        <div
+          className="sc-lbOyJj kPJaIl"
+        >
+          Blue Book of Grammar and Punctuation
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn text-warning float-left"
+        >
+          Raiting: 
+          2.5
+           stars
+        </div>
+        <div
+          className="sc-gFGZVQ eGwVml"
+        >
+          Author: Lester Kaufman, Jane Straus
+        </div>
+        <div
+          className="sc-fbPSWO hHshCn"
+        >
+          Publisher: JOSSEY-BASS
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          0%
+           discount
+        </div>
+        <div
+          className="sc-GVOUr cwOYKP"
+        >
+          45.00 TL
+        </div>
+      </div>
+    </div>
+    <div
+      className="sc-olbas jwyeQO"
+    >
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.13 0-.25-.11-.25-.25z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root MuiSvgIcon-colorDisabled"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div
+    className="sc-hiMGwR jdWKzB"
+  >
+    <div
+      className="sc-fXynhf enPvKx"
+    >
+      <img
+        className="sc-dwLEzm elozXr"
+        src="https://i.idefix.com/cache/600x600-0/originals/0001969669001-1.jpg"
+      />
+      <div
+        className="sc-ehmTmK jCUvki"
+      >
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-warning"
+          >
+            Only 
+            2
+             remained in stock
+          </h6>
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-muted"
+          >
+            125
+             of the item sold
+          </h6>
+        </div>
+        <div
+          className="sc-lbOyJj kPJaIl"
+        >
+          İnsanlar
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn text-warning float-left"
+        >
+          Raiting: 
+          4.6
+           stars
+        </div>
+        <div
+          className="sc-gFGZVQ eGwVml"
+        >
+          Author: Matt Haig
+        </div>
+        <div
+          className="sc-fbPSWO hHshCn"
+        >
+          Publisher: Domingo Yayınevi
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          0%
+           discount
+        </div>
+        <div
+          className="sc-GVOUr cwOYKP"
+        >
+          40.60 TL
+        </div>
+      </div>
+    </div>
+    <div
+      className="sc-olbas jwyeQO"
+    >
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.13 0-.25-.11-.25-.25z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root MuiSvgIcon-colorDisabled"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div
+    className="sc-hiMGwR jdWKzB"
+  >
+    <div
+      className="sc-fXynhf enPvKx"
+    >
+      <img
+        className="sc-dwLEzm elozXr"
+        src="https://i.idefix.com/cache/600x600-0/originals/0000000572949-1.jpg"
+      />
+      <div
+        className="sc-ehmTmK jCUvki"
+      >
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-primary"
+          >
+             remained in stock
+          </h6>
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-muted"
+          >
+            125
+             of the item sold
+          </h6>
+        </div>
+        <div
+          className="sc-lbOyJj kPJaIl"
+        >
+          Ulusların Düşüşü
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn text-warning float-left"
+        >
+          Raiting: 
+          5
+           stars
+        </div>
+        <div
+          className="sc-gFGZVQ eGwVml"
+        >
+          Author: Daron Acemoğlu, James Robinson
+        </div>
+        <div
+          className="sc-fbPSWO hHshCn"
+        >
+          Publisher: Doğan Kitap
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          0%
+           discount
+        </div>
+        <div
+          className="sc-GVOUr cwOYKP"
+        >
+          40.30 TL
+        </div>
+      </div>
+    </div>
+    <div
+      className="sc-olbas jwyeQO"
+    >
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.13 0-.25-.11-.25-.25z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root MuiSvgIcon-colorDisabled"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div
+    className="sc-hiMGwR jdWKzB"
+  >
+    <div
+      className="sc-fXynhf enPvKx"
+    >
+      <img
+        className="sc-dwLEzm elozXr"
+        src="https://i.idefix.com/cache/600x600-0/originals/0001967981001-1.jpg"
+      />
+      <div
+        className="sc-ehmTmK jCUvki"
+      >
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-primary"
+          >
+             remained in stock
+          </h6>
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-muted"
+          >
+            125
+             of the item sold
+          </h6>
+        </div>
+        <div
+          className="sc-lbOyJj kPJaIl"
+        >
+          21. Yüzyıl için Tanrı
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn text-warning float-left"
+        >
+          Raiting: 
+          5
+           stars
+        </div>
+        <div
+          className="sc-gFGZVQ eGwVml"
+        >
+          Author: Kolektif
+        </div>
+        <div
+          className="sc-fbPSWO hHshCn"
+        >
+          Publisher: Fol Kitap
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          0%
+           discount
+        </div>
+        <div
+          className="sc-GVOUr cwOYKP"
+        >
+          37.85 TL
+        </div>
+      </div>
+    </div>
+    <div
+      className="sc-olbas jwyeQO"
+    >
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.13 0-.25-.11-.25-.25z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root MuiSvgIcon-colorDisabled"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div
+    className="sc-hiMGwR jdWKzB"
+  >
+    <div
+      className="sc-fXynhf enPvKx"
+    >
+      <img
+        className="sc-dwLEzm elozXr"
+        src="https://i.idefix.com/cache/600x600-0/originals/0001704045001-1.jpg"
+      />
+      <div
+        className="sc-ehmTmK jCUvki"
+      >
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-primary"
+          >
+             remained in stock
+          </h6>
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-muted"
+          >
+            125
+             of the item sold
+          </h6>
+        </div>
+        <div
+          className="sc-lbOyJj kPJaIl"
+        >
+          Körlük
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn text-warning float-left"
+        >
+          Raiting: 
+          4
+           stars
+        </div>
+        <div
+          className="sc-gFGZVQ eGwVml"
+        >
+          Author: Jose Saramango
+        </div>
+        <div
+          className="sc-fbPSWO hHshCn"
+        >
+          Publisher: Kırmızı Kedi
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          0%
+           discount
+        </div>
+        <div
+          className="sc-GVOUr cwOYKP"
+        >
+          36.55 TL
+        </div>
+      </div>
+    </div>
+    <div
+      className="sc-olbas jwyeQO"
+    >
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.13 0-.25-.11-.25-.25z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root MuiSvgIcon-colorDisabled"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div
+    className="sc-hiMGwR jdWKzB"
+  >
+    <div
+      className="sc-fXynhf enPvKx"
+    >
+      <img
+        className="sc-dwLEzm elozXr"
+        src="https://i.idefix.com/cache/600x600-0/originals/0001921956001-1.jpg"
+      />
+      <div
+        className="sc-ehmTmK jCUvki"
+      >
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-primary"
+          >
+             remained in stock
+          </h6>
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-muted"
+          >
+            125
+             of the item sold
+          </h6>
+        </div>
+        <div
+          className="sc-lbOyJj kPJaIl"
+        >
+          Balıkçı ve Oğlu
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn text-warning float-left"
+        >
+          Raiting: 
+          5
+           stars
+        </div>
+        <div
+          className="sc-gFGZVQ eGwVml"
+        >
+          Author: Zülfü Livaneli
+        </div>
+        <div
+          className="sc-fbPSWO hHshCn"
+        >
+          Publisher: İnkılap Yayınevi
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          0%
+           discount
+        </div>
+        <div
+          className="sc-GVOUr cwOYKP"
+        >
+          30.60 TL
+        </div>
+      </div>
+    </div>
+    <div
+      className="sc-olbas jwyeQO"
+    >
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.13 0-.25-.11-.25-.25z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root MuiSvgIcon-colorDisabled"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div
+    className="sc-hiMGwR jdWKzB"
+  >
+    <div
+      className="sc-fXynhf enPvKx"
+    >
+      <img
+        className="sc-dwLEzm elozXr"
+        src="https://i.idefix.com/cache/600x600-0/originals/0001968192001-1.jpg"
+      />
+      <div
+        className="sc-ehmTmK jCUvki"
+      >
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-primary"
+          >
+             remained in stock
+          </h6>
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-muted"
+          >
+            125
+             of the item sold
+          </h6>
+        </div>
+        <div
+          className="sc-lbOyJj kPJaIl"
+        >
+          Kafkaesk - On Dört Öykü
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn text-warning float-left"
+        >
+          Raiting: 
+          4.2
+           stars
+        </div>
+        <div
+          className="sc-gFGZVQ eGwVml"
+        >
+          Author: Peter Kuper
+        </div>
+        <div
+          className="sc-fbPSWO hHshCn"
+        >
+          Publisher: Metis Yayıncılık
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          0%
+           discount
+        </div>
+        <div
+          className="sc-GVOUr cwOYKP"
+        >
+          27.20 TL
+        </div>
+      </div>
+    </div>
+    <div
+      className="sc-olbas jwyeQO"
+    >
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.13 0-.25-.11-.25-.25z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root MuiSvgIcon-colorDisabled"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div
+    className="sc-hiMGwR jdWKzB"
+  >
+    <div
+      className="sc-fXynhf enPvKx"
+    >
+      <img
+        className="sc-dwLEzm elozXr"
+        src="https://i.idefix.com/cache/600x600-0/originals/0001955659001-1.jpg"
+      />
+      <div
+        className="sc-ehmTmK jCUvki"
+      >
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-primary"
+          >
+             remained in stock
+          </h6>
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          <h6
+            className="text-muted"
+          >
+            125
+             of the item sold
+          </h6>
+        </div>
+        <div
+          className="sc-lbOyJj kPJaIl"
+        >
+          A-71
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn text-warning float-left"
+        >
+          Raiting: 
+          4.5
+           stars
+        </div>
+        <div
+          className="sc-gFGZVQ eGwVml"
+        >
+          Author: İskender Pala
+        </div>
+        <div
+          className="sc-fbPSWO hHshCn"
+        >
+          Publisher: Kapı Yayınları
+        </div>
+        <div
+          className="sc-ckMVTt kwILRn"
+        >
+          0%
+           discount
+        </div>
+        <div
+          className="sc-GVOUr cwOYKP"
+        >
+          23.00 TL
+        </div>
+      </div>
+    </div>
+    <div
+      className="sc-olbas jwyeQO"
+    >
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          onClick={[Function]}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.13 0-.25-.11-.25-.25z"
+          />
+        </svg>
+      </div>
+      <div
+        className="sc-TRNrF iTpKgZ"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root MuiSvgIcon-colorDisabled"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -21,7 +21,7 @@ export const logIn = async (email, passHash) => {
     }
 }
 
-export const signUp = async (username, email, passHash, homeAddress) =>  {
+export const signUp = async (username, email, passHash, homeAddress, taxID) =>  {
     try{
         const res = await fetch(`/signup/submit`, {
           headers : { 
@@ -33,7 +33,8 @@ export const signUp = async (username, email, passHash, homeAddress) =>  {
             name: username,
             email: email,
             pass_hash: passHash,
-            homeadress: homeAddress
+            homeadress: homeAddress,
+            tax_id: taxID
           }),
         })
         const data = await res.json()

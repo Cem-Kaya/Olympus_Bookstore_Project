@@ -159,9 +159,9 @@ const SearchPage = () => {
       setCartItemsChanged(!cartItemsChanged)
     }
 
-    const FilterItems = () => {
+    const FilterItems = (itemList) => {
         console.log(params)
-        let itemsCopy = [...items]
+        let itemsCopy = [...itemList]
         let nonEmptyElements = []
 
         if(params.hasOwnProperty("title")){
@@ -204,7 +204,7 @@ const SearchPage = () => {
         console.log(itemsCopy)
         return itemsCopy
     }
-    let filteredItems = FilterItems()
+    let filteredItems = FilterItems(items)
 
     // const pages = () => {
     //     let pageSize = 16
