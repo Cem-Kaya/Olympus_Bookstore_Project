@@ -11,7 +11,6 @@ import 'package:bookstore/views/product_preview.dart';
 import 'package:bookstore/views/slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import '../views/nav_draw.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,6 +19,7 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
+GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
 class _HomePageState extends State<HomePage> {
   //Categories
@@ -129,6 +129,7 @@ class _HomePageState extends State<HomePage> {
     print(cat);
 
     return Scaffold(
+      key: scaffoldKey,
       drawer: nav_draw(categories: cat),
       appBar: ActionBar(),
       body: SingleChildScrollView(

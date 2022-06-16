@@ -1,15 +1,20 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../services/user_logged_data.dart';
 import '../utils/api.dart';
 import '../utils/jsonParse/previewBooks.dart';
 import '../views/action_bar.dart';
+import '../views/producpreview2.dart';
 import '../views/product_preview.dart';
 import 'package:http/http.dart' as http;
 
 class Favorites extends StatefulWidget {
-  const Favorites({Key? key, required this.wishes}) : super(key: key);
+  const Favorites({Key? key, required this.wishes,required this.use}) : super(key: key);
   final List<num> wishes;
-
+  final String use;
   @override
   State<Favorites> createState() => _FavoritesState();
 }
@@ -24,10 +29,44 @@ class _FavoritesState extends State<Favorites> {
     super.initState();
     () async {
       await allBooks();
-      setState(() {
+      setState(() async{
         // Update your UI with the desired changes.
       });
     };
+  }
+  var wishes;
+  List<num> wishid=[];
+
+  ALLwishes(String email) async {//it will be handled
+    try {
+
+      wishes = await http.post(
+        Uri.parse(API.allwishes), //it will be handled
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          {
+            "email": email,
+          },
+        ),
+      );
+      setState(() {
+        wishes =jsonDecode(wishes.body);
+      });
+
+      int i =0;
+      while(i<wishes.length){
+        wishid.add(wishes[i]["Pid"]);
+        i=i+1;
+      }
+      print("inside");
+      print(wishes);
+
+
+    } catch (e) {
+      print("error is ${e.toString()}");
+    }
   }
 
   Future allBooks() async {
@@ -36,6 +75,7 @@ class _FavoritesState extends State<Favorites> {
       final response = await http.get(url);
       if (response.statusCode >= 200 && response.statusCode < 400) {
         final result = previewBooksFromJson(response.body);
+        await ALLwishes(widget.use);
         //print(result[0].id);
         setState(() {
           counter = result.length;
@@ -48,7 +88,7 @@ class _FavoritesState extends State<Favorites> {
           print("inside all books");
         });
         //print(counter);
-        return result;
+        return items;
       } else {
         print(response.statusCode);
       }
@@ -58,8 +98,10 @@ class _FavoritesState extends State<Favorites> {
   }
 
   Widget build(BuildContext context) {
+    Function login = Provider.of<logged_in_user>(context).getUser;
     print(widget.wishes);
     if (widget.wishes.length == 0) {
+
       return Scaffold(
         appBar: ActionBar(
           title: "My Wish List",
@@ -96,7 +138,7 @@ class _FavoritesState extends State<Favorites> {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 8.0),
-                                child: ProductPreview(product: i),
+                                child: ProductPreview2(product: i),
                               ),
                           ]),
                     ),

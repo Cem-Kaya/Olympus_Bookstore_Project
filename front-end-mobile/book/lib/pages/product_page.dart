@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '../services/basket_data.dart';
 import '../services/user_logged_data.dart';
+import '../services/wishes_data.dart';
 import '../utils/api.dart';
 import '../utils/colors.dart';
 import '../utils/dimensions.dart';
@@ -186,6 +187,8 @@ class _ProductPageState extends State<ProductPage> {
 
   Widget build(BuildContext context) {
     Function login = Provider.of<logged_in_user>(context).getUser;
+    Function addwish = Provider.of<Wishes>(context).add_wishes;
+    Function remwish = Provider.of<Wishes>(context).remove_wishes;
     var user = login();
     print(is_wished);
 
@@ -225,6 +228,8 @@ class _ProductPageState extends State<ProductPage> {
                           onPressed: () async {
                             await Removewishes(widget.isuser, widget.productID);
                             await ALLwishes(widget.isuser);
+                            await remwish(widget.productID);
+
                           },
                           label: Text("Remove from wishlist",
                               style: const TextStyle(
@@ -240,6 +245,7 @@ class _ProductPageState extends State<ProductPage> {
                           onPressed: () async {
                             await ADDwishes(widget.isuser, widget.productID);
                             await ALLwishes(widget.isuser);
+                            await addwish(widget.productID);
                           },
                           label: Text("Add to wishlist",
                               style: const TextStyle(

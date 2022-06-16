@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 import '../services/root_index.dart';
 import '../services/user_logged_data.dart';
+import '../services/wishes_data.dart';
 import '../utils/api.dart';
 
 class SignIn extends StatefulWidget {
@@ -22,6 +23,40 @@ class SignIn extends StatefulWidget {
   _SignInState createState() => _SignInState();
 }
 class _SignInState extends State<SignIn> {
+  var wishes;
+  List<num> wishid=[];
+
+  ALLwishes(String email) async {//it will be handled
+    try {
+
+      wishes = await http.post(
+        Uri.parse(API.allwishes), //it will be handled
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          {
+            "email": email,
+          },
+        ),
+      );
+      setState(() {
+        wishes =jsonDecode(wishes.body);
+      });
+
+      int i =0;
+      while(i<wishes.length){
+        wishid.add(wishes[i]["Pid"]);
+        i=i+1;
+      }
+      print("inside");
+      print(wishes);
+
+
+    } catch (e) {
+      print("error is ${e.toString()}");
+    }
+  }
   final _formKey = GlobalKey<FormState>();
   var response_basket;
   Send_to_basket(num pid,String email,  num quantity) async { //it will be handled
@@ -98,6 +133,7 @@ class _SignInState extends State<SignIn> {
     Function basketclean = Provider.of<Basket>(context).clean_basket;
     Function basketadd = Provider.of<Basket>(context).add_basket;
     Function change_index = Provider.of<ClassRoot>(context).changeRoot;
+    Function wishs=Provider.of<Wishes>(context).init_wishes;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -213,9 +249,12 @@ class _SignInState extends State<SignIn> {
                       child: OutlinedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
+
                             _formKey.currentState!.save();
                             await AccountLogin(mail, pass);
                             if (temp["status"]) {
+                              await ALLwishes(mail);
+                              wishs(wishid);
                               List<Baske> bas=  await basketget();
                               if(bas!=null){
                                 for(var i in bas){

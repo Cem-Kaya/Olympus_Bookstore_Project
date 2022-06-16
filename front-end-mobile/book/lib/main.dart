@@ -7,6 +7,7 @@ import 'package:bookstore/services/basket_data.dart';
 import 'package:bookstore/services/istaken.dart';
 import 'package:bookstore/services/root_index.dart';
 import 'package:bookstore/services/user_logged_data.dart';
+import 'package:bookstore/services/wishes_data.dart';
 import 'package:flutter/material.dart';
 import 'package:bookstore/pages/sign_up.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,11 @@ class _BaseAppState extends State<BaseApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
+        providers: [ListenableProvider<Wishes>(
+          create: (BuildContext context) {
+            return Wishes();
+          },
+        ),
           ListenableProvider<Basket>(
             create: (BuildContext context) {
               return Basket();

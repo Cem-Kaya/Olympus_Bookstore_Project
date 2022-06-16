@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../pages/favorites.dart';
 import '../services/user_logged_data.dart';
+import '../services/wishes_data.dart';
 import '../utils/api.dart';
 import '../utils/styles.dart';
 import 'package:http/http.dart' as http;
@@ -80,6 +81,7 @@ class _ProfileBodyState extends State<ProfileBody> {
   @override
   Widget build(BuildContext context) {
     Function login = Provider.of<logged_in_user>(context).getUser;
+    Function wish_data = Provider.of<Wishes>(context).get;
     String user = login();
 
     return Padding(
@@ -170,14 +172,14 @@ class _ProfileBodyState extends State<ProfileBody> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
                       Icon(Icons.list_alt),
-                      Text("Wish List"),
+                      Text("Wish List "),
                       Icon(Icons.arrow_forward)
                     ],
                   ),
                   onPressed: () async{
                     await ALLwishes(user);
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => Favorites(wishes: wishid,)));
+                        builder: (context) => Favorites(wishes: wish_data(),use:user)));
                   },
                 ),
               )),
