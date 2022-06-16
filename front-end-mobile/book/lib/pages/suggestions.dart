@@ -5,8 +5,10 @@ class Suggestions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Suggestions"),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("My Suggestions"),
+      ),
     );
   }
 }

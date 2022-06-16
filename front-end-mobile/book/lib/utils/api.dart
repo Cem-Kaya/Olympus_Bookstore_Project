@@ -1,4 +1,4 @@
-class API {
+class API2 {
   //http://127.0.0.1:5000/signup
   static const allBooks = "http://127.0.0.1:5000/all_books";
   static const allReviews = "http://127.0.0.1:5000/get_all_approved_comments_no_input";
@@ -19,7 +19,7 @@ class API {
   static const send_refund="http://127.0.0.1:5000/refunds/submit";
   static const send_account_info="http://127.0.0.1:5000/customer_info/submit";
 }
-class API2 {
+class API {
   static const allBooks = "http://10.0.2.2:5000/all_books";
   static const allReviews = "http://10.0.2.2:5000/get_all_approved_comments_no_input";
   static const allHistory = "http://10.0.2.2:5000/get_all_purch_hist";

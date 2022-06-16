@@ -270,7 +270,10 @@ class _ProductPage2State extends State<ProductPage2> {
             ),
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).push( MaterialPageRoute( builder: (context) => Favorites( use: login(),wishes:getwish() )));;
+                //Navigator.of(context).push( MaterialPageRoute( builder: (context) => Favorites( use: login(),wishes:getwish() )));
+                Navigator.pop(context);
+                Navigator.pop(context);
+
               },
               child: Align(
                 alignment: Alignment.topLeft,
