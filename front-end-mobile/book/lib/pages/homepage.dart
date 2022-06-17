@@ -51,6 +51,9 @@ class _HomePageState extends State<HomePage> {
   }*/
   var counter = 0;
   List<PreviewBooks>? items;
+  List<PreviewBooks>? reccomend;
+  var temp_rec;
+  var real_reccomend;
 
   Future allBooks() async {
     final url = Uri.parse(API.allBooks);
@@ -58,12 +61,26 @@ class _HomePageState extends State<HomePage> {
       final response = await http.get(url);
       if (response.statusCode >= 200 && response.statusCode < 400) {
         final result = previewBooksFromJson(response.body);
+        final result2 = previewBooksFromJson(response.body);
+        reccomend=result2;
         //print(result[0].id);
         setState(() {
           counter = result.length;
           items = result;
         });
-        //print(counter);
+
+
+        reccomend!.sort(
+                (b, a) => a.amountSold!.compareTo(b.amountSold!));
+        /*int i=0;
+        while (i<10) {
+          real_reccomend!.add(reccomend![i]);
+          i++;
+        }
+        real_reccomend!.sort(
+                (b, a) => a.raiting!.compareTo(b.raiting!));
+
+        //print(counter);*/
         return result;
       }
       else {
@@ -118,15 +135,17 @@ class _HomePageState extends State<HomePage> {
   String _search="";
   Widget build(BuildContext context) {
     //allCategories();
-    if (items == null || cat==null) {
+    if (items == null || cat==null || reccomend == null) {
       allBooks();
       allCategories();
       return const Center(
         child: CircularProgressIndicator(),
       );
     }
-    print("tttttttttttttt");
     print(cat);
+    reccomend!.sort(
+            (b, a) => a.raiting!.compareTo(b.raiting!));
+
 
     return Scaffold(
       key: scaffoldKey,
@@ -250,9 +269,9 @@ class _HomePageState extends State<HomePage> {
                 padding: Dimen.regularPadding,
                 child: Row(
                   children: List.generate(
-                      counter,
+                      5,
                           (index) => Row(children: [
-                        ProductPreview(product: items![index]),
+                        ProductPreview(product: reccomend![index]),
                         SizedBox(width: 8)
                       ])),
                 ),

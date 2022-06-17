@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:bookstore/services/basket_data.dart';
 import 'package:bookstore/views/one_basket_item.dart';
+import 'package:crypto/crypto.dart';
 import 'package:email_validator/email_validator.dart';
 import "package:http/http.dart" as http;
 import 'package:bookstore/utils/colors.dart';
@@ -108,6 +109,9 @@ class _SignInState extends State<SignIn> {
 
   Future AccountLogin(String email, String pass) async {
     try {
+      var bytes = utf8.encode(pass);
+      var digest = sha256.convert(bytes);
+      var digest_convert = digest.toString();
       response = await http.post(
         Uri.parse(API.sign_in),
         headers: <String, String>{
@@ -116,7 +120,7 @@ class _SignInState extends State<SignIn> {
         body: jsonEncode(
           <String, String>{
             "email": email,
-            "pass_hash": pass,
+            "pass_hash": digest_convert,
           },
         ),
       );

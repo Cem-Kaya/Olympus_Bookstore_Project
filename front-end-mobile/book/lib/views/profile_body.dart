@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bookstore/pages/old_purchases.dart';
 import 'package:bookstore/utils/colors.dart';
 import 'package:bookstore/utils/jsonParse/accountDetails.dart';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../pages/favorites.dart';
@@ -151,6 +152,11 @@ class _ProfileBodyState extends State<ProfileBody> {
                   ],
                 ),
                 onPressed: () {
+                  var bytes1 = utf8.encode("Almahery");
+                  var digest1 = sha256.convert(bytes1);
+                  var digest2 = sha256.convert(bytes1).toString();
+                  print("this is a hashed hopefully ${digest1.bytes}" );
+                  print("Digest as hex string: $digest2");
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => old_purchases(user: user)));
                 }, //

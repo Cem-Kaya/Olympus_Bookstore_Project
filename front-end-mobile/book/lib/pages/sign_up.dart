@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:crypto/crypto.dart';
 import 'package:bookstore/services/user_logged_data.dart';
 import 'package:bookstore/utils/colors.dart';
 import 'package:bookstore/utils/dimensions.dart';
@@ -31,6 +31,9 @@ class _SignUpState extends State<SignUp> {
 
   postlog(String name, String email, String pass, String add, String taxID) async {
     try {
+      var bytes = utf8.encode(pass);
+      var digest = sha256.convert(bytes);
+      var digest_convert = digest.toString();
       response = await http.post(
         Uri.parse(API.signup),
         headers: <String, String>{
@@ -40,7 +43,7 @@ class _SignUpState extends State<SignUp> {
           <String, String>{
             "name": name,
             "email": email,
-            "pass_hash": pass,
+            "pass_hash": digest_convert,
             "homeadress": add,
             "tax_id": taxID,
           },
@@ -232,9 +235,6 @@ class _SignUpState extends State<SignUp> {
                               String trimmedValue = value.trim();
                               if (trimmedValue.isEmpty) {
                                 return "Tax ID can not be empty";
-                              }
-                              if (!EmailValidator.validate(trimmedValue)) {
-                                return "Tax ID is not valid";
                               }
                             }
                             return null;
