@@ -3,7 +3,7 @@ from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 import requests as req
 from DB_init_SQL import * 
-
+import crypto_funcs 
 
  
 app = Flask(__name__)
@@ -14,9 +14,9 @@ db=SQLAlchemy(app)
 
 if __name__ =="__main__":
     custs =[]
-    custs.append(Customers("Cem Kaya",123,"a@a.com","Barbaros, Ihlamur Bv 4B D:1, 34746 Atasehir/Istanbul", "412355123") )
-    custs.append(Customers("Baha Mert Ersoy",123,"b@b.com","Akat, Tepecik Yolu Alkent Sitesi 22 / 14, 34340 Besiktas / Etiler/Besiktas/Istanbul", "123215612") )
-    custs.append(Customers("Ugur Kagan Cakir",123,"u@u.com","Mahir Iz Cad. No:3 Altunizade Capitol AVM  Uskudar, Istanbul", "1231256123") )
+    custs.append(Customers("Cem Kaya",crypto_funcs.hast_ist("123") ,"a@a.com","Barbaros, Ihlamur Bv 4B D:1, 34746 Atasehir/Istanbul", "412355123") )
+    custs.append(Customers("Baha Mert Ersoy",crypto_funcs.hast_ist("123") ,"b@b.com","Akat, Tepecik Yolu Alkent Sitesi 22 / 14, 34340 Besiktas / Etiler/Besiktas/Istanbul", "123215612") )
+    custs.append(Customers("Ugur Kagan Cakir",crypto_funcs.hast_ist("123") ,"u@u.com","Mahir Iz Cad. No:3 Altunizade Capitol AVM  Uskudar, Istanbul", "1231256123") )
     for cs in custs:
         db.session.add(cs)        
     #db.session.commit()
@@ -54,7 +54,7 @@ if __name__ =="__main__":
               ,15, 0, 25.6, 1, "pain", "old people", "author", 1, "https://images-na.ssl-images-amazon.com/images/I/91u-yVVUc1L.jpg"
               ,"https://images-na.ssl-images-amazon.com/images/I/91u-yVVUc1L.jpg","https://images-na.ssl-images-amazon.com/images/I/91u-yVVUc1L.jpg"))
     custs.append(Products("ali baba nin evi","2003","ali babanin bir cifligi var ","1" ,5, 11, 99, 2 , "warranty is not included", "distributor_Information by ali baba himself", "ali baba", 1,
-              "https://i.ytimg.com/vi/PH90fAuY3YA/maxresdefault.jpg","https://i.ytimg.com/vi/PH90fAuY3YA/maxresdefault.jpg","https://i.ytimg.com/vi/PH90fAuY3YA/maxresdefault.jpg"))
+              "https://i.dr.com.tr/cache/600x600-0/originals/0001848767001-1.jpg","https://i.dr.com.tr/cache/600x600-0/originals/0001848767001-1.jpg","https://i.ytimg.com/vi/PH90fAuY3YA/maxresdefault.jpg"))
 
 
     custs.append(Products("Every tool is Hammer",1,"Adam savage talks about making a lot of stuff  ",1
@@ -89,7 +89,7 @@ if __name__ =="__main__":
               "https://i.idefix.com/cache/600x600-0/originals/0001955659001-1.jpg","https://i.idefix.com/cache/600x600-0/originals/0001955659001-1.jpg","https://i.idefix.com/cache/600x600-0/originals/0001955659001-1.jpg")
     )
     
-    custs.append(Products("Attak on titan ",1 ,"A giant man is killed by his lover while he is rumbling. before this the man tries to kill every human who is alive exeptc his countrymen",1
+    custs.append(Products("Attack on the Titan ",1 ,"A giant man is killed by his lover while he is rumbling. before this the man tries to kill every human who is alive exeptc his countrymen",1
               ,100, 100, 100, 5, "Shingeki no Kyojin", "japaniese plane ", "isayama", 0.5,
               "https://cdn.statically.io/img/static.kissanimefree.cc/poster/shingeki-no-kyojin-the-final-season-part-2-dub.jpg","https://cdn.statically.io/img/static.kissanimefree.cc/poster/shingeki-no-kyojin-movie-2-jiyuu-no-tsubasa.jpg","https://en.wikipedia.org/wiki/File:Shingeki_no_Kyojin_manga_volume_1.jpg")
     )
@@ -196,7 +196,41 @@ if __name__ =="__main__":
         "https://i.idefix.com/cache/600x600-0/originals/0000000572949-1.jpg",
         "https://i.idefix.com/cache/600x600-0/originals/0000000572949-1.jpg",
         "https://i.idefix.com/cache/600x600-0/originals/0000000572949-1.jpg"
-    ))    
+    ))
+
+    custs.append(Products("Classroom of the Elite (Light Novel) Vol. 1",
+        "2019",
+        "Students of the prestigious Tokyo Metropolitan Advanced Nurturing High School are given remarkable freedom - if they can win, barter, or save enough points to work their way up the ranks! Ayanokoji Kiyotaka has landed at the bottom in the scorned Class D, where he meets Horikita Suzune, who's determined to rise up the ladder to Class A. Can they beat the system in a school where cutthroat competition is the name of the game?",
+        1,
+        99, 
+        100, 
+        350, 
+        5, 
+        "Seven Seas Light Novels", 
+        "Seven Seas", 
+        "Syougo Kinugasa", 
+        0.5,
+        "https://m.media-amazon.com/images/I/511n9ZRT8pL._AC_SY780_.jpg",
+        "https://m.media-amazon.com/images/I/511n9ZRT8pL._AC_SY780_.jpg",
+        "https://m.media-amazon.com/images/I/511n9ZRT8pL._AC_SY780_.jpg"
+    ))
+
+    custs.append(Products("That Time I Got Reincarnated as a Slime (Light Novel), Vol. 9",
+        "2020",
+        "The day has finally come for the Tempest Founder's Festival to kick off! From live concerts to incredible feats of monster engineering (and most of all, the massive labyrinth), revelers are sure to have their minds blown. And who should decide to participate in the battle tournament than the hero himself, Lightspeed Masayuki?!",
+        1,
+        200, 
+        50, 
+        150, 
+        5, 
+        "Yen Press", 
+        "Yen Press", 
+        "Fuse, Mitz Vah", 
+        0.3,
+        "https://images-na.ssl-images-amazon.com/images/I/51KkQX4cMML._SX331_BO1,204,203,200_.jpg",
+        "https://images-na.ssl-images-amazon.com/images/I/51KkQX4cMML._SX331_BO1,204,203,200_.jpg",
+        "https://images-na.ssl-images-amazon.com/images/I/51KkQX4cMML._SX331_BO1,204,203,200_.jpg"
+    ))       
 
     
     for cs in custs:
