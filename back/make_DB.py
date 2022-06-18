@@ -288,6 +288,13 @@ if __name__ =="__main__":
     db.session.execute(statement)
     db.session.commit()              
 
+    statement = under.insert().values(Pcid=5, Pid=17)
+    db.session.execute(statement)
+    db.session.commit() 
+    statement = under.insert().values(Pcid=5, Pid=17 )
+    db.session.execute(statement)
+    db.session.commit() 
+
     statement = manages.insert().values(Pmid=1, Pid=8)
     db.session.execute(statement)
     db.session.commit() 
