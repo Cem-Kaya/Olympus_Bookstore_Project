@@ -1,6 +1,6 @@
 from Crypto.Hash import SHA256
 
-def hast_ist(input_string):   
+def hash_it(input_string):   
     #conver input string to byte object 
     input_bytes = input_string.encode()
 

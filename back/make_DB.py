@@ -15,9 +15,9 @@ db=SQLAlchemy(app)
 
 if __name__ =="__main__":
     custs =[]
-    custs.append(Customers("Cem Kaya",crypto_funcs.hast_ist("123") ,"a@a.com","Barbaros, Ihlamur Bv 4B D:1, 34746 Atasehir/Istanbul", "412355123") )
-    custs.append(Customers("Baha Mert Ersoy",crypto_funcs.hast_ist("123") ,"b@b.com","Akat, Tepecik Yolu Alkent Sitesi 22 / 14, 34340 Besiktas / Etiler/Besiktas/Istanbul", "123215612") )
-    custs.append(Customers("Ugur Kagan Cakir",crypto_funcs.hast_ist("123") ,"u@u.com","Mahir Iz Cad. No:3 Altunizade Capitol AVM  Uskudar, Istanbul", "1231256123") )
+    custs.append(Customers("Cem Kaya",crypto_funcs.hash_it("123") ,"a@a.com","Barbaros, Ihlamur Bv 4B D:1, 34746 Atasehir/Istanbul", "412355123") )
+    custs.append(Customers("Baha Mert Ersoy",crypto_funcs.hash_it("123") ,"b@b.com","Akat, Tepecik Yolu Alkent Sitesi 22 / 14, 34340 Besiktas / Etiler/Besiktas/Istanbul", "123215612") )
+    custs.append(Customers("Ugur Kagan Cakir",crypto_funcs.hash_it("123") ,"u@u.com","Mahir Iz Cad. No:3 Altunizade Capitol AVM  Uskudar, Istanbul", "1231256123") )
     for cs in custs:
         db.session.add(cs)        
     #db.session.commit()
