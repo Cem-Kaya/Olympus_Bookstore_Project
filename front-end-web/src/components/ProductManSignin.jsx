@@ -48,7 +48,7 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  width: 40%;
+  width: 100%;
   border: none;
   padding: 15px 20px;
   background-color: teal;
@@ -74,7 +74,7 @@ const ProductManSignin = ({ onLogin, onWrongInput }) => {
     else
     {
       const sha2_256 = require('simple-js-sha2-256')
-      //password = sha2_256(password)
+      password = sha2_256(password)
       onLogin(name, password)
     }
   }

@@ -182,10 +182,10 @@ const fetchOrders = async () => {
                 </div>
             </div>
             :
-            orders.length === 0 ? <tr><p className='text-light'>No Orders Yet</p></tr>
+            orders.length === 0 ? <tr><h5 className='text-white'>No Orders Yet</h5></tr>
             : 
             <>
-            <h3 className='text-light'>Order History</h3>
+            <h3 className='text-white'>Order History</h3>
             <br></br>
       <table className="table table-striped table-dark table-bordered" >
         <thead>

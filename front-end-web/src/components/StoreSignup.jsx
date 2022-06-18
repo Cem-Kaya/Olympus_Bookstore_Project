@@ -52,7 +52,7 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  width: 40%;
+  width: 100%;
   border: none;
   padding: 15px 20px;
   background-color: teal;
@@ -96,7 +96,6 @@ export const StoreSignup = ({ onSignUp, onWrongInput }) => {
       <Title>CREATE A STORE</Title>
       <UserInfo>
         <Input placeholder="name" onChange={event => setFName(event.target.value)}/>
-
         <Input placeholder="password" onChange={event => setPassword(event.target.value)}/>
         <Input placeholder="confirm password" onChange={event => setConfirmPassword(event.target.value)}/>
         <Button onClick={() => {checkAndSubmit()}}>CREATE</Button>

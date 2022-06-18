@@ -39,8 +39,12 @@ const TextBox = styled.div`
     text-align: left;
 `;
 
-const Bold = styled.div`
-  font-weight: bold;
+const TextBoxLarge = styled.div`
+    max-width: 2400px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    margin: 0 5px;
+    text-align: left;
 `;
 
 const ProductManagement = () => {
@@ -145,13 +149,13 @@ const ProductManagement = () => {
         setComments(itemsFromServer)
         setLoaded(true)
       }
-      if(navItemSelected === 2){
+      if(navItemSelected === 0){
         getBooks()
       }
       else if(navItemSelected === 1){
         getDeliveryList()
       }
-      else if(navItemSelected === 0){
+      else if(navItemSelected === 2){
         getBooks()
       }
       else if(navItemSelected === 3){
@@ -161,6 +165,9 @@ const ProductManagement = () => {
         getSalesManagers()
       }
       else if(navItemSelected === 5){
+        getBooks()
+      }
+      else if(navItemSelected === 6){
         getDeliveryList()
       }
     }, [navItemSelected])
@@ -305,7 +312,7 @@ const ProductManagement = () => {
     const serverAnswer = await addNewProduct()
     console.log(serverAnswer)
   }
-
+  
   const commentApproval = async (cid, approved) => {
     try
     {
@@ -315,6 +322,44 @@ const ProductManagement = () => {
           },
           method: "POST",
           body: JSON.stringify({Pmid: getProductManagerID(), cid: cid, approved: approved})
+          }
+          )
+      const data = await res.json()
+      return data
+    }
+    catch{
+      console.log("could not add new category")
+    }
+  }
+
+  const deleteProduct = async (item) => {
+    try
+    {
+      const res = await fetch(`/delete_product/submit`     , {headers : { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+          },
+          method: "POST",
+          body: JSON.stringify({Pid: item.id})
+          }
+          )
+      const data = await res.json()
+      return data
+    }
+    catch{
+      console.log("could not add new category")
+    }
+  }
+
+  const undeleteProduct = async (item) => {
+    try
+    {
+      const res = await fetch(`/delete_product/submit`     , {headers : { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+          },
+          method: "POST",
+          body: JSON.stringify({Pid: item.id})
           }
           )
       const data = await res.json()
@@ -355,6 +400,16 @@ const ProductManagement = () => {
     catch{
       console.log("could not add new category")
     }
+  }
+
+  const removeThisProduct = async (item) => {
+    const serverAnswer = await deleteProduct(item)
+    console.log(serverAnswer)
+  }
+
+  const unRemoveThisProduct = async (item) => {
+    const serverAnswer = await undeleteProduct(item)
+    console.log(serverAnswer)
   }
 
     const getPageBody = () => {
@@ -481,7 +536,7 @@ const ProductManagement = () => {
                     :
                     element.shipment === "In-transit" ?
                     <th scope="col">
-                      <button type="submit" className='btn-warning btn-block' onClick={() => {updateDeliveryStatus(element["Pid"], element["purcid"], "Delivered"); setNavItemSelected(0); setLoaded(false)}}>Change to Delivered</button>
+                      <button type="submit" className='btn-danger btn-block' onClick={() => {updateDeliveryStatus(element["Pid"], element["purcid"], "Delivered"); setNavItemSelected(0); setLoaded(false)}}>Change to Delivered</button>
                     </th>
                     :
                     <th scope="col">NA</th>
@@ -577,49 +632,7 @@ const ProductManagement = () => {
           }
         </TableBody>
         )
-        case 5:
-          return deliveryList.map((item, index) => (
-            <div className='container mt-5 mb-5 bg-secondary text-light' style={{padding:"60px"}}>
-              <div className='row'>
-                <div className="col-md-6 mb-3">
-                  <p>Invoice Information</p>
-                </div>
-                <div className="col-md-6 mb-3">
-                  <p>Product Information</p>
-                </div>
-              </div>
-              <div className="col-md-12 mb-3">
-                <hr className='bg-light'/>
-              </div>
-              <div className='row'>
-                <div className="col-md-6 mb-3">
-                  <TextBox><p>Thank you for your purchase!</p></TextBox>
-                  <TextBox><p>User E-mail: {item.email}</p></TextBox>
-                  <TextBox><p>Your order has been proccessed successfully.</p></TextBox>
-                  <br></br>
-                  <TextBox><p>Your Delivery ID: {item.did}</p></TextBox>
-                  <TextBox><p>Purchase ID of Product: {item.purcid}</p></TextBox>
-                </div>
-                <div className="col-md-6 mb-3">
-                  <TextBox><p>Title: {item.title}</p></TextBox>
-                  <TextBox><p>Link to the Product Page: <a href={`/SingleProduct=${item.Pid}`} className="text-info">{item.title}</a></p></TextBox>
-                  <br></br>
-                  <TextBox><p>You Bought: {item.quantity} of the item</p></TextBox>
-                  <TextBox><p>It Costed: {item["total price"]} TL</p></TextBox>
-                  <TextBox><p>You had {item.discount} discount</p></TextBox>
-                  <TextBox><p>Shipment Information: {item.shipment}</p></TextBox>
-                </div>
-              </div>
-              <div className="col-md-12 mb-3">
-                <hr className='bg-light'/>
-              </div>
-              <div className='row'>
-                <div className="col-md-6 mb-3">
-                  <TextBox><p>Delivery Address: {item.address}</p></TextBox>
-                </div>
-              </div>
-            </div>))
-        default:  //case 4
+        case 4:
           return (<Card>
             <div className={"container_exp " + (expandableOpen ? "expand" : "")}>
             <div className="upper" onClick={() => {handleOpenExpandable()}}>
@@ -630,7 +643,6 @@ const ProductManagement = () => {
             </div>
             <div className='lower'>
             <form className="needs-validation" noValidate="">
-
               <div className="row">
                   <div className="col-md-9 mb-3">
                     <label htmlFor="text">Title  </label>
@@ -770,13 +782,150 @@ const ProductManagement = () => {
                 <br></br>
                 <div className='row'>
                     <div className="col-md-12 mb-0">
-                      <button type="submit" className='btn btn-warning btn-lg btn-block' onClick={() => {newProduct()}}>Add This Product</button>
+                      <button type="submit" className='btn btn-warning btn-lg btn-block' onClick={() => {newProduct(); setNavItemSelected(0); setLoaded(false)}}>Add This Product</button>
                     </div>
                 </div>
             </form>
             </div>
             </div>
         </Card>)
+        case 5:
+          return items.map(item => (
+            <div className='container mt-5 mb-5 bg-secondary text-light' style={{padding:"40px"}}>
+            <div className='row'>
+                <div className="col-md-4 mb-3">
+                  <label htmlFor="img0">Image 1</label>
+                  <br></br>
+                  <a href={`/SingleProduct=${item.id}`}><img src={item.img} alt="a" height="160px"></img></a>
+                </div>
+                <div className="col-md-4 mb-3">
+                  <label htmlFor="img1">Image 2</label>
+                  <br></br>
+                  <a href={`/SingleProduct=${item.id}`}><img src={item.img1} alt="a" height="160px"></img></a>
+                </div>
+                <div className="col-md-4 mb-3">
+                  <label htmlFor="img2">Image 3</label>
+                  <br></br>
+                  <a href={`/SingleProduct=${item.id}`}><img src={item.img2} alt="a" height="160px"></img></a>
+                </div>
+
+                <div className="col-md-12 mb-3">
+                  <hr className='bg-light'/>
+                </div>
+
+                <div className="col-md-12 mb-3">
+                  <label htmlFor="Description">General Information</label>    
+                </div>
+
+                <div className="col-md-4 mb-3">
+                  <div className='row'>  
+                      <TextBox><p>Title: {item.title}</p></TextBox>
+                  </div>   
+                  <div className='row'>  
+                      <TextBox><p>Author: {item.author}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                      <TextBox><p>Publisher: {item.publisher}</p></TextBox>
+                  </div> 
+                  <div className='row'>  
+                    <TextBox><p>Raiting: {item.raiting} stars</p></TextBox>
+                  </div> 
+                </div> 
+                <div className="col-md-4 mb-3">
+                  <div className='row'>  
+                    <TextBox><p>Amount Sold: {item.amount_sold}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Amount Remaining In Stock: {item.in_stock}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Discount: {item.discount}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Price: {item.price} TL</p></TextBox>
+                  </div>  
+                </div>
+                <div className="col-md-4 mb-3">
+                  <div className='row'>  
+                    <TextBox><p>Model: {item.model}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Warranty: {item.warranty}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Date: {item.date}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Edition Number: {item.edition_number}</p></TextBox>
+                  </div>  
+                </div>
+
+                <div className="col-md-12 mb-3">
+                  <hr className='bg-light'/>
+                </div>
+
+                <div className="col-md-12 mb-3">
+                  <label htmlFor="Description">Description</label>
+                  <TextBox><p>{item.description}</p></TextBox>
+                </div>
+            </div>
+            <br></br>
+            <div className='row'>
+              <button className='btn btn-primary btn-lg btn-block' onClick={() => {removeThisProduct(item); setNavItemSelected(0); setLoaded(false)}}>Delete This Product</button>
+            </div>
+            </div>))
+        case 6:
+          return deliveryList.map((item, index) => (
+            <div className='container mt-5 mb-5 bg-secondary text-white' style={{padding:"60px"}}>
+              <div className='row'>
+                <div className="col-md-6 mb-0 text-left">
+                  <h5>Invoice Information</h5>
+                </div>
+                <div className="col-md-6 mb-0 text-left">
+                  <h5>Product Information</h5>
+                </div>
+              </div>
+              <div className='row'>
+                <div className="col-md-12 mb-3">
+                  <hr className='bg-light'/>
+                </div>
+              </div>
+              <div className='row'>
+                <div className="col-md-6 mb-3">
+                  <TextBox><p>Thank you for your purchase!</p></TextBox>
+                  <TextBox><p>User E-mail: {item.email}</p></TextBox>
+                  <TextBox><p>Your order has been proccessed successfully.</p></TextBox>
+                  <br></br>
+                  <TextBox><p>Your Delivery ID: {item.did}</p></TextBox>
+                  <TextBox><p>Purchase ID of Product: {item.purcid}</p></TextBox>
+                </div>
+                <div className="col-md-6 mb-3">
+                  <TextBox><p>Title: {item.title}</p></TextBox>
+                  <TextBox><p>Link to the Product Page: <a href={`/SingleProduct=${item.Pid}`} className="text-info">{item.title}</a></p></TextBox>
+                  <br></br>
+                  <TextBox><p>You Bought: {item.quantity} of the item</p></TextBox>
+                  <TextBox><p>It Costed: {item["total price"]} TL</p></TextBox>
+                  <TextBox><p>You had {item.discount} discount</p></TextBox>
+                </div>
+              </div>
+              <div className='row'>
+                <div className="col-md-12 mb-3">
+                  <hr className='bg-light'/>
+                </div>
+              </div>
+              <div className='row'>
+                <div className="col-md-6 mb-3">
+                  <TextBoxLarge><p>Delivery Address: {item.address}</p></TextBoxLarge>
+                </div>
+              </div>
+              <div className='row'>
+                <div className="col-md-6 mb-3">
+                  <TextBoxLarge><p>Shipment Information: {item.shipment}</p></TextBoxLarge>
+                </div>
+              </div>
+            </div>))
+        default:  
+            return <></>
       }
     }
 
@@ -797,7 +946,8 @@ const ProductManagement = () => {
                     <a className="nav-item nav-link" onClick={() => {setNavItemSelected(2); setLoaded(false)}} href="#">Update Stock</a>
                     <a className="nav-item nav-link" onClick={() => {setNavItemSelected(3); setLoaded(false)}} href="#">Comments to be Approved</a>
                     <a className="nav-item nav-link" onClick={() => {setNavItemSelected(4); setLoaded(false)}} href="#">Add a New Product</a>
-                    <a className="nav-item nav-link" onClick={() => {setNavItemSelected(5); setLoaded(false)}} href="#">View Invoices</a>
+                    <a className="nav-item nav-link" onClick={() => {setNavItemSelected(5); setLoaded(false)}} href="#">Remove a Product</a>
+                    <a className="nav-item nav-link" onClick={() => {setNavItemSelected(6); setLoaded(false)}} href="#">View Invoices</a>
                     </div>
                 </div>
                 <a className="nav-item nav-link" href="/">Go Back to the Main Page</a>

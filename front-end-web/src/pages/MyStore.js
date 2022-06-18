@@ -20,6 +20,14 @@ const TextBox = styled.div`
     text-align: left;
 `;
 
+const TextBoxLarge = styled.div`
+    max-width: 2400px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    margin: 0 5px;
+    text-align: left;
+`;
+
 const TableBody = styled.div`
   min-height: 500px;
   padding: 40px;
@@ -156,17 +164,19 @@ const MyStore = () => {
 
             case 1:
                 return items.map((item, index) => (
-                    <div className='container mt-5 mb-5 bg-secondary text-light' style={{padding:"60px"}}>
+                    <div className='container mt-5 mb-5 bg-secondary text-white' style={{padding:"60px"}}>
                       <div className='row'>
-                        <div className="col-md-6 mb-3">
-                          <p>Invoice Information</p>
+                        <div className="col-md-6 mb-0 text-left">
+                          <h5>Invoice Information</h5>
                         </div>
-                        <div className="col-md-6 mb-3">
-                          <p>Product Information</p>
+                        <div className="col-md-6 mb-0 text-left">
+                          <h5>Product Information</h5>
                         </div>
                       </div>
-                      <div className="col-md-12 mb-3">
-                        <hr className='bg-light'/>
+                      <div className='row'>
+                        <div className="col-md-12 mb-3">
+                          <hr className='bg-light'/>
+                        </div>
                       </div>
                       <div className='row'>
                         <div className="col-md-6 mb-3">
@@ -184,15 +194,21 @@ const MyStore = () => {
                           <TextBox><p>You Bought: {item.quantity} of the item</p></TextBox>
                           <TextBox><p>It Costed: {item["total price"]} TL</p></TextBox>
                           <TextBox><p>You had {item.discount} discount</p></TextBox>
-                          <TextBox><p>Shipment Information: {item.shipment}</p></TextBox>
                         </div>
                       </div>
-                      <div className="col-md-12 mb-3">
-                        <hr className='bg-light'/>
+                      <div className='row'>
+                        <div className="col-md-12 mb-3">
+                          <hr className='bg-light'/>
+                        </div>
                       </div>
                       <div className='row'>
                         <div className="col-md-6 mb-3">
-                          <TextBox><p>Delivery Address: {item.address}</p></TextBox>
+                          <TextBoxLarge><p>Delivery Address: {item.address}</p></TextBoxLarge>
+                        </div>
+                      </div>
+                      <div className='row'>
+                        <div className="col-md-6 mb-3">
+                          <TextBoxLarge><p>Shipment Information: {item.shipment}</p></TextBoxLarge>
                         </div>
                       </div>
                     </div>))

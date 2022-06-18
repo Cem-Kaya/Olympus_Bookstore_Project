@@ -131,7 +131,6 @@ export const Signup = ({ onSignUp, onWrongInput }) => {
         <Formrow>
         <Input placeholder="name" onChange={event => setFName(event.target.value)}/>
         <Input placeholder="last name" onChange={event => setLName(event.target.value)}/>
-
         </Formrow>
         <Input placeholder="tax ID" onChange={event => setTaxID(event.target.value)}/>
         <Input placeholder="email" onChange={event => setEmail(event.target.value)}/>
