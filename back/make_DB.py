@@ -291,7 +291,7 @@ if __name__ =="__main__":
     statement = under.insert().values(Pcid=5, Pid=17)
     db.session.execute(statement)
     db.session.commit() 
-    statement = under.insert().values(Pcid=5, Pid=17 )
+    statement = under.insert().values(Pcid=5, Pid=18 )
     db.session.execute(statement)
     db.session.commit() 
 
