@@ -1,4 +1,5 @@
 import json
+from sys import hash_info
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 import requests as req
@@ -22,15 +23,15 @@ if __name__ =="__main__":
     #db.session.commit()
 
     product_managers = []
-    product_managers.append(Product_Manager("Cemal Yilmaz",123) )
-    product_managers.append(Product_Manager("Anes Abdennebi",123) )
+    product_managers.append(Product_Manager("Cemal Yilmaz",crypto_funcs.hash_it("123")) )
+    product_managers.append(Product_Manager("Anes Abdennebi",crypto_funcs.hash_it("123")) )
     for pm in product_managers:
         db.session.add(pm)        
     #db.session.commit()
     
     sales_managers = []
-    sales_managers.append(Sales_Manager("Murat Karaca",123) )
-    sales_managers.append(Sales_Manager("Emre Can Eski",123) )
+    sales_managers.append(Sales_Manager("Murat Karaca",crypto_funcs.hash_it("123")) )
+    sales_managers.append(Sales_Manager("Emre Can Eski",crypto_funcs.hash_it("123")) )
     for sm in sales_managers:
         db.session.add(sm)        
     #db.session.commit()
