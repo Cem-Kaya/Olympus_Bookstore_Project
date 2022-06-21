@@ -619,6 +619,36 @@ def get_all_salesmanagers():
     }
     jsonprd.append(tmp)  
   return json.dumps(jsonprd)  
+
+@app.route('/all_deletedproducts')
+def get_all_deletedproducts():
+  allproducts=Products.query.filter_by().all()
+  jsonprd = []
+
+  for pr in allproducts:
+    if(pr.deleted==True):
+      tmp={
+        "id": pr.Pid,
+        "img": pr.picture_url0,
+        "img1": pr.picture_url1,
+        "img2": pr.picture_url2,
+        "title": pr.name ,
+        "author": pr.author,
+        "raiting": pr.raiting,      
+        "publisher": pr.distributor_Information,
+        "price":  pr.price ,    
+        "amount_sold": pr.amount_sold ,
+        "release_date": str(pr.date),
+        "model": pr.model,
+        "edition_number": pr.edition_number,
+        "description": pr.description,
+        "in_stock": pr.quantity,
+        "warranty": pr.warranty,
+        "discount": str((1-pr.sale)*100)+"%",
+        "date": pr.date
+      }
+      jsonprd.append(tmp)  
+  return json.dumps(jsonprd)  
   
 @app.route('/pmid_deliverylist')
 def pmid_deliverylist():
@@ -706,7 +736,7 @@ def pmid_deliverylistsubmit():
             "in_stock": pr.quantity,
             "warranty": pr.warranty,
             "discount": str((1-pr.sale)*100)+"%",
-            "date": pr.date
+            "date": i.date
           }
           jsonprd.append(tmp)  
   if(len(jsonprd) == 0):
