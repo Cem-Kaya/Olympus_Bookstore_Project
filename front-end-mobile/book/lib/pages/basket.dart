@@ -21,31 +21,36 @@ import '../views/action_bar.dart';
 var a;
 
 class BasketPage extends StatefulWidget {
-  const BasketPage({Key? key}) : super(key: key);
+  BasketPage({Key? key, required this.user}) : super(key: key);
+  final String user;
 
   @override
   State<BasketPage> createState() => _BasketPageState();
 }
+
 var response_basket;
 var resonse_take;
 var new_basket;
 
-
-
 class _BasketPageState extends State<BasketPage> {
   @override
   var x;
+
   void initState() {
     super.initState();
-    ()async{
-    await gettobasket("a@a.com");};
-   // await gettobasket(login());
+    () async {
+      if (widget.user != "a") {
+        await gettobasket(widget.user);
+      }
+    };
+    // await gettobasket(login());
 
     // obtain shared preferences
   }
-  Future gettobasket(String email) async { //it will be handled
-    try {
 
+  Future gettobasket(String email) async {
+    //it will be handled
+    try {
       response_basket = await http.post(
         Uri.parse(API.get_shopping), //it will be handled
         headers: <String, String>{
@@ -57,24 +62,24 @@ class _BasketPageState extends State<BasketPage> {
           },
         ),
       );
-      new_basket =jsonDecode(response_basket.body);
-      } catch (e) {
+      new_basket = jsonDecode(response_basket.body);
+    } catch (e) {
       print("error is ${e.toString()}");
     }
   }
+
   @override
-
   Widget build(BuildContext context) {
-
-    if(new_basket==null){
-      gettobasket("a@a.com");
-    }
 
     Function a = Provider.of<Basket>(context).get;
     Function clean = Provider.of<Basket>(context).clean_basket;
     Function take = Provider.of<taken>(context).get;
     Function now = Provider.of<taken>(context).now_taken;
     Function login = Provider.of<logged_in_user>(context).getUser;
+
+    if (new_basket == null) {
+      gettobasket(login());
+    }
 
     var temp_basket = a();
     Function sum = Provider.of<Basket>(context).getSum;
@@ -123,8 +128,6 @@ class _BasketPageState extends State<BasketPage> {
                       SizedBox(width: 8),
                     ]),
                   ),
-
-
                 ),
                 Container(
                   height: 100,
@@ -149,23 +152,23 @@ class _BasketPageState extends State<BasketPage> {
                           if (login() != "") {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => mockup(
-                                  sum: s,
-                                )));
+                                      sum: s,
+                                    )));
                           } else {
                             await showDialog(
                                 context: context,
                                 builder: (_) => AlertDialog(
-                                  title: const Text("Error"),
-                                  content: const Text(
-                                      "For continue checkout, you need to login"),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(_);
-                                        },
-                                        child: const Text("Ok"))
-                                  ],
-                                ));
+                                      title: const Text("Error"),
+                                      content: const Text(
+                                          "For continue checkout, you need to login"),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(_);
+                                            },
+                                            child: const Text("Ok"))
+                                      ],
+                                    ));
                           }
                         },
                         child: Text(
@@ -174,7 +177,7 @@ class _BasketPageState extends State<BasketPage> {
                         ),
                         style: ButtonStyle(
                           backgroundColor:
-                          MaterialStateProperty.all(AppColors.background),
+                              MaterialStateProperty.all(AppColors.background),
                         ),
                       ),
                     ],
@@ -182,7 +185,6 @@ class _BasketPageState extends State<BasketPage> {
                 )
               ],
             ),
-
 
             /*TextButton(
                 onPressed: () async {

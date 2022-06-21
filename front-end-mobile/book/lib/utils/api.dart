@@ -18,6 +18,7 @@ class API2 {
   static const remove_wished="http://127.0.0.1:5000/Wishes_rm/submit";
   static const send_refund="http://127.0.0.1:5000/refunds/submit";
   static const send_account_info="http://127.0.0.1:5000/customer_info/submit";
+  static const remove_from_basket="http://127.0.0.1:5000/remove_from_cart/submit";
 }
 class API {
   static const allBooks = "http://10.0.2.2:5000/all_books";
@@ -38,4 +39,6 @@ class API {
   static const remove_wished="http://10.0.2.2:5000/Wishes_rm/submit";
   static const send_refund="http://10.0.2.2:5000/refunds/submit";
   static const send_account_info="http://10.0.2.2:5000/customer_info/submit";
+  static const remove_from_basket="http://10.0.2.2:5000/remove_from_cart/submit";
+
 }

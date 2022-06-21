@@ -9,6 +9,7 @@ import 'package:email_validator/email_validator.dart';
 import "package:http/http.dart" as http;
 import 'package:provider/provider.dart';
 
+import '../services/basket_data.dart';
 import '../services/root_index.dart';
 import '../utils/api.dart';
 
@@ -60,6 +61,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     Function login = Provider.of<logged_in_user>(context).log_user;
     Function change_index = Provider.of<ClassRoot>(context).changeRoot;
+    Function add_initial_basket = Provider.of<Basket>(context).add_data;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -315,6 +317,7 @@ class _SignUpState extends State<SignUp> {
                             if (temp["status"]) {
                               Navigator.pop(context);
                               login(mail);
+                              add_initial_basket(mail);
                               change_index(0);
                             } else {
                               await showDialog(

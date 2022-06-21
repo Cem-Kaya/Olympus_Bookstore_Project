@@ -2,6 +2,7 @@ import 'package:bookstore/views/profile_body.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../services/basket_data.dart';
 import '../services/user_logged_data.dart';
 import '../utils/colors.dart';
 
@@ -16,6 +17,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     Function sign_out = Provider.of<logged_in_user>(context).log_off_user;
+    Function clean = Provider.of<Basket>(context).clean_basket;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Profile"),
@@ -31,6 +33,7 @@ class _ProfileState extends State<Profile> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: (){
+                clean();
                 sign_out();
                 Navigator.pop(context);
               },

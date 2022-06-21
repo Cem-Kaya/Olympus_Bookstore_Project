@@ -10,6 +10,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '../services/basket_data.dart';
+import '../services/root_index.dart';
 import '../services/user_logged_data.dart';
 import '../services/wishes_data.dart';
 import '../utils/api.dart';
@@ -173,6 +174,28 @@ class _ProductPage2State extends State<ProductPage2> {
       print("error is ${e.toString()}");
     }
   }
+  var response_basket;
+  Send_to_basket(num pid, String email, num quantity) async { //it will be handled
+    try {
+
+      response_basket = await http.post(
+        Uri.parse(API.send_to_basket), //it will be handled
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          {
+            "Pid": pid,
+            "email": email,
+            "quantity": quantity,
+
+          },
+        ),
+      );
+    } catch (e) {
+      print("error is ${e.toString()}");
+    }
+  }
 
   PreviewBooks? _product;
 
@@ -191,6 +214,7 @@ class _ProductPage2State extends State<ProductPage2> {
     Function addwish = Provider.of<Wishes>(context).add_wishes;
     Function remwish = Provider.of<Wishes>(context).remove_wishes;
     Function getwish = Provider.of<Wishes>(context).get;
+    Function change_index = Provider.of<ClassRoot>(context).changeRoot; //difference from other product page
     var user = login();
     print(is_wished);
 
@@ -555,6 +579,9 @@ class _ProductPage2State extends State<ProductPage2> {
                               } else {
                                 addBasket(_product?.id, stocks, _product?.title,
                                     _product?.price, _product?.img);
+                                if (user != ""){
+                                  Send_to_basket(_product!.id!, user, stocks);
+                                }
                                 await showDialog(
                                     context: context,
                                     builder: (_) => AlertDialog(
@@ -570,6 +597,7 @@ class _ProductPage2State extends State<ProductPage2> {
                                       ],
                                     ));
                                 Navigator.pop(context);
+                                change_index(0);
                               }
                             },
                             child: Text("Buy"),

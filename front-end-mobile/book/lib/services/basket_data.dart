@@ -1,5 +1,33 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../services/user_logged_data.dart';
+import '../utils/api.dart';
+import 'package:http/http.dart' as http;
+
+var response_basket;
+Send_to_basket(num pid, String email, num quantity) async { //it will be handled
+  try {
+
+    response_basket = await http.post(
+      Uri.parse(API.send_to_basket), //it will be handled
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        {
+          "Pid": pid,
+          "email": email,
+          "quantity": quantity,
+
+        },
+      ),
+    );
+  } catch (e) {
+    print("error is ${e.toString()}");
+  }
+}
 
 class Baske with ChangeNotifier {
   //basket_data
@@ -93,4 +121,13 @@ class Basket with ChangeNotifier {
     }
     return sum;
   }
+
+  void add_data(String user) {
+
+    for (var i in myBasket) {
+      Send_to_basket(i.product_id!, user, i.stocks);
+    }
+  }
 }
+
+

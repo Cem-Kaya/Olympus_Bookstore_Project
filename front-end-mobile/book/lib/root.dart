@@ -65,7 +65,7 @@ class _RootState extends State<Root> {
     }
     var routes = [
       const HomePage(),
-      const BasketPage(),
+      BasketPage(user: s,),
       //const Suggestions(),
       //const SellProduct(),
       const SignIn(),

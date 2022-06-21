@@ -51,8 +51,6 @@ class _ProductPageState extends State<ProductPage> {
       getProduct();
       if (widget.isuser != "") {
         await ALLwishes(widget.isuser);
-        print("ssssssssssss");
-        print(wishes[0]);
       }
     }();
 
@@ -106,6 +104,29 @@ class _ProductPageState extends State<ProductPage> {
       print("error is ${e.toString()}");
     }
   }
+  var response_basket;
+  Send_to_basket(num pid, String email, num quantity) async { //it will be handled
+    try {
+
+      response_basket = await http.post(
+        Uri.parse(API.send_to_basket), //it will be handled
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          {
+            "Pid": pid,
+            "email": email,
+            "quantity": quantity,
+
+          },
+        ),
+      );
+    } catch (e) {
+      print("error is ${e.toString()}");
+    }
+  }
+
 
   dynamic items;
 
@@ -550,6 +571,9 @@ class _ProductPageState extends State<ProductPage> {
                               } else {
                                 addBasket(_product?.id, stocks, _product?.title,
                                     _product?.price, _product?.img);
+                                if (user != ""){
+                                  Send_to_basket(_product!.id!, user, stocks);
+                                }
                                 await showDialog(
                                     context: context,
                                     builder: (_) => AlertDialog(

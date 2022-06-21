@@ -81,6 +81,28 @@ class _mockupState extends State<mockup> {
     }
   }
 
+  var response_basket2;
+  Remove_from_basket(num pid, String email, num quantity) async { //it will be handled
+    try {
+
+      response_basket2 = await http.post(
+        Uri.parse(API.remove_from_basket), //it will be handled
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          {
+            "Pid": pid,
+            "email": email,
+            "quantity": quantity,
+
+          },
+        ),
+      );
+    } catch (e) {
+      print("error is ${e.toString()}");
+    }
+  }
 
 
   Future Nextid() async {
@@ -317,6 +339,7 @@ class _mockupState extends State<mockup> {
 
                                 for (var i in temp_basket) {
                                   Checkout(user_mail,i.product_id,i.stocks,i.price,1.0,it);
+                                  Remove_from_basket(i.product_id, user_mail, 0);
                                 }
                                 for (var i in temp_basket) {
                                   decreaseStock(i.product_id,i.stocks);
