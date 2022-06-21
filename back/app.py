@@ -1551,7 +1551,7 @@ def Shopping_Cartsubmit():
   for i in allShoppingCarts:
     print(i.email , email , i.email == email)
     print(i.Pid , Pid , i.Pid == Pid)
-    if(i.email == email and i.Pid == Pid): # i was just testing you, can you compile i'll check
+    if(i.email == email and i.Pid == Pid  ): # i was just testing you, can you compile i'll check
       db.session.query(shopping_cart)\
        .filter(shopping_cart.c.email == email ,shopping_cart.c.Pid == Pid )\
        .update({shopping_cart.c.quantity: shopping_cart.c.quantity + quantity})
@@ -2475,7 +2475,14 @@ def remove_from_cart_sub():
         .filter(shopping_cart.c.email == email ,shopping_cart.c.Pid == Pid )\
           .delete()
     db.session.commit()
-  return render_template('success.html',data ="" ) 
+
+  retjs ={}
+  
+  
+  retjs["status"] = True
+  return json.dumps(retjs)
+
+  #return render_template('success.html',data ="" ) 
 
 
 @app.route('/to_purchase')
