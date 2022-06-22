@@ -1,11 +1,16 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { withTheme } from 'styled-components'
 import { useState, useEffect } from 'react'
 import { fetchBooks } from '../helperFunctions/helperGetProducts'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { getStoreManagerID } from '../helperFunctions/helperLogin'
 import { useNavigate, useParams } from 'react-router-dom'
+import BarChart from "../components/BarChart";
+import LineChart from "../components/LineChart";
+import PieChart from "../components/PieChart";
+import { UserData } from "../components/Data";
+import { refundApproval, fetchProductIds, fetchRefundRequests, updateProductPrice } from '../helperFunctions/helperStoreManager'
 
 const Body  = styled.div`
     padding-bottom: 20px;
@@ -49,9 +54,46 @@ const MyStore = () => {
 
 
     const [loaded, setLoaded] = useState(false)
+    const [innerLoaded, setInnerLoaded] = useState(false)
     const [items, setItems] = useState([])
     const [refundRequests, setRefundRequests] = useState([])
     const [navItemSelected, setNavItemSelected] = useState(0)
+    const [userData, setUserData] = useState({
+      labels: UserData.map((data) => data.year),
+      datasets: [
+        {
+          label: "Users Gained",
+          data: UserData.map((data) => data.userGain),
+          backgroundColor: [
+            "rgba(75,192,192,1)",
+            "#ecf0f1",
+            "#50AF95",
+            "#f3ba2f",
+            "#2a71d0",
+          ],
+          borderColor: "black",
+          borderWidth: 1,
+        },
+      ],
+    });
+    const [userData2, setUserData2] = useState({
+      labels: UserData.map((data) => data.year),
+      datasets: [
+        {
+          label: "Users Gained",
+          data: UserData.map((data) => data.userGain),
+          borderColor: "white",
+          borderWidth: 2,
+          backgroundColor: [
+            "rgba(75,192,192,1)",
+            "#ecf0f1",
+            "#50AF95",
+            "#f3ba2f",
+            "#2a71d0",
+          ],
+        },
+      ],
+    });
 
     useEffect (() => {
       const getBooks = async () =>  {
@@ -81,89 +123,33 @@ const MyStore = () => {
       else if(navItemSelected === 1){
         getBooks()
       }
+      else if(navItemSelected === 1.5){
+        setInnerLoaded(true)
+      }
+      else if(navItemSelected === 2){
+        setLoaded(true)
+      }
       else if(navItemSelected === 3){
         getRefundRequests()
       }
-    }, [navItemSelected])
-
-    const fetchProductIds = async () => {
-        const res = await fetch(`/products_sid/submit`     , {headers : { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-            },
-            method: "POST",
-            body: JSON.stringify({Sid: getStoreManagerID()})
-            }
-            )
-        const data = await res.json()
-        return data
-      }
-
-      const fetchRefundRequests = async () => {
-        const res = await fetch(`/refunds_get_sid/submit`     , {headers : { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-            },
-            method: "POST",
-            body: JSON.stringify({Sid: getStoreManagerID()})
-            }
-            )
-        const data = await res.json()
-        return data
-      }
-
-    const updateProductPrice = async (index, sale, price) => {
-        let item = items[index]
-
-        const res = await fetch(`/update_book/submit`     , {headers : { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-            },
-            method: "POST",
-            body: JSON.stringify({Pid: item["id"], name: item["title"], description: item["description"],
-                        quantity: item["in_stock"], amount_sold: item["amount_sold"], price: price, sale: sale})
-            }
-            )
-        const data = await res.json()
-        return data
-    }
+    }, [navItemSelected, innerLoaded])
 
     const updatePrice = async (index, discount, price) => {
         let sale = (1 - (discount / 100)).toFixed(2)
         price = price * sale
-        const serverAnswer = await updateProductPrice(index, sale, price)
+        const serverAnswer = await updateProductPrice(items[index], sale, price)
         console.log(serverAnswer)
     }
-
-    const refundApproval = async (id, newStatus) => {
-        try
-        {
-          const res = await fetch(`/refunds_update/submit`     , {headers : { 
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-              },
-              method: "POST",
-              body: JSON.stringify({id: id, status: newStatus})
-              }
-            )
-          const data = await res.json()
-          return data
-        }
-        catch{
-          console.log("could not change refund status")
-        }
-      }
     
       const sendApprovalInfo = async (id, approved) => {
         await refundApproval(id, approved)
       }
 
     const getPageBody = () => {
-        
         switch(navItemSelected){
 
-            case 1:
-                return items.map((item, index) => (
+            case 1.5:
+                return (items.map((item, index) => (
                     <div className='container mt-5 mb-5 bg-secondary text-white' style={{padding:"60px"}}>
                       <div className='row'>
                         <div className="col-md-6 mb-0 text-left">
@@ -202,17 +188,45 @@ const MyStore = () => {
                         </div>
                       </div>
                       <div className='row'>
-                        <div className="col-md-6 mb-3">
-                          <TextBoxLarge><p>Delivery Address: {item.address}</p></TextBoxLarge>
+                        <div className="col-md-8 mb-3">
+                          <div className='row'>
+                            <TextBoxLarge><p>Delivery Address: {item.address}</p></TextBoxLarge>
+                          </div>
+                          <div className='row'>
+                            <TextBoxLarge><p>Shipment Information: {item.shipment}</p></TextBoxLarge>
+                          </div>
                         </div>
-                      </div>
-                      <div className='row'>
-                        <div className="col-md-6 mb-3">
-                          <TextBoxLarge><p>Shipment Information: {item.shipment}</p></TextBoxLarge>
+                        <div className="col-md-4 mb-0">
+                          <button className='btn-block btn-info btn-lg'>Download as PDF</button>
                         </div>
                       </div>
                     </div>))
-
+                    )
+        case 2:
+          return (      
+            <div className='container mt-5 mb-5 bg-dark text-white'>
+              <div className='row'>
+                <div className="col-md-6 mb-0 text-left">
+                  <BarChart chartData={userData} />
+                </div>
+                <div className="col-md-6 mb-0 text-left">
+                  <LineChart chartData={userData2} />
+                </div>
+              </div>
+              <br></br><br></br>
+              <div className='row'>
+                <div className="col-md-3 mb-0 text-left">
+                  <PieChart chartData={userData} />
+                </div>
+                <div className="col-md-6 mb-0 text-left">
+                  <PieChart chartData={userData} />
+                </div>
+                <div className="col-md-3 mb-0 text-left">
+                  <PieChart chartData={userData} />
+                </div>
+              </div>
+            </div>
+          )
             case 3:
                 return (      
                 <TableBody>
@@ -259,7 +273,6 @@ const MyStore = () => {
               }
               </TableBody>
               )
-
         default:    //case 0
             let discounts = []
             for(var i = 0; i < items.length; i++){
@@ -341,14 +354,63 @@ const MyStore = () => {
                 <a class="nav-item nav-link" href="/">Go Back to the Main Page</a>
             </nav>
         {
-        !loaded ?
-            <div class="d-flex justify-content-center">
-                <div class="spinner-border text-light" role="status">
-                <span class="sr-only">Loading...</span>
-                </div>
+        navItemSelected === 1 ?
+        <div className='container mt-5 mb-5 bg-secondary text-light' style={{padding:"40px"}}>
+          <div className='row'>
+            <div className="col-md-3 mb-0 text-left">
+              <label>{"From  "}</label>
+              <input type="date"/>
             </div>
+            <div className="col-md-3 mb-0 text-left">
+              <label>{"To  "}</label>
+              <input type="date"/>
+            </div>
+            <div className="col-md-4 mb-0 text-left">
+            </div>
+            <div className="col-md-2 mb-0 text-left">
+              <button className='btn-primary btn-block' onClick={() => {setNavItemSelected(1.5); setLoaded(false)}}>Search</button>
+            </div>
+          </div>
+        </div>
         :
+        navItemSelected === 1.5 ?
+        <>
+          <div className='container mt-5 mb-5 bg-secondary text-light' style={{padding:"40px"}}>
+            <div className='row'>
+              <div className="col-md-3 mb-0 text-left">
+                <label>{"From  "}</label>
+                <input type="date"/>
+              </div>
+              <div className="col-md-3 mb-0 text-left">
+                <label>{"To  "}</label>
+                <input type="date"/>
+              </div>
+              <div className="col-md-4 mb-0 text-left">
+              </div>
+              <div className="col-md-2 mb-0 text-left">
+                <button className='btn-primary btn-block' onClick={() => {setInnerLoaded(false)}}>Search</button>
+              </div>
+            </div>
+          </div>
+          {!innerLoaded ?
+            <div class="d-flex justify-content-center">
+              <div class="spinner-border text-light" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            : 
             getPageBody()
+          }
+        </>
+        :
+        !loaded ?
+          <div class="d-flex justify-content-center">
+              <div class="spinner-border text-light" role="status">
+              <span class="sr-only">Loading...</span>
+              </div>
+          </div>
+        : 
+          getPageBody()
         }
         </Body>
         <Footer></Footer>

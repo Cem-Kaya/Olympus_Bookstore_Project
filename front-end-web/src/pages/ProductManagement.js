@@ -1,13 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
-import "../App.css"
+import "../styles/App.css"
 import { fetchBooks } from '../helperFunctions/helperGetProducts'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { getProductManagerID } from '../helperFunctions/helperLogin'
 import { useNavigate, useParams } from 'react-router-dom'
 import { fetchCategories } from '../helperFunctions/helperCategories'
+import { addNewProduct, addNewCategory, fetchSalesManagers, fetchDeliveryList, fetchProductIds, 
+        updateProductStock, fetchComments, fetchDeletedProducts, updateDelivery, commentApproval, 
+        deleteProduct, undeleteProduct } from '../helperFunctions/helperProductManager'
 
 const Body  = styled.div`
     padding-bottom: 20px;
@@ -149,6 +152,10 @@ const ProductManagement = () => {
         setComments(itemsFromServer)
         setLoaded(true)
       }
+      const getDeletedProducts = async () => {
+        const deletedProducts = await fetchDeletedProducts()
+        setItems(deletedProducts)
+      }
       if(navItemSelected === 0){
         getBooks()
       }
@@ -162,6 +169,7 @@ const ProductManagement = () => {
         getComments()
       }
       else if(navItemSelected === 4){
+        getDeletedProducts()
         getSalesManagers()
       }
       else if(navItemSelected === 5){
@@ -172,117 +180,9 @@ const ProductManagement = () => {
       }
     }, [navItemSelected])
 
-    const fetchComments = async () => {
-      const res = await fetch(`/get_comments_for_approval/submit`     , {headers : { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-          },
-          method: "POST",
-          body: JSON.stringify({Pmid: getProductManagerID()})
-          }
-          )
-      const data = await res.json()
-      return data
-    }
-
-    const fetchSalesManagers = async () => {
-      const res = await fetch(`/all_salesmanagers`     , {headers : { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-          }}
-          )
-      const data = await res.json()
-      return data
-    }
-    
-    const fetchDeliveryList = async () => {
-      const res = await fetch(`/pmid_deliverylist/submit`     , {headers : { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-          },
-          method: "POST",
-          body: JSON.stringify({Pmid: getProductManagerID()})
-          }
-          )
-      const data = await res.json()
-      return data
-  }
-
-  const fetchProductIds = async () => {
-    const res = await fetch(`/products_pmid/submit`     , {headers : { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-        },
-        method: "POST",
-        body: JSON.stringify({Pmid: getProductManagerID()})
-        }
-        )
-    const data = await res.json()
-    return data
-  }
-
-  const updateProductStock = async (index, amount) => {
-    let item = items[index]
-    let sale = 1 - (parseFloat(item["discount"]) / 100)
-    console.log(sale)
-    const res = await fetch(`/update_book/submit`     , {headers : { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-        },
-        method: "POST",
-        body: JSON.stringify({Pid: item["id"], name: item["title"], description: item["description"],
-                    quantity: amount, amount_sold: item["amount_sold"], price: item["price"], sale: sale})
-        }
-        )
-    const data = await res.json()
-    return data
-  }
-
   const updateStock = async (index, amount) => {
-    const serverAnswer = await updateProductStock(index, amount)
+    const serverAnswer = await updateProductStock(items[index], amount)
     console.log(serverAnswer)
-  }
-
-  const addNewProduct = async () => {
-    try
-    {
-      const res = await fetch(`/Products_reg/submit`     , {headers : { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-          },
-          method: "POST",
-          body: JSON.stringify({Pcid: category, Sid: salesManager, Pmid: getProductManagerID(), name: title, 
-            model: model, description: description, edition_number: edition_number, quantity: amountInStock,
-            amount_sold: 0, price: initial_price, raiting: 1.0, author: author, warranty: warranty,
-            distributor_Information: publisher, sale: 1.0, 
-            picture_url0: img1URL, picture_url1: img2URL, picture_url2: img3URL})
-          }
-          )
-      const data = await res.json()
-      return data
-    }
-    catch{
-      console.log("could not add new product")
-    }
-  }
-
-  const addNewCategory = async () => {
-    try
-    {
-      const res = await fetch(`/Product_Catogary_reg/submit`     , {headers : { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-          },
-          method: "POST",
-          body: JSON.stringify({name: categoryString})
-          }
-          )
-      const data = await res.json()
-      return data
-    }
-    catch{
-      console.log("could not add new category")
-    }
   }
 
   const newProduct = async () => {
@@ -299,7 +199,7 @@ const ProductManagement = () => {
         console.log("Category name cannot be empty string")
       }
       else{
-        let serverAnswer = await addNewCategory()
+        let serverAnswer = await addNewCategory(categoryString)
         console.log(serverAnswer)
         let ctgrs = await fetchCategories()
 
@@ -309,65 +209,8 @@ const ProductManagement = () => {
       }
     }
     console.log(category)
-    const serverAnswer = await addNewProduct()
+    const serverAnswer = await addNewProduct(category, salesManager, title, model, description, edition_number, amountInStock, initial_price, author, warranty, publisher, img1URL, img2URL, img3URL)
     console.log(serverAnswer)
-  }
-  
-  const commentApproval = async (cid, approved) => {
-    try
-    {
-      const res = await fetch(`/Approval/submit`     , {headers : { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-          },
-          method: "POST",
-          body: JSON.stringify({Pmid: getProductManagerID(), cid: cid, approved: approved})
-          }
-          )
-      const data = await res.json()
-      return data
-    }
-    catch{
-      console.log("could not add new category")
-    }
-  }
-
-  const deleteProduct = async (item) => {
-    try
-    {
-      const res = await fetch(`/delete_product/submit`     , {headers : { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-          },
-          method: "POST",
-          body: JSON.stringify({Pid: item.id})
-          }
-          )
-      const data = await res.json()
-      return data
-    }
-    catch{
-      console.log("could not add new category")
-    }
-  }
-
-  const undeleteProduct = async (item) => {
-    try
-    {
-      const res = await fetch(`/delete_product/submit`     , {headers : { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-          },
-          method: "POST",
-          body: JSON.stringify({Pid: item.id})
-          }
-          )
-      const data = await res.json()
-      return data
-    }
-    catch{
-      console.log("could not add new category")
-    }
   }
 
   const sendApprovalInfo = async (cid, approved) => {
@@ -381,25 +224,6 @@ const ProductManagement = () => {
   const updateDeliveryStatus = async (pid, purcid, newStatus) => {
     const serverAnswer = await updateDelivery(pid, purcid, newStatus)
     console.log(serverAnswer)
-  }
-
-  const updateDelivery = async (pid, purcid, newStatus) => {
-    try
-    {
-      const res = await fetch(`/delivery_process/submit`     , {headers : { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-          },
-          method: "POST",
-          body: JSON.stringify({Process: newStatus, Pmid: getProductManagerID(), Pid: pid, purcid: purcid})
-          }
-          )
-      const data = await res.json()
-      return data
-    }
-    catch{
-      console.log("could not add new category")
-    }
   }
 
   const removeThisProduct = async (item) => {
@@ -510,10 +334,11 @@ const ProductManagement = () => {
                 <th scope="col" width="10%">Customer E-mail</th>
                 <th scope="col" width="8%">Product ID</th>
                 <th scope="col" width="6%">Quantity</th>
-                <th scope="col" width="10%">Total Price</th>
+                <th scope="col" width="8%">Total Price</th>
+                <th scope="col" width="12%">Order Date</th>
                 <th scope="col" width="30%">Delivery Address</th>
                 <th scope="col" width="10%">Delivery Status</th>
-                <th scope="col" width="18%">Update Status</th>
+                <th scope="col" width="8%">Update Status</th>
               </tr>
             </thead>
             <tbody>
@@ -526,6 +351,7 @@ const ProductManagement = () => {
                   <th scope="col"><a href={`/SingleProduct=${element.Pid}`} className="text-light">{element.Pid}</a></th>
                   <th scope="col">{element.quantity}</th>
                   <th scope="col">{element["total price"]} TL</th>
+                  <th scope="col">{element.date}</th>
                   <th scope="col">{element.address}</th>
                   <th scope="col">{element.shipment}</th>
                   {
@@ -633,13 +459,92 @@ const ProductManagement = () => {
         </TableBody>
         )
         case 4:
-          return (<Card>
-            <div className={"container_exp " + (expandableOpen ? "expand" : "")}>
-            <div className="upper" onClick={() => {handleOpenExpandable()}}>
-              {/* <p>June 10</p> */}
-              <h3>
-                ADD NEW PRODUCT
-              </h3>
+          return (
+          <>
+          {items.map(item => (
+            <div className='container mt-5 mb-5 bg-secondary text-light' style={{padding:"40px"}}>
+            <div className='row'>
+                <div className="col-md-4 mb-3">
+                  <label htmlFor="img0">Image 1</label>
+                  <br></br>
+                  <a href={`/SingleProduct=${item.id}`}><img src={item.img} alt="a" height="160px"></img></a>
+                </div>
+                <div className="col-md-4 mb-3">
+                  <label htmlFor="img1">Image 2</label>
+                  <br></br>
+                  <a href={`/SingleProduct=${item.id}`}><img src={item.img1} alt="a" height="160px"></img></a>
+                </div>
+                <div className="col-md-4 mb-3">
+                  <label htmlFor="img2">Image 3</label>
+                  <br></br>
+                  <a href={`/SingleProduct=${item.id}`}><img src={item.img2} alt="a" height="160px"></img></a>
+                </div>
+
+                <div className="col-md-12 mb-3">
+                  <hr className='bg-light'/>
+                </div>
+
+                <div className="col-md-12 mb-3">
+                  <label htmlFor="Description">General Information</label>    
+                </div>
+
+                <div className="col-md-4 mb-3">
+                  <div className='row'>  
+                      <TextBox><p>Title: {item.title}</p></TextBox>
+                  </div>   
+                  <div className='row'>  
+                      <TextBox><p>Author: {item.author}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                      <TextBox><p>Publisher: {item.publisher}</p></TextBox>
+                  </div> 
+                  <div className='row'>  
+                    <TextBox><p>Raiting: {item.raiting} stars</p></TextBox>
+                  </div> 
+                </div> 
+                <div className="col-md-4 mb-3">
+                  <div className='row'>  
+                    <TextBox><p>Amount Sold: {item.amount_sold}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Amount Remaining In Stock: {item.in_stock}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Discount: {item.discount}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Price: {item.price} TL</p></TextBox>
+                  </div>  
+                </div>
+                <div className="col-md-4 mb-3">
+                  <div className='row'>  
+                    <TextBox><p>Model: {item.model}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Warranty: {item.warranty}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Date: {item.date}</p></TextBox>
+                  </div>  
+                  <div className='row'>  
+                    <TextBox><p>Edition Number: {item.edition_number}</p></TextBox>
+                  </div>  
+                </div>
+
+                <div className="col-md-12 mb-3">
+                  <hr className='bg-light'/>
+                </div>
+            </div>
+            <br></br>
+            <div className='row'>
+              <button className='btn btn-primary btn-lg btn-block' onClick={() => {unRemoveThisProduct(item); setNavItemSelected(0); setLoaded(false)}}>Undelete This Product</button>
+            </div>
+            </div>))}
+          <Card>
+            <div className={"container_exp" }>
+              <br></br>
+              <div className='upper'>
+            <h2>Add A New Product</h2>
             </div>
             <div className='lower'>
             <form className="needs-validation" noValidate="">
@@ -788,7 +693,8 @@ const ProductManagement = () => {
             </form>
             </div>
             </div>
-        </Card>)
+        </Card>
+        </>)
         case 5:
           return items.map(item => (
             <div className='container mt-5 mb-5 bg-secondary text-light' style={{padding:"40px"}}>
@@ -915,6 +821,11 @@ const ProductManagement = () => {
               </div>
               <div className='row'>
                 <div className="col-md-6 mb-3">
+                  <TextBoxLarge><p>Order Date: {item.date.split(" ")[0]}</p></TextBoxLarge>
+                </div>
+              </div>
+              <div className='row'>
+                <div className="col-md-6 mb-3">
                   <TextBoxLarge><p>Delivery Address: {item.address}</p></TextBoxLarge>
                 </div>
               </div>
@@ -945,7 +856,7 @@ const ProductManagement = () => {
                     <a className="nav-item nav-link" onClick={() => {setNavItemSelected(1); setLoaded(false)}} href="#">Delivery List</a>
                     <a className="nav-item nav-link" onClick={() => {setNavItemSelected(2); setLoaded(false)}} href="#">Update Stock</a>
                     <a className="nav-item nav-link" onClick={() => {setNavItemSelected(3); setLoaded(false)}} href="#">Comments to be Approved</a>
-                    <a className="nav-item nav-link" onClick={() => {setNavItemSelected(4); setLoaded(false)}} href="#">Add a New Product</a>
+                    <a className="nav-item nav-link" onClick={() => {setNavItemSelected(4); setLoaded(false)}} href="#">Add/Unremove A Product</a>
                     <a className="nav-item nav-link" onClick={() => {setNavItemSelected(5); setLoaded(false)}} href="#">Remove a Product</a>
                     <a className="nav-item nav-link" onClick={() => {setNavItemSelected(6); setLoaded(false)}} href="#">View Invoices</a>
                     </div>

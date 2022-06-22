@@ -60,7 +60,7 @@ const Account = () => {
 
   useEffect (() => {
     const getInfo = async () =>  {
-      const itemsFromServer = await fetchInfo()
+      const itemsFromServer = await fetchAccountInfo()
       console.log(itemsFromServer)
       setInfo(itemsFromServer)
       setLoaded(true)
@@ -73,7 +73,7 @@ const Account = () => {
     }
   }, [])
 
-  const fetchInfo = async () => {
+  const fetchAccountInfo = async () => {
     const res = await fetch('/customer_info/submit', {
       method: "POST",
       headers: {

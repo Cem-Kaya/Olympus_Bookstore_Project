@@ -10,12 +10,12 @@ import logo from '../assets/OlympusLogo.png';
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
 import React from "react";
-import '../App.css';
+import '../styles/App.css';
 import { useState, useEffect } from 'react';
 import { checkLogInStatus, logOut, getUserID } from "../helperFunctions/helperLogin";
 import { add1Item, remove1Item, getCartItems } from '../helperFunctions/helperCartItems';
 import { fetchWishList } from "../helperFunctions/helperWishList";
-import "./ExtraStylesHeader.css"
+import "../styles/ExtraStylesHeader.css"
 
 const HeaderDark = styled.div`
   padding: 10px;

@@ -1,5 +1,5 @@
 import React from 'react'
-import './ExtraStyles.css'
+import '../styles/ExtraStyles.css'
 import { useNavigate } from "react-router-dom"
 
 const Filters = ({ products, params }) => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from "styled-components"
-import '../App.css'
+import '../styles/App.css'
 
 const ButtonContainer = styled.div`
     margin-left: 0px;

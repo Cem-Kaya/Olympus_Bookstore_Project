@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { getCartItems } from '../helperFunctions/helperCartItems';
 import { getUserID } from '../helperFunctions/helperLogin';
-import './ExtraStyles.css'
+import '../styles/ExtraStyles.css'
 
 const Line = styled.div`
     height: 1px;

@@ -4,7 +4,7 @@ import Footer from '../components/Footer'
 import styled from "styled-components"
 import Products from '../components/Products'
 import Filters from '../components/Filters'
-import '../components/ExtraStyles.css'
+import '../styles/ExtraStyles.css'
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { addNewItem, add1Item, remove1Item } from '../helperFunctions/helperCartItems'

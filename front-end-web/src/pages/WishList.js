@@ -4,7 +4,7 @@ import Footer from "../components/Footer"
 import styled from "styled-components"
 import { fetchBooks } from '../helperFunctions/helperGetProducts'
 import { useState, useEffect } from 'react'
-import '../components/ExtraStyles.css'
+import '../styles/ExtraStyles.css'
 import { addNewItem, add1Item, remove1Item, getCartItems } from '../helperFunctions/helperCartItems'
 import { Delete } from "@material-ui/icons"
 import { fetchWishList, removeFromWishList } from "../helperFunctions/helperWishList"
