@@ -736,7 +736,7 @@ def pmid_deliverylistsubmit():
             "in_stock": pr.quantity,
             "warranty": pr.warranty,
             "discount": str((1-pr.sale)*100)+"%",
-            "date": i.date
+            "date": str(i.date)
           }
           jsonprd.append(tmp)  
   if(len(jsonprd) == 0):
