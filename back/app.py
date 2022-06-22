@@ -1,9 +1,10 @@
 
 import threading
 import json
+from time import strptime
 import requests as req
 from flask_cors import CORS
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory, send_file
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import null
 
@@ -758,6 +759,9 @@ def pmid_deliverylistsubmittest():
   myobj = {'Pmid': request.form['Pmid'] }
   return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )   
 
+
+  
+
 @app.route('/pmid_deliverylist/submit', methods=['POST'] , strict_slashes=False )
 def pmid_deliverylistsubmit():
  
@@ -814,6 +818,343 @@ def pmid_deliverylistsubmit():
     #retjs = {}
     #retjs["status"] = False
     #return json.dumps(retjs)
+
+
+##############################################################################################################################
+
+
+@app.route('/sid_deliverylist')
+def sid_deliverylist():
+  todata="<h3> Product Manager </h3> "
+  allproductmanags=Product_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Pcid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allproductmanags:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Pmid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  allproducts=Products.query.filter_by().all()
+  todata+=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> </tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale) 
+  todata +="</table>"
+  
+  todata+="<h3>Customers </h3> "
+  allCustomers=Customers.query.filter_by().all()
+  todata+= "<table> <tr> <th>email </th> <th>name </th> </tr> "
+  for i in allCustomers:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.email,i.name) 
+  todata +="</table>   "
+
+  todata+= "<h3> Purchased </h3>"
+  todata+= "<table> <tr> <th> purcid </th> <th> price </th><th> sale </th><th> quantity </th><th> shipment </th></tr> "
+  allPurchased = db.session.query(Purchased).all()  # db.session.query(followers).filter(...).all()
+  for i in allPurchased:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.purcid, i.price ,i.sale, i.quantity, i.shipment ) 
+  todata +="</table>   "
+
+  todata+= "<h3> buy_dlist </h3>"
+  todata+= "<table> <tr> <th> did </th> <th> customer_email </th><th> product_pid </th><th> purchased_purcid </th><th> quantity </th><th> date </th></tr> "
+  allbuydlist = db.session.query(Buy_Dlist).all()  # db.session.query(followers).filter(...).all()
+  for i in allbuydlist:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></td><td>{}</td><td>{}</td></tr>".format(i.did, i.customer_email, i.product_pid, i.purchased_purcid, i.quantity, i.date) 
+  todata +="</table>   "
+  return render_template('sid_deliverylist.html',data =todata )  
+  
+@app.route('/sid_deliverylist/submit_test',methods=['POST'] ,strict_slashes=False)
+def sid_deliverylistsubmittest():  
+  url = 'http://127.0.0.1:5000/sid_deliverylist/submit'
+  myobj = {'Sid': request.form['Sid'] }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text ) 
+
+
+@app.route('/sid_deliverylist/submit', methods=['POST'] , strict_slashes=False )
+def sid_deliverylistsubmit():
+ 
+  data2 = json.loads(request.get_data())#request.get_json()
+  #, strict_slashes=False 
+  Sid= int(data2['Sid'])
+  #sales_manager_id= int(data2['sid'])
+  jsonprd = []
+  #getting pid
+  all_sid_products = db.session.query(change_price).all()
+  allDlist = db.session.query(Buy_Dlist).all()
+  for i in allDlist:
+    my_user = Customers.query.filter_by(email=i.customer_email).first()
+    my_purchased = Purchased.query.filter_by(purcid=i.purchased_purcid).first()
+    for j in all_sid_products:
+      if(j.Pid == i.product_pid): #when the pid of the item in delivery list is in manages relationship
+        if(j.Sid == Sid): #and our product manager is responsible for it.
+          pr =  db.session.query(Products).filter(Products.Pid == i.product_pid ).first()
+          tmp={
+            "did": i.did,
+            "Pid": i.product_pid,
+            "email": i.customer_email,
+            "address": my_user.homeadress,
+            "purcid": i.purchased_purcid,
+            "img": pr.picture_url0,
+            "title": pr.name ,
+            "author": pr.author,
+            "raiting": pr.raiting,      
+            "publisher": pr.distributor_Information,
+            "item price":  pr.price ,    
+            "total price":  pr.price* my_purchased.quantity,    
+            "shipment": my_purchased.shipment,
+            "quantity": my_purchased.quantity,
+            "amount_sold": pr.amount_sold ,
+            "release_date": str(pr.date),
+            "model": pr.model,
+            "edition_number": pr.edition_number,
+            "description": pr.description,
+            "in_stock": pr.quantity,
+            "warranty": pr.warranty,
+            "discount": str((1-pr.sale)*100)+"%",
+            "date": str(i.date)
+          }
+          jsonprd.append(tmp)  
+  if(len(jsonprd) == 0):
+    retjs={}
+    retjs["status"] = False
+    return json.dumps(retjs)
+
+  return json.dumps(jsonprd)
+
+
+##############################################################################################################################
+###############################################################################################################################
+
+##############################################################################################################################
+
+
+@app.route('/sid_deliverylist_date')
+def sid_deliverylist_date():
+  todata="<h3> Product Manager </h3> "
+  allproductmanags=Product_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Pcid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allproductmanags:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Pmid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  allproducts=Products.query.filter_by().all()
+  todata+=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> </tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale) 
+  todata +="</table>"
+  
+  todata+="<h3>Customers </h3> "
+  allCustomers=Customers.query.filter_by().all()
+  todata+= "<table> <tr> <th>email </th> <th>name </th> </tr> "
+  for i in allCustomers:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.email,i.name) 
+  todata +="</table>   "
+
+  todata+= "<h3> Purchased </h3>"
+  todata+= "<table> <tr> <th> purcid </th> <th> price </th><th> sale </th><th> quantity </th><th> shipment </th></tr> "
+  allPurchased = db.session.query(Purchased).all()  # db.session.query(followers).filter(...).all()
+  for i in allPurchased:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.purcid, i.price ,i.sale, i.quantity, i.shipment ) 
+  todata +="</table>   "
+
+  todata+= "<h3> buy_dlist </h3>"
+  todata+= "<table> <tr> <th> did </th> <th> customer_email </th><th> product_pid </th><th> purchased_purcid </th><th> quantity </th><th> date </th></tr> "
+  allbuydlist = db.session.query(Buy_Dlist).all()  # db.session.query(followers).filter(...).all()
+  for i in allbuydlist:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></td><td>{}</td><td>{}</td></tr>".format(i.did, i.customer_email, i.product_pid, i.purchased_purcid, i.quantity, i.date) 
+  todata +="</table>   "
+  return render_template('sid_deliverylist_date.html',data =todata )  
+  
+@app.route('/sid_deliverylist_date/submit_test',methods=['POST'] ,strict_slashes=False)
+def sid_deliverylistsubmittest_date():  
+  url = 'http://127.0.0.1:5000/sid_deliverylist_date/submit'
+  myobj = {'Sid': request.form['Sid'],
+           "start_date": request.form['start_date'],
+           "end_date": request.form['end_date']}
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text ) 
+
+
+@app.route('/sid_deliverylist_date/submit', methods=['POST'] , strict_slashes=False )
+def sid_deliverylist_datesubmit_date():
+ 
+  data2 = json.loads(request.get_data())#request.get_json()
+  #, strict_slashes=False 
+  Sid= int(data2['Sid'])
+  start_date = str(data2['start_date'])
+  end_date = str(data2['end_date'])
+  #sales_manager_id= int(data2['sid'])
+  jsonprd = []
+  #getting pid
+  all_sid_products = db.session.query(change_price).all()
+  allDlist = db.session.query(Buy_Dlist).all()
+  for i in allDlist:
+    my_user = Customers.query.filter_by(email=i.customer_email).first()
+    my_purchased = Purchased.query.filter_by(purcid=i.purchased_purcid).first()
+    my_start_date = datetime.strptime(start_date, '%Y-%m-%d').date()  
+    my_end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+    for j in all_sid_products:
+      if(j.Pid == i.product_pid and my_start_date <= i.date.date() <= my_end_date  ): #when the pid of the item in delivery list is in manages relationship
+        if(j.Sid == Sid): #and our product manager is responsible for it.
+          pr =  db.session.query(Products).filter(Products.Pid == i.product_pid ).first()
+          tmp={
+            "did": i.did,
+            "Pid": i.product_pid,
+            "email": i.customer_email,
+            "address": my_user.homeadress,
+            "purcid": i.purchased_purcid,
+            "img": pr.picture_url0,
+            "title": pr.name ,
+            "author": pr.author,
+            "raiting": pr.raiting,      
+            "publisher": pr.distributor_Information,
+            "item price":  pr.price ,    
+            "total price":  pr.price* my_purchased.quantity,    
+            "shipment": my_purchased.shipment,
+            "quantity": my_purchased.quantity,
+            "amount_sold": pr.amount_sold ,
+            "release_date": str(pr.date),
+            "model": pr.model,
+            "edition_number": pr.edition_number,
+            "description": pr.description,
+            "in_stock": pr.quantity,
+            "warranty": pr.warranty,
+            "discount": str((1-pr.sale)*100)+"%",
+            "date": str(i.date)
+          }
+          jsonprd.append(tmp)  
+  if(len(jsonprd) == 0):
+    retjs={}
+    retjs["status"] = False
+    return json.dumps(retjs)
+
+  return json.dumps(jsonprd)
+###################################################################################
+
+
+@app.route('/sid_deliverylist_date_pdf')
+def sid_deliverylist_date_pdf():
+  todata="<h3> Product Manager </h3> "
+  allproductmanags=Product_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Pcid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allproductmanags:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Pmid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  allproducts=Products.query.filter_by().all()
+  todata+=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> </tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale) 
+  todata +="</table>"
+  
+  todata+="<h3>Customers </h3> "
+  allCustomers=Customers.query.filter_by().all()
+  todata+= "<table> <tr> <th>email </th> <th>name </th> </tr> "
+  for i in allCustomers:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.email,i.name) 
+  todata +="</table>   "
+
+  todata+= "<h3> Purchased </h3>"
+  todata+= "<table> <tr> <th> purcid </th> <th> price </th><th> sale </th><th> quantity </th><th> shipment </th></tr> "
+  allPurchased = db.session.query(Purchased).all()  # db.session.query(followers).filter(...).all()
+  for i in allPurchased:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.purcid, i.price ,i.sale, i.quantity, i.shipment ) 
+  todata +="</table>   "
+
+  todata+= "<h3> buy_dlist </h3>"
+  todata+= "<table> <tr> <th> did </th> <th> customer_email </th><th> product_pid </th><th> purchased_purcid </th><th> quantity </th><th> date </th></tr> "
+  allbuydlist = db.session.query(Buy_Dlist).all()  # db.session.query(followers).filter(...).all()
+  for i in allbuydlist:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></td><td>{}</td><td>{}</td></tr>".format(i.did, i.customer_email, i.product_pid, i.purchased_purcid, i.quantity, i.date) 
+  todata +="</table>   "
+  return render_template('sid_deliverylist_date_pdf.html',data =todata )  
+  
+
+def pdf_del(func):
+  def hook():
+    in_pdfname = str(time.time())
+    func()
+    #delte pdf 
+    os.remove("./pdfs/"+in_pdfname +".pdf")
+
+
+@app.route('/sid_deliverylist_date_pdf/submit', methods=['POST'] , strict_slashes=False )
+def sid_deliverylist_datesubmit_date_pdf():
+  try:
+    data2 = json.loads(request.get_data())#request.get_json()
+    #, strict_slashes=False 
+    Sid = int(data2['Sid'])
+    start_date = str(data2['start_date'])
+    end_date = str(data2['end_date'])
+  except:
+    Sid = int(request.form['Sid'])
+    start_date = str(request.form['start_date'])
+    end_date = str(request.form['end_date'] )
+  
+  #sales_manager_id= int(data2['sid'])
+  jsonprd = []
+  #getting pid
+  all_sid_products = db.session.query(change_price).all()
+  allDlist = db.session.query(Buy_Dlist).all()
+  text = "Delivery list for selected dates\n\n\n\n\n\n"
+  for i in allDlist:
+    my_user = Customers.query.filter_by(email=i.customer_email).first()
+    my_purchased = Purchased.query.filter_by(purcid=i.purchased_purcid).first()
+    my_start_date = datetime.strptime(start_date, '%Y-%m-%d').date()  
+    my_end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+    
+    for j in all_sid_products:
+      if(j.Pid == i.product_pid and my_start_date <= i.date.date() <= my_end_date  ): #when the pid of the item in delivery list is in manages relationship
+        if(j.Sid == Sid): #and our product manager is responsible for it.
+          pr =  db.session.query(Products).filter(Products.Pid == i.product_pid ).first()
+          
+          text += "Delivery list id: " + str(i.did)
+          text +="\n\n Pid of product:  " + str(i.product_pid)
+          text +="\n user email:  " + str(i.customer_email)
+          text +="\n user address:  " + str(my_user.homeadress)
+          text +="\n purchased product purcid:  " + str(i.purchased_purcid)
+          text +="\n title:  " + str(pr.name)
+          text +="\n author:  "+ str(pr.author)
+          text +="\n rating:  "+ str(pr.raiting)     
+          text +="\n publisher:  "+ str( pr.distributor_Information)
+          text +="\n item price:  "+  str( pr.price)     
+          text +="\n total price:  "+  str( pr.price* my_purchased.quantity)   
+          text +="\n shipment:  "+ str( my_purchased.shipment)
+          text +="\n quantity:  "+ str( my_purchased.quantity)
+          text +="\n amount_sold:  "+ str( pr.quantity) 
+          text +="\n model:  "+ str( pr.model)
+          text +="\n edition_number:  "+ str( pr.edition_number)
+          text +="\n description:  "+ str( pr.description)
+          text +="\n in_stock:  "+ str( pr.quantity)
+          text +="\n warranty:  "+str(  pr.warranty)
+          text +="\n discount:  "+ str((1-my_purchased.sale)*100)+ "%"
+          text +="\n date:  "+ str(i.date)  
+          text +="\n  \n \n ##################################################################### \n \n \n"
+  
+  pdf = FPDF()
+  pdf.add_page()
+  pdf.set_font("Times", size = 14)
+  pdf.cell(200, 10, txt = "INVOICE", ln = 1, align = 'C')
+  # add another cell
+  pdf.multi_cell(150 , 10, txt = text ,border = 1, align = 'C'  )
+  pdf_directory_input = str(time.time())
+  pdf_name ="./pdfs/"+ pdf_directory_input + ".pdf" #buraya date ile verecegiz isim
+  
+  
+  pdf.output(pdf_name )  
+  with open(pdf_name , "rb" ) as f :
+    data = f.read()
+    #print(data)
+  #return data 
+  
+  #os.remove(pdf_name)  
+  #return send_file('pdfs\\1655905702.5361164.pdf' , "1655905702.5361164.pdf")
+  #path = 'pdfs\\' + str(t) + '.pdf', str(t)+ ".pdf"
+  #print(path)
+  return send_file('pdfs\\' + pdf_directory_input + '.pdf', pdf_directory_input+ ".pdf")
+  #return send_file('W/Sabanci_Univ/Sabanci_Uni/4_1/CS_308/Projects/Project/team04-cp22-bb/back/pdfs/', attachment_filename=str(t)+ ".pdf")
+  #return send_from_directory(directory='./pdfs/', filename=str(time.time())+ ".pdf", path = pdf_name, as_attachment=True)
+    
+  
 
 
 
@@ -2277,6 +2618,7 @@ def refunds_get_sid_submit_test():
   myobj = {'Sid': request.form['Sid'] }
   return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )   
 
+
 @app.route('/refunds_get_sid/submit' , methods=['POST'] , strict_slashes=False  )
 def refunds_get_sid_submit():
   data2 = json.loads(request.get_data())
@@ -2285,13 +2627,17 @@ def refunds_get_sid_submit():
   retjs=[]
   for i in allrefunds:
     if i.sales_manager_id == Sid:
+      my_purchased= Purchased.query.filter_by(purcid=i.purchased_purcid).first()
       retjs.append(
         { "id": i.id,
           "email": i.customer_email    ,
           "purcid": i.purchased_purcid    ,
           "sid": i.sales_manager_id    ,
-          "refund_state": i.refund_state     
-                    }
+          "refund_state": i.refund_state , 
+          "quantity": my_purchased.quantity ,
+          "price": my_purchased.price, 
+          "sale": my_purchased.sale
+        }
       )
   return json.dumps(retjs )
 
@@ -2424,8 +2770,75 @@ def all_Category():
   js={}
   allproductscats=Product_Category.query.filter_by().all()
   for pc in allproductscats:
-    js[pc.Pcid]=pc.name
+    if( not pc.deleted ):
+      js[pc.Pcid]=pc.name
   return json.dumps(js)
+
+@app.route('/undelete_product_category')
+def undelete_product_category():
+  todata=""  
+  todata+="<h3> Product Category </h3> "
+  allproductscats=Product_Category.query.filter_by().all()
+  todata+= "<table> <tr> <th>pcid </th> <th>name </th> </tr> "
+  for i in allproductscats:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Pcid,i.name) 
+  todata +="</table>   "
+  return render_template('undelete_product_category.html',data=todata) 
+
+#submit test for delete product
+@app.route('/undelete_product_category/submit_test', methods=['POST'], strict_slashes=False  )
+def undelete_product_category_submittest():
+  url = 'http://127.0.0.1:5000/undelete_product_category/submit'
+  myobj = {'Pcid': request.form['Pcid'] 
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text ) 
+  
+
+
+#delete product category
+@app.route('/undelete_product_category/submit', methods=['POST'] , strict_slashes=False  )
+def undelete_product_category_sub():
+  retjs={}
+  data2 = json.loads(request.get_data())
+  Pcid = int(data2['Pcid'])
+  db.session.query(Product_Category).filter(Product_Category.Pcid == Pcid).update({"deleted": False})
+  db.session.commit()
+  retjs["status"] = True 
+  return json.dumps(retjs)  
+
+@app.route('/delete_product_category')
+def delete_product_category():
+  todata=""  
+  todata+="<h3> Product Category </h3> "
+  allproductscats=Product_Category.query.filter_by().all()
+  todata+= "<table> <tr> <th>pcid </th> <th>name </th> </tr> "
+  for i in allproductscats:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Pcid,i.name) 
+  todata +="</table>   "
+  return render_template('delete_product_category.html',data=todata) 
+
+#submit test for delete product
+@app.route('/delete_product_category/submit_test', methods=['POST'], strict_slashes=False  )
+def delete_product_category_submittest():
+  url = 'http://127.0.0.1:5000/delete_product_category/submit'
+  myobj = {'Pcid': request.form['Pcid'] 
+    }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text ) 
+  
+
+
+#delete product category
+@app.route('/delete_product_category/submit', methods=['POST'] , strict_slashes=False  )
+def delete_product_category_sub():
+  retjs={}
+  data2 = json.loads(request.get_data())
+  Pcid = int(data2['Pcid'])
+  db.session.query(Product_Category).filter(Product_Category.Pcid == Pcid).update({"deleted": True})
+  db.session.commit()
+  retjs["status"] = True
+  return json.dumps(retjs)
+
+
 
 
 @app.route('/all_books_category_ranged')

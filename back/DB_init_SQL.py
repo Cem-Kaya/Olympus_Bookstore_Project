@@ -212,10 +212,14 @@ class Product_Category(db.Model):
   __tablename__='Product_Category'
   Pcid=db.Column(db.Integer,primary_key=True)
   name=db.Column(db.String(100))
+  deleted = db.Column(db.Boolean)
+
   under_ = db.relationship('Products', secondary = under, backref = 'pcid')
 
-  def __init__(self,name):
+  def __init__(self,name, deleted = False):
     self.name=name
+    self.deleted = deleted
+    
 
 
 class Product_Manager(db.Model):
