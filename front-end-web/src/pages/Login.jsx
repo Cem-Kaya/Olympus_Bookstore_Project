@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
 import { logIn, signUp, checkLogInStatus } from "../helperFunctions/helperLogin";
 import Alert from 'react-bootstrap/Alert'
+import { synchronizeWithDb } from "../helperFunctions/helperCartItems";
 
 const Container = styled.div`
   width: 100%;
@@ -58,10 +59,11 @@ const Login = () => {
       console.log(e)
     }
     if(checkLogInStatus()){
-      navigate("/")
+      await synchronizeWithDb()
+      setSuccessMessageFunction(`Logged in as: ${email}`)
     }
     else{
-      setMessageFunction("Could Not Log In")
+      setErrorMessageFunction("Could Not Log In")
     }
   }
   
@@ -75,16 +77,22 @@ const Login = () => {
     }
 
     if(checkLogInStatus()){
-      navigate("/")
+      await synchronizeWithDb()
+      setSuccessMessageFunction(`Signed up as: ${email}`)
     }
     else{
-      setMessageFunction("Could Not Sign Up")
+      setErrorMessageFunction("Could Not Sign Up")
     }
   }
 
-  const setMessageFunction = (message) => {
+  const setErrorMessageFunction = (message) => {
     setErrorMessage(message)
     setAlertBoxOpen(true)
+  }
+
+  const setSuccessMessageFunction = (message) => {
+    setSuccessMessage(message)
+    setSuccessBoxOpen(true)
   }
 
   const setValues = (serverAnswer) => {
@@ -96,6 +104,8 @@ const types= ['LOGIN', 'SIGNUP']
 const [type,setType]= useState()
 const [alertBoxOpen, setAlertBoxOpen] = useState(false)
 const [errorMessage, setErrorMessage] = useState(false)
+const [successBoxOpen, setSuccessBoxOpen] = useState(false)
+const [successMessage, setSuccessMessage] = useState(false)
 
 function ToogleGroup(){
 
@@ -109,6 +119,12 @@ function ToogleGroup(){
         <Alert key={"danger"} show={alertBoxOpen} variant={"danger"}>
           {errorMessage}
         </Alert>
+        <Alert key={"success"} show={successBoxOpen} variant={"success"}>
+          {successMessage + "   "}
+          <a href="/">
+            Go Back To The Home Page
+          </a>
+        </Alert>
       <Form>
         {types.map((type, index) =>(
           <Button  key={index} onClick={()=> {setType(type); setAlertBoxOpen(false)}}>
@@ -116,8 +132,8 @@ function ToogleGroup(){
           </Button>
         ))}
       </Form>
-      {istype ? (<Signin onLogin={LogIn} onWrongInput={setMessageFunction}></Signin>) : 
-                (<Signup onSignUp={SignUp} onWrongInput={setMessageFunction}></Signup>)      
+      {istype ? (<Signin onLogin={LogIn} onWrongInput={setErrorMessageFunction}></Signin>) : 
+                (<Signup onSignUp={SignUp} onWrongInput={setErrorMessageFunction}></Signup>)      
       }
       </Container>
     );

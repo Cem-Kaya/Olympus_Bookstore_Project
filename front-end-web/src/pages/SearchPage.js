@@ -192,9 +192,14 @@ const SearchPage = () => {
             }
         }
         console.log(nonEmptyElements)
+        console.log(itemsCopy)
+        console.log(params)
         nonEmptyElements.forEach(key => {
+            key === "raiting" ? 
+                itemsCopy = itemsCopy.filter(elem => params[key].includes(elem[key].toString()))
+            :
                 itemsCopy = itemsCopy.filter(elem => params[key].includes(elem[key]))
-            });
+        });
         if(params["pr_lower"] !== "*"){
             itemsCopy = itemsCopy.filter(elem => elem["price"] >= parseInt(params["pr_lower"]))
         }

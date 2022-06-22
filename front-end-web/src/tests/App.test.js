@@ -90,7 +90,7 @@ test('check sign up with unmatching password and confirm password values', async
   expect(screen.getByText(`Passwords do not match`)).toBeVisible();
 });
 
-test('check sign up for sales manager  unmatching password and confirm password values', async () => {
+test('check sign up for sales manager unmatching password and confirm password values', async () => {
   render(<BrowserRouter><StoreLogin></StoreLogin></BrowserRouter>);
 
   userEvent.click(screen.getByText("SIGNUP"));
@@ -116,6 +116,9 @@ test('check sign up for product manager with unmatching password and confirm pas
 
 test('checks + - buttons on header', async () => {
   let originalCart = JSON.parse(window.localStorage.getItem('cart_items'));
+  let originalLoggedIn = JSON.parse(window.localStorage.getItem('logged_in'));
+
+  window.localStorage.setItem("logged_in", JSON.stringify(false));
   window.localStorage.setItem("cart_items", JSON.stringify([]));
   testProducts.forEach(item => {
     addNewItem(item)
@@ -139,6 +142,7 @@ test('checks + - buttons on header', async () => {
   expect(getCartItems()[0].quantity).toBe(1);
 
   window.localStorage.setItem("cart_items", originalCart);
+  window.localStorage.setItem("logged_in", originalLoggedIn);
 });
 
 test("create snapshot for sorting operation, check if it gets changed in the future", async () => {
@@ -160,19 +164,24 @@ test("create snapshot for display of filters, check if it gets changed in the fu
   expect(tree).toMatchSnapshot();
 })
 
-test("check empty cart", () => {
+test("check empty cart when not logged in", () => {
   let originalCart = JSON.parse(window.localStorage.getItem('cart_items'));
-  
+  let originalLoggedIn = JSON.parse(window.localStorage.getItem('logged_in'));
+
+  window.localStorage.setItem("logged_in", JSON.stringify(false));
   window.localStorage.setItem("cart_items", JSON.stringify([]));
   emptyCart();
   expect(getCartItems()).toStrictEqual([]);
 
   window.localStorage.setItem("cart_items", originalCart);
+  window.localStorage.setItem("logged_in", originalLoggedIn);
 })
 
-test("check add to cart", () => {
+test("check add to cart when not logged in", () => {
   let originalCart = JSON.parse(window.localStorage.getItem('cart_items'));
-  
+  let originalLoggedIn = JSON.parse(window.localStorage.getItem('logged_in'));
+
+  window.localStorage.setItem("logged_in", JSON.stringify(false));
   window.localStorage.setItem("cart_items", JSON.stringify([]));
   for(var i = 0; i < testProducts.length; i++){
     addNewItem(testProducts[i]);
@@ -183,6 +192,7 @@ test("check add to cart", () => {
   expect(getCartItems()[0].quantity).toBe(2);
 
   window.localStorage.setItem("cart_items", originalCart);
+  window.localStorage.setItem("logged_in", originalLoggedIn);
 })
 
 // import {logIn, signUp, storeLogIn, storeSignUp, productManLogIn, productManSignUp} from '../helperFunctions/helperLogin';

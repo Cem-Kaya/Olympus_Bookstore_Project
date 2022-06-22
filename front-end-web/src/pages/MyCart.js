@@ -86,7 +86,7 @@ const MyCart = ({params}) => {
             <main className="col-md-9">
         <div className="card">
         
-        {items.length === 0 ? <h2>There are no products in your cart, start adding some!</h2>:
+        {items.length === 0 ? <h3>There are no products in your cart, start adding some!</h3>:
           <table className="table table-borderless table-shopping-cart">
             <thead className="text-muted">
               <tr className="small text-uppercase">
