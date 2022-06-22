@@ -59,3 +59,41 @@ export const refundApproval = async (id, newStatus) => {
     const data = await res.json()
     return data
 }
+
+export const fetchInvoices = async () => {
+  const res = await fetch(`/sid_deliverylist/submit`     , {headers : { 
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+      },
+      method: "POST",
+      body: JSON.stringify({Sid: getStoreManagerID()})
+      }
+      )
+  const data = await res.json()
+  return data
+}
+
+export const fetchInvoicesFromDateRange = async (startDate, endDate) => {
+  const res = await fetch(`/sid_deliverylist_date/submit`     , {headers : { 
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+      },
+      method: "POST",
+      body: JSON.stringify({Sid: getStoreManagerID(), start_date: startDate, end_date: endDate})
+      }
+      )
+  const data = await res.json()
+  return data
+}
+
+export const downloadInvoicesFromDateRange = async (startDate, endDate) => {
+  const res = await fetch(`/sid_deliverylist_date_pdf/submit`     , {headers : { 
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+      },
+      method: "POST",
+      body: JSON.stringify({Sid: getStoreManagerID(), start_date: startDate, end_date: endDate})
+      }
+      )
+  return res
+}
