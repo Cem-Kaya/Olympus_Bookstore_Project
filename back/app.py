@@ -620,6 +620,70 @@ def get_all_salesmanagers():
     jsonprd.append(tmp)  
   return json.dumps(jsonprd)  
 
+#getting product for pmid
+@app.route('/deleted_products_pmid')
+def deleted_products_pmid():
+  allproducts=Products.query.filter_by().all()
+  todata=" <h3> Products </h3> " # <h1>A heading here</h1>
+  todata+= '<table <tr> <th>pid </th> <th> name </th> <th>price</th> <th>sale</th> </tr> '
+  for i in allproducts:
+    todata += "<tr><td> {} </td> <td> {} </td> <td> {} </td> <td> {} </td> </tr>".format(i.Pid,i.name,i.price,i.sale) 
+  todata +="</table>"
+  
+  todata+="<h3> Product Manager </h3> "
+  allproductmanags=Product_Manager.query.filter_by().all()
+  todata+= "<table> <tr> <th>Pcid </th> <th>name </th><th>pass_hash </th> </tr> "
+  for i in allproductmanags:
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.Pmid,i.name,i.pass_hash) 
+  todata +="</table> "
+
+  todata+= "<h3> Manages  </h3>"
+  todata+= "<table> <tr> <th> Pid </th> <th> Pmid </th> </tr> "
+  allUnders = db.session.query(manages).all()  # db.session.query(followers).filter(...).all()
+  for i in allUnders:
+    todata += "<tr><td>{}</td><td>{}</td></tr>".format(i.Pid,i.Pmid) 
+  todata +="</table>   "
+  return render_template('deleted_products_pmid.html',data =todata )  
+
+@app.route('/deleted_products_pmid/submit_test', methods=['POST'], strict_slashes=False  )
+def deleted_products_pmid_submit_test():
+  url = 'http://127.0.0.1:5000/deleted_products_pmid/submit'
+  myobj = {"Pmid": request.form['Pmid']   }
+  return render_template("success.html", data= req.post(url, data = json.dumps(myobj)).text )    
+
+@app.route('/deleted_products_pmid/submit', methods=['POST'] , strict_slashes=False)
+def deleted_products_pmid_submit():
+  data2 = json.loads(request.get_data())
+  Pmid = data2['Pmid']
+  allUnders = db.session.query(manages).filter(manages.c.Pmid == Pmid ).all()  # db.session.query(followers).filter(...).all()
+ 
+  ret_js=[]
+  for i in allUnders:
+    product = Products.query.filter_by(Pid=i.Pid).first()
+    if(product.deleted==True):
+      tmp={
+        "id": product.Pid,
+        "img": product.picture_url0,
+        "img1": product.picture_url1,
+        "img2": product.picture_url2,
+        "title": product.name ,
+        "author": product.author,
+        "raiting": product.raiting,      
+        "publisher": product.distributor_Information,
+        "price":  product.price ,    
+        "amount_sold": product.amount_sold ,
+        "release_date": str(product.date),
+        "model": product.model,
+        "edition_number": product.edition_number,
+        "description": product.description,
+        "in_stock": product.quantity,
+        "warranty": product.warranty,
+        "discount": str((1-product.sale)*100)+"%",
+        "date": str(product.date)
+      }
+      ret_js.append(tmp)
+  return json.dumps(ret_js)
+
 @app.route('/all_deletedproducts')
 def get_all_deletedproducts():
   allproducts=Products.query.filter_by().all()
