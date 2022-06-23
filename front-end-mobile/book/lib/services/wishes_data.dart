@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Wishes with ChangeNotifier {
   List<num> mywishes = [];
 
+
   List<num> get() {
     return mywishes;
   }
@@ -24,6 +25,10 @@ class Wishes with ChangeNotifier {
     mywishes = wish;
     notifyListeners();
 
+  }
+  reset_wishes() {
+    mywishes = [];
+    notifyListeners();
 
   }
 

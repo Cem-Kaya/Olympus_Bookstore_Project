@@ -138,6 +138,7 @@ class _SignInState extends State<SignIn> {
     Function basketadd = Provider.of<Basket>(context).add_basket;
     Function change_index = Provider.of<ClassRoot>(context).changeRoot;
     Function wishs=Provider.of<Wishes>(context).init_wishes;
+    Function res_wish=Provider.of<Wishes>(context).reset_wishes;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -257,6 +258,7 @@ class _SignInState extends State<SignIn> {
                             _formKey.currentState!.save();
                             await AccountLogin(mail, pass);
                             if (temp["status"]) {
+                              res_wish();
                               await ALLwishes(mail);
                               wishs(wishid);
                               List<Baske> bas=  await basketget();

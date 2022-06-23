@@ -82,7 +82,7 @@ class _FavoritesState extends State<Favorites> {
 
           items = result;
           items = items
-              ?.where((element) => widget.wishes.contains(element.id))
+              ?.where((element) => wishid.contains(element.id))
               .toList();
           print(items);
           print("inside all books");

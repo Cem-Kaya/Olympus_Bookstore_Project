@@ -83,6 +83,8 @@ class _ProfileBodyState extends State<ProfileBody> {
   Widget build(BuildContext context) {
     Function login = Provider.of<logged_in_user>(context).getUser;
     Function wish_data = Provider.of<Wishes>(context).get;
+    Function wishs=Provider.of<Wishes>(context).init_wishes;
+    Function res_wish=Provider.of<Wishes>(context).reset_wishes;
     String user = login();
 
     return Padding(
@@ -183,7 +185,9 @@ class _ProfileBodyState extends State<ProfileBody> {
                     ],
                   ),
                   onPressed: () async{
+                    res_wish();
                     await ALLwishes(user);
+                    wishs(wishid);
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => Favorites(wishes: wish_data(),use:user)));
                   },

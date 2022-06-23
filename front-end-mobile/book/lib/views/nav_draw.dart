@@ -13,12 +13,12 @@ class nav_draw extends StatelessWidget {
    nav_draw({Key? key,required this.categories}) : super(key: key);
    final List<String> categories;
   static final _categories = [
-    "Novel",
+    /*"Novel",
     "Non-fiction",
     "Manga",
     "Woodworking",
     "Light Novel",
-    "Drama",
+    "Drama",*/
   ];
   @override
 
@@ -33,7 +33,7 @@ class nav_draw extends StatelessWidget {
         counter_cat = result.length;
         items_cat = result;
         int c=0;
-        print(result.runtimeType);
+        //print(result.runtimeType);
         print(counter_cat);
         while(c<counter_cat){
           print(counter_cat);
@@ -41,7 +41,7 @@ class nav_draw extends StatelessWidget {
           c++;
         }
 
-        print(result);
+        //print(result);
         return result;
       }
       else {
@@ -54,8 +54,7 @@ class nav_draw extends StatelessWidget {
   }
 
   Widget build(BuildContext context) {
-    print("zzzzzzzzzzzzzzzzzzzzzzzzzzz");
-    //allCategories();
+    allCategories();
 
     return Drawer(
       backgroundColor: AppColors.primary,
@@ -70,7 +69,7 @@ class nav_draw extends StatelessWidget {
             ),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => Category(cat: index + 1,)));
+                  builder: (context) => Category(cat: index + 1, categories: categories,)));
             },
             child: Container(
               width: 200,

@@ -8,25 +8,29 @@ import '../utils/jsonParse/previewBooks.dart';
 import '../views/product_preview.dart';
 
 class Category extends StatefulWidget {
-  const Category({Key? key, required this.cat}) : super(key: key);
+  const Category({Key? key, required this.cat, required this.categories})
+      : super(key: key);
   final num cat;
-
+  final List<String> categories;
 
   @override
   State<Category> createState() => _CategoryState();
 }
-final _categories = [
+
+/*final _categories = [
   "Novel",
   "Non-fiction",
   "Manga",
   "Woodworking",
   "Light Novel",
   "Drama",
-];
+];*/
 
 var response;
 List<PreviewBooks>? cat_books;
-getCategories(num pcid) async { //it will be handled
+
+getCategories(num pcid) async {
+  //it will be handled
   try {
     response = await http.post(
       Uri.parse(API.get_catogary_books), //it will be handled
@@ -37,11 +41,11 @@ getCategories(num pcid) async { //it will be handled
         {
           "min": 0,
           "max": 100,
-          "Pcid":pcid,
+          "Pcid": pcid,
         },
       ),
     );
-    cat_books =  previewBooksFromJson(response.body);
+    cat_books = previewBooksFromJson(response.body);
     print(cat_books.runtimeType);
   } catch (e) {
     print("error is ${e.toString()}");
@@ -59,17 +63,16 @@ class _CategoryState extends State<Category> {
       });
     }();
 
-
-
     // obtain shared preferences
   }
-
 
   @override
   Widget build(BuildContext context) {
     if (cat_books == null) {
       getCategories(widget.cat);
-      return const Center(child: CircularProgressIndicator(),);
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
     }
     /*
     List<dynamic> lis=[];
@@ -82,7 +85,9 @@ class _CategoryState extends State<Category> {
     }
     */
     return Scaffold(
-      appBar: ActionBar(title:_categories[widget.cat.toInt() - 1],),
+      appBar: ActionBar(
+        title: widget.categories[widget.cat.toInt() - 1],
+      ),
       body: SingleChildScrollView(
         child: SizedBox(
           child: Padding(
@@ -99,7 +104,7 @@ class _CategoryState extends State<Category> {
                           for (var i in cat_books!)
                             Padding(
                               padding:
-                              const EdgeInsets.symmetric(vertical: 8.0),
+                                  const EdgeInsets.symmetric(vertical: 8.0),
                               child: ProductPreview(product: i),
                             ),
                         ]),
