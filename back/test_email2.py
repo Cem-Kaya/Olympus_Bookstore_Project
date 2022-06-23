@@ -11,8 +11,8 @@ import traceback
 #
 # ------------------------------------------------
 ORG_EMAIL = "@gmail.com" #CS.308.Group4@gmail.com
-FROM_EMAIL = "deletethisanduncommet"# "CS.308.Group4.mail3" + ORG_EMAIL 
-FROM_PWD = "deletethisanduncommet"#"qwodctqssaobfgmc" 
+FROM_EMAIL = "miyavcs308group4"# "CS.308.Group4.mail3" + ORG_EMAIL 
+FROM_PWD = "rntqcipklvirskgo"  #rntqcipklvirskgo
 SMTP_SERVER = "imap.gmail.com" 
 SMTP_PORT = 993
 

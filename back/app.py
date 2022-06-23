@@ -75,7 +75,7 @@ def alltables():
   allCustomers=Customers.query.filter_by().all()
   todata+= "<table> <tr> <th>email </th> <th>name </th> <th> tax_id </th> </tr> "
   for i in allCustomers:
-    todata += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.email,i.name, i.tax_id) 
+    todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.email,i.name, i.tax_id, i.pass_hash) 
   todata +="</table>   "
 
   todata+="<h3> Product Manager </h3> "
