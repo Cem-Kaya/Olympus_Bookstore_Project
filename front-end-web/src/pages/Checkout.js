@@ -111,7 +111,7 @@ const Checkout = () => {
               'Accept' : 'application/json',
               'Content-Type' : 'application/json'
               },
-          body: JSON.stringify({"Pid": item.id, "quantity" : item.quantity})
+          body: JSON.stringify({Pid: item.id, quantity : item.quantity})
           })
           const data = await res.json()
 
@@ -168,21 +168,26 @@ const Checkout = () => {
       
       try{
         window.localStorage.setItem('old_cart', JSON.stringify(JSON.parse(window.localStorage.getItem('cart_items'))))
-        await sendBankInfo()
+        //await sendBankInfo()
 
         let did = await getDidVal()
 
         let email = getUserID()
         const cartItems = getCartItems()
-  
-        for (let item of cartItems) {
+        
+        for (let i = 0; i < cartItems.length; i++) {
+          let item = cartItems[i]
+          console.log(item)
           let serverAnswer = await removeFromStock(item)
+          console.log(serverAnswer)
           if(serverAnswer["status"] === true){
+            console.log("true")
             removeAllItem(item)
             await purchase(email, item, did)
             setItemsBought([...itemsBought, item])
           }
           else{
+            console.log("false")
             setItemsNotBought([...itemsNotBought, item])
           }
         }
@@ -196,11 +201,13 @@ const Checkout = () => {
       }
   }
 
-  const PurchaseAllHelper = async () => {
+  const PurchaseAll = async () => {
     await purchaseAll()
+    console.log(itemsBought)
+    navigate(`/invoice`)
   }
 
-  const PurchaseAll = () => {
+  const PurchaseAllHelper= () => {
     PurchaseAllHelper()
     console.log(itemsBought)
     navigate(`/invoice`)
@@ -468,7 +475,7 @@ const Checkout = () => {
               </div>
             </div>
             <hr className="mb-4"/>
-            <button className="btn btn-primary btn-lg btn-block" type="submit" onClick={() => {PurchaseAll()}}>Purchase</button>
+            <button className="btn btn-primary btn-lg btn-block" type="button" onClick={() => {PurchaseAll()}}>Purchase</button>
           </form>
         </div>
         </div>
