@@ -118,7 +118,7 @@ class _old_purchasesState extends State<old_purchases> {
     if (purchaseList?.length == 0) {
       return Scaffold(
           appBar: ActionBar(
-            title: "Reviews",
+            title: "Purchase History",
           ),
           body: const Center(
             child: Text("There is no purchase. Buy something!"),
