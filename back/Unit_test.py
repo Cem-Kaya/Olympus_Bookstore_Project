@@ -831,7 +831,7 @@ def unit_test26():
         time.sleep(2)
         first=read_email_from_gmail()
         time.sleep(2)
-        send_email("cs.308.group4.mail3@gmail.com","Unit test of email sevice this shell break it self in 30 days ")
+        send_email("miyavcs308group4@gmail.com","Unit test of email sevice this shell break it self in 30 days ")
         time.sleep(2)
 
         lstat=read_email_from_gmail()

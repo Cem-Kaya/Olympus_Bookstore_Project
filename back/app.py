@@ -1328,16 +1328,16 @@ def update_book_submit():
        .filter(Products.Pid == Pid ).first().sale
   new_price=  db.session.query(Products)\
        .filter(Products.Pid == Pid ).first().price
+  name=  db.session.query(Products)\
+       .filter(Products.Pid == Pid ).first().name     
 
   if (new_sale != old_sale) or (new_price != old_price):
     allUnders = db.session.query(wishes).all()
     for w in allUnders:
       if w.Pid == Pid:
         #send email ! 
-        name=  db.session.query(Products)\
-        .filter(Products.Pid == Pid ).first().name
         try:
-          send_email(w.email,"An item in your whish list has been updated take a look. It has name  {}".format(name))
+          send_email(w.email,"An item in your wish list has been updated take a look. It has name  {}".format(name))
         except:
           print("email error ")
   
