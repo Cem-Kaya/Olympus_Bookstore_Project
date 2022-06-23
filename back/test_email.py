@@ -25,7 +25,7 @@ def make_pdf(text ):
     return pdf_name
   
 def send_email(receiver, text):
-    yag = yagmail.SMTP( "miyavcs308group4" ,  "rntqcipklvirskgo")# )'CS.308.Group4.mail3@gmail.com', 'qwodctqssaobfgmc')
+    yag = yagmail.SMTP( "a","a")# miyavcs308group4" ,  "rntqcipklvirskgo")# )'CS.308.Group4.mail3@gmail.com', 'qwodctqssaobfgmc')
     filename =  make_pdf(text )
 
     yag.send(

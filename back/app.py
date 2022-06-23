@@ -73,7 +73,7 @@ def alltables():
   todata = "<h2> ENTITIES</h2>"
   todata +="<h3>Customers </h3> "
   allCustomers=Customers.query.filter_by().all()
-  todata+= "<table> <tr> <th>email </th> <th>name </th> <th> tax_id </th> </tr> "
+  todata+= "<table> <tr> <th>email </th> <th>name </th> <th> tax_id </th><th> pass_hash </th> </tr> "
   for i in allCustomers:
     todata += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(i.email,i.name, i.tax_id, i.pass_hash) 
   todata +="</table>   "
@@ -1334,8 +1334,10 @@ def update_book_submit():
     for w in allUnders:
       if w.Pid == Pid:
         #send email ! 
+        name=  db.session.query(Products)\
+        .filter(Products.Pid == Pid ).first().name
         try:
-          send_email(w.email,"An item in your whish list has been updated take a  look. It has pid  {}".format(Pid))
+          send_email(w.email,"An item in your whish list has been updated take a look. It has name  {}".format(name))
         except:
           print("email error ")
   
