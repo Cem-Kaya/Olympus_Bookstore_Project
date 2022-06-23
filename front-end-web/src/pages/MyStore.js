@@ -191,9 +191,17 @@ const MyStore = () => {
           uniqueQuantities.push(quantity)
         })
         console.log(uniqueQuantities)
+        let newUniqueTitles = []
+        uniqueTitles.forEach(elem => {
+          if(elem.length > 20){
+            elem = elem.substring(0, 20)
+            elem += "..."
+          }
+          newUniqueTitles.push(elem)
+        })
         
         setUserData({
-          labels: uniqueTitles,
+          labels: newUniqueTitles,
           datasets: [
             {
               label: "Sales Profit",
@@ -212,7 +220,7 @@ const MyStore = () => {
         })
         setUserData2(
           {
-            labels: uniqueTitles,
+            labels: newUniqueTitles,
             title: {
               display: true,
               text: 'TEST'
@@ -512,7 +520,7 @@ const MyStore = () => {
               <br></br><br></br>
               <div className='row'>
                 <div className="col-md-6 mb-0 text-left">
-                  <LineChart chartData={userData4} />
+                  <BarChart chartData={userData4} />
                 </div>
                 <div className="col-md-6 mb-0 text-left">
                   <BarChart chartData={userData5} />
@@ -642,10 +650,10 @@ const MyStore = () => {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
-                    <a class="nav-item nav-link" onClick={() => {setNavItemSelected(0); setLoaded(false)}} href="#">View/Update Products <span class="sr-only">(current)</span></a>
-                    <a class="nav-item nav-link" onClick={() => {setNavItemSelected(1); setLoaded(false)}} href="#">View/Print Invoices</a>
-                    <a class="nav-item nav-link" onClick={() => {setNavItemSelected(2); setLoaded(false)}} href="#">Calculate Revenue</a>
-                    <a class="nav-item nav-link" onClick={() => {setNavItemSelected(3); setLoaded(false)}} href="#">View Refund/Return Requests</a>
+                    <a class={navItemSelected === 0 ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(0); setLoaded(false)}} href="#">View/Update Products <span class="sr-only">(current)</span></a>
+                    <a class={navItemSelected === 1 ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(1); setLoaded(false)}} href="#">View/Print Invoices</a>
+                    <a class={navItemSelected === 2 ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(2); setLoaded(false)}} href="#">Calculate Revenue</a>
+                    <a class={navItemSelected === 3 ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(3); setLoaded(false)}} href="#">View Refund/Return Requests</a>
                     </div>
                 </div>
                 <a class="nav-item nav-link" href="/">Go Back to the Main Page</a>

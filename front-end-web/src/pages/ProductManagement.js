@@ -62,7 +62,6 @@ const ProductManagement = () => {
       }
     }, [params, navigate])
 
-    const [expandableOpen, setExpandableOpen] = useState(true)
     const [loaded, setLoaded] = useState(false)
     const [items, setItems] = useState([])
     const [deliveryList, setDeliveryList] = useState([])
@@ -71,27 +70,6 @@ const ProductManagement = () => {
     const [comments, setComments] = useState([])
     const [navItemSelected, setNavItemSelected] = useState(0)
     const [useNewCategory, setUseNewCategory] = useState(false)
-
-    const handleOpenExpandable = () => {
-      setExpandableOpen(!expandableOpen)
-    }
-
-    const PrintValues = () => {
-      console.log(title)
-      console.log(salesManager)
-      console.log(author)
-      console.log(publisher)
-      console.log(edition_number)
-      console.log(model)
-      console.log(warranty)
-      console.log(initial_price)
-      console.log(amountInStock)
-      console.log(img1URL)
-      console.log(img2URL)
-      console.log(img3URL)
-      console.log(description)
-      console.log(category)
-    }
 
     let title = ""
     let salesManager = ""
@@ -216,10 +194,6 @@ const ProductManagement = () => {
   const sendApprovalInfo = async (cid, approved) => {
     await commentApproval(cid, approved)
   }
-  // Process=str ( data2['Process'] )
-  // Pmid=int ( data2['Pmid'] )
-  // Pid=int( data2['Pid'] )
-  // purcid = int( data2['purcid'] )
 
   const updateDeliveryStatus = async (pid, purcid, newStatus) => {
     const serverAnswer = await updateDelivery(pid, purcid, newStatus)
@@ -852,13 +826,13 @@ const ProductManagement = () => {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div className="navbar-nav">
-                    <a className="nav-item nav-link" onClick={() => {setNavItemSelected(0); setLoaded(false)}} href="#">View All Products<span className="sr-only">(current)</span></a>
-                    <a className="nav-item nav-link" onClick={() => {setNavItemSelected(1); setLoaded(false)}} href="#">Delivery List</a>
-                    <a className="nav-item nav-link" onClick={() => {setNavItemSelected(2); setLoaded(false)}} href="#">Update Stock</a>
-                    <a className="nav-item nav-link" onClick={() => {setNavItemSelected(3); setLoaded(false)}} href="#">Comments to be Approved</a>
-                    <a className="nav-item nav-link" onClick={() => {setNavItemSelected(4); setLoaded(false)}} href="#">Add/Unremove A Product</a>
-                    <a className="nav-item nav-link" onClick={() => {setNavItemSelected(5); setLoaded(false)}} href="#">Remove a Product</a>
-                    <a className="nav-item nav-link" onClick={() => {setNavItemSelected(6); setLoaded(false)}} href="#">View Invoices</a>
+                    <a className={navItemSelected === 0 ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(0); setLoaded(false)}} href="#">View All Products<span className="sr-only">(current)</span></a>
+                    <a className={(navItemSelected === 1 || navItemSelected === 1.5) ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(1); setLoaded(false)}} href="#">Delivery List</a>
+                    <a className={navItemSelected === 2 ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(2); setLoaded(false)}} href="#">Update Stock</a>
+                    <a className={navItemSelected === 3 ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(3); setLoaded(false)}} href="#">Comments to be Approved</a>
+                    <a className={navItemSelected === 4 ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(4); setLoaded(false)}} href="#">Add/Unremove A Product</a>
+                    <a className={navItemSelected === 5 ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(5); setLoaded(false)}} href="#">Remove a Product</a>
+                    <a className={navItemSelected === 6 ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(6); setLoaded(false)}} href="#">View Invoices</a>
                     </div>
                 </div>
                 <a className="nav-item nav-link" href="/">Go Back to the Main Page</a>
@@ -873,7 +847,6 @@ const ProductManagement = () => {
               : 
               getPageBody()
             }
-        
         </Body>
         <Footer></Footer>
     </div>

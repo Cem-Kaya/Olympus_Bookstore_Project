@@ -179,7 +179,7 @@ const Checkout = () => {
           let serverAnswer = await removeFromStock(item)
           if(serverAnswer["status"] === true){
             removeAllItem(item)
-            let answer = await purchase(email, item, did)
+            await purchase(email, item, did)
             setItemsBought([...itemsBought, item])
           }
           else{

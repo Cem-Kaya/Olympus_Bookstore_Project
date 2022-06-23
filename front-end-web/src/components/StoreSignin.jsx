@@ -82,7 +82,7 @@ const StoreSignin = ({ onLogin, onWrongInput }) => {
     {
       const sha2_256 = require('simple-js-sha2-256')
       password = sha2_256(password)
-      onLogin(name, password)
+      onLogin(name.trim(), password)
     }
   }
   

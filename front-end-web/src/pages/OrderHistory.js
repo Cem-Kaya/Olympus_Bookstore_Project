@@ -14,12 +14,6 @@ const Body = styled.div`
   font-size: 16px;
 `;
 
-const ImageContainer = styled.div`
-  height: 20vh;
-  display: inline-block;
-`;
-
-
 const OrderHistory = () => {
   let navigate = useNavigate();
 
@@ -237,8 +231,7 @@ const fetchOrders = async () => {
                   <th scope="col">Refund date has expired</th>
                 }
               </tr>
-            ))
-            
+            )) 
           }
 
         </tbody>

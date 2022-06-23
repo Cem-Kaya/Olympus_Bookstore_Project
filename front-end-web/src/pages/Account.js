@@ -20,10 +20,9 @@ const Container = styled.div`
   flex-direction: row;
   color: white;
 `;
-
+{/* background-color: #660033; */}
 const Body = styled.div`
   height: 500px;
-  background-color: #660033;
 `;
 
 const LeftContainer = styled.div`
@@ -92,7 +91,7 @@ const Account = () => {
 
     <div>
       <Header></Header>
-      <Body>
+      <Body className='bg-secondary'>
       {
         !loaded ? 
         <div class="d-flex justify-content-center">

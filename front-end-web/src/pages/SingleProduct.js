@@ -104,7 +104,7 @@ const SingleProduct = () => {
       }
 
       const AddToWishList = async (item) => {
-        const answer = await addToWishList(item.id)
+        await addToWishList(item.id)
         setWishListChanged(!wishListChanged)
         window.scrollTo({top: 0, behavior: 'smooth'})
       }

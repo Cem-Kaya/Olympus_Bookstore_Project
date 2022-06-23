@@ -85,7 +85,6 @@ const Invoice = () => {
                                 <h4 className="media-heading float-left">Product id: {element.id}</h4><br></br><br></br>
                                 <h4 className="media-heading float-left">Product name: {element.title}</h4><br></br><br></br>
                                 <h4 className="media-heading float-left">You would have bought {element.quantity} many of this item</h4><br></br><br></br>
-                                <h4 className="media-heading float-left">It would have costed {element.quantity * element.price} TL in total</h4><br></br><br></br>
                                 <div className="d-flex justify-content-between align-items-center">
                                 </div>
                                 <br></br>
