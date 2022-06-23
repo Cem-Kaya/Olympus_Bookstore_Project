@@ -8,7 +8,7 @@ import Footer from '../components/Footer'
 import { getProductManagerID } from '../helperFunctions/helperLogin'
 import { useNavigate, useParams } from 'react-router-dom'
 import { fetchCategories } from '../helperFunctions/helperCategories'
-import { addNewProduct, addNewCategory, fetchSalesManagers, fetchDeliveryList, fetchProductIds, 
+import { addNewCategory, fetchSalesManagers, fetchDeliveryList, fetchProductIds, 
         updateProductStock, fetchComments, fetchDeletedProducts, updateDelivery, commentApproval, 
         deleteProduct, undeleteProduct } from '../helperFunctions/helperProductManager'
 
@@ -70,22 +70,22 @@ const ProductManagement = () => {
     const [comments, setComments] = useState([])
     const [navItemSelected, setNavItemSelected] = useState(0)
     const [useNewCategory, setUseNewCategory] = useState(false)
-
-    let title = ""
-    let salesManager = ""
-    let category = ""
-    let categoryString = ""
-    let author = ""
-    let publisher = ""
-    let edition_number = 0
-    let model = ""
-    let warranty = ""
-    let initial_price = 0
-    let amountInStock = 0
-    let img1URL = ""
-    let img2URL = ""
-    let img3URL = ""
-    let description = ""
+    const [addProductValues, setAddPRoductValues] = useState({
+    title: "",
+    salesManager: "",
+    category: "",
+    categoryString: "",
+    author: "",
+    publisher: "",
+    edition_number: 0,
+    model: "",
+    warranty: "",
+    initial_price: 0,
+    amountInStock: 0,
+    img1URL: "",
+    img2URL: "",
+    img3URL: "",
+    description: ""})
 
     useEffect (() => {
       const getBooks = async () =>  {
@@ -149,6 +149,22 @@ const ProductManagement = () => {
       else if(navItemSelected === 4){
         getDeletedProducts()
         getSalesManagers()
+        setAddPRoductValues({
+          title: "",
+          salesManager: "",
+          category: "",
+          categoryString: "",
+          author: "",
+          publisher: "",
+          edition_number: 0,
+          model: "",
+          warranty: "",
+          initial_price: 0,
+          amountInStock: 0,
+          img1URL: "",
+          img2URL: "",
+          img3URL: "",
+          description: ""})
       }
       else if(navItemSelected === 5){
         getBooks()
@@ -163,31 +179,71 @@ const ProductManagement = () => {
     console.log(serverAnswer)
   }
 
+  const addNewProduct = async () => {
+    try
+    {
+      const res = await fetch(`/Products_reg/submit`     , {headers : { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+          },
+          method: "POST",
+          body: JSON.stringify({"Pcid": addProductValues.category, "Sid": addProductValues.salesManager, "Pmid": getProductManagerID(), "name": addProductValues.title, 
+            "model": addProductValues.model, "description": addProductValues.description, "edition_number": addProductValues.edition_number, "quantity": addProductValues.amountInStock,
+            "amount_sold": 0, "price": addProductValues.initial_price, "raiting": 1.0, "author": addProductValues.author, "warranty": addProductValues.warranty,
+            "distributor_Information": addProductValues.publisher, "sale": 1.0, 
+            "picture_url0": addProductValues.img1URL, "picture_url1": addProductValues.img2URL, "picture_url2": addProductValues.img3URL})
+          }
+          )
+      const data = await res.json()
+      return data
+    }
+    catch{
+      console.log("could not add new product")
+    }
+  }
+
   const newProduct = async () => {
-    if(category === ""){
-      category = categories[0]["cid"]
+    let addPValuesCopy = addProductValues
+    if(addProductValues.category === ""){
+      addPValuesCopy.category = categories[0]["cid"]
     }
-    if(salesManager === ""){
-      salesManager = salesManagers[0]["Sid"]
+    if(addProductValues.salesManager === ""){
+      addPValuesCopy.salesManager = salesManagers[0]["Sid"]
     }
-    
+
     if(useNewCategory)
     {
-      if(categoryString === ""){
+      if(addProductValues.categoryString === ""){
         console.log("Category name cannot be empty string")
       }
       else{
-        let serverAnswer = await addNewCategory(categoryString)
+        let serverAnswer = await addNewCategory(addProductValues.categoryString)
         console.log(serverAnswer)
         let ctgrs = await fetchCategories()
 
         for (var key of Object.keys(ctgrs)) {
-          ctgrs[key] === categoryString ? category = key : category = category
+          ctgrs[key] === addProductValues.categoryString ? addPValuesCopy.category = key : addPValuesCopy.category = addPValuesCopy.category
         }
       }
     }
-    console.log(category)
-    const serverAnswer = await addNewProduct(category, salesManager, title, model, description, edition_number, amountInStock, initial_price, author, warranty, publisher, img1URL, img2URL, img3URL)
+    setAddPRoductValues(addPValuesCopy)
+    // console.log(addPValuesCopy.category)
+    // console.log(addPValuesCopy.title) 
+    // console.log(addPValuesCopy.salesManager )
+    // console.log(addPValuesCopy.category )
+    // console.log(addPValuesCopy.categoryString )
+    // console.log( addPValuesCopy.author )
+    // console.log( addPValuesCopy.publisher) 
+    // console.log( addPValuesCopy.edition_number )
+    // console.log( addPValuesCopy.model )
+    // console.log( addPValuesCopy.warranty) 
+    // console.log( addPValuesCopy.initial_price) 
+    // console.log( addPValuesCopy.amountInStock )
+    // console.log( addPValuesCopy.img1URL )
+    // console.log( addPValuesCopy.img2URL )
+    // console.log( addPValuesCopy.img3URL )
+    // console.log( addPValuesCopy.description )
+    const serverAnswer = await addNewProduct()
     console.log(serverAnswer)
   }
 
@@ -511,7 +567,7 @@ const ProductManagement = () => {
             </div>
             <br></br>
             <div className='row'>
-              <button className='btn btn-primary btn-lg btn-block' onClick={() => {unRemoveThisProduct(item); setNavItemSelected(0); setLoaded(false)}}>Undelete This Product</button>
+              <button className='btn btn-primary btn-lg btn-block' onClick={() => {unRemoveThisProduct(item); setNavItemSelected(0); setLoaded(false)}}>Undo Remove</button>
             </div>
             </div>))}
           <Card>
@@ -525,14 +581,14 @@ const ProductManagement = () => {
               <div className="row">
                   <div className="col-md-9 mb-3">
                     <label htmlFor="text">Title  </label>
-                    <input type="text" className="form-control" id="title" onChange={event => (title = event.target.value)} placeholder="e.g. Attak on Titan"/>
+                    <input type="text" className="form-control" id="title" onChange={event => setAddPRoductValues({...addProductValues, title: event.target.value})} placeholder="e.g. Attak on Titan"/>
                     <div className="invalid-feedback">
                       Please enter a valid email address htmlFor shipping updates.
                     </div>
                   </div>
                   <div className="col-md-3 mb-3">
                     <label htmlFor="sm">Sales Manager</label>
-                    <select className="form-control" onChange={event => (salesManager = event.target.value)}>
+                    <select className="form-control" onChange={event => setAddPRoductValues({...addProductValues, salesManager: event.target.value})}>
                         {salesManagers.map(elem => (
                           <option value={elem.Sid}>{elem.name}</option>
                         ))}
@@ -545,21 +601,21 @@ const ProductManagement = () => {
                 <div className="row">
                   <div className="col-md-5 mb-3">
                     <label htmlFor="firstName">Author</label>
-                    <input type="text" className="form-control" id="firstName" placeholder="" onChange={event => (author = event.target.value)} required=""/>
+                    <input type="text" className="form-control" id="firstName" placeholder="" onChange={event => setAddPRoductValues({...addProductValues, author: event.target.value})} required=""/>
                     <div className="invalid-feedback">
                       Valid first name is required.
                     </div>
                   </div>
                   <div className="col-md-5 mb-3">
                     <label htmlFor="lastName">Publisher</label>
-                    <input type="text" className="form-control" id="lastName" placeholder="" onChange={event => (publisher = event.target.value)} required=""/>
+                    <input type="text" className="form-control" id="lastName" placeholder="" onChange={event => setAddPRoductValues({...addProductValues, publisher: event.target.value})} required=""/>
                     <div className="invalid-feedback">
                       Valid last name is required.
                     </div>
                   </div>
                   <div className="col-md-2 mb-3">
                     <label htmlFor="lastName">Amount In Stock</label>
-                    <input type="number" className="form-control" id="lastName" placeholder="" onChange={event => (amountInStock = event.target.value)} required=""/>
+                    <input type="number" className="form-control" id="lastName" placeholder="" onChange={event => setAddPRoductValues({...addProductValues, amountInStock: event.target.value})} required=""/>
                     <div className="invalid-feedback">
                       Valid last name is required.
                     </div>
@@ -569,28 +625,28 @@ const ProductManagement = () => {
                 <div className="row">
                   <div className="col-md-2 mb-3">
                     <label htmlFor="firstName">Edition Number</label>
-                    <input type="number" className="form-control" id="firstName" placeholder="" onChange={event => (edition_number = event.target.value)} required=""/>
+                    <input type="number" className="form-control" id="firstName" placeholder="" onChange={event => setAddPRoductValues({...addProductValues, edition_number: event.target.value})} required=""/>
                     <div className="invalid-feedback">
                       Valid first name is required.
                     </div>
                   </div>
                   <div className="col-md-2 mb-3">
                     <label htmlFor="lastName">Model</label>
-                    <input type="text" className="form-control" id="lastName" placeholder="" onChange={event => (model = event.target.value)} required=""/>
+                    <input type="text" className="form-control" id="lastName" placeholder="" onChange={event => setAddPRoductValues({...addProductValues, model: event.target.value})} required=""/>
                     <div className="invalid-feedback">
                       Valid last name is required.
                     </div>
                   </div>
                   <div className="col-md-2 mb-3">
                     <label htmlFor="lastName">Warranty</label>
-                    <input type="text" className="form-control" id="lastName" placeholder="" onChange={event => (warranty = event.target.value)} required=""/>
+                    <input type="text" className="form-control" id="lastName" placeholder="" onChange={event => setAddPRoductValues({...addProductValues, warranty: event.target.value})} required=""/>
                     <div className="invalid-feedback">
                       Valid last name is required.
                     </div>
                   </div>
                   <div className="col-md-2 mb-3">
                     <label htmlFor="lastName">Initial Price</label>
-                    <input type="number" className="form-control" id="lastName" placeholder="" onChange={event => (initial_price = event.target.value)} required=""/>
+                    <input type="number" className="form-control" id="lastName" placeholder="" onChange={event => setAddPRoductValues({...addProductValues, initial_price: event.target.value})} required=""/>
                     <div className="invalid-feedback">
                       Valid last name is required.
                     </div>
@@ -602,7 +658,7 @@ const ProductManagement = () => {
                         <label>Use Existing Category</label>
                       </div>
 
-                      <select className="form-control" disabled={useNewCategory} onChange={event => (category = event.target.value)}>
+                      <select className="form-control" disabled={useNewCategory} onChange={event => setAddPRoductValues({...addProductValues, category: event.target.value})}>
                             {console.log(categories)}
                           {categories.map((elem) => (
                             <option value={elem["cid"]}>{elem["value"]}</option>
@@ -620,7 +676,7 @@ const ProductManagement = () => {
                         <label>Add New Category</label>
                       </div>
 
-                      <input type="text" disabled={!useNewCategory} className="form-control" id="lastName" placeholder="" onChange={event => (categoryString = event.target.value)} required=""/>
+                      <input type="text" disabled={!useNewCategory} className="form-control" id="lastName" placeholder="" onChange={event => setAddPRoductValues({...addProductValues, categoryString: event.target.value})} required=""/>
                       <div className="invalid-feedback">
                         Valid last name is required.
                       </div>
@@ -629,7 +685,7 @@ const ProductManagement = () => {
                 </div>
                 <div className="mb-3">
                   <label htmlFor="email">Image 1 URL  </label>
-                  <input type="url" className="form-control" id="url1" onChange={event => (img1URL = event.target.value)} placeholder="http://..."/>
+                  <input type="url" className="form-control" id="url1" onChange={event => setAddPRoductValues({...addProductValues, img1URL: event.target.value})} placeholder="http://..."/>
                   <div className="invalid-feedback">
                     Please enter a valid email address htmlFor shipping updates.
                   </div>
@@ -637,7 +693,7 @@ const ProductManagement = () => {
 
                 <div className="mb-3">
                   <label htmlFor="email">Image 2 URL  </label>
-                  <input type="url" className="form-control" id="url2" onChange={event => (img2URL = event.target.value)} placeholder="http://..."/>
+                  <input type="url" className="form-control" id="url2" onChange={event => setAddPRoductValues({...addProductValues, img2URL: event.target.value})} placeholder="http://..."/>
                   <div className="invalid-feedback">
                     Please enter a valid email address htmlFor shipping updates.
                   </div>
@@ -645,7 +701,7 @@ const ProductManagement = () => {
 
                 <div className="mb-3">
                   <label htmlFor="email">Image 3 URL  </label>
-                  <input type="url" className="form-control" id="url3" onChange={event => (img3URL = event.target.value)} placeholder="http://..."/>
+                  <input type="url" className="form-control" id="url3" onChange={event => setAddPRoductValues({...addProductValues, img3URL: event.target.value})} placeholder="http://..."/>
                   <div className="invalid-feedback">
                     Please enter a valid email address htmlFor shipping updates.
                   </div>
@@ -653,7 +709,7 @@ const ProductManagement = () => {
 
                 <div className="mb-3">
                   <label htmlFor="address">Description</label>
-                  <textarea type="text" className="form-control" id="address" onChange={event => (description = event.target.value)} placeholder="e.g. This book tells the story of..." required=""/>
+                  <textarea type="text" className="form-control" id="address" onChange={event => setAddPRoductValues({...addProductValues, description: event.target.value})} placeholder="e.g. This book tells the story of..." required=""/>
                   <div className="invalid-feedback">
                     Please enter your shipping address.
                   </div>
@@ -830,7 +886,7 @@ const ProductManagement = () => {
                     <a className={(navItemSelected === 1 || navItemSelected === 1.5) ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(1); setLoaded(false)}} href="#">Delivery List</a>
                     <a className={navItemSelected === 2 ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(2); setLoaded(false)}} href="#">Update Stock</a>
                     <a className={navItemSelected === 3 ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(3); setLoaded(false)}} href="#">Comments to be Approved</a>
-                    <a className={navItemSelected === 4 ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(4); setLoaded(false)}} href="#">Add/Unremove A Product</a>
+                    <a className={navItemSelected === 4 ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(4); setLoaded(false)}} href="#">Add/Undo Remove</a>
                     <a className={navItemSelected === 5 ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(5); setLoaded(false)}} href="#">Remove a Product</a>
                     <a className={navItemSelected === 6 ? "nav-item nav-link btn disabled" : "nav-item nav-link"} onClick={() => {setNavItemSelected(6); setLoaded(false)}} href="#">View Invoices</a>
                     </div>

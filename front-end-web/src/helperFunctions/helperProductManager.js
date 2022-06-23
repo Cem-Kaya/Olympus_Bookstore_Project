@@ -1,28 +1,5 @@
 import { getProductManagerID } from "./helperLogin"
 
-export const addNewProduct = async (category, salesManager, title, model, description, edition_number, amountInStock, initial_price, author, warranty, publisher, img1URL, img2URL, img3URL) => {
-    try
-    {
-      const res = await fetch(`/Products_reg/submit`     , {headers : { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-          },
-          method: "POST",
-          body: JSON.stringify({Pcid: category, Sid: salesManager, Pmid: getProductManagerID(), name: title, 
-            model: model, description: description, edition_number: edition_number, quantity: amountInStock,
-            amount_sold: 0, price: initial_price, raiting: 1.0, author: author, warranty: warranty,
-            distributor_Information: publisher, sale: 1.0, 
-            picture_url0: img1URL, picture_url1: img2URL, picture_url2: img3URL})
-          }
-          )
-      const data = await res.json()
-      return data
-    }
-    catch{
-      console.log("could not add new product")
-    }
-  }
-
   export const addNewCategory = async (categoryString) => {
     try
     {
