@@ -207,12 +207,6 @@ const Checkout = () => {
     navigate(`/invoice`)
   }
 
-  const PurchaseAllHelper= () => {
-    PurchaseAllHelper()
-    console.log(itemsBought)
-    navigate(`/invoice`)
-  }
-
   return (
       <div>
         <Header addToCartAllowed={false}></Header>
