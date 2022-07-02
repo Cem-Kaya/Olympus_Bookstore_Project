@@ -1,3 +1,4 @@
+# Authored by Cem Kaya & Baha Mert Ersoy
 import yagmail
 from fpdf import FPDF
 import time
@@ -25,7 +26,7 @@ def make_pdf(text ):
     return pdf_name
   
 def send_email(receiver, text):
-    yag = yagmail.SMTP( "aa","aaa") # miyavcs308group4@gmail.com" ,  "rntqcipklvirskgo")# )'CS.308.Group4.mail3@gmail.com', 'qwodctqssaobfgmc')
+    yag = yagmail.SMTP( "miyavcs308group4@gmail.com","rntqcipklvirskgo") # miyavcs308group4@gmail.com" ,  "rntqcipklvirskgo")# )'CS.308.Group4.mail3@gmail.com', 'qwodctqssaobfgmc')
     filename =  make_pdf(text )
 
     yag.send(

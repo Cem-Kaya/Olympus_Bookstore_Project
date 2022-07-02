@@ -1,3 +1,5 @@
+# Authored by Cem Kaya & Baha Mert Ersoy
+
 import json
 from sys import hash_info
 from flask import Flask, render_template, request
@@ -17,5 +19,5 @@ db=SQLAlchemy(app)
 if __name__ =="__main__":   
    
 
-    db.session.query(Customers).filter(Customers.email == "muratkaraca@sabanciuniv.com").update({"email": "muratkaraca@sabanciuniv.edu"})
+    db.session.query(Purchased).filter(Purchased.purcid == 28).update({"price": "30"})
     db.session.commit()

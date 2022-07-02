@@ -1,3 +1,4 @@
+# Authored by Cem Kaya & Baha Mert Ersoy
 
 from os import lstat
 from app import * 

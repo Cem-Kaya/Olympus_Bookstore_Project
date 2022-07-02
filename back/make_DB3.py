@@ -1,3 +1,5 @@
+# Authored by Cem Kaya & Baha Mert Ersoy
+
 import json
 from sys import hash_info
 from flask import Flask, render_template, request

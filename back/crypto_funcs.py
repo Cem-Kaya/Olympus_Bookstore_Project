@@ -1,3 +1,5 @@
+# Authored by Cem Kaya & Baha Mert Ersoy
+
 from Crypto.Hash import SHA256
 
 def hash_it(input_string , bitvector = 0 ):   
@@ -8,3 +10,5 @@ def hash_it(input_string , bitvector = 0 ):
     #conver byte object to string
     output_string = hash.hexdigest()
     return(output_string)
+#
+#     
