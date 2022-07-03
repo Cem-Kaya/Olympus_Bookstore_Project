@@ -14,11 +14,11 @@
 ## Mobile Front-end
 
 <p float="left">
-  <img src="https://user-images.githubusercontent.com/72397029/177042973-d96c37db-8429-4d1b-affc-3e3cbb275f93.png" width="15%" />
-  <img src="https://user-images.githubusercontent.com/72397029/177042981-db0fcec3-c732-4ef0-a867-ed3f5f6351c7.png" width="15%" /> 
-  <img src="https://user-images.githubusercontent.com/72397029/177042988-9796d700-15d1-45ee-951b-e1579fd4d8d9.png" width="15%" />
-  <img src="https://user-images.githubusercontent.com/72397029/177043048-95a37a8f-dfc8-4de8-9fba-d4868025c706.png" width="15%" /> 
-  <img src="https://user-images.githubusercontent.com/72397029/177043060-f639e27c-7592-4300-8aab-f8500948e529.png" width="15%" />
+  <img src="https://user-images.githubusercontent.com/72397029/177042973-d96c37db-8429-4d1b-affc-3e3cbb275f93.png" width="19%" />
+  <img src="https://user-images.githubusercontent.com/72397029/177042981-db0fcec3-c732-4ef0-a867-ed3f5f6351c7.png" width="19%" /> 
+  <img src="https://user-images.githubusercontent.com/72397029/177042988-9796d700-15d1-45ee-951b-e1579fd4d8d9.png" width="19%" />
+  <img src="https://user-images.githubusercontent.com/72397029/177043048-95a37a8f-dfc8-4de8-9fba-d4868025c706.png" width="19%" /> 
+  <img src="https://user-images.githubusercontent.com/72397029/177043060-f639e27c-7592-4300-8aab-f8500948e529.png" width="19%" />
 </p>
 
 ## Back-end Testing interface 
